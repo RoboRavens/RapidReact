@@ -38,22 +38,42 @@ public class ShooterSubsystem extends SubsystemBase {
         this.stopMotor();
     }
 
+    /**
+     * Sets both shooter motors to the specified shot type
+     * @param shot The ShooterCalibration shot to set the motors to
+     */
     public void setShot(ShooterCalibration shot) {
         this.shooterMotor1.config_kF(Constants.SHOOTER_IDX, shot.kF, Constants.SHOOTER_TIMEOUT_MS);
         this.shooterMotor1.config_kP(Constants.SHOOTER_IDX, shot.kP, Constants.SHOOTER_TIMEOUT_MS);
         this.shooterMotor1.config_kI(Constants.SHOOTER_IDX, shot.kI, Constants.SHOOTER_TIMEOUT_MS);
         this.shooterMotor1.config_kD(Constants.SHOOTER_IDX, shot.kD, Constants.SHOOTER_TIMEOUT_MS);
+
+        this.shooterMotor2.config_kF(Constants.SHOOTER_IDX, shot.kF, Constants.SHOOTER_TIMEOUT_MS);
+        this.shooterMotor2.config_kP(Constants.SHOOTER_IDX, shot.kP, Constants.SHOOTER_TIMEOUT_MS);
+        this.shooterMotor2.config_kI(Constants.SHOOTER_IDX, shot.kI, Constants.SHOOTER_TIMEOUT_MS);
+        this.shooterMotor2.config_kD(Constants.SHOOTER_IDX, shot.kD, Constants.SHOOTER_TIMEOUT_MS);
+
         this._shot = shot;
     }
 
+    /**
+     * Returns shot name
+     * @return String of the current shot name
+     */
     public String getShot() {
         return this._shot.name;
     }
 
+    /**
+    * Starts the motor with the set shot type
+    */
     public void startMotor() {
         this.shooterMotor1.set(ControlMode.Velocity, _shot.targetRPM);
     }
 
+    /**
+    * Stops the motor (sets it to 0% power)
+    */
     public void stopMotor() {
         this.shooterMotor1.set(ControlMode.PercentOutput, 0);
     }
