@@ -22,7 +22,7 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
   
-  private Gamepad GAMEPAD = new Gamepad(1);
+  private Gamepad GAMEPAD = new Gamepad(0);
 
   public static final DrivetrainSubsystem DRIVE_TRAIN_SUBSYSTEM = new DrivetrainSubsystem();
 

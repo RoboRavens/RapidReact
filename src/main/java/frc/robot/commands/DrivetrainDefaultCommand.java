@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.networktables.LogMessage;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.controls.AxisCode;
 import frc.controls.Gamepad;
@@ -24,7 +25,7 @@ public class DrivetrainDefaultCommand extends CommandBase {
                 ChassisSpeeds.fromFieldRelativeSpeeds(
                         _gamepad.getAxis(AxisCode.LEFTSTICKX), // x translation
                         _gamepad.getAxis(AxisCode.LEFTSTICKY), // y translation
-                        _gamepad.getAxis(AxisCode.RIGHTSTICKX) * 20, // rotation
+                        _gamepad.getAxis(AxisCode.RIGHTSTICKX) * 5, // rotation
                         _drivetrainSubsystem.getGyroscopeRotation()
                 )
         );
