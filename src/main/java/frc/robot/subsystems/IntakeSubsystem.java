@@ -9,6 +9,9 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -16,15 +19,15 @@ import frc.robot.RobotMap;
 
 public class IntakeSubsystem extends SubsystemBase {
 
-  private TalonFX _intakeMotor;
+  private TalonSRX _intakeMotor;
   private Solenoid _intakeExtend;
   private Solenoid _intakeRetract;
 
   public IntakeSubsystem() {
     this.initialize();
-    _intakeMotor = new TalonFX(RobotMap.INTAKE_MOTOR);
-    _intakeExtend = new Solenoid(RobotMap.INTAKE_EXTEND_SOLENOID, 0);
-    _intakeRetract = new Solenoid( RobotMap.INTAKE_RETRACT_SOLENOID, 0);
+    _intakeMotor = new TalonSRX(RobotMap.INTAKE_MOTOR);
+    _intakeExtend = new Solenoid(PneumaticsModuleType.CTREPCM, RobotMap.INTAKE_EXTEND_SOLENOID);
+    _intakeRetract = new Solenoid(PneumaticsModuleType.CTREPCM, RobotMap.INTAKE_RETRACT_SOLENOID);
   }
 
   public void initialize() {
