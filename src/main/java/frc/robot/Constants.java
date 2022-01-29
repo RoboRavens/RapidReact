@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import frc.util.ShooterCalibration;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -52,6 +54,21 @@ public final class Constants {
     //SHOOTER
     public static final int SHOOTER_IDX = 0;
     public static final int SHOOTER_TIMEOUT_MS = 100;
+
+    public static final int TARMAC_RPM = 2000;
+    public static final double TARMAC_KF = 0;
+    public static final double TARMAC_KP = 0.05;
+    public static final double TARMAC_KI = 0;
+    public static final double TARMAC_KD = 0;
+
+    public static final int LAUNCHPAD_RPM = 2000;
+    public static final double LAUNCHPAD_KF = 0;
+    public static final double LAUNCHPAD_KP = 0.05;
+    public static final double LAUNCHPAD_KI = 0;
+    public static final double LAUNCHPAD_KD = 0;
+
+    public static final ShooterCalibration TARMAC_SHOT = new ShooterCalibration("Tarmac Shot", TARMAC_RPM, TARMAC_KF, TARMAC_KP, TARMAC_KI, TARMAC_KD);
+    public static final ShooterCalibration LAUNCHPAD_SHOT = new ShooterCalibration("Launchpad Shot", LAUNCHPAD_RPM, LAUNCHPAD_KF, LAUNCHPAD_KP, LAUNCHPAD_KI, LAUNCHPAD_KD);
 
     //TURRET SWIVEL
 
