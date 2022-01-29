@@ -28,4 +28,7 @@ public final class RobotMap {
 
     public static final PneumaticsModuleType INTAKE_RETRACT_SOLENOID = null;
 
+    //SENSORS
+    public static final int SENSOR_B_CHANNEL = 1;
+
 }

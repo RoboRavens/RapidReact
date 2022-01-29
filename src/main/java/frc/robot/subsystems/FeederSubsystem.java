@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotMap;
@@ -15,13 +16,13 @@ public class FeederSubsystem extends SubsystemBase {
    
   private TalonFX _conveyanceMotor;
   private TalonFX _feederWheelMotor;
+  private DigitalInput _conveyanceSensorB;
 
 
-  /** Creates a new ExampleSubsystem. */
   public FeederSubsystem() {
       _conveyanceMotor = new TalonFX(RobotMap.CONVEYANCE_MOTOR);
       _feederWheelMotor = new TalonFX(RobotMap.CONVEYANCE_WHEEL);
-
+      _conveyanceSensorB = new DigitalInput(RobotMap.SENSOR_B_CHANNEL);
   }
 
   @Override
@@ -80,6 +81,10 @@ public class FeederSubsystem extends SubsystemBase {
 
   public void feederWheelReverse() {
     this.runWheelAtPercentPower(Constants.CONVEYANCE_REVERSE_FEEDER);
+  }
+
+  public boolean getConveyanceSensorBReading() {
+    return _conveyanceSensorB.get();
   }
 
 }
