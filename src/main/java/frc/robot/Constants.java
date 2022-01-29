@@ -57,4 +57,10 @@ public final class Constants {
 
     //CONTROLS
     public static final double AXIS_IS_PRESSED_VALUE = .25;
+    public static final double INTAKE_COLLECT_POWER_MAGNITUDE = 0;
+    public static final int INTAKE_SPIT_POWER_MAGNITUDE = 0;
+
+
+     
+
 }
