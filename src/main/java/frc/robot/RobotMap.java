@@ -17,16 +17,12 @@ public final class RobotMap {
     public static final int SHOOTER_MOTOR_1 = -1;
     public static final int SHOOTER_MOTOR_2 = -1;
 
-
+    
 
     //INTAKE
-     public static final int INTAKE_MOTOR_1 = -1;
-
-    public static final int INTAKE_MOTOR = 0;
-
-	public static final PneumaticsModuleType INTAKE_EXTEND_SOLENOID = null;
-
-    public static final PneumaticsModuleType INTAKE_RETRACT_SOLENOID = null;
+     public static final int INTAKE_MOTOR = 0;
+     public static final PneumaticsModuleType INTAKE_EXTEND_SOLENOID = null;
+     public static final PneumaticsModuleType INTAKE_RETRACT_SOLENOID = null;
 
     //SENSORS
     public static final int SENSOR_B_CHANNEL = 1;

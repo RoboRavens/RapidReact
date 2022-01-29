@@ -8,8 +8,10 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import frc.controls.ButtonCode;
 import frc.controls.Gamepad;
 import frc.robot.commands.DrivetrainDefaultCommand;
+import frc.robot.commands.IntakeExtendAndCollectCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 
@@ -20,15 +22,16 @@ import frc.robot.subsystems.IntakeSubsystem;
  * project.
  */
 public class Robot extends TimedRobot {
-  public static final IntakeSubsystem INTAKE_SUBSYSTEM = new IntakeSubsystem();
-
-private Command m_autonomousCommand;
+  private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
   
   private Gamepad GAMEPAD = new Gamepad(0);
 
   public static final DrivetrainSubsystem DRIVE_TRAIN_SUBSYSTEM = new DrivetrainSubsystem();
+  public static final IntakeSubsystem INTAKE_SUBSYSTEM = new IntakeSubsystem();
+
+  public static final IntakeExtendAndCollectCommand IntakeExtendCollect = new IntakeExtendAndCollectCommand();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -41,12 +44,8 @@ private Command m_autonomousCommand;
     m_robotContainer = new RobotContainer();
 
     DRIVE_TRAIN_SUBSYSTEM.setDefaultCommand(new DrivetrainDefaultCommand(DRIVE_TRAIN_SUBSYSTEM, GAMEPAD));
-  }
-
-  
-  private void setupDefaultCommand() {
-
     INTAKE_SUBSYSTEM.setDefaultCommand(new RunCommand(() -> INTAKE_SUBSYSTEM.defaultCommand(), INTAKE_SUBSYSTEM));
+
   }
   
   
@@ -104,7 +103,9 @@ private Command m_autonomousCommand;
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(IntakeExtendCollect);
+  }
 
   @Override
   public void testInit() {
