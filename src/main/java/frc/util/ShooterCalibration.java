@@ -18,15 +18,21 @@ public class ShooterCalibration {
     public int upperBoundBuffer;
     public int lowerBoundBuffer;
 
-    public ShooterCalibration(String name, int RPM, double kF, double kP, double kI, double kD, int upperBoundBuffer,
-            int lowerBoundBuffer) {
+    /**
+     * A "shot" object, storing all values needed for revving motors to the shot rpm with PID
+     * @param name Name of the shot
+     * @param RPM Target RPM to rev to
+     * @param kF F value for PID control
+     * @param kP P value for PID control
+     * @param kI I value for PID control
+     * @param kD D value for PID control
+     */
+    public ShooterCalibration(String name, int RPM, double kF, double kP, double kI, double kD) {
         this.name = name;
         this.targetRPM = RPM;
         this.kF = kF;
         this.kP = kP;
         this.kI = kI;
         this.kD = kD;
-        this.upperBoundBuffer = upperBoundBuffer;
-        this.lowerBoundBuffer = lowerBoundBuffer;
     }
 }

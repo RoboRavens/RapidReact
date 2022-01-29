@@ -13,6 +13,7 @@ import frc.controls.Gamepad;
 import frc.robot.commands.DrivetrainDefaultCommand;
 import frc.robot.commands.IntakeExtendAndCollectCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 
 /**
@@ -29,6 +30,7 @@ public class Robot extends TimedRobot {
   private Gamepad GAMEPAD = new Gamepad(0);
 
   public static final DrivetrainSubsystem DRIVE_TRAIN_SUBSYSTEM = new DrivetrainSubsystem();
+  public static final ShooterSubsystem SHOOTER_SUBSYSTEM = new ShooterSubsystem();
   public static final IntakeSubsystem INTAKE_SUBSYSTEM = new IntakeSubsystem();
 
   public static final IntakeExtendAndCollectCommand IntakeExtendCollect = new IntakeExtendAndCollectCommand();
