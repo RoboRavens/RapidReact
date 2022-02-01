@@ -26,7 +26,7 @@ public class IntakeCollectCommand extends CommandBase {
   @Override
   public void execute() {
     System.out.println("COLLECTING!!!");
-    
+    Robot.INTAKE_SUBSYSTEM.extend();
     Robot.INTAKE_SUBSYSTEM.collect();
   }
 
