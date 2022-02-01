@@ -33,7 +33,7 @@ public class Robot extends TimedRobot {
   public static final ShooterSubsystem SHOOTER_SUBSYSTEM = new ShooterSubsystem();
   public static final IntakeSubsystem INTAKE_SUBSYSTEM = new IntakeSubsystem();
 
-  public static final IntakeCollectCommand IntakeExtendCollect = new IntakeCollectCommand();
+  public static final IntakeExtendAndCollectCommand IntakeExtendCollect = new IntakeExtendAndCollectCommand();
 
   /**
    * This function is run when the robot is first started up and should be used for any

@@ -5,40 +5,37 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.IntakeCollecterCommands;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
-public class IntakeCollectCommand extends CommandBase {
+public class IntakeExtendCommand extends CommandBase {
 
-  public IntakeCollectCommand() {
+  public IntakeExtendCommand() {
     addRequirements(Robot.INTAKE_SUBSYSTEM);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    System.out.println("IntakeCollectCommand init");
+    System.out.println("IntakeExtendCommand init");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("COLLECTING!!!");
     Robot.INTAKE_SUBSYSTEM.extend();
-    Robot.INTAKE_SUBSYSTEM.collect();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }
