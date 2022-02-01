@@ -5,14 +5,14 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.IntakeCollecterCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
-public class IntakeExtendAndReverseCommand extends CommandBase {
+public class IntakeReverseCommand extends CommandBase {
 
-  public IntakeExtendAndReverseCommand() {
+  public IntakeReverseCommand() {
     addRequirements(Robot.INTAKE_SUBSYSTEM);
   }
 

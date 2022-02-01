@@ -1,3 +1,5 @@
+package frc.robot.commands.IntakeExtenderCommands;
+
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
@@ -5,40 +7,37 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
-public class IntakeExtendAndCollectCommand extends CommandBase {
+public class IntakeExtendCommand extends CommandBase {
 
-  public IntakeExtendAndCollectCommand() {
+  public IntakeExtendCommand() {
     addRequirements(Robot.INTAKE_SUBSYSTEM);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    System.out.println("IntakeExtendAndCollectCommand init");
+    System.out.println("IntakeExtendCommand init");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("INTAKE_EXTENDING_AND_COLLECTING!!!");
     Robot.INTAKE_SUBSYSTEM.extend();
-    Robot.INTAKE_SUBSYSTEM.collect();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Robot.INTAKE_SUBSYSTEM.stopAndRetract();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

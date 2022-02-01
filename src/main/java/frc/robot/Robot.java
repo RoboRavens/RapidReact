@@ -31,7 +31,7 @@ public class Robot extends TimedRobot {
   public static final DrivetrainSubsystem DRIVE_TRAIN_SUBSYSTEM = new DrivetrainSubsystem();
   public static final IntakeSubsystem INTAKE_SUBSYSTEM = new IntakeSubsystem();
 
-  public static final IntakeExtendAndCollectCommand IntakeExtendCollect = new IntakeExtendAndCollectCommand();
+  public static final IntakeCollectCommand IntakeExtendCollect = new IntakeCollectCommand();
 
   /**
    * This function is run when the robot is first started up and should be used for any
