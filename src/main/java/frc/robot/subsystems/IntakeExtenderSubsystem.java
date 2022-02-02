@@ -24,7 +24,7 @@ public class IntakeExtenderSubsystem extends SubsystemBase {
 
   public IntakeExtenderSubsystem() {
     this.initialize();
-    
+    //Intake Solenoid stuff
     _intakeExtend = new Solenoid(PneumaticsModuleType.CTREPCM, RobotMap.INTAKE_EXTEND_SOLENOID);
     _intakeRetract = new Solenoid(PneumaticsModuleType.CTREPCM, RobotMap.INTAKE_RETRACT_SOLENOID);
     _conveyanceSensorA = new DigitalInput(RobotMap.SENSOR_A_CHANNEL);
