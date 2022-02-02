@@ -19,14 +19,14 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 
-public class IntakeSubsystem extends SubsystemBase {
+public class IntakeExtenderSubsystem extends SubsystemBase {
 
   private TalonSRX _intakeMotor;
   private Solenoid _intakeExtend;
   private Solenoid _intakeRetract;
   private DigitalInput _conveyanceSensorA;
 
-  public IntakeSubsystem() {
+  public IntakeExtenderSubsystem() {
     this.initialize();
     _intakeMotor = new TalonSRX(RobotMap.INTAKE_MOTOR);
     _intakeExtend = new Solenoid(PneumaticsModuleType.CTREPCM, RobotMap.INTAKE_EXTEND_SOLENOID);
@@ -81,6 +81,6 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public boolean getConveyanceSensorBReading() {
-    return Robot.INTAKE_SUBSYSTEM.getConveyanceSensorBReading();
+    return this.getConveyanceSensorBReading();
   }
 }

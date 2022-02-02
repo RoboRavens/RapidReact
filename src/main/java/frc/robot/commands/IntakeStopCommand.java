@@ -13,7 +13,7 @@ import frc.robot.Robot;
 public class IntakeStopCommand extends CommandBase {
 
   public IntakeStopCommand() {
-    addRequirements(Robot.INTAKE_SUBSYSTEM);
+    addRequirements(Robot.INTAKE_EXTENDER_SUBSYSTEM);
   }
 
   // Called when the command is initially scheduled.

@@ -26,8 +26,8 @@ public class IntakeExtendAndCollectCommand extends CommandBase {
   @Override
   public void execute() {
     System.out.println("INTAKE_EXTENDING_AND_COLLECTING!!!");
-    Robot.INTAKE_SUBSYSTEM.extend();
-    Robot.INTAKE_SUBSYSTEM.collect();
+    Robot.INTAKE_EXTENDER_SUBSYSTEM.extend();
+    Robot.INTAKE_EXTENDER_SUBSYSTEM.collect();
   }
 
   // Called once the command ends or is interrupted.

@@ -13,7 +13,7 @@ import frc.robot.Robot;
 public class IntakeRetractCommand extends CommandBase {
 
   public IntakeRetractCommand() {
-    addRequirements(Robot.INTAKE_SUBSYSTEM);
+    addRequirements(Robot.INTAKE_EXTENDER_SUBSYSTEM);
   }
 
   // Called when the command is initially scheduled.
