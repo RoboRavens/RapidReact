@@ -31,14 +31,13 @@ public class Robot extends TimedRobot {
   
   private Gamepad GAMEPAD = new Gamepad(0);
 
-  private Command IntakeRetractCommand;
-
-  public static final DrivetrainSubsystem DRIVE_TRAIN_SUBSYSTEM = new DrivetrainSubsystem();
+  //public static final DrivetrainSubsystem DRIVE_TRAIN_SUBSYSTEM = new DrivetrainSubsystem();
   public static final ShooterSubsystem SHOOTER_SUBSYSTEM = new ShooterSubsystem();
   public static final IntakeSubsystem INTAKE_SUBSYSTEM = new IntakeSubsystem();
 
   public static final IntakeExtendAndCollectCommand IntakeExtendCollect = new IntakeExtendAndCollectCommand();
   public static final ShooterStartCommand ShooterStart = new ShooterStartCommand();
+  public static final IntakeRetractCommand IntakeRetract = new IntakeRetractCommand();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -50,7 +49,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
 
-    DRIVE_TRAIN_SUBSYSTEM.setDefaultCommand(new DrivetrainDefaultCommand(DRIVE_TRAIN_SUBSYSTEM, GAMEPAD));
+    //DRIVE_TRAIN_SUBSYSTEM.setDefaultCommand(new DrivetrainDefaultCommand(DRIVE_TRAIN_SUBSYSTEM, GAMEPAD));
     SHOOTER_SUBSYSTEM.setDefaultCommand(new RunCommand(() -> SHOOTER_SUBSYSTEM.defaultCommand(), SHOOTER_SUBSYSTEM));
 
   }
@@ -113,7 +112,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(IntakeExtendCollect);
     GAMEPAD.getButton(ButtonCode.A).whileHeld(ShooterStart);
-    GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(IntakeRetractCommand);
+    GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(IntakeRetract);
   }
 
   @Override
