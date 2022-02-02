@@ -12,6 +12,7 @@ import frc.controls.ButtonCode;
 import frc.controls.Gamepad;
 import frc.robot.commands.DrivetrainDefaultCommand;
 import frc.robot.commands.IntakeExtendAndCollectCommand;
+import frc.robot.commands.shooter.ShooterStartCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -34,6 +35,7 @@ public class Robot extends TimedRobot {
   public static final IntakeSubsystem INTAKE_SUBSYSTEM = new IntakeSubsystem();
 
   public static final IntakeExtendAndCollectCommand IntakeExtendCollect = new IntakeExtendAndCollectCommand();
+  public static final ShooterStartCommand ShooterStart = new ShooterStartCommand();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -47,6 +49,7 @@ public class Robot extends TimedRobot {
 
     DRIVE_TRAIN_SUBSYSTEM.setDefaultCommand(new DrivetrainDefaultCommand(DRIVE_TRAIN_SUBSYSTEM, GAMEPAD));
     INTAKE_SUBSYSTEM.setDefaultCommand(new RunCommand(() -> INTAKE_SUBSYSTEM.defaultCommand(), INTAKE_SUBSYSTEM));
+    SHOOTER_SUBSYSTEM.setDefaultCommand(new RunCommand(() -> SHOOTER_SUBSYSTEM.defaultCommand(), SHOOTER_SUBSYSTEM));
 
   }
   
@@ -107,6 +110,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(IntakeExtendCollect);
+    GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(ShooterStart);
   }
 
   @Override
