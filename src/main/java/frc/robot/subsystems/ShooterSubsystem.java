@@ -22,6 +22,7 @@ public class ShooterSubsystem extends SubsystemBase {
         shooterMotor1 = new TalonFX(RobotMap.SHOOTER_MOTOR_1);
         shooterMotor2 = new TalonFX(RobotMap.SHOOTER_MOTOR_2);
         shooterMotor2.follow(shooterMotor1);
+        _shot = Constants.TARMAC_SHOT;
     }
 
     @Override
