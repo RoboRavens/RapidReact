@@ -9,7 +9,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.controls.Gamepad;
 import frc.robot.commands.DrivetrainDefaultCommand;
+import frc.robot.commands.FeederEjectCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.FeederSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -25,6 +27,7 @@ public class Robot extends TimedRobot {
   private Gamepad GAMEPAD = new Gamepad(0);
 
   public static final DrivetrainSubsystem DRIVE_TRAIN_SUBSYSTEM = new DrivetrainSubsystem();
+  public static final FeederSubsystem FEEDER_SUBSYSTEM = new FeederSubsystem();
 
   /**
    * This function is run when the robot is first started up and should be used for any
