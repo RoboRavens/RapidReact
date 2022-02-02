@@ -20,12 +20,15 @@ public final class RobotMap {
     
 
     //INTAKE
-     public static final int INTAKE_MOTOR = 11;
+     
      public static final int INTAKE_EXTEND_SOLENOID = 0;
      public static final int INTAKE_RETRACT_SOLENOID = 1;
-
-    //SENSORS
+    
+   
+     //SENSORS
     public static final int SENSOR_A_CHANNEL = 1;
     public static final int SENSOR_B_CHANNEL = 1;
+    
+   
 
 }
