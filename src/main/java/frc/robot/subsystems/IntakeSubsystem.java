@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -22,12 +23,14 @@ public class IntakeSubsystem extends SubsystemBase {
   private TalonSRX _intakeMotor;
   private Solenoid _intakeExtend;
   private Solenoid _intakeRetract;
+  private DigitalInput _conveyanceSensorA;
 
   public IntakeSubsystem() {
     this.initialize();
     _intakeMotor = new TalonSRX(RobotMap.INTAKE_MOTOR);
     _intakeExtend = new Solenoid(PneumaticsModuleType.CTREPCM, RobotMap.INTAKE_EXTEND_SOLENOID);
     _intakeRetract = new Solenoid(PneumaticsModuleType.CTREPCM, RobotMap.INTAKE_RETRACT_SOLENOID);
+    _conveyanceSensorA = new DigitalInput(RobotMap.SENSOR_A_CHANNEL);
   }
 
   public void initialize() {
@@ -70,5 +73,9 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void defaultCommand() {
     this.stop();
+  }
+
+  public boolean getConveyanceSensorAReading() {
+    return _conveyanceSensorA.get();
   }
 }
