@@ -15,10 +15,6 @@ import frc.util.ShooterCalibration;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    // CONTROLS
-    public static final double JOYSTICK_DEADBAND = .15;
-    public static final double DRIVE_MAX_TURN_RADIANS_PER_SECOND = 5;
-
     // DRIVETRAIN
         /**
      * The left-to-right distance between the drivetrain wheels
@@ -59,15 +55,15 @@ public final class Constants {
     public static final int SHOOTER_IDX = 0;
     public static final int SHOOTER_TIMEOUT_MS = 100;
 
-    public static final int TARMAC_RPM = 5130;
-    public static final double TARMAC_KF = 0.0082;
-    public static final double TARMAC_KP = 0.15;
+    public static final int TARMAC_RPM = 2000;
+    public static final double TARMAC_KF = 0;
+    public static final double TARMAC_KP = 0.05;
     public static final double TARMAC_KI = 0;
     public static final double TARMAC_KD = 0;
 
-    public static final int LAUNCHPAD_RPM = 4625;
-    public static final double LAUNCHPAD_KF = 0.0087;
-    public static final double LAUNCHPAD_KP = 0.11;
+    public static final int LAUNCHPAD_RPM = 2000;
+    public static final double LAUNCHPAD_KF = 0;
+    public static final double LAUNCHPAD_KP = 0.05;
     public static final double LAUNCHPAD_KI = 0;
     public static final double LAUNCHPAD_KD = 0;
 

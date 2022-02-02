@@ -7,28 +7,24 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
-import frc.robot.Robot;
 import frc.robot.RobotMap;
 
-public class IntakeSubsystem extends SubsystemBase {
+public class IntakeExtenderSubsystem extends SubsystemBase {
 
-  private TalonSRX _intakeMotor;
+ 
   private Solenoid _intakeExtend;
   private Solenoid _intakeRetract;
   private DigitalInput _conveyanceSensorA;
 
-  public IntakeSubsystem() {
+  public IntakeExtenderSubsystem() {
     this.initialize();
-    _intakeMotor = new TalonSRX(RobotMap.INTAKE_MOTOR);
+    //Intake Solenoid stuff
     _intakeExtend = new Solenoid(PneumaticsModuleType.CTREPCM, RobotMap.INTAKE_EXTEND_SOLENOID);
     _intakeRetract = new Solenoid(PneumaticsModuleType.CTREPCM, RobotMap.INTAKE_RETRACT_SOLENOID);
     _conveyanceSensorA = new DigitalInput(RobotMap.SENSOR_A_CHANNEL);
@@ -41,20 +37,11 @@ public class IntakeSubsystem extends SubsystemBase {
 
   }
 
-  public void collect() {
-    this.runAtPower(Constants.INTAKE_COLLECT_POWER_MAGNITUDE);
-  }
-
-  public void spit() {
-    this.runAtPower(Constants.INTAKE_SPIT_POWER_MAGNITUDE * -1);
-  }
-
-  public void runAtPower(double magnitude) {
-    _intakeMotor.set(ControlMode.PercentOutput, magnitude);
-  }
+  
+  
 
   public void stop() {
-    this.runAtPower(0);
+    
   }
 
   public void extend() {
@@ -68,8 +55,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void stopAndRetract() {
-    this.stop();
-    this.retract();
+    
   }
 
   public void defaultCommand() {
@@ -81,6 +67,6 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public boolean getConveyanceSensorBReading() {
-    return Robot.FEEDER_SUBSYSTEM.getFeederCargoSensor();
+    return this.getConveyanceSensorBReading();
   }
 }

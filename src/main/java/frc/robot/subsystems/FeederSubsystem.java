@@ -17,13 +17,13 @@ public class FeederSubsystem extends SubsystemBase {
    
   private TalonFX _conveyanceMotor;
   private TalonFX _feederWheelMotor;
-  private DigitalInput _feederCargoSensor;
+  private DigitalInput _conveyanceSensorB;
 
 
   public FeederSubsystem() {
       _conveyanceMotor = new TalonFX(RobotMap.CONVEYANCE_MOTOR);
       _feederWheelMotor = new TalonFX(RobotMap.CONVEYANCE_WHEEL);
-      _feederCargoSensor = new DigitalInput(RobotMap.SENSOR_B_CHANNEL);
+      _conveyanceSensorB = new DigitalInput(RobotMap.SENSOR_B_CHANNEL);
   }
 
   @Override
@@ -84,11 +84,11 @@ public class FeederSubsystem extends SubsystemBase {
     this.runWheelAtPercentPower(Constants.CONVEYANCE_REVERSE_FEEDER);
   }
 
-  public boolean getFeederCargoSensor() {
-    return _feederCargoSensor.get();
+  public boolean getConveyanceSensorBReading() {
+    return _conveyanceSensorB.get();
   }
 
-  public boolean getConveyanceSensorReading() {
+  public boolean getConveyanceSensorAReading() {
     return Robot.INTAKE_SUBSYSTEM.getConveyanceSensorAReading();
   }
 
