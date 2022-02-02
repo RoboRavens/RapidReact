@@ -15,6 +15,10 @@ import frc.util.ShooterCalibration;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    // CONTROLS
+    public static final double JOYSTICK_DEADBAND = .15;
+    public static final double DRIVE_MAX_TURN_RADIANS_PER_SECOND = 5;
+
     // DRIVETRAIN
         /**
      * The left-to-right distance between the drivetrain wheels
