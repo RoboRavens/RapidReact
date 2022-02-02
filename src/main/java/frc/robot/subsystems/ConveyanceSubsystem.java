@@ -6,12 +6,12 @@ import frc.robot.RobotMap;
 
 public class ConveyanceSubsystem extends SubsystemBase {
   
-    private TalonFX _conveymotor;
+    private TalonFX _conveyanceMotorOne;
  
  
  
    public ConveyanceSubsystem() {
-    _conveymotor = new TalonFX(RobotMap.CONVEYANCE_MOTOR);
+    _conveyanceMotorOne = new TalonFX(RobotMap.CONVEYANCE_MOTOR_ONE);
     
   }
 
