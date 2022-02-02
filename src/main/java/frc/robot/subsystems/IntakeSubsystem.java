@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 public class IntakeSubsystem extends SubsystemBase {
@@ -77,5 +78,9 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public boolean getConveyanceSensorAReading() {
     return _conveyanceSensorA.get();
+  }
+
+  public boolean getConveyanceSensorBReading() {
+    return Robot.INTAKE_SUBSYSTEM.getConveyanceSensorBReading();
   }
 }

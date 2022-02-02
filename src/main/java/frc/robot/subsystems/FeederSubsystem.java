@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 public class FeederSubsystem extends SubsystemBase {
@@ -85,6 +86,10 @@ public class FeederSubsystem extends SubsystemBase {
 
   public boolean getConveyanceSensorBReading() {
     return _conveyanceSensorB.get();
+  }
+
+  public boolean getConveyanceSensorAReading() {
+    return Robot.INTAKE_SUBSYSTEM.getConveyanceSensorAReading();
   }
 
 }

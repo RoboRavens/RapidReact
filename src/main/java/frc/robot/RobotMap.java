@@ -25,6 +25,7 @@ public final class RobotMap {
      public static final int INTAKE_RETRACT_SOLENOID = 1;
 
     //SENSORS
+    public static final int SENSOR_A_CHANNEL = 1;
     public static final int SENSOR_B_CHANNEL = 1;
 
 }
