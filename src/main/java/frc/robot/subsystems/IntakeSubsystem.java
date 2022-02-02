@@ -73,7 +73,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void defaultCommand() {
-    this.stop();
+    
   }
 
   public boolean getConveyanceSensorAReading() {
