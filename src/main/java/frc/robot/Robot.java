@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.controls.ButtonCode;
 import frc.controls.Gamepad;
 import frc.robot.commands.DrivetrainDefaultCommand;
@@ -17,6 +16,7 @@ import frc.robot.commands.IntakeRetractCommand;
 import frc.robot.commands.shooter.ShooterStartCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -25,22 +25,19 @@ import frc.robot.subsystems.ShooterSubsystem;
  * project.
  */
 public class Robot extends TimedRobot {
-  public static Subsystem INTAKE_EXTENDER_SUBSYSTEM;
-
-private Command m_autonomousCommand;
+  private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
   
   private Gamepad GAMEPAD = new Gamepad(0);
 
-  private Command IntakeRetractCommand;
-
-  public static final DrivetrainSubsystem DRIVE_TRAIN_SUBSYSTEM = new DrivetrainSubsystem();
+  //public static final DrivetrainSubsystem DRIVE_TRAIN_SUBSYSTEM = new DrivetrainSubsystem();
   public static final ShooterSubsystem SHOOTER_SUBSYSTEM = new ShooterSubsystem();
-  
+  public static final IntakeSubsystem INTAKE_SUBSYSTEM = new IntakeSubsystem();
 
   public static final IntakeExtendAndCollectCommand IntakeExtendCollect = new IntakeExtendAndCollectCommand();
   public static final ShooterStartCommand ShooterStart = new ShooterStartCommand();
+  public static final IntakeRetractCommand IntakeRetract = new IntakeRetractCommand();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -52,7 +49,7 @@ private Command m_autonomousCommand;
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
 
-    DRIVE_TRAIN_SUBSYSTEM.setDefaultCommand(new DrivetrainDefaultCommand(DRIVE_TRAIN_SUBSYSTEM, GAMEPAD));
+    //DRIVE_TRAIN_SUBSYSTEM.setDefaultCommand(new DrivetrainDefaultCommand(DRIVE_TRAIN_SUBSYSTEM, GAMEPAD));
     SHOOTER_SUBSYSTEM.setDefaultCommand(new RunCommand(() -> SHOOTER_SUBSYSTEM.defaultCommand(), SHOOTER_SUBSYSTEM));
 
   }
@@ -115,7 +112,7 @@ private Command m_autonomousCommand;
   public void teleopPeriodic() {
     GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(IntakeExtendCollect);
     GAMEPAD.getButton(ButtonCode.A).whileHeld(ShooterStart);
-    GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(IntakeRetractCommand);
+    GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(IntakeRetract);
   }
 
   @Override
