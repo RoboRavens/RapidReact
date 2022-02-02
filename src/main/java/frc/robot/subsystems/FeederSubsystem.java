@@ -15,13 +15,13 @@ import frc.robot.RobotMap;
 
 public class FeederSubsystem extends SubsystemBase {
    
-  private TalonFX _conveyanceMotor;
+  private TalonFX _conveyanceMotorTwo;
   private TalonFX _feederWheelMotor;
   private DigitalInput _conveyanceSensorB;
 
 
   public FeederSubsystem() {
-      _conveyanceMotor = new TalonFX(RobotMap.CONVEYANCE_MOTOR_TWO);
+      _conveyanceMotorTwo = new TalonFX(RobotMap.CONVEYANCE_MOTOR_TWO);
       _feederWheelMotor = new TalonFX(RobotMap.CONVEYANCE_WHEEL);
       _conveyanceSensorB = new DigitalInput(RobotMap.SENSOR_B_CHANNEL);
   }
@@ -57,7 +57,7 @@ public class FeederSubsystem extends SubsystemBase {
   }
 
   private void runConveyanceAtPercentPower(double magnitude) {
-    _conveyanceMotor.set(ControlMode.PercentOutput, magnitude);
+    _conveyanceMotorTwo.set(ControlMode.PercentOutput, magnitude);
   }
 
   public void stopConveyance() {
