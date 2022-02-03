@@ -91,10 +91,15 @@ public final class Constants {
     public static final double CONVEYANCE_FEEDER_SPEED = 0.75;
 	public static final double CONVEYANCE_FEEDER_STOP = 0;
 	public static final double CONVEYANCE_REVERSE_FEEDER = -.75;
+    
 
 
 
     //CONVEYANCE ONE
-
+    public static final double CONVEYANCE_ONE_FULL_SPEED_REVERSE = -1;
+    public static final double CONVEYANCE_ONE_FULL_SPEED = 1;
+    public static final double CONVEYANCE_ONE_NORMAL_SPEED = 0.75;
+    public static final double CONVEYANCE_ONE_NORMAL_REVERSE_SPEED = 0.75;
+    public static final double CONVEYANCE_ONE_STOP = 0;
 
 }
