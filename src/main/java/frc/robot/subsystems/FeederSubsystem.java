@@ -41,19 +41,19 @@ public class FeederSubsystem extends SubsystemBase {
   }
 
   public void setConveyanceMaxReverse() {
-    this.runConveyanceAtPercentPower(Constants.CONVEYANCE_FULL_SPEED_REVERSE);
+    this.runConveyanceAtPercentPower(Constants.CONVEYANCE_TWO_FULL_SPEED_REVERSE);
   }
 
   public void setConveyanceMaxForward() {
-    this.runConveyanceAtPercentPower(Constants.CONVEYANCE_FULL_SPEED);
+    this.runConveyanceAtPercentPower(Constants.CONVEYANCE_TWO_FULL_SPEED);
   }
 
   public void setConveyanceNormalSpeedForward() {
-    this.runConveyanceAtPercentPower(Constants.CONVEYANCE_NORMAL_SPEED);
+    this.runConveyanceAtPercentPower(Constants.CONVEYANCE_TWO_NORMAL_SPEED);
   }
 
   public void setConveyanceNormalSpeedReverse() {
-    this.runConveyanceAtPercentPower(Constants.CONVEYANCE_NORMAL_REVERSE_SPEED);
+    this.runConveyanceAtPercentPower(Constants.CONVEYANCE_TWO_NORMAL_REVERSE_SPEED);
   }
 
   private void runConveyanceAtPercentPower(double magnitude) {
@@ -61,7 +61,7 @@ public class FeederSubsystem extends SubsystemBase {
   }
 
   public void stopConveyance() {
-    this.runConveyanceAtPercentPower(Constants.CONVEYANCE_STOP);
+    this.runConveyanceAtPercentPower(Constants.CONVEYANCE_TWO_STOP);
   }
 
   public void defaultCommand() {
@@ -73,15 +73,15 @@ public class FeederSubsystem extends SubsystemBase {
   }
 
   public void feederWheelForward() {
-    this.runWheelAtPercentPower(Constants.CONVEYANCE_FEEDER_SPEED);
+    this.runWheelAtPercentPower(Constants.CONVEYANCE_TWO_FEEDER_SPEED);
   }
 
   public void wheelStop() {
-    this.runWheelAtPercentPower(Constants.CONVEYANCE_FEEDER_STOP);
+    this.runWheelAtPercentPower(Constants.CONVEYANCE_TWO_FEEDER_STOP);
   }
 
   public void feederWheelReverse() {
-    this.runWheelAtPercentPower(Constants.CONVEYANCE_REVERSE_FEEDER);
+    this.runWheelAtPercentPower(Constants.CONVEYANCE_TWO_REVERSE_FEEDER);
   }
 
   public boolean getConveyanceSensorBReading() {
