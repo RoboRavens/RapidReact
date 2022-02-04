@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
-
 public final class RobotMap {
 
     //MOTORS
@@ -13,6 +11,10 @@ public final class RobotMap {
     public static final int CONVEYANCE_MOTOR_TWO = 1;
     public static final int CONVEYANCE_MOTOR_ONE = 1;
     public static final int CONVEYANCE_WHEEL = 1;
+
+    public static final int LEFT_CLIMBER_MOTOR = 1;
+    public static final int RIGHT_CLIMBER_MOTOR = 1;
+
     
     //Set to -1 just so we don't conflict, but add the right values asap!
     public static final int SHOOTER_MOTOR_1 = 41;
@@ -29,7 +31,6 @@ public final class RobotMap {
      //SENSORS
     public static final int SENSOR_A_CHANNEL = 1;
     public static final int SENSOR_B_CHANNEL = 1;
-    
     
     
    

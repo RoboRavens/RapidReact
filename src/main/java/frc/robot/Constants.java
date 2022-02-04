@@ -101,4 +101,10 @@ public final class Constants {
     public static final double CONVEYANCE_ONE_NORMAL_REVERSE_SPEED = 0.75;
     public static final double CONVEYANCE_ONE_STOP = 0;
 
+    //CLIMBER
+    public static final double CLIMBER_HOLD_POSITION_POWER_MAGNITUDE = 0; // .13
+	public static final double CLIMBER_EXTEND_POWER_MAGNITUDE = 1;
+	public static final double CLIMBER_RETRACT_POWER_MAGNITUDE = -.4;
+	public static final double CLIMBER_RETRACT_TO_LATCH_POWER_MAGNITUDE = .2;
+
 }
