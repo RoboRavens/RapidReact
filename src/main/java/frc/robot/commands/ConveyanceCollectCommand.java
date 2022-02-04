@@ -1,28 +1,32 @@
 package frc.robot.commands;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
-/** An example command that uses an example subsystem. */
 public class ConveyanceCollectCommand extends CommandBase {
-  
+
   public ConveyanceCollectCommand() {
-   addRequirements(Robot.CONVEYANCE_SUBSYSTEM);
+    addRequirements(Robot.CONVEYANCE_SUBSYSTEM);
   }
 
-  
-
- 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    System.out.println("IntakeCollectCommand init");
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    System.out.println("INTAKE_COLLECTING!!!");
+    Robot.CONVEYANCE_SUBSYSTEM.setConveyanceMaxForward();
+  }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    
+  }
 
   // Returns true when the command should end.
   @Override
@@ -30,3 +34,4 @@ public class ConveyanceCollectCommand extends CommandBase {
     return false;
   }
 }
+
