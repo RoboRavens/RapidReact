@@ -5,13 +5,13 @@ import edu.wpi.first.networktables.LogMessage;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.controls.AxisCode;
 import frc.controls.Gamepad;
-import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.DriveTrainSubsystem;
 
 public class DrivetrainDefaultCommand extends CommandBase {
-    private final DrivetrainSubsystem _drivetrainSubsystem;
+    private final DriveTrainSubsystem _drivetrainSubsystem;
     private final Gamepad _gamepad;
 
-    public DrivetrainDefaultCommand(DrivetrainSubsystem drivetrainSubsystem, Gamepad gamepad) {
+    public DrivetrainDefaultCommand(DriveTrainSubsystem drivetrainSubsystem, Gamepad gamepad) {
         _drivetrainSubsystem = drivetrainSubsystem;
         _gamepad = gamepad;
 
