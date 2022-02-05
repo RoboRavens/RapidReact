@@ -6,21 +6,25 @@ package frc.robot;
 
 public final class RobotMap {
 
-    //MOTORS
+    //CONVEYANCE
 
     public static final int CONVEYANCE_MOTOR_TWO = 1;
     public static final int CONVEYANCE_MOTOR_ONE = 11;
     public static final int CONVEYANCE_WHEEL = 1;
 
+    //CLIMBER
+
     public static final int LEFT_CLIMBER_MOTOR = 1;
     public static final int RIGHT_CLIMBER_MOTOR = 1;
 
     
-    //Set to -1 just so we don't conflict, but add the right values asap!
+    //SHOOTER
+
     public static final int SHOOTER_MOTOR_1 = 41;
     public static final int SHOOTER_MOTOR_2 = 42;
 
-    
+    //TURRET
+    public static final int TURRET_MOTOR = -1; //Set this to real value ASAP
 
     //INTAKE
      
