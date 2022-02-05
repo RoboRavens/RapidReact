@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.util.ShooterCalibration;
+import frc.util.TurretCalibration;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -71,6 +72,9 @@ public final class Constants {
     public static final ShooterCalibration LAUNCHPAD_SHOT = new ShooterCalibration("Launchpad Shot", LAUNCHPAD_RPM, LAUNCHPAD_KF, LAUNCHPAD_KP, LAUNCHPAD_KI, LAUNCHPAD_KD);
 
     //TURRET SWIVEL
+    public static final int TURRET_IDX = 0;
+    public static final int TURRET_TIMEOUT_MS = 100;
+    public static final TurretCalibration TURRET_PID = new TurretCalibration(0, 0.05, 0, 0);
 
     //CONTROLS
     public static final double AXIS_IS_PRESSED_VALUE = .25;
