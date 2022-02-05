@@ -32,6 +32,8 @@ public class Robot extends TimedRobot {
   
   private Gamepad GAMEPAD = new Gamepad(0);
 
+  private Command ConveyanceCollectCommand;
+
   //public static final DrivetrainSubsystem DRIVE_TRAIN_SUBSYSTEM = new DrivetrainSubsystem();
   public static final ShooterSubsystem SHOOTER_SUBSYSTEM = new ShooterSubsystem();
   public static final IntakeExtenderSubsystem INTAKE_SUBSYSTEM = new IntakeExtenderSubsystem();
@@ -111,10 +113,17 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+  
+  }
+
+
+
+
+  public void Controls() {
     GAMEPAD.getButton(ButtonCode.B).whileHeld(IntakeExtend);
     GAMEPAD.getButton(ButtonCode.A).whileHeld(ShooterStart);
     GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(IntakeRetract);
-    GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(CONVEYANCE_COLLECT);
+    GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(ConveyanceCollectCommand);
   }
 
   @Override
