@@ -11,7 +11,7 @@ public final class RobotMap {
     //MOTORS
 
     public static final int CONVEYANCE_MOTOR_TWO = 1;
-    public static final int CONVEYANCE_MOTOR_ONE = 1;
+    public static final int CONVEYANCE_MOTOR_ONE = 11;
     public static final int CONVEYANCE_WHEEL = 1;
     
     //Set to -1 just so we don't conflict, but add the right values asap!
