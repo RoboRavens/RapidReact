@@ -2,18 +2,20 @@
 package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotMap;
 
 public class ConveyanceSubsystem extends SubsystemBase {
   
-    private TalonFX _conveyanceMotorOne;
+    private TalonSRX _conveyanceMotorOne;
  
  
  
    public ConveyanceSubsystem() {
-    _conveyanceMotorOne = new TalonFX(RobotMap.CONVEYANCE_MOTOR_ONE);
+    _conveyanceMotorOne = new TalonSRX(RobotMap.CONVEYANCE_MOTOR_ONE);
     
   }
 
