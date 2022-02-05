@@ -52,7 +52,7 @@ public class ConveyanceSubsystem extends SubsystemBase {
   }
 
   public void defaultCommand() {
-    this.stopConveyanceOne();
+    //this.stopConveyanceOne();
   }
 
  

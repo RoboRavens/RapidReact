@@ -33,16 +33,17 @@ public class Robot extends TimedRobot {
   
   private Gamepad GAMEPAD = new Gamepad(0);
 
-  private Command ConveyanceCollectCommand;
+  
 
   //public static final DrivetrainSubsystem DRIVE_TRAIN_SUBSYSTEM = new DrivetrainSubsystem();
   public static final ShooterSubsystem SHOOTER_SUBSYSTEM = new ShooterSubsystem();
   public static final IntakeExtenderSubsystem INTAKE_SUBSYSTEM = new IntakeExtenderSubsystem();
-  public static final ConveyanceSubsystem CONVEYANCE_COLLECT = new ConveyanceSubsystem();
+  public static final ConveyanceSubsystem CONVEYANCE_SUBSYSTEM = new ConveyanceSubsystem();
   public static final IntakeExtendCommand IntakeExtend = new IntakeExtendCommand();
   public static final ShooterStartCommand ShooterStart = new ShooterStartCommand();
   public static final IntakeRetractCommand IntakeRetract = new IntakeRetractCommand();
   public static final ClimberSubsystem CLIMBER_SUBSYSTEM = new ClimberSubsystem();
+  public static final ConveyanceCollectCommand CONVEYANCE_COLLECT_COMMAND = new ConveyanceCollectCommand();
   
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -56,7 +57,7 @@ public class Robot extends TimedRobot {
 
     //DRIVE_TRAIN_SUBSYSTEM.setDefaultCommand(new DrivetrainDefaultCommand(DRIVE_TRAIN_SUBSYSTEM, GAMEPAD));
     SHOOTER_SUBSYSTEM.setDefaultCommand(new RunCommand(() -> SHOOTER_SUBSYSTEM.defaultCommand(), SHOOTER_SUBSYSTEM));
-
+    Controls();
   }
   
   
@@ -122,10 +123,10 @@ public class Robot extends TimedRobot {
 
 
   public void Controls() {
-    GAMEPAD.getButton(ButtonCode.B).whileHeld(IntakeExtend);
+    GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(CONVEYANCE_COLLECT_COMMAND);
     GAMEPAD.getButton(ButtonCode.A).whileHeld(ShooterStart);
     GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(IntakeRetract);
-    GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(ConveyanceCollectCommand);
+    
   }
 
   @Override
