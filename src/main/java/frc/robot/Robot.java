@@ -37,7 +37,7 @@ public class Robot extends TimedRobot {
   public static final IntakeExtenderSubsystem INTAKE_SUBSYSTEM = new IntakeExtenderSubsystem();
   public static final ConveyanceSubsystem CONVEYANCE_SUBSYSTEM = new ConveyanceSubsystem();
   public static final IntakeExtendCommand IntakeExtend = new IntakeExtendCommand();
-  public static final ShooterStartCommand ShooterStart = new ShooterStartCommand();
+  public static final ShooterStartCommand SHOOTER_START_COMMAND = new ShooterStartCommand();
   public static final IntakeRetractCommand IntakeRetract = new IntakeRetractCommand();
   public static final ClimberSubsystem CLIMBER_SUBSYSTEM = new ClimberSubsystem();
   public static final FeederSubsystem FEEDER_SUBSYSTEM = new FeederSubsystem();
@@ -114,7 +114,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(IntakeExtend);
-    GAMEPAD.getButton(ButtonCode.A).whileHeld(ShooterStart);
+    GAMEPAD.getButton(ButtonCode.A).whileHeld(SHOOTER_START_COMMAND);
     GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(IntakeRetract);
   }
 
