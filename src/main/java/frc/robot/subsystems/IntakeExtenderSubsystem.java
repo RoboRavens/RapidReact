@@ -25,9 +25,9 @@ public class IntakeExtenderSubsystem extends SubsystemBase {
   public IntakeExtenderSubsystem() {
     this.initialize();
     //Intake Solenoid stuff
-    _intakeExtend = new Solenoid(PneumaticsModuleType.CTREPCM, RobotMap.INTAKE_EXTEND_SOLENOID);
-    _intakeRetract = new Solenoid(PneumaticsModuleType.CTREPCM, RobotMap.INTAKE_RETRACT_SOLENOID);
-    _conveyanceSensorA = new DigitalInput(RobotMap.SENSOR_A_CHANNEL);
+    //_intakeExtend = new Solenoid(PneumaticsModuleType.CTREPCM, RobotMap.INTAKE_EXTEND_SOLENOID);
+    //_intakeRetract = new Solenoid(PneumaticsModuleType.CTREPCM, RobotMap.INTAKE_RETRACT_SOLENOID);
+    //_conveyanceSensorA = new DigitalInput(RobotMap.SENSOR_A_CHANNEL);
   }
 
   public void initialize() {
@@ -45,13 +45,13 @@ public class IntakeExtenderSubsystem extends SubsystemBase {
   }
 
   public void extend() {
-    _intakeRetract.set(false);
-    _intakeExtend.set(true);
+    //_intakeRetract.set(false);
+    //_intakeExtend.set(true);
   }
 
   public void retract() {
-    _intakeRetract.set(true);
-    _intakeExtend.set(false);
+    //_intakeRetract.set(true);
+    //_intakeExtend.set(false);
   }
 
   public void stopAndRetract() {
@@ -63,10 +63,10 @@ public class IntakeExtenderSubsystem extends SubsystemBase {
   }
 
   public boolean getConveyanceSensorAReading() {
-    return _conveyanceSensorA.get();
+    return false; //_conveyanceSensorA.get();
   }
 
   public boolean getConveyanceSensorBReading() {
-    return this.getConveyanceSensorBReading();
+    return false; //this.getConveyanceSensorBReading();
   }
 }

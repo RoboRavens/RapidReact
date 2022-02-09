@@ -21,9 +21,9 @@ public class FeederSubsystem extends SubsystemBase {
 
 
   public FeederSubsystem() {
-      _conveyanceMotorTwo = new TalonFX(RobotMap.CONVEYANCE_MOTOR_TWO);
-      _feederWheelMotor = new TalonFX(RobotMap.CONVEYANCE_WHEEL);
-      _conveyanceSensorB = new DigitalInput(RobotMap.SENSOR_B_CHANNEL);
+      //_conveyanceMotorTwo = new TalonFX(RobotMap.CONVEYANCE_MOTOR_TWO);
+      //_feederWheelMotor = new TalonFX(RobotMap.CONVEYANCE_WHEEL);
+      //_conveyanceSensorB = new DigitalInput(RobotMap.SENSOR_B_CHANNEL);
   }
 
   @Override
@@ -57,7 +57,7 @@ public class FeederSubsystem extends SubsystemBase {
   }
 
   private void runConveyanceAtPercentPower(double magnitude) {
-    _conveyanceMotorTwo.set(ControlMode.PercentOutput, magnitude);
+    //_conveyanceMotorTwo.set(ControlMode.PercentOutput, magnitude);
   }
 
   public void stopConveyance() {
@@ -69,7 +69,7 @@ public class FeederSubsystem extends SubsystemBase {
   }
 
   private void runWheelAtPercentPower(double magnitude) {
-    _feederWheelMotor.set(ControlMode.PercentOutput, magnitude);
+    //_feederWheelMotor.set(ControlMode.PercentOutput, magnitude);
   }
 
   public void feederWheelForward() {
@@ -85,11 +85,11 @@ public class FeederSubsystem extends SubsystemBase {
   }
 
   public boolean getConveyanceSensorBReading() {
-    return _conveyanceSensorB.get();
+    return false; //_conveyanceSensorB.get();
   }
 
   public boolean getConveyanceSensorAReading() {
-    return Robot.INTAKE_SUBSYSTEM.getConveyanceSensorAReading();
+    return false; // Robot.INTAKE_SUBSYSTEM.getConveyanceSensorAReading();
   }
 
 }

@@ -13,7 +13,7 @@ public class ConveyanceSubsystem extends SubsystemBase {
  
  
    public ConveyanceSubsystem() {
-    _conveyanceMotorOne = new TalonFX(RobotMap.CONVEYANCE_MOTOR_ONE);
+    //_conveyanceMotorOne = new TalonFX(RobotMap.CONVEYANCE_MOTOR_ONE);
     
   }
 
@@ -40,7 +40,7 @@ public class ConveyanceSubsystem extends SubsystemBase {
   }
 
   private void runConveyanceAtPercentPower(double magnitude) {
-    _conveyanceMotorOne.set(ControlMode.PercentOutput, magnitude);
+    // _conveyanceMotorOne.set(ControlMode.PercentOutput, magnitude);
   }
 
   public void stopConveyanceOne() {
