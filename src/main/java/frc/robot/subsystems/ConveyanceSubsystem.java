@@ -19,19 +19,12 @@ public class ConveyanceSubsystem extends SubsystemBase {
     
   }
 
- 
-  
-
-
-
-
   public void setConveyanceMaxReverse() {
     this.runConveyanceAtPercentPower(Constants.CONVEYANCE_ONE_FULL_SPEED_REVERSE);
   }
 
   public void setConveyanceMaxForward() {
     this.runConveyanceAtPercentPower(Constants.CONVEYANCE_ONE_FULL_SPEED);
-    
     
   }
 
@@ -54,9 +47,13 @@ public class ConveyanceSubsystem extends SubsystemBase {
   public void defaultCommand() {
     //this.stopConveyanceOne();
   }
-
+    public void stop() {
+     this.runConveyanceAtPercentPower(0);
+  }
  
-   @Override
+   
+
+  @Override
    public void periodic() {
     // This method will be called once per scheduler run
    }

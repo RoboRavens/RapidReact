@@ -17,6 +17,7 @@ import frc.robot.commands.IntakeRetractCommand;
 import frc.robot.commands.shooter.ShooterStartCommand;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ConveyanceSubsystem;
+import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeExtenderSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -36,7 +37,7 @@ public class Robot extends TimedRobot {
 
   
 
-  //public static final DrivetrainSubsystem DRIVE_TRAIN_SUBSYSTEM = new DrivetrainSubsystem();
+  public static final DriveTrainSubsystem DRIVE_TRAIN_SUBSYSTEM = new DriveTrainSubsystem();
   public static final ShooterSubsystem SHOOTER_SUBSYSTEM = new ShooterSubsystem();
   public static final IntakeExtenderSubsystem INTAKE_SUBSYSTEM = new IntakeExtenderSubsystem();
   public static final ConveyanceSubsystem CONVEYANCE_SUBSYSTEM = new ConveyanceSubsystem();
@@ -59,12 +60,8 @@ public class Robot extends TimedRobot {
 
     //DRIVE_TRAIN_SUBSYSTEM.setDefaultCommand(new DrivetrainDefaultCommand(DRIVE_TRAIN_SUBSYSTEM, GAMEPAD));
     SHOOTER_SUBSYSTEM.setDefaultCommand(new RunCommand(() -> SHOOTER_SUBSYSTEM.defaultCommand(), SHOOTER_SUBSYSTEM));
-    Controls();
+    configureButtonBindings();
   }
-  
-  
-  
-  
   
   /**
    * This function is called every robot packet, no matter the mode. Use this for items like
@@ -124,11 +121,11 @@ public class Robot extends TimedRobot {
 
 
 
-  public void Controls() {
+  public void configureButtonBindings() {
     GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(CONVEYANCE_COLLECT_COMMAND);
     GAMEPAD.getButton(ButtonCode.A).whileHeld(ShooterStart);
-    GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(IntakeRetract);
-    
+    GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(IntakeExtend);
+    GAMEPAD.getButton(ButtonCode.B).whileHeld(IntakeRetract);
   }
 
   @Override
