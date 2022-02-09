@@ -8,7 +8,7 @@ public final class RobotMap {
 
     //CONVEYANCE
 
-    public static final int CONVEYANCE_MOTOR_TWO = 1;
+    public static final int CONVEYANCE_MOTOR_TWO = 21;
     public static final int CONVEYANCE_MOTOR_ONE = 31;
     public static final int CONVEYANCE_WHEEL = 32;
 
