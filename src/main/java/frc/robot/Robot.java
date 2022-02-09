@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.controls.ButtonCode;
 import frc.controls.Gamepad;
+import frc.robot.commands.FeederEjectCommand;
 import frc.robot.commands.IntakeExtendCommand;
 import frc.robot.commands.IntakeRetractCommand;
 import frc.robot.commands.shooter.ShooterStartCommand;
@@ -41,6 +42,7 @@ public class Robot extends TimedRobot {
   public static final IntakeRetractCommand IntakeRetract = new IntakeRetractCommand();
   public static final ClimberSubsystem CLIMBER_SUBSYSTEM = new ClimberSubsystem();
   public static final FeederSubsystem FEEDER_SUBSYSTEM = new FeederSubsystem();
+  public static final FeederEjectCommand FeederEject = new FeederEjectCommand(FEEDER_SUBSYSTEM);
   
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -114,8 +116,9 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(IntakeExtend);
-    GAMEPAD.getButton(ButtonCode.A).whileHeld(ShooterStart);
+    //GAMEPAD.getButton(ButtonCode.A).whileHeld(ShooterStart);
     GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(IntakeRetract);
+    GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederEject);
   }
 
   @Override

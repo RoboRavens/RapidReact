@@ -23,7 +23,7 @@ public class FeederSubsystem extends SubsystemBase {
   public FeederSubsystem() {
       _conveyanceMotorTwo = new TalonFX(RobotMap.CONVEYANCE_MOTOR_TWO);
       _feederWheelMotor = new TalonFX(RobotMap.CONVEYANCE_WHEEL);
-      _conveyanceSensorB = new DigitalInput(RobotMap.SENSOR_B_CHANNEL);
+      //_conveyanceSensorB = new DigitalInput(RobotMap.SENSOR_B_CHANNEL);
   }
 
   @Override
