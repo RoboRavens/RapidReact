@@ -14,12 +14,12 @@ import frc.util.TurretCalibration;
 
 public class TurretSwivelSubsystem extends SubsystemBase {
 
-    private TalonSRX turretMotor;
-    
+    private TalonSRX _turretMotor;
+    private TurretCalibration _shot;
 
     public TurretSwivelSubsystem() {
-        turretMotor = new TalonSRX(RobotMap.TURRET_MOTOR);
-        setShot(Constants.TURRET_PID);
+        _turretMotor = new TalonSRX(RobotMap.TURRET_MOTOR);
+        setShot(Constants.TURRET_DEFAULT_PID);
     }
 
     @Override
@@ -36,8 +36,13 @@ public class TurretSwivelSubsystem extends SubsystemBase {
         
     }
 
-    public void holdTarget(int relativeChange) {
-        
+    public void holdTarget(double relativeChange) {
+        double difference = getAngle() + relativeChange;
+        goToAngle(difference);
+    }
+
+    public double getAngle() {
+        return _turretMotor.getSelectedSensorPosition() * Constants.TURRET_ENCODER_RATIO;
     }
 
     public void flip() {
@@ -48,14 +53,20 @@ public class TurretSwivelSubsystem extends SubsystemBase {
         
     }
 
-    public void goToAngle(int angle) {
-        this.turretMotor.set(ControlMode.Position, angle);
+    public void goToAngle(double angle) {
+        _turretMotor.set(ControlMode.Position, angle * Constants.TURRET_ENCODER_RATIO);
     }
 
     public void setShot(TurretCalibration shot) {
-        this.turretMotor.config_kF(Constants.TURRET_IDX, shot.kF, Constants.TURRET_TIMEOUT_MS);
-        this.turretMotor.config_kP(Constants.TURRET_IDX, shot.kP, Constants.TURRET_TIMEOUT_MS);
-        this.turretMotor.config_kI(Constants.TURRET_IDX, shot.kI, Constants.TURRET_TIMEOUT_MS);
-        this.turretMotor.config_kD(Constants.TURRET_IDX, shot.kD, Constants.TURRET_TIMEOUT_MS);
+        _turretMotor.config_kF(Constants.TURRET_IDX, shot.kF, Constants.TURRET_TIMEOUT_MS);
+        _turretMotor.config_kP(Constants.TURRET_IDX, shot.kP, Constants.TURRET_TIMEOUT_MS);
+        _turretMotor.config_kI(Constants.TURRET_IDX, shot.kI, Constants.TURRET_TIMEOUT_MS);
+        _turretMotor.config_kD(Constants.TURRET_IDX, shot.kD, Constants.TURRET_TIMEOUT_MS);
+
+        _shot = shot;
+    }
+
+    public String getShot() {
+        return _shot.name;
     }
 }

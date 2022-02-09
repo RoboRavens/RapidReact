@@ -74,7 +74,13 @@ public final class Constants {
     //TURRET SWIVEL
     public static final int TURRET_IDX = 0;
     public static final int TURRET_TIMEOUT_MS = 100;
-    public static final TurretCalibration TURRET_PID = new TurretCalibration(0, 0.05, 0, 0);
+    public static final double TURRET_DEFAULT_KF = 0;
+    public static final double TURRET_DEFAULT_KP = 0.05;
+    public static final double TURRET_DEFAULT_KI = 0;
+    public static final double TURRET_DEFAULT_KD = 0;
+    public static final TurretCalibration TURRET_DEFAULT_PID = new TurretCalibration("Default Turret PID", TURRET_DEFAULT_KF, TURRET_DEFAULT_KP, TURRET_DEFAULT_KI, TURRET_DEFAULT_KD);
+
+    public static final double TURRET_ENCODER_RATIO = 1;
 
     //CONTROLS
     public static final double AXIS_IS_PRESSED_VALUE = .25;
