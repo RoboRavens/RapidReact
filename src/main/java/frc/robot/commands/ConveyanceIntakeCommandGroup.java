@@ -1,16 +1,32 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import frc.robot.subsystems.ConveyanceSubsystem;
-import frc.robot.subsystems.IntakeExtenderSubsystem;
 
-public class ConveyanceIntakeCommandGroup extends ParallelCommandGroup{
-    
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Robot;
 
-    public void ConveyanceEjectCommandGroup(ConveyanceSubsystem conveyanceSubsystem, IntakeExtenderSubsystem intakExtenderSubsystem) {
-        addCommands(
-            new IntakeExtendCommand() );  //Extends The Intake
-            new ConveyanceCollectCommand(); //Collects Cargo
-            new IntakeRetractCommand(); //Retracts The Intake
-        }
+/** A complex auto command that drives forward, releases a hatch, and then drives backward. */
+public class ConveyanceIntakeCommandGroup extends SequentialCommandGroup {
+  
+  public ConveyanceIntakeCommandGroup() {
+    addCommands(
+
+
+   // Extends The intake
+   new IntakeExtendCommand(
+   ),
+
+    // Intakes balls and also brings balls into conveyance stage 2
+    new ConveyanceCollectCommand(
+     
+    ),
+
+    // retracts the intake
+    new IntakeRetractCommand(
+    )
+
+
+
+    );
+        
+  }
 }

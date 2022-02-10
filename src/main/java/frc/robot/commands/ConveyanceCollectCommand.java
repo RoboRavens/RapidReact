@@ -20,14 +20,12 @@ public class ConveyanceCollectCommand extends CommandBase {
   public void execute() {
     System.out.println("CONVEYANCE COLLECTING!!!");
     Robot.CONVEYANCE_SUBSYSTEM.setConveyanceMaxForward();
-    Robot.INTAKE_SUBSYSTEM.extend();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     Robot.CONVEYANCE_SUBSYSTEM.stop();
-    Robot.INTAKE_SUBSYSTEM.retract();
   }
 
   // Returns true when the command should end.

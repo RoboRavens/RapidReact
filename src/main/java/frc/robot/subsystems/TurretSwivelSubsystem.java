@@ -10,7 +10,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotMap;
-import frc.util.TurretCalibration;
+//import frc.util.TurretCalibration;
 
 public class TurretSwivelSubsystem extends SubsystemBase {
 
@@ -19,7 +19,7 @@ public class TurretSwivelSubsystem extends SubsystemBase {
 
     public TurretSwivelSubsystem() {
         turretMotor = new TalonSRX(RobotMap.TURRET_MOTOR);
-        setShot(Constants.TURRET_PID);
+        //setShot(Constants.TURRET_PID);
     }
 
     @Override
@@ -52,10 +52,10 @@ public class TurretSwivelSubsystem extends SubsystemBase {
         this.turretMotor.set(ControlMode.Position, angle);
     }
 
-    public void setShot(TurretCalibration shot) {
-        this.turretMotor.config_kF(Constants.TURRET_IDX, shot.kF, Constants.TURRET_TIMEOUT_MS);
-        this.turretMotor.config_kP(Constants.TURRET_IDX, shot.kP, Constants.TURRET_TIMEOUT_MS);
-        this.turretMotor.config_kI(Constants.TURRET_IDX, shot.kI, Constants.TURRET_TIMEOUT_MS);
-        this.turretMotor.config_kD(Constants.TURRET_IDX, shot.kD, Constants.TURRET_TIMEOUT_MS);
-    }
+    // public void setShot(TurretCalibration shot) {
+    //     this.turretMotor.config_kF(Constants.TURRET_IDX, shot.kF, Constants.TURRET_TIMEOUT_MS);
+    //     this.turretMotor.config_kP(Constants.TURRET_IDX, shot.kP, Constants.TURRET_TIMEOUT_MS);
+    //     this.turretMotor.config_kI(Constants.TURRET_IDX, shot.kI, Constants.TURRET_TIMEOUT_MS);
+    //     this.turretMotor.config_kD(Constants.TURRET_IDX, shot.kD, Constants.TURRET_TIMEOUT_MS);
+    // }
 }
