@@ -1,7 +1,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.networktables.LogMessage;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.controls.AxisCode;
 import frc.controls.Gamepad;

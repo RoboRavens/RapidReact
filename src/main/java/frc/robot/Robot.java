@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.controls.ButtonCode;
 import frc.controls.Gamepad;
 import frc.robot.commands.ConveyanceCollectCommand;
+import frc.robot.commands.ConveyanceEjectCommand;
 import frc.robot.commands.DrivetrainDefaultCommand;
 import frc.robot.commands.FeederEjectCommand;
 import frc.robot.commands.FeederSafetyReverseCommand;
@@ -39,6 +40,9 @@ public class Robot extends TimedRobot {
 
   
 
+  
+
+  
   //public static final DriveTrainSubsystem DRIVE_TRAIN_SUBSYSTEM = new DriveTrainSubsystem();
   public static final ShooterSubsystem SHOOTER_SUBSYSTEM = new ShooterSubsystem();
   public static final IntakeExtenderSubsystem INTAKE_SUBSYSTEM = new IntakeExtenderSubsystem();
@@ -48,6 +52,8 @@ public class Robot extends TimedRobot {
   public static final IntakeRetractCommand IntakeRetract = new IntakeRetractCommand();
   public static final ClimberSubsystem CLIMBER_SUBSYSTEM = new ClimberSubsystem();
   public static final ConveyanceCollectCommand CONVEYANCE_COLLECT_COMMAND = new ConveyanceCollectCommand();
+  //public static final FeederSubsystem FEEDER_SUBSYSTEM = new FeederSubsystem();
+  public static final ConveyanceEjectCommand CONVEYANCE_EJECT_COMMAND = new ConveyanceEjectCommand();
   public static final FeederSubsystem FEEDER_SUBSYSTEM = new FeederSubsystem();
   public static final FeederEjectCommand FeederEject = new FeederEjectCommand();
   public static final FeederSafetyReverseCommand FeederSafetyReverse = new FeederSafetyReverseCommand(Constants.FEEDER_SAFETY_REVERSE_DURATION);
@@ -127,6 +133,8 @@ public class Robot extends TimedRobot {
 
   public void configureButtonBindings() {
     GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(CONVEYANCE_COLLECT_COMMAND);
+    GAMEPAD.getButton(ButtonCode.Y).whileHeld(ShooterStart);
+    GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(CONVEYANCE_EJECT_COMMAND);
     GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederEject);
     GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(IntakeExtend);
     GAMEPAD.getButton(ButtonCode.B).whenPressed(FeederSafetyReverse);
