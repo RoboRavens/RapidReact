@@ -12,6 +12,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.Robot;
+import frc.robot.subsystems.IntakeExtenderSubsystem;
 
 public class IntakeExtendCommand extends CommandBase {
 
@@ -21,7 +22,10 @@ public class IntakeExtendCommand extends CommandBase {
     addRequirements(Robot.INTAKE_SUBSYSTEM);
   }
 
-  // Called when the command is initially scheduled.
+  public IntakeExtendCommand(IntakeExtenderSubsystem intakExtenderSubsystem) {
+}
+
+// Called when the command is initially scheduled.
   @Override
   public void initialize() {
     System.out.println("IntakeExtendCommand init");
