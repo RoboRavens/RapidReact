@@ -6,6 +6,10 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotMap;
@@ -14,20 +18,22 @@ import frc.util.ShooterCalibration;
 public class ShooterSubsystem extends SubsystemBase {
 
     //Replace the motor type ASAP
-    private TalonFX _shooterMotor1;
-    private TalonFX _shooterMotor2;
+    private TalonSRX _shooterMotor1;
+    private VictorSPX _shooterMotor2;
     private ShooterCalibration _shot;
 
     public ShooterSubsystem() {
-        _shooterMotor1 = new TalonFX(RobotMap.SHOOTER_MOTOR_1);
-        _shooterMotor2 = new TalonFX(RobotMap.SHOOTER_MOTOR_2);
+        _shooterMotor1 = new TalonSRX(RobotMap.SHOOTER_MOTOR_1);
+        _shooterMotor2 = new VictorSPX(RobotMap.SHOOTER_MOTOR_2);
         _shooterMotor2.follow(_shooterMotor1);
+        _shooterMotor2.setInverted(true);
         _shot = Constants.TARMAC_SHOT;
     }
 
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
+        SmartDashboard.putNumber("ShooterSpeed", _shooterMotor1.getSelectedSensorVelocity() / Constants.SHOOTER_VEL_TO_RPM);
     }
 
     @Override
@@ -69,7 +75,7 @@ public class ShooterSubsystem extends SubsystemBase {
     * Starts the motor with the set shot type
     */
     public void startMotor() {
-        _shooterMotor1.set(ControlMode.Velocity, _shot.targetRPM);
+        _shooterMotor1.set(ControlMode.Velocity, _shot.targetRPM * Constants.SHOOTER_VEL_TO_RPM);
     }
 
     /**

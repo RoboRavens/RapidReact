@@ -56,13 +56,15 @@ public final class Constants {
     public static final int SHOOTER_IDX = 0;
     public static final int SHOOTER_TIMEOUT_MS = 100;
 
-    public static final int TARMAC_RPM = 2000;
+    public static final int SHOOTER_VEL_TO_RPM = 8192 / 600;
+
+    public static final int TARMAC_RPM = 4700;
     public static final double TARMAC_KF = 0;
     public static final double TARMAC_KP = 0.05;
     public static final double TARMAC_KI = 0;
     public static final double TARMAC_KD = 0;
 
-    public static final int LAUNCHPAD_RPM = 2000;
+    public static final int LAUNCHPAD_RPM = 4700;
     public static final double LAUNCHPAD_KF = 0;
     public static final double LAUNCHPAD_KP = 0.05;
     public static final double LAUNCHPAD_KI = 0;

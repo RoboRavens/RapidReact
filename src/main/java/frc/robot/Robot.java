@@ -39,8 +39,8 @@ public class Robot extends TimedRobot {
   public static final IntakeExtendCommand IntakeExtend = new IntakeExtendCommand();
   public static final ShooterStartCommand SHOOTER_START_COMMAND = new ShooterStartCommand();
   public static final IntakeRetractCommand IntakeRetract = new IntakeRetractCommand();
-  public static final ClimberSubsystem CLIMBER_SUBSYSTEM = new ClimberSubsystem();
-  public static final FeederSubsystem FEEDER_SUBSYSTEM = new FeederSubsystem();
+  //public static final ClimberSubsystem CLIMBER_SUBSYSTEM = new ClimberSubsystem();
+  //public static final FeederSubsystem FEEDER_SUBSYSTEM = new FeederSubsystem();
   
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -113,9 +113,9 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(IntakeExtend);
+    //GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(IntakeExtend);
     GAMEPAD.getButton(ButtonCode.A).whileHeld(SHOOTER_START_COMMAND);
-    GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(IntakeRetract);
+    //GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(IntakeRetract);
   }
 
   @Override

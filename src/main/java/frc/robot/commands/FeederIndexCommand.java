@@ -7,7 +7,7 @@ import frc.robot.subsystems.FeederSubsystem;
 public class FeederIndexCommand extends CommandBase {
     
     public FeederIndexCommand() {
-        addRequirements(Robot.INTAKE_SUBSYSTEM);
+        //addRequirements(Robot.INTAKE_SUBSYSTEM);
     }
 
         // Called when the command is initially scheduled.
