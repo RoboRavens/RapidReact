@@ -37,22 +37,22 @@ public final class RobotMap {
     public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 8;
     public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 6;
     public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 24;
-    public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(253.301);
+    public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(73.301);
 
     public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 1;
     public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 5;
     public static final int FRONT_RIGHT_MODULE_STEER_ENCODER = 22;
-    public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(140.625);
+    public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(320.625);
 
     public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 3;
     public static final int BACK_LEFT_MODULE_STEER_MOTOR = 2;
     public static final int BACK_LEFT_MODULE_STEER_ENCODER = 21;
-    public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(11.338);
+    public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(191.338);
 
     public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 7;
     public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 4;
     public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 23;
-    public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(21.885);
+    public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(201.885);
     
    
 
