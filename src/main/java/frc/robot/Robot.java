@@ -37,6 +37,7 @@ public class Robot extends TimedRobot {
 
   
 
+  //public static final DriveTrainSubsystem DRIVE_TRAIN_SUBSYSTEM = new DriveTrainSubsystem();
   public static final DriveTrainSubsystem DRIVE_TRAIN_SUBSYSTEM = new DriveTrainSubsystem();
   public static final ShooterSubsystem SHOOTER_SUBSYSTEM = new ShooterSubsystem();
   public static final IntakeExtenderSubsystem INTAKE_SUBSYSTEM = new IntakeExtenderSubsystem();
@@ -124,8 +125,6 @@ public class Robot extends TimedRobot {
   public void configureButtonBindings() {
     GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(CONVEYANCE_COLLECT_COMMAND);
     GAMEPAD.getButton(ButtonCode.A).whileHeld(ShooterStart);
-    GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(IntakeExtend);
-    GAMEPAD.getButton(ButtonCode.B).whileHeld(IntakeRetract);
   }
 
   @Override
