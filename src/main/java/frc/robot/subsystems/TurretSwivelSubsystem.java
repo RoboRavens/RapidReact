@@ -37,8 +37,8 @@ public class TurretSwivelSubsystem extends SubsystemBase {
     }
 
     public void holdTarget(double relativeChange) {
-        double difference = getAngle() + relativeChange;
-        goToAngle(difference);
+        double changedAngle = getAngle() + relativeChange;
+        goToAngle(changedAngle);
     }
 
     public double getAngle() {

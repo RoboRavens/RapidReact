@@ -80,7 +80,7 @@ public final class Constants {
     public static final double TURRET_DEFAULT_KD = 0;
     public static final TurretCalibration TURRET_DEFAULT_PID = new TurretCalibration("Default Turret PID", TURRET_DEFAULT_KF, TURRET_DEFAULT_KP, TURRET_DEFAULT_KI, TURRET_DEFAULT_KD);
 
-    public static final double TURRET_ENCODER_RATIO = 1;
+    public static final double TURRET_ENCODER_RATIO = 0.2;
 
     //CONTROLS
     public static final double AXIS_IS_PRESSED_VALUE = .25;

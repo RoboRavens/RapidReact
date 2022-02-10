@@ -5,19 +5,23 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import frc.controls.AxisCode;
 import frc.controls.ButtonCode;
 import frc.controls.Gamepad;
 import frc.robot.commands.IntakeExtendCommand;
 import frc.robot.commands.IntakeRetractCommand;
 import frc.robot.commands.shooter.ShooterStartCommand;
+import frc.robot.commands.turret.TurretAimAtTargetCommand;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ConveyanceSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeExtenderSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.TurretSwivelSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -30,7 +34,8 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
   
-  private Gamepad GAMEPAD = new Gamepad(0);
+  private static final Gamepad GAMEPAD = new Gamepad(0);
+  public static final Gamepad JOYSTICK = new Gamepad(1);
 
   //public static final DrivetrainSubsystem DRIVE_TRAIN_SUBSYSTEM = new DrivetrainSubsystem();
   public static final ShooterSubsystem SHOOTER_SUBSYSTEM = new ShooterSubsystem();
@@ -41,6 +46,8 @@ public class Robot extends TimedRobot {
   public static final IntakeRetractCommand IntakeRetract = new IntakeRetractCommand();
   public static final ClimberSubsystem CLIMBER_SUBSYSTEM = new ClimberSubsystem();
   public static final FeederSubsystem FEEDER_SUBSYSTEM = new FeederSubsystem();
+  public static final TurretSwivelSubsystem TURRET_SWIVEL_SUBSYSTEM = new TurretSwivelSubsystem();
+  public static final TurretAimAtTargetCommand TURRET_AIM_AT_TARGET = new TurretAimAtTargetCommand();
   
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -54,6 +61,7 @@ public class Robot extends TimedRobot {
 
     //DRIVE_TRAIN_SUBSYSTEM.setDefaultCommand(new DrivetrainDefaultCommand(DRIVE_TRAIN_SUBSYSTEM, GAMEPAD));
     SHOOTER_SUBSYSTEM.setDefaultCommand(new RunCommand(() -> SHOOTER_SUBSYSTEM.defaultCommand(), SHOOTER_SUBSYSTEM));
+    TURRET_SWIVEL_SUBSYSTEM.setDefaultCommand(TURRET_AIM_AT_TARGET);
 
   }
   

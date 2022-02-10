@@ -24,7 +24,7 @@ public final class RobotMap {
     public static final int SHOOTER_MOTOR_2 = 42;
 
     //TURRET
-    public static final int TURRET_MOTOR = -1; //Set this to real value ASAP
+    public static final int TURRET_MOTOR = 51; //Set this to real value ASAP
 
     //INTAKE
      
