@@ -8,7 +8,7 @@ public class ConveyanceEjectCommandGroup extends ParallelCommandGroup{
     public ConveyanceEjectCommandGroup(ConveyanceSubsystem conveyanceSubsystem, FeederSubsystem feederSubsystem) {
         addCommands(
             new ConveyanceEjectCommand(conveyanceSubsystem),
-            new FeederEjectCommand(feederSubsystem)
+            new FeederEjectCommand()
         );
     }
 }

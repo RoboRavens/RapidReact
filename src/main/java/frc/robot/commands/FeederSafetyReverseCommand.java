@@ -5,8 +5,6 @@
 package frc.robot.commands;
 
 import frc.robot.Robot;
-import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.FeederSubsystem;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -16,7 +14,7 @@ public class FeederSafetyReverseCommand extends CommandBase {
     Timer _timer;
   
     public FeederSafetyReverseCommand(double durationInSeconds) {
-      addRequirements(Robot.CONVEYANCE_SUBSYSTEM);
+      addRequirements(Robot.FEEDER_SUBSYSTEM);
       _durationInSeconds = durationInSeconds;
       _timer = new Timer();
     }
@@ -25,13 +23,14 @@ public class FeederSafetyReverseCommand extends CommandBase {
     @Override
     public void initialize() {
       // System.out.println("ConveyanceReverseForDurationCommand initialized");
+      _timer.reset();
       _timer.start();
     }
   
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-      Robot.FEEDER_SUBSYSTEM.setConveyanceMaxReverse();
+      //Robot.FEEDER_SUBSYSTEM.setConveyanceMaxReverse();
       Robot.FEEDER_SUBSYSTEM.feederWheelReverse();
       // System.out.println("REVERSING_CONVEYOR!!!");
     }
@@ -39,6 +38,7 @@ public class FeederSafetyReverseCommand extends CommandBase {
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
+      Robot.FEEDER_SUBSYSTEM.wheelStop();
     }
   
     // Returns true when the command should end.
@@ -47,7 +47,6 @@ public class FeederSafetyReverseCommand extends CommandBase {
       if (_timer.get() > _durationInSeconds) {
         return true;
       }
-  
       return false;
     }
 }
