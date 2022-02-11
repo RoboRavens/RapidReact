@@ -25,8 +25,7 @@ public class ConveyanceSubsystem extends SubsystemBase {
 
   public void setConveyanceMaxForward() {
     this.runConveyanceAtPercentPower(Constants.CONVEYANCE_ONE_FULL_SPEED);
-    
-  }
+    }
 
   public void setConveyanceNormalSpeedForward() {
     this.runConveyanceAtPercentPower(Constants.CONVEYANCE_ONE_NORMAL_SPEED);
@@ -38,6 +37,7 @@ public class ConveyanceSubsystem extends SubsystemBase {
 
   private void runConveyanceAtPercentPower(double magnitude) {
     this._conveyanceMotorOne.set(ControlMode.PercentOutput, magnitude);
+    System.out.println("Attempting to run conveyance run at 1");
   }
 
   public void stopConveyanceOne() {
@@ -47,13 +47,9 @@ public class ConveyanceSubsystem extends SubsystemBase {
   public void defaultCommand() {
     //this.stopConveyanceOne();
   }
-    public  void stop() {
-     this.runConveyanceAtPercentPower(0);
-  }
- 
-   
 
-  @Override
+ 
+   @Override
    public void periodic() {
     // This method will be called once per scheduler run
    }
@@ -62,4 +58,16 @@ public class ConveyanceSubsystem extends SubsystemBase {
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
   }
+
+
+
+
+
+
+
+public void stop() {
+ 
+}
+
+
 }

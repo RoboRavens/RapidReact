@@ -26,7 +26,7 @@ public class ConveyanceCollectCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Robot.CONVEYANCE_SUBSYSTEM.stop();
+    Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne();
     Robot.INTAKE_SUBSYSTEM.retract();
   }
 
