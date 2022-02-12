@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
 public class FeederIndexCommand extends CommandBase {
-    private boolean isBallInBetweenSensors; // ball state
+    private boolean isBallBetweenSensors; // ball state
     
     public FeederIndexCommand() {
         addRequirements(Robot.FEEDER_SUBSYSTEM);
@@ -20,22 +20,35 @@ public class FeederIndexCommand extends CommandBase {
         // (True means no ball in front of the sensor and vice versa)
         
         // If there is a ball in conveyance stage 1 and no ball in conveyance stage 2 (feeder subsystem),
-        // run the conveyance stage 2 and set isBallInBetweenSensors to true
-        
+        // run the conveyance stage 2 and set isBallBetweenSensors to true
+        if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceSensorAReading() == false && Robot.FEEDER_SUBSYSTEM.getFeederSubsystemHasBall() == true)) {
+            Robot.FEEDER_SUBSYSTEM.setConveyanceNormalSpeedForward();
+            isBallBetweenSensors = true;
+        }
         // If the ball state is in between sensors on the conveyance,
         // cotninue to run conveyance stage 2
-
+        if(isBallBetweenSensors == true) {
+            Robot.FEEDER_SUBSYSTEM.setConveyanceNormalSpeedForward();
+        }
         // If there is a ball completely within conveyance stage 2,
-        // set isBallInBetweenSensors to false and stop conveyance stage 2
-
+        // set isBallBetweenSensors to false and stop conveyance stage 2
+        if(Robot.FEEDER_SUBSYSTEM.getFeederSubsystemHasBall() == false) {
+            isBallBetweenSensors = false;
+            Robot.FEEDER_SUBSYSTEM.stopConveyance();
+        }
         // If there are no balls in the robot,
-        // set isBallInBetweenSensors to false and stop conveyance stage 2
-        
+        // set isBallBetweenSensors to false and stop conveyance stage 2
+        if((Robot.CONVEYANCE_SUBSYSTEM.getConveyanceSensorAReading() == true) && (Robot.FEEDER_SUBSYSTEM.getFeederSubsystemHasBallg() == true)) {
+            isBallBetweenSensors = false;
+            Robot.FEEDER_SUBSYSTEM.stopConveyance();
+        }
     }
 
     // Called once the command ends or is interrupted.
     @Override
-    public void end(boolean interrupted) {}
+    public void end(boolean interrupted) {
+        Robot.FEEDER_SUBSYSTEM.stopConveyance();
+    }
 
     // Returns true when the command should end.
     @Override
