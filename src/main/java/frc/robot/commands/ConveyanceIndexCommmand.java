@@ -21,7 +21,7 @@ public class ConveyanceIndexCommmand extends CommandBase {
         
         // If there is a ball in conveyance stage 1 and no ball in conveyance stage 2 (feeder subsystem),
         // run the conveyance stage 2 and set isBallBetweenSensors to true
-        if (Robot.FEEDER_SUBSYSTEM.getConveyanceSensorAReading() == false && Robot.FEEDER_SUBSYSTEM.getFeederSubsystemHasBall() == true) {
+        if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceSensorAReading() == false && Robot.FEEDER_SUBSYSTEM.getFeederSubsystemHasBall() == true) {
             Robot.FEEDER_SUBSYSTEM.setConveyanceNormalSpeedForward();
             isBallBetweenSensors = true;
         }
