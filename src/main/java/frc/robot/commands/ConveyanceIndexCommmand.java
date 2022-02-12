@@ -3,11 +3,11 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
-public class FeederIndexCommand extends CommandBase {
+public class ConveyanceIndexCommmand extends CommandBase {
     private boolean isBallBetweenSensors; // ball state
     
-    public FeederIndexCommand() {
-        addRequirements(Robot.FEEDER_SUBSYSTEM);
+    public void ConveyanceIndexCommand() {
+        addRequirements(Robot.CONVEYANCE_SUBSYSTEM);
     }
 
         // Called when the command is initially scheduled.
