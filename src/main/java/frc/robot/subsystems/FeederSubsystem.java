@@ -19,6 +19,7 @@ public class FeederSubsystem extends SubsystemBase {
   private TalonFX _conveyanceMotorTwo;
   private TalonFX _feederWheelMotor;
   private BufferedDigitalInput _conveyanceSensorB;
+  private DigitalInput _conveyanceSensorA;
 
 
   public FeederSubsystem() {
@@ -45,7 +46,7 @@ public class FeederSubsystem extends SubsystemBase {
     this.runConveyanceAtPercentPower(Constants.CONVEYANCE_TWO_FULL_SPEED_REVERSE);
   }
 
-  public void setConveyanceMaxForward() {
+  public void setConveyanceTwoMaxForward() {
     this.runConveyanceAtPercentPower(Constants.CONVEYANCE_TWO_FULL_SPEED);
   }
 

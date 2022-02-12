@@ -8,9 +8,9 @@ public final class RobotMap {
 
     //CONVEYANCE
 
-    public static final int CONVEYANCE_MOTOR_TWO = -1;
+    public static final int CONVEYANCE_MOTOR_TWO = 31;
     public static final int CONVEYANCE_MOTOR_ONE = 11;
-    public static final int CONVEYANCE_WHEEL = 32;
+    public static final int CONVEYANCE_WHEEL = -1;
 
     //CLIMBER
 
@@ -33,7 +33,7 @@ public final class RobotMap {
     
    
      //SENSORS not real values (for testing)
-    public static final int SENSOR_A_CHANNEL = 3;
+    public static final int SENSOR_A_CHANNEL = 0;
     public static final int SENSOR_B_CHANNEL = 4;
     
     
