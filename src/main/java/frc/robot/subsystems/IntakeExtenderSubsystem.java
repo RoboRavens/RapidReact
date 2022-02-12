@@ -12,12 +12,12 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
 public class IntakeExtenderSubsystem extends SubsystemBase {
 
- 
   private Solenoid _intakeExtend;
   private Solenoid _intakeRetract;
   private DigitalInput _conveyanceSensorA;
@@ -37,13 +37,6 @@ public class IntakeExtenderSubsystem extends SubsystemBase {
 
   }
 
-  
-  
-
-  public void stop() {
-    
-  }
-
   public void extend() {
     _intakeRetract.set(false);
     _intakeExtend.set(true);
@@ -54,19 +47,8 @@ public class IntakeExtenderSubsystem extends SubsystemBase {
     _intakeExtend.set(false);
   }
 
-  public void stopAndRetract() {
-    
-  }
-
-  public void defaultCommand() {
-    
-  }
-
-  public boolean getConveyanceSensorAReading() {
-    return _conveyanceSensorA.get();
-  }
-
   public boolean getConveyanceSensorBReading() {
     return this.getConveyanceSensorBReading();
   }
-}
+
+ }

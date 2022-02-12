@@ -6,28 +6,30 @@ package frc.robot.commands;
 
 import frc.robot.Robot;
 import frc.robot.subsystems.ConveyanceSubsystem;
-
+import frc.robot.subsystems.IntakeExtenderSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+
 
 /** An example command that uses an example subsystem. */
 public class ConveyanceIndexCommand extends CommandBase {
-  
+  private IntakeExtenderSubsystem _conveyanceSensorA;
 
- 
   public void ConveyanceSubsystem(ConveyanceSubsystem _ConveyanceSubsystem) {
-   
-    addRequirements(Robot.CONVEYANCE_SUBSYSTEM);
+    addRequirements(Robot.FEEDER_SUBSYSTEM);
   }
 
- 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
-
+  public void execute() {
+    if (Robot.CONVEYANCE_INDEX_COMMAND._conveyanceSensorA()) {
+   Robot.FEEDER_SUBSYSTEM.setConveyanceTwoMaxForward();
+    } 
+  }
+    
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {}
