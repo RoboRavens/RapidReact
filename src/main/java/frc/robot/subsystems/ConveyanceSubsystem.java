@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.ravenhardware.BufferedDigitalInput;
 import frc.robot.Constants;
 import frc.robot.RobotMap;
 
@@ -47,6 +48,10 @@ public class ConveyanceSubsystem extends SubsystemBase {
     this.runConveyanceAtPercentPower(Constants.CONVEYANCE_ONE_STOP);
   }
 
+  public boolean getConveyanceSensorAReading() {
+    return _conveyanceSensorA.get();
+  }
+
   public void defaultCommand() {
     //this.stopConveyanceOne();
   }
@@ -61,10 +66,7 @@ public class ConveyanceSubsystem extends SubsystemBase {
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation 
   }
-  public boolean getConveyanceSensorAReading() {
-      return  _conveyanceSensorA.get();
   
-    }
 
 } 
 
