@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.ravenhardware.BufferedDigitalInput;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
@@ -17,13 +18,13 @@ public class FeederSubsystem extends SubsystemBase {
    
   private TalonFX _conveyanceMotorTwo;
   private TalonFX _feederWheelMotor;
-  private DigitalInput _conveyanceSensorB;
+  private BufferedDigitalInput _conveyanceSensorB;
 
 
   public FeederSubsystem() {
       _conveyanceMotorTwo = new TalonFX(RobotMap.CONVEYANCE_MOTOR_TWO);
       _feederWheelMotor = new TalonFX(RobotMap.CONVEYANCE_WHEEL);
-      _conveyanceSensorB = new DigitalInput(RobotMap.SENSOR_B_CHANNEL);
+      _conveyanceSensorB = new BufferedDigitalInput(RobotMap.SENSOR_B_CHANNEL);
   }
 
   @Override

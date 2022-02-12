@@ -15,6 +15,7 @@ import frc.robot.commands.ConveyanceEjectCommand;
 import frc.robot.commands.DrivetrainDefaultCommand;
 import frc.robot.commands.FeederEjectCommand;
 import frc.robot.commands.FeederSafetyReverseCommand;
+import frc.robot.commands.FeederShootCommand;
 import frc.robot.commands.IntakeExtendCommand;
 import frc.robot.commands.IntakeRetractCommand;
 import frc.robot.commands.shooter.ShooterStartCommand;
@@ -43,7 +44,7 @@ public class Robot extends TimedRobot {
   
 
   
-  public static final DriveTrainSubsystem DRIVE_TRAIN_SUBSYSTEM = new DriveTrainSubsystem();
+  //public static final DriveTrainSubsystem DRIVE_TRAIN_SUBSYSTEM = new DriveTrainSubsystem();
   public static final ShooterSubsystem SHOOTER_SUBSYSTEM = new ShooterSubsystem();
   public static final IntakeExtenderSubsystem INTAKE_SUBSYSTEM = new IntakeExtenderSubsystem();
   public static final ConveyanceSubsystem CONVEYANCE_SUBSYSTEM = new ConveyanceSubsystem();
@@ -56,6 +57,7 @@ public class Robot extends TimedRobot {
   public static final ConveyanceEjectCommand CONVEYANCE_EJECT_COMMAND = new ConveyanceEjectCommand();
   public static final FeederEjectCommand FeederEject = new FeederEjectCommand();
   public static final FeederSafetyReverseCommand FeederSafetyReverse = new FeederSafetyReverseCommand(Constants.FEEDER_SAFETY_REVERSE_DURATION);
+  public static final FeederShootCommand FeederShoot = new FeederShootCommand();
   
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -134,8 +136,7 @@ public class Robot extends TimedRobot {
     GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(CONVEYANCE_COLLECT_COMMAND);
     GAMEPAD.getButton(ButtonCode.Y).whileHeld(ShooterStart);
     GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(CONVEYANCE_EJECT_COMMAND);
-    GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederEject);
-    GAMEPAD.getButton(ButtonCode.B).whenPressed(FeederSafetyReverse);
+    GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederShoot);
   }
 
   @Override
