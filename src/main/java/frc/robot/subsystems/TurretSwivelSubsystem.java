@@ -5,8 +5,10 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotMap;
@@ -19,17 +21,22 @@ public class TurretSwivelSubsystem extends SubsystemBase {
 
     public TurretSwivelSubsystem() {
         _turretMotor = new TalonSRX(RobotMap.TURRET_MOTOR);
+
+        _turretMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+
         setShot(Constants.TURRET_DEFAULT_PID);
+        resetEncoder();
     }
 
     @Override
     public void periodic() {
-        // This method will be called once per scheduler run
+        //SmartDashboard.putNumber("Turret Angle", getAngle());
+        SmartDashboard.putNumber("Turret RAW Encoder", _turretMotor.getSelectedSensorPosition());
     }
 
     @Override
     public void simulationPeriodic() {
-        // This method will be called once per scheduler run during simulation
+        
     }
 
     public void defaultCommand() {
@@ -46,7 +53,7 @@ public class TurretSwivelSubsystem extends SubsystemBase {
     }
 
     public void flip() {
-
+        goToAngle(-1 * getAngle());
     }
 
     public void seek() {
@@ -54,6 +61,7 @@ public class TurretSwivelSubsystem extends SubsystemBase {
     }
 
     public void goToAngle(double angle) {
+        SmartDashboard.putNumber("Turret Target", angle * Constants.TURRET_ENCODER_RATIO);
         _turretMotor.set(ControlMode.Position, angle * Constants.TURRET_ENCODER_RATIO);
     }
 
@@ -68,5 +76,13 @@ public class TurretSwivelSubsystem extends SubsystemBase {
 
     public String getShot() {
         return _shot.name;
+    }
+
+    public void resetEncoder() {
+        setEncoder(0);
+    }
+
+    public void setEncoder(double sensorPos) {
+        _turretMotor.setSelectedSensorPosition(sensorPos);
     }
 }

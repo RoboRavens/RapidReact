@@ -25,6 +25,9 @@ public final class RobotMap {
 
     //TURRET
     public static final int TURRET_MOTOR = 51; //Set this to real value ASAP
+    //public static final int TURRET_RESET_SENSOR = ;
+    //public static final int TURRET_CLOCKWISE_SENSOR = ;
+    //public static final int TURRET_COUNTERCLOCKWISE_SENSOR = ;
 
     //INTAKE
      

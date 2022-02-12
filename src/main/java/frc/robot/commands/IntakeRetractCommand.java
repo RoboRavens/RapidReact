@@ -13,7 +13,7 @@ import frc.robot.Robot;
 public class IntakeRetractCommand extends CommandBase {
 
   public IntakeRetractCommand() {
-    addRequirements(Robot.INTAKE_SUBSYSTEM);
+   // addRequirements(Robot.INTAKE_SUBSYSTEM);
   }
 
   // Called when the command is initially scheduled.
@@ -25,8 +25,8 @@ public class IntakeRetractCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Robot.INTAKE_SUBSYSTEM.retract();
-    Robot.INTAKE_SUBSYSTEM.stop();
+   // Robot.INTAKE_SUBSYSTEM.retract();
+   // Robot.INTAKE_SUBSYSTEM.stop();
   }
 
   // Called once the command ends or is interrupted.

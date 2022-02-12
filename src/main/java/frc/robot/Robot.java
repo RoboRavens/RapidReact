@@ -16,6 +16,7 @@ import frc.robot.commands.IntakeExtendCommand;
 import frc.robot.commands.IntakeRetractCommand;
 import frc.robot.commands.shooter.ShooterStartCommand;
 import frc.robot.commands.turret.TurretAimAtTargetCommand;
+import frc.robot.commands.turret.TurretFlipCommand;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ConveyanceSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
@@ -39,15 +40,16 @@ public class Robot extends TimedRobot {
 
   //public static final DrivetrainSubsystem DRIVE_TRAIN_SUBSYSTEM = new DrivetrainSubsystem();
   public static final ShooterSubsystem SHOOTER_SUBSYSTEM = new ShooterSubsystem();
-  public static final IntakeExtenderSubsystem INTAKE_SUBSYSTEM = new IntakeExtenderSubsystem();
-  public static final ConveyanceSubsystem CONVEYANCE_SUBSYSTEM = new ConveyanceSubsystem();
-  public static final IntakeExtendCommand IntakeExtend = new IntakeExtendCommand();
+  //public static final IntakeExtenderSubsystem INTAKE_SUBSYSTEM = new IntakeExtenderSubsystem();
+  //public static final ConveyanceSubsystem CONVEYANCE_SUBSYSTEM = new ConveyanceSubsystem();
+  //public static final IntakeExtendCommand IntakeExtend = new IntakeExtendCommand();
   public static final ShooterStartCommand ShooterStart = new ShooterStartCommand();
-  public static final IntakeRetractCommand IntakeRetract = new IntakeRetractCommand();
-  public static final ClimberSubsystem CLIMBER_SUBSYSTEM = new ClimberSubsystem();
-  public static final FeederSubsystem FEEDER_SUBSYSTEM = new FeederSubsystem();
+  //public static final IntakeRetractCommand IntakeRetract = new IntakeRetractCommand();
+  //public static final ClimberSubsystem CLIMBER_SUBSYSTEM = new ClimberSubsystem();
+  //public static final FeederSubsystem FEEDER_SUBSYSTEM = new FeederSubsystem();
   public static final TurretSwivelSubsystem TURRET_SWIVEL_SUBSYSTEM = new TurretSwivelSubsystem();
   public static final TurretAimAtTargetCommand TURRET_AIM_AT_TARGET = new TurretAimAtTargetCommand();
+  public static final TurretFlipCommand TURRET_FLIP = new TurretFlipCommand();
   
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -121,9 +123,10 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(IntakeExtend);
+    //GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(IntakeExtend);
     GAMEPAD.getButton(ButtonCode.A).whileHeld(ShooterStart);
-    GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(IntakeRetract);
+    //GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(IntakeRetract);
+    GAMEPAD.getButton(ButtonCode.RIGHTSTICK).whenPressed(TURRET_FLIP);
   }
 
   @Override

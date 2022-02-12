@@ -8,13 +8,12 @@ import frc.controls.AxisCode;
 import frc.controls.Gamepad;
 import frc.robot.Constants;
 import frc.robot.Robot;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
-public class TurretAimAtTargetCommand extends CommandBase {
+public class TurretFlipCommand extends CommandBase {
 
-  public TurretAimAtTargetCommand() {
+  public TurretFlipCommand() {
     addRequirements(Robot.TURRET_SWIVEL_SUBSYSTEM);
   }
 
@@ -22,14 +21,13 @@ public class TurretAimAtTargetCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-      //System.out.println("TurretAimAtTargetCommand init");
+      //System.out.println("TurretFlipCommand init");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      double angle = Robot.JOYSTICK.getAxis(AxisCode.RIGHTTRIGGER);
-      Robot.TURRET_SWIVEL_SUBSYSTEM.goToAngle(angle * Constants.TURRET_RANGE);
+      Robot.TURRET_SWIVEL_SUBSYSTEM.flip();
   }
 
   // Called once the command ends or is interrupted.
@@ -39,6 +37,6 @@ public class TurretAimAtTargetCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }
