@@ -59,16 +59,14 @@ public class ConveyanceSubsystem extends SubsystemBase {
 
   @Override
   public void simulationPeriodic() {
-    // This method will be called once per scheduler run during simulation
-    
-    public boolean _conveyanceSensorA() {
-      return _conveyanceSensorA.get();
-      SmartDashboard.putBoolean("ButtonPressed", _conveyanceSensorA.get());
+    // This method will be called once per scheduler run during simulation 
+  }
+  public boolean getConveyanceSensorAReading() {
+      return  _conveyanceSensorA.get();
+  
     }
-      
-   }
 
-}
+} 
 
 
 

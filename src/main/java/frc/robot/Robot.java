@@ -12,7 +12,7 @@ import frc.controls.ButtonCode;
 import frc.controls.Gamepad;
 import frc.robot.commands.ConveyanceCollectCommand;
 import frc.robot.commands.ConveyanceEjectCommand;
-import frc.robot.commands.ConveyanceIndexCommand;
+import frc.robot.commands.ConveyanceIndexCommmand;
 import frc.robot.commands.DrivetrainDefaultCommand;
 import frc.robot.commands.FeederEjectCommand;
 import frc.robot.commands.FeederSafetyReverseCommand;
@@ -57,7 +57,7 @@ public class Robot extends TimedRobot {
   public static final ConveyanceEjectCommand CONVEYANCE_EJECT_COMMAND = new ConveyanceEjectCommand();
   //public static final FeederEjectCommand FeederEject = new FeederEjectCommand();
   public static final FeederSafetyReverseCommand FeederSafetyReverse = new FeederSafetyReverseCommand(Constants.FEEDER_SAFETY_REVERSE_DURATION);
-  public static final ConveyanceIndexCommand CONVEYANCE_INDEX_COMMAND = new ConveyanceIndexCommand();
+  public static final ConveyanceIndexCommmand CONVEYANCE_INDEX_COMMAND = new ConveyanceIndexCommmand();
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.

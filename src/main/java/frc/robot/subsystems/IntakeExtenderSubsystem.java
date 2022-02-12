@@ -47,8 +47,6 @@ public class IntakeExtenderSubsystem extends SubsystemBase {
     _intakeExtend.set(false);
   }
 
-  public boolean getConveyanceSensorBReading() {
-    return this.getConveyanceSensorBReading();
-  }
+ 
 
  }
