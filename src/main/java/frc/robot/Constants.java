@@ -16,7 +16,7 @@ import frc.util.ShooterCalibration;
  */
 public final class Constants {
     // CONTROLS
-    public static final double JOYSTICK_DEADBAND = .15;
+    public static final double JOYSTICK_DEADBAND = .05;
     public static final double DRIVE_MAX_TURN_RADIANS_PER_SECOND = 5;
 
     //SHOOTER
