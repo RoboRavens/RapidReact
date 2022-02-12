@@ -18,6 +18,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.util.SwerveModuleConverter;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -68,13 +69,18 @@ public class DriveTrainSubsystem extends SubsystemBase {
   private final SwerveModule m_frontRightModule;
   private final SwerveModule m_backLeftModule;
   private final SwerveModule m_backRightModule;
-  private final SwerveDriveOdometry _odometry;
+  private final SwerveDriveOdometry _odometryFromKinematics;
+  private final SwerveDriveOdometry  _odometryFromHardware;
 
   private ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
-  private final NetworkTableEntry odometryXEntry;
-  private final NetworkTableEntry odometryYEntry;
-  private final NetworkTableEntry odometryAngleEntry;
+  private final NetworkTableEntry _odometryXKinematics;
+  private final NetworkTableEntry _odometryYKinematics;
+  private final NetworkTableEntry _odometryAngleKinematics;
+
+  private final NetworkTableEntry _odometryXHardware;
+  private final NetworkTableEntry _odometryYHardware;
+  private final NetworkTableEntry _odometryAngleHardware;
 
   public DriveTrainSubsystem() {
     m_frontLeftModule = Mk4SwerveModuleHelper.createFalcon500(
@@ -110,12 +116,17 @@ public class DriveTrainSubsystem extends SubsystemBase {
             BACK_RIGHT_MODULE_STEER_OFFSET
     );
 
-    _odometry = new SwerveDriveOdometry(m_kinematics, this.getGyroscopeRotation(), new Pose2d(0, 0, new Rotation2d()));
+    _odometryFromKinematics = new SwerveDriveOdometry(m_kinematics, this.getGyroscopeRotation(), new Pose2d(0, 0, new Rotation2d()));
+    _odometryFromHardware = new SwerveDriveOdometry(m_kinematics, this.getGyroscopeRotation(), new Pose2d(0, 0, new Rotation2d()));
 
     ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
-    odometryXEntry = tab.add("X", 0.0).withPosition(0, 0).withSize(1, 1).getEntry();
-    odometryYEntry = tab.add("Y", 0.0).withPosition(0, 1).withSize(1, 1).getEntry();
-    odometryAngleEntry = tab.add("Angle", 0.0).withPosition(0, 2).withSize(1, 1).getEntry();
+    _odometryXKinematics = tab.add("X Kinematics", 0.0).withPosition(0, 0).withSize(1, 1).getEntry();
+    _odometryYKinematics = tab.add("Y Kinematics", 0.0).withPosition(0, 1).withSize(1, 1).getEntry();
+    _odometryAngleKinematics = tab.add("Angle Kinematics", 0.0).withPosition(0, 2).withSize(1, 1).getEntry();
+
+    _odometryXHardware = tab.add("X Hardware", 0.0).withPosition(0, 0).withSize(1, 1).getEntry();
+    _odometryYHardware = tab.add("Y Hardware", 0.0).withPosition(0, 1).withSize(1, 1).getEntry();
+    _odometryAngleHardware = tab.add("Angle Hardware", 0.0).withPosition(0, 2).withSize(1, 1).getEntry();
   }
 
   /**
@@ -124,7 +135,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
    */
   public void zeroGyroscope() {
     m_navx.zeroYaw();
-    _odometry.resetPosition(new Pose2d(0, 0, new Rotation2d()), this.getGyroscopeRotation());
+    _odometryFromKinematics.resetPosition(new Pose2d(0, 0, new Rotation2d()), this.getGyroscopeRotation());
+    _odometryFromHardware.resetPosition(new Pose2d(0, 0, new Rotation2d()), this.getGyroscopeRotation());
   }
 
   public Rotation2d getGyroscopeRotation() {
@@ -161,9 +173,19 @@ public class DriveTrainSubsystem extends SubsystemBase {
     m_backLeftModule.set(states[2].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[2].angle.getRadians());
     m_backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[3].angle.getRadians());
 
-    _odometry.update(this.getGyroscopeRotation(), states);
-    odometryXEntry.setDouble(_odometry.getPoseMeters().getX());
-    odometryYEntry.setDouble(_odometry.getPoseMeters().getY());
-    odometryAngleEntry.setDouble(_odometry.getPoseMeters().getRotation().getDegrees());
+    _odometryFromKinematics.update(this.getGyroscopeRotation(), states);
+    _odometryXKinematics.setDouble(_odometryFromKinematics.getPoseMeters().getX());
+    _odometryYKinematics.setDouble(_odometryFromKinematics.getPoseMeters().getY());
+    _odometryAngleKinematics.setDouble(_odometryFromKinematics.getPoseMeters().getRotation().getDegrees());
+
+    var statesHardware = new SwerveModuleState[4];
+    statesHardware[0] = SwerveModuleConverter.ToSwerveModuleState(m_frontLeftModule);
+    statesHardware[1] = SwerveModuleConverter.ToSwerveModuleState(m_frontRightModule);
+    statesHardware[2] = SwerveModuleConverter.ToSwerveModuleState(m_backLeftModule);
+    statesHardware[3] = SwerveModuleConverter.ToSwerveModuleState(m_backRightModule);
+    _odometryFromHardware.update(this.getGyroscopeRotation(), statesHardware);
+    _odometryXHardware.setDouble(_odometryFromHardware.getPoseMeters().getX());
+    _odometryYHardware.setDouble(_odometryFromHardware.getPoseMeters().getY());
+    _odometryAngleHardware.setDouble(_odometryFromHardware.getPoseMeters().getRotation().getDegrees());
   }
 }
