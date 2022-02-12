@@ -5,18 +5,20 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.ravenhardware.BufferedDigitalInput;
 import frc.robot.Constants;
 import frc.robot.RobotMap;
 
 public class ConveyanceSubsystem extends SubsystemBase {
   
     private TalonSRX _conveyanceMotorOne;
+    private BufferedDigitalInput _conveyanceSensorA;
  
  
  
    public ConveyanceSubsystem() {
     _conveyanceMotorOne = new TalonSRX(RobotMap.CONVEYANCE_MOTOR_ONE);
-    
+    _conveyanceSensorA = new BufferedDigitalInput(RobotMap.SENSOR_A_CHANNEL);
   }
 
   public void setConveyanceMaxReverse() {
@@ -44,6 +46,10 @@ public class ConveyanceSubsystem extends SubsystemBase {
     this.runConveyanceAtPercentPower(Constants.CONVEYANCE_ONE_STOP);
   }
 
+  public boolean getConveyanceSensorAReading() {
+    return _conveyanceSensorA.get();
+  }
+
   public void defaultCommand() {
     //this.stopConveyanceOne();
   }
@@ -59,15 +65,9 @@ public class ConveyanceSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run during simulation
   }
 
-
-
-
-
-
-
-public void stop() {
+  public void stop() {
  
-}
+  }
 
 
 }

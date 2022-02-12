@@ -88,9 +88,6 @@ public class FeederSubsystem extends SubsystemBase {
   public boolean getConveyanceSensorBReading() {
     return _conveyanceSensorB.get();
   }
-
-  public boolean getConveyanceSensorAReading() {
-    return Robot.INTAKE_SUBSYSTEM.getConveyanceSensorAReading();
-  }
+  
 
 }
