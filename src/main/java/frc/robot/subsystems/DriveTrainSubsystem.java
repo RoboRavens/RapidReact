@@ -77,10 +77,20 @@ public class DriveTrainSubsystem extends SubsystemBase {
   private final NetworkTableEntry _odometryXKinematics;
   private final NetworkTableEntry _odometryYKinematics;
   private final NetworkTableEntry _odometryAngleKinematics;
+  private final NetworkTableEntry _frontLeftKinematics;
+  private final NetworkTableEntry _frontRightKinematics;
+  private final NetworkTableEntry _backLeftKinematics;
+  private final NetworkTableEntry _backRightKinematics;
+  private final NetworkTableEntry _frontLeftKinematicsVel;
 
   private final NetworkTableEntry _odometryXHardware;
   private final NetworkTableEntry _odometryYHardware;
   private final NetworkTableEntry _odometryAngleHardware;
+  private final NetworkTableEntry _frontLeftHardware;
+  private final NetworkTableEntry _frontRightHardware;
+  private final NetworkTableEntry _backLeftHardware;
+  private final NetworkTableEntry _backRightHardware;
+  private final NetworkTableEntry _frontLeftHardwareVel;
 
   public DriveTrainSubsystem() {
     m_frontLeftModule = Mk4SwerveModuleHelper.createFalcon500(
@@ -123,10 +133,20 @@ public class DriveTrainSubsystem extends SubsystemBase {
     _odometryXKinematics = tab.add("X Kinematics", 0.0).withPosition(0, 0).withSize(1, 1).getEntry();
     _odometryYKinematics = tab.add("Y Kinematics", 0.0).withPosition(0, 1).withSize(1, 1).getEntry();
     _odometryAngleKinematics = tab.add("Angle Kinematics", 0.0).withPosition(0, 2).withSize(1, 1).getEntry();
+    _frontLeftKinematics = tab.add("FL Kinematics A", 0.0).withPosition(0, 3).withSize(1, 1).getEntry();
+    _frontRightKinematics  = tab.add("FR Kinematics A", 0.0).withPosition(0, 4).withSize(1, 1).getEntry();
+    _backLeftKinematics  = tab.add("BL Kinematics A", 0.0).withPosition(0, 5).withSize(1, 1).getEntry();
+    _backRightKinematics  = tab.add("BR Kinematics A", 0.0).withPosition(0, 6).withSize(1, 1).getEntry();
+    _frontLeftKinematicsVel = tab.add("FL Kinematics V", 0.0).withPosition(0, 6).withSize(1, 1).getEntry();
 
     _odometryXHardware = tab.add("X Hardware", 0.0).withPosition(0, 0).withSize(1, 1).getEntry();
     _odometryYHardware = tab.add("Y Hardware", 0.0).withPosition(0, 1).withSize(1, 1).getEntry();
     _odometryAngleHardware = tab.add("Angle Hardware", 0.0).withPosition(0, 2).withSize(1, 1).getEntry();
+    _frontLeftHardware = tab.add("FL Hardware", 0.0).withPosition(0, 3).withSize(1, 1).getEntry();
+    _frontRightHardware  = tab.add("FR Hardware", 0.0).withPosition(0, 4).withSize(1, 1).getEntry();
+    _backLeftHardware  = tab.add("BL Hardware", 0.0).withPosition(0, 5).withSize(1, 1).getEntry();
+    _backRightHardware  = tab.add("BR Hardware", 0.0).withPosition(0, 6).withSize(1, 1).getEntry();
+    _frontLeftHardwareVel = tab.add("FL Hardware V", 0.0).withPosition(0, 6).withSize(1, 1).getEntry();
   }
 
   /**
@@ -177,15 +197,25 @@ public class DriveTrainSubsystem extends SubsystemBase {
     _odometryXKinematics.setDouble(_odometryFromKinematics.getPoseMeters().getX());
     _odometryYKinematics.setDouble(_odometryFromKinematics.getPoseMeters().getY());
     _odometryAngleKinematics.setDouble(_odometryFromKinematics.getPoseMeters().getRotation().getDegrees());
+    _frontLeftKinematics.setDouble(states[0].angle.getDegrees());
+    _frontLeftKinematicsVel.setDouble(states[0].speedMetersPerSecond);
+    _frontRightKinematics.setDouble(states[1].angle.getDegrees());
+    _backLeftKinematics.setDouble(states[2].angle.getDegrees());
+    _backRightKinematics.setDouble(states[3].angle.getDegrees());
 
     var statesHardware = new SwerveModuleState[4];
-    statesHardware[0] = SwerveModuleConverter.ToSwerveModuleState(m_frontLeftModule);
-    statesHardware[1] = SwerveModuleConverter.ToSwerveModuleState(m_frontRightModule);
-    statesHardware[2] = SwerveModuleConverter.ToSwerveModuleState(m_backLeftModule);
-    statesHardware[3] = SwerveModuleConverter.ToSwerveModuleState(m_backRightModule);
+    statesHardware[0] = SwerveModuleConverter.ToSwerveModuleState(m_frontLeftModule, 0);
+    statesHardware[1] = SwerveModuleConverter.ToSwerveModuleState(m_frontRightModule, 0);
+    statesHardware[2] = SwerveModuleConverter.ToSwerveModuleState(m_backLeftModule, 0);
+    statesHardware[3] = SwerveModuleConverter.ToSwerveModuleState(m_backRightModule, 0);
     _odometryFromHardware.update(this.getGyroscopeRotation(), statesHardware);
     _odometryXHardware.setDouble(_odometryFromHardware.getPoseMeters().getX());
     _odometryYHardware.setDouble(_odometryFromHardware.getPoseMeters().getY());
     _odometryAngleHardware.setDouble(_odometryFromHardware.getPoseMeters().getRotation().getDegrees());
+    _frontLeftHardware.setDouble(statesHardware[0].angle.getDegrees());
+    _frontLeftHardwareVel.setDouble(statesHardware[0].speedMetersPerSecond);
+    _frontRightHardware.setDouble(statesHardware[1].angle.getDegrees());
+    _backLeftHardware.setDouble(statesHardware[2].angle.getDegrees());
+    _backRightHardware.setDouble(statesHardware[3].angle.getDegrees());
   }
 }
