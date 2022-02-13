@@ -4,19 +4,18 @@
 
 package frc.robot.commands;
 
+import frc.robot.Robot;
 import frc.robot.subsystems.FeederSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-/** An example command that uses an example subsystem. */
 public class FeederEjectCommand extends CommandBase {
   private final FeederSubsystem _feederSubsystem;
 
   public FeederEjectCommand(FeederSubsystem feederSubsystem) {
     _feederSubsystem = feederSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(feederSubsystem);
+    addRequirements(Robot.FEEDER_SUBSYSTEM);
   }
-
  
   // Called when the command is initially scheduled.
   @Override

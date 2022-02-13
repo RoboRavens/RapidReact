@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.ravenhardware.BufferedDigitalInput;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
@@ -18,12 +19,13 @@ public class FeederSubsystem extends SubsystemBase {
   private TalonFX _conveyanceMotorTwo;
   private TalonFX _feederWheelMotor;
   private DigitalInput _conveyanceSensorB;
+  private DigitalInput _conveyanceSensorA;
 
 
   public FeederSubsystem() {
       _conveyanceMotorTwo = new TalonFX(RobotMap.CONVEYANCE_MOTOR_TWO);
       _feederWheelMotor = new TalonFX(RobotMap.CONVEYANCE_WHEEL);
-      //_conveyanceSensorB = new DigitalInput(RobotMap.SENSOR_B_CHANNEL);
+      _conveyanceSensorB = new DigitalInput(RobotMap.SENSOR_B_CHANNEL);
   }
 
   @Override
@@ -44,7 +46,7 @@ public class FeederSubsystem extends SubsystemBase {
     this.runConveyanceAtPercentPower(Constants.CONVEYANCE_TWO_FULL_SPEED_REVERSE);
   }
 
-  public void setConveyanceMaxForward() {
+  public void setConveyanceTwoMaxForward() {
     this.runConveyanceAtPercentPower(Constants.CONVEYANCE_TWO_FULL_SPEED);
   }
 
@@ -84,12 +86,9 @@ public class FeederSubsystem extends SubsystemBase {
     this.runWheelAtPercentPower(Constants.CONVEYANCE_TWO_REVERSE_FEEDER);
   }
 
-  public boolean getConveyanceSensorBReading() {
+  public boolean getFeederSubsystemHasBall() {
     return _conveyanceSensorB.get();
   }
-
-  public boolean getConveyanceSensorAReading() {
-    return Robot.INTAKE_SUBSYSTEM.getConveyanceSensorAReading();
-  }
+  
 
 }

@@ -29,14 +29,14 @@ public final class RobotMap {
     //INTAKE
      
      public static final int INTAKE_EXTEND_SOLENOID = 0;
-     //public static final int INTAKE_RETRACT_SOLENOID = 100; //Not real value (for testing)
+     public static final int INTAKE_RETRACT_SOLENOID = 100; //Not real value (for testing)
+    
     
    
      //SENSORS
-    //public static final int SENSOR_A_CHANNEL = 101; //Not real value (for testing)
-    //public static final int SENSOR_B_CHANNEL = 102; //Not real value (for testing)
+    public static final int SENSOR_A_CHANNEL = 101; //Not real value (for testing)
+    public static final int SENSOR_B_CHANNEL = 102; //Not real value (for testing)
     
     
-   
-
+    
 }
