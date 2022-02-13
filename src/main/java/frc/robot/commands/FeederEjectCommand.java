@@ -5,11 +5,14 @@
 package frc.robot.commands;
 
 import frc.robot.Robot;
+import frc.robot.subsystems.FeederSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class FeederEjectCommand extends CommandBase {
-  
-  public FeederEjectCommand() {
+  private final FeederSubsystem _feederSubsystem;
+
+  public FeederEjectCommand(FeederSubsystem feederSubsystem) {
+    _feederSubsystem = feederSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(Robot.FEEDER_SUBSYSTEM);
   }
@@ -21,13 +24,13 @@ public class FeederEjectCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Robot.FEEDER_SUBSYSTEM.feederWheelReverse();
+    _feederSubsystem.setConveyanceNormalSpeedReverse();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Robot.FEEDER_SUBSYSTEM.wheelStop();
+    _feederSubsystem.wheelStop();
   }
 
   // Returns true when the command should end.

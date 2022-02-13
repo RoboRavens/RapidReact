@@ -18,14 +18,14 @@ public class FeederSubsystem extends SubsystemBase {
    
   private TalonFX _conveyanceMotorTwo;
   private TalonFX _feederWheelMotor;
-  private BufferedDigitalInput _conveyanceSensorB;
+  private DigitalInput _conveyanceSensorB;
   private DigitalInput _conveyanceSensorA;
 
 
   public FeederSubsystem() {
       _conveyanceMotorTwo = new TalonFX(RobotMap.CONVEYANCE_MOTOR_TWO);
       _feederWheelMotor = new TalonFX(RobotMap.CONVEYANCE_WHEEL);
-      _conveyanceSensorB = new BufferedDigitalInput(RobotMap.SENSOR_B_CHANNEL);
+      _conveyanceSensorB = new DigitalInput(RobotMap.SENSOR_B_CHANNEL);
   }
 
   @Override
