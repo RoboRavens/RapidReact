@@ -54,21 +54,18 @@ public class Robot extends TimedRobot {
   
   //public static final DriveTrainSubsystem DRIVE_TRAIN_SUBSYSTEM = new DriveTrainSubsystem();
   public static final ShooterSubsystem SHOOTER_SUBSYSTEM = new ShooterSubsystem();
-  //public static final IntakeExtenderSubsystem INTAKE_SUBSYSTEM = new IntakeExtenderSubsystem();
-  //public static final ConveyanceSubsystem CONVEYANCE_SUBSYSTEM = new ConveyanceSubsystem();
-  //public static final IntakeExtendCommand IntakeExtend = new IntakeExtendCommand();
+  public static final IntakeExtenderSubsystem INTAKE_SUBSYSTEM = new IntakeExtenderSubsystem();
+  public static final ConveyanceSubsystem CONVEYANCE_SUBSYSTEM = new ConveyanceSubsystem();
+  public static final IntakeExtendCommand IntakeExtend = new IntakeExtendCommand();
   public static final ShooterStartCommand ShooterStart = new ShooterStartCommand();
-  //public static final IntakeRetractCommand IntakeRetract = new IntakeRetractCommand();
-  //public static final ClimberSubsystem CLIMBER_SUBSYSTEM = new ClimberSubsystem();
-  //public static final FeederSubsystem FEEDER_SUBSYSTEM = new FeederSubsystem();
+  public static final IntakeRetractCommand IntakeRetract = new IntakeRetractCommand();
+  public static final ClimberSubsystem CLIMBER_SUBSYSTEM = new ClimberSubsystem();
+  public static final FeederSubsystem FEEDER_SUBSYSTEM = new FeederSubsystem();
   public static final TurretSwivelSubsystem TURRET_SWIVEL_SUBSYSTEM = new TurretSwivelSubsystem();
   public static final TurretAimAtTargetCommand TURRET_AIM_AT_TARGET = new TurretAimAtTargetCommand();
   public static final TurretFlipCommand TURRET_FLIP = new TurretFlipCommand();
   
-  public static final IntakeRetractCommand IntakeRetract = new IntakeRetractCommand();
-  public static final ClimberSubsystem CLIMBER_SUBSYSTEM = new ClimberSubsystem();
   public static final ConveyanceCollectCommand CONVEYANCE_COLLECT_COMMAND = new ConveyanceCollectCommand();
-  public static final FeederSubsystem FEEDER_SUBSYSTEM = new FeederSubsystem();
   public static final ConveyanceEjectCommand CONVEYANCE_EJECT_COMMAND = new ConveyanceEjectCommand();
   //public static final FeederEjectCommand FeederEject = new FeederEjectCommand();
   public static final FeederSafetyReverseCommand FeederSafetyReverse = new FeederSafetyReverseCommand(Constants.FEEDER_SAFETY_REVERSE_DURATION);
