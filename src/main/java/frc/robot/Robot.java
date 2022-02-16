@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -13,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.controls.ButtonCode;
 import frc.controls.Gamepad;
 import frc.robot.commands.*;
+import frc.robot.commands.DriveTrain.DriveTrainTrajectories;
 import frc.robot.commands.shooter.*;
 import frc.robot.subsystems.*;
 
@@ -54,6 +56,23 @@ public class Robot extends TimedRobot {
     GAMEPAD.getButton(ButtonCode.LEFTBUMPER)
       .and(GAMEPAD.getButton(ButtonCode.RIGHTBUMPER))
       .whenActive(new InstantCommand(DRIVE_TRAIN_SUBSYSTEM::zeroGyroscope, DRIVE_TRAIN_SUBSYSTEM));
+
+    GAMEPAD.getButton(ButtonCode.START)
+      .whenActive(
+        new InstantCommand(() -> System.out.println("START Button Pressed"))
+        .andThen(DriveTrainTrajectories.driveStraightOneMeter())
+        .andThen(new InstantCommand(() -> System.out.println("START Button Pressed")))
+      );
+
+      GAMEPAD.getButton(ButtonCode.BACK)
+      .whenActive(
+        new InstantCommand(() -> System.out.println("BACK Button Pressed"))
+        .andThen(DriveTrainTrajectories.sCurveDemo())
+        .andThen(new InstantCommand(() -> System.out.println("BACK Button Pressed")))
+      );
+
+      GAMEPAD.getButton(ButtonCode.Y)
+        .whenActive(DriveTrainTrajectories.moveAndRotate(1, 90));
   }
   
   /**

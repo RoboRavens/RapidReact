@@ -9,6 +9,8 @@ import com.swervedrivespecialties.swervelib.Mk4SwerveModuleHelper;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 import com.swervedrivespecialties.swervelib.SwerveModule;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -16,8 +18,15 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import frc.robot.Constants;
+import frc.robot.RobotMap;
 import frc.util.SwerveModuleConverter;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -72,7 +81,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
   private final SwerveDriveOdometry _odometryFromKinematics;
   private final SwerveDriveOdometry  _odometryFromHardware;
 
-  private ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
+  // private ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
+  private SwerveModuleState[] _moduleStates = m_kinematics.toSwerveModuleStates(new ChassisSpeeds(0,0,0));
 
   private final NetworkTableEntry _odometryXKinematics;
   private final NetworkTableEntry _odometryYKinematics;
@@ -130,23 +140,23 @@ public class DriveTrainSubsystem extends SubsystemBase {
     _odometryFromHardware = new SwerveDriveOdometry(m_kinematics, this.getGyroscopeRotation(), new Pose2d(0, 0, new Rotation2d()));
 
     ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
-    _odometryXKinematics = tab.add("X Kinematics", 0.0).withPosition(0, 0).withSize(1, 1).getEntry();
-    _odometryYKinematics = tab.add("Y Kinematics", 0.0).withPosition(0, 1).withSize(1, 1).getEntry();
-    _odometryAngleKinematics = tab.add("Angle Kinematics", 0.0).withPosition(0, 2).withSize(1, 1).getEntry();
-    _frontLeftKinematics = tab.add("FL Kinematics A", 0.0).withPosition(0, 3).withSize(1, 1).getEntry();
-    _frontRightKinematics  = tab.add("FR Kinematics A", 0.0).withPosition(0, 4).withSize(1, 1).getEntry();
-    _backLeftKinematics  = tab.add("BL Kinematics A", 0.0).withPosition(0, 5).withSize(1, 1).getEntry();
-    _backRightKinematics  = tab.add("BR Kinematics A", 0.0).withPosition(0, 6).withSize(1, 1).getEntry();
-    _frontLeftKinematicsVel = tab.add("FL Kinematics V", 0.0).withPosition(0, 6).withSize(1, 1).getEntry();
+    _odometryXKinematics = tab.add("X Kinematics", 0.0).withPosition(8, 0).withSize(1, 1).getEntry();
+    _odometryYKinematics = tab.add("Y Kinematics", 0.0).withPosition(8, 1).withSize(1, 1).getEntry();
+    _odometryAngleKinematics = tab.add("Angle Kinematics", 0.0).withPosition(8, 2).withSize(1, 1).getEntry();
+    _frontLeftKinematics = tab.add("FL Kinematics A", 0.0).withPosition(4, 0).withSize(1, 1).getEntry();
+    _frontRightKinematics  = tab.add("FR Kinematics A", 0.0).withPosition(4, 1).withSize(1, 1).getEntry();
+    _backLeftKinematics  = tab.add("BL Kinematics A", 0.0).withPosition(4, 2).withSize(1, 1).getEntry();
+    _backRightKinematics  = tab.add("BR Kinematics A", 0.0).withPosition(4, 3).withSize(1, 1).getEntry();
+    _frontLeftKinematicsVel = tab.add("FL Kinematics V", 0.0).withPosition(3, 0).withSize(1, 1).getEntry();
 
-    _odometryXHardware = tab.add("X Hardware", 0.0).withPosition(0, 0).withSize(1, 1).getEntry();
-    _odometryYHardware = tab.add("Y Hardware", 0.0).withPosition(0, 1).withSize(1, 1).getEntry();
-    _odometryAngleHardware = tab.add("Angle Hardware", 0.0).withPosition(0, 2).withSize(1, 1).getEntry();
-    _frontLeftHardware = tab.add("FL Hardware", 0.0).withPosition(0, 3).withSize(1, 1).getEntry();
-    _frontRightHardware  = tab.add("FR Hardware", 0.0).withPosition(0, 4).withSize(1, 1).getEntry();
-    _backLeftHardware  = tab.add("BL Hardware", 0.0).withPosition(0, 5).withSize(1, 1).getEntry();
-    _backRightHardware  = tab.add("BR Hardware", 0.0).withPosition(0, 6).withSize(1, 1).getEntry();
-    _frontLeftHardwareVel = tab.add("FL Hardware V", 0.0).withPosition(0, 6).withSize(1, 1).getEntry();
+    _odometryXHardware = tab.add("X Hardware", 0.0).withPosition(9, 0).withSize(1, 1).getEntry();
+    _odometryYHardware = tab.add("Y Hardware", 0.0).withPosition(9, 1).withSize(1, 1).getEntry();
+    _odometryAngleHardware = tab.add("Angle Hardware", 0.0).withPosition(9, 2).withSize(1, 1).getEntry();
+    _frontLeftHardware = tab.add("FL Hardware A", 0.0).withPosition(5, 0).withSize(1, 1).getEntry();
+    _frontRightHardware  = tab.add("FR Hardware A", 0.0).withPosition(5, 1).withSize(1, 1).getEntry();
+    _backLeftHardware  = tab.add("BL Hardware A", 0.0).withPosition(5, 2).withSize(1, 1).getEntry();
+    _backRightHardware  = tab.add("BR Hardware A", 0.0).withPosition(5, 3).withSize(1, 1).getEntry();
+    _frontLeftHardwareVel = tab.add("FL Hardware V", 0.0).withPosition(6, 0).withSize(1, 1).getEntry();
   }
 
   /**
@@ -180,12 +190,12 @@ public class DriveTrainSubsystem extends SubsystemBase {
   }
 
   public void drive(ChassisSpeeds chassisSpeeds) {
-    m_chassisSpeeds = chassisSpeeds;
+    _moduleStates = m_kinematics.toSwerveModuleStates(chassisSpeeds);
   }
 
   @Override
   public void periodic() {
-    SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
+    SwerveModuleState[] states = _moduleStates; // states and _modulestates still point to the same data
     SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
 
     m_frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[0].angle.getRadians());
@@ -217,5 +227,64 @@ public class DriveTrainSubsystem extends SubsystemBase {
     _frontRightHardware.setDouble(statesHardware[1].angle.getDegrees());
     _backLeftHardware.setDouble(statesHardware[2].angle.getDegrees());
     _backRightHardware.setDouble(statesHardware[3].angle.getDegrees());
+  }
+
+  private Pose2d getPose() {
+    return _odometryFromKinematics.getPoseMeters();
+  }
+
+  private void resetOdometry(Pose2d pose) {
+    _odometryFromKinematics.resetPosition(pose, this.getGyroscopeRotation());
+    _odometryFromHardware.resetPosition(pose, this.getGyroscopeRotation());
+  }
+
+  private void setModuleStates(SwerveModuleState[] moduleStates) {
+    _moduleStates = moduleStates;
+  }
+
+  public void stop() {
+    this.drive(new ChassisSpeeds(0,0,0));
+  }
+
+  public TrajectoryConfig GetTrajectoryConfig() {
+    // Create config for trajectory
+    TrajectoryConfig config =
+    new TrajectoryConfig(
+      MAX_VELOCITY_METERS_PER_SECOND,
+      RobotMap.kMaxAccelerationMetersPerSecondSquared)
+        // Add kinematics to ensure max speed is actually obeyed
+        .setKinematics(m_kinematics);
+
+    return config;
+  }
+
+  public Command CreateFollowTrajectoryCommand(Trajectory trajectory) {
+    var thetaController =
+        new ProfiledPIDController(
+          RobotMap.kPThetaController, 0, 0, RobotMap.kThetaControllerConstraints);
+    thetaController.enableContinuousInput(-Math.PI, Math.PI);
+
+    SwerveControllerCommand swerveControllerCommand =
+        new SwerveControllerCommand(
+          trajectory,
+          this::getPose, // Functional interface to feed supplier
+          m_kinematics,
+
+          // Position controllers
+          new PIDController(RobotMap.kPXController, 0, 0),
+          new PIDController(RobotMap.kPYController, 0, 0),
+          thetaController,
+          this::setModuleStates,
+          this);
+    
+    // Set odometry to the starting pose of the trajectory.
+    var setOdometry = new InstantCommand(() -> this.resetOdometry(trajectory.getInitialPose()));
+
+    // Run path following command, then stop at the end.
+    return setOdometry
+      .andThen(new InstantCommand(() -> System.out.println("starting trajectory")))
+      .andThen(swerveControllerCommand)
+      .andThen(this::stop)
+      .andThen(new InstantCommand(() -> System.out.println("trajectory command chain complete")));
   }
 }
