@@ -19,7 +19,7 @@ public class ConveyanceSubsystem extends SubsystemBase {
  
  
    public ConveyanceSubsystem() {
-    _conveyanceMotorOne = new TalonSRX(RobotMap.CONVEYANCE_MOTOR_ONE);
+    _conveyanceMotorOne = new TalonSRX(RobotMap.CONVEYANCE_MOTOR);
     _conveyanceSensorA = new DigitalInput(RobotMap.SENSOR_A_CHANNEL);
   }
 
@@ -48,7 +48,7 @@ public class ConveyanceSubsystem extends SubsystemBase {
     this.runConveyanceAtPercentPower(Constants.CONVEYANCE_ONE_STOP);
   }
 
-  public boolean getConveyanceSensorAReading() {
+  public boolean getConveyanceOneSubsystemHasBall() {
     return _conveyanceSensorA.get();
   }
 
