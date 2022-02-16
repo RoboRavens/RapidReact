@@ -61,7 +61,7 @@ public class Robot extends TimedRobot {
   public static final FeederSafetyReverseCommand FeederSafetyReverse = new FeederSafetyReverseCommand(Constants.FEEDER_SAFETY_REVERSE_DURATION);
   public static final ConveyanceIndexCommmand CONVEYANCE_INDEX_COMMAND = new ConveyanceIndexCommmand();
   public static final FeederShootCommand FeederShoot = new FeederShootCommand();
-  public static final FeederIndexCommand FEEDER_INDEX_COMMAND = new FeederIndexCommand();
+  public static final FeederIndexCommand FeederIndex = new FeederIndexCommand();
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -74,8 +74,8 @@ public class Robot extends TimedRobot {
 
     //DRIVE_TRAIN_SUBSYSTEM.setDefaultCommand(new DrivetrainDefaultCommand(DRIVE_TRAIN_SUBSYSTEM, GAMEPAD));
     SHOOTER_SUBSYSTEM.setDefaultCommand(new RunCommand(() -> SHOOTER_SUBSYSTEM.defaultCommand(), SHOOTER_SUBSYSTEM));
+    FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     configureButtonBindings();
-    INTAKE_SUBSYSTEM.setDefaultCommand(CONVEYANCE_INDEX_COMMAND);
   }
   
   /**
