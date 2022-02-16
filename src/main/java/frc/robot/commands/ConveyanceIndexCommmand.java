@@ -17,38 +17,21 @@ public class ConveyanceIndexCommmand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        // (True means no ball in front of the sensor and vice versa)
+        if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceOneSubsystemHasBall() == true && Robot.FEEDER_SUBSYSTEM.getFeederSubsystemHasBall() == true) {
+            Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne();   //when there is a ball in conveyance stage 1 and 2 conveyance wont run        
+        }        
+    
+        if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceOneSubsystemHasBall() == true && Robot.FEEDER_SUBSYSTEM.getFeederSubsystemHasBall() == false)              {        
+         Robot.CONVEYANCE_SUBSYSTEM.setConveyanceMaxForward();  //if there is a ball in comveyance stage 1 but nothing at stage 2 conveyance will run at 1
+       }
+   
+    }
         
-        // If there is a ball in conveyance stage 1 and no ball in conveyance stage 2 (feeder subsystem),
-        // run the conveyance stage 2 and set isBallBetweenSensors to true
-        if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceOneSubsystemHasBall() == false && Robot.FEEDER_SUBSYSTEM.getFeederSubsystemHasBall() == true) {
-            Robot.FEEDER_SUBSYSTEM.setConveyanceNormalSpeedForward();
-            isBallBetweenSensors = true;
-        }
-        // If the ball state is in between sensors on the conveyance,
-        // cotninue to run conveyance stage 2
-        if(isBallBetweenSensors == true) {
-            Robot.FEEDER_SUBSYSTEM.setConveyanceNormalSpeedForward();
-        }
-        // If there is a ball completely within conveyance stage 2,
-        // set isBallBetweenSensors to false and stop conveyance stage 2
-        if(Robot.FEEDER_SUBSYSTEM.getFeederSubsystemHasBall() == false) {
-            isBallBetweenSensors = false;
-            Robot.FEEDER_SUBSYSTEM.stopConveyance();
-        }
-        // If there are no balls in the robot,
-        // set isBallBetweenSensors to false and stop conveyance stage 2
-        if((Robot.CONVEYANCE_SUBSYSTEM.getConveyanceOneSubsystemHasBall() == true) && (Robot.FEEDER_SUBSYSTEM.getFeederSubsystemHasBall() == true)) {
-            isBallBetweenSensors = false;
-            Robot.FEEDER_SUBSYSTEM.stopConveyance();
-        }
-    }
-
-    // Called once the command ends or is interrupted.
-    @Override
-    public void end(boolean interrupted) {
-        Robot.FEEDER_SUBSYSTEM.stopConveyance();
-    }
+     // Called once the command ends or is interrupted.
+     @Override
+     public void end(boolean interrupted) {
+        Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne();
+     }
 
     // Returns true when the command should end.
     @Override
