@@ -5,7 +5,7 @@
 package frc.robot;
 
 import frc.util.ShooterCalibration;
-import frc.util.TurretCalibration;
+//import frc.util.TurretCalibration;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -76,7 +76,7 @@ public final class Constants {
     //TURRET SWIVEL
     public static final int TURRET_IDX = 0;
     public static final int TURRET_TIMEOUT_MS = 100;
-    public static final TurretCalibration TURRET_PID = new TurretCalibration(0, 0.05, 0, 0);
+    //public static final TurretCalibration TURRET_PID = new TurretCalibration(0, 0.05, 0, 0);
 
     //CONTROLS
     public static final double AXIS_IS_PRESSED_VALUE = .25;
@@ -103,8 +103,8 @@ public final class Constants {
     //CONVEYANCE ONE
     public static final double CONVEYANCE_ONE_FULL_SPEED_REVERSE = -1;
     public static final double CONVEYANCE_ONE_FULL_SPEED = 1;
-    public static final double CONVEYANCE_ONE_NORMAL_SPEED = 0.75;
-    public static final double CONVEYANCE_ONE_NORMAL_REVERSE_SPEED = 0.75;
+    public static final double CONVEYANCE_ONE_NORMAL_SPEED = 1;
+    public static final double CONVEYANCE_ONE_NORMAL_REVERSE_SPEED = 1;
     public static final double CONVEYANCE_ONE_STOP = 0;
 
     //CLIMBER
@@ -112,5 +112,7 @@ public final class Constants {
 	public static final double CLIMBER_EXTEND_POWER_MAGNITUDE = 1;
 	public static final double CLIMBER_RETRACT_POWER_MAGNITUDE = -.4;
 	public static final double CLIMBER_RETRACT_TO_LATCH_POWER_MAGNITUDE = .2;
+
+    public static final double FEEDER_SAFETY_REVERSE_DURATION = .15;
 
 }

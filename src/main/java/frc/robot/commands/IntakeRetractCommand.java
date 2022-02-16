@@ -26,17 +26,18 @@ public class IntakeRetractCommand extends CommandBase {
   @Override
   public void execute() {
     Robot.INTAKE_SUBSYSTEM.retract();
-    Robot.INTAKE_SUBSYSTEM.stop();
+   System.out.println("RETRACTING");
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+ 
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 }
