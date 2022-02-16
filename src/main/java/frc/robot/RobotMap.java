@@ -6,18 +6,20 @@ package frc.robot;
 
 public final class RobotMap {
 
-    //CONVEYANCE
+    //FEEDER
 
-    public static final int CONVEYANCE_MOTOR_TWO = 1;
-    public static final int CONVEYANCE_MOTOR_ONE = 1;
-    public static final int CONVEYANCE_WHEEL = 1;
+    public static final int FEEDER_MOTOR = 32;
+    public static final int FEEDER_CONVEYANCE_MOTOR = 31;
+
+    //CONVEYANCE
+    
+    public static final int CONVEYANCE_MOTOR = 11;
 
     //CLIMBER
 
-    public static final int LEFT_CLIMBER_MOTOR = 1;
-    public static final int RIGHT_CLIMBER_MOTOR = 1;
+    public static final int LEFT_CLIMBER_MOTOR = 51;
+    public static final int RIGHT_CLIMBER_MOTOR = 52;
 
-    
     //SHOOTER
 
     public static final int SHOOTER_MOTOR_1 = 41;
@@ -32,14 +34,10 @@ public final class RobotMap {
     //INTAKE
      
      public static final int INTAKE_EXTEND_SOLENOID = 0;
-     public static final int INTAKE_RETRACT_SOLENOID = 1;
+     public static final int INTAKE_RETRACT_SOLENOID = 1; 
     
-   
      //SENSORS
-    public static final int SENSOR_A_CHANNEL = 1;
-    public static final int SENSOR_B_CHANNEL = 1;
+    public static final int SENSOR_A_CHANNEL = 0; 
+    public static final int SENSOR_B_CHANNEL = 1; 
     
-    
-   
-
 }

@@ -6,7 +6,7 @@ import frc.robot.Robot;
 public class ConveyanceCollectCommand extends CommandBase {
 
   public ConveyanceCollectCommand() {
-    //addRequirements(Robot.CONVEYANCE_SUBSYSTEM);
+    addRequirements(Robot.CONVEYANCE_SUBSYSTEM);
   }
 
   // Called when the command is initially scheduled.
@@ -19,13 +19,15 @@ public class ConveyanceCollectCommand extends CommandBase {
   @Override
   public void execute() {
     System.out.println("CONVEYANCE COLLECTING!!!");
-    //Robot.CONVEYANCE_SUBSYSTEM.setConveyanceMaxForward();
+    Robot.CONVEYANCE_SUBSYSTEM.setConveyanceMaxForward();
+    Robot.INTAKE_SUBSYSTEM.extend();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    
+    Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne();
+    Robot.INTAKE_SUBSYSTEM.retract();
   }
 
   // Returns true when the command should end.

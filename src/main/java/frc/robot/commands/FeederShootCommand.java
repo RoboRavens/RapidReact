@@ -4,35 +4,32 @@
 
 package frc.robot.commands;
 
- import frc.robot.Robot;
-import frc.robot.subsystems.ConveyanceSubsystem;
-
+import frc.robot.Robot;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-/** An example command that uses an example subsystem. */
- public class ConveyanceEjectCommand extends CommandBase {
+public class FeederShootCommand extends CommandBase {
   
-
-  public ConveyanceEjectCommand() {
-  addRequirements(Robot.CONVEYANCE_SUBSYSTEM);
+  public FeederShootCommand() {
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(Robot.FEEDER_SUBSYSTEM);
   }
-
- // Called when the command is initially scheduled.
+ 
+  // Called when the command is initially scheduled.
   @Override
   public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Robot.CONVEYANCE_SUBSYSTEM.setConveyanceMaxReverse();
-   }
+    Robot.FEEDER_SUBSYSTEM.feederWheelForward();
+  }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne();
+    Robot.FEEDER_SUBSYSTEM.wheelStop();
   }
-   
+
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {

@@ -12,6 +12,14 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.controls.AxisCode;
 import frc.controls.ButtonCode;
 import frc.controls.Gamepad;
+import frc.robot.commands.ConveyanceCollectCommand;
+import frc.robot.commands.ConveyanceEjectCommand;
+import frc.robot.commands.ConveyanceIndexCommmand;
+import frc.robot.commands.DrivetrainDefaultCommand;
+import frc.robot.commands.FeederEjectCommand;
+import frc.robot.commands.FeederIndexCommand;
+import frc.robot.commands.FeederSafetyReverseCommand;
+import frc.robot.commands.FeederShootCommand;
 import frc.robot.commands.IntakeExtendCommand;
 import frc.robot.commands.IntakeRetractCommand;
 import frc.robot.commands.shooter.ShooterStartCommand;
@@ -19,6 +27,7 @@ import frc.robot.commands.turret.TurretAimAtTargetCommand;
 import frc.robot.commands.turret.TurretFlipCommand;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ConveyanceSubsystem;
+import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeExtenderSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -38,7 +47,12 @@ public class Robot extends TimedRobot {
   private static final Gamepad GAMEPAD = new Gamepad(0);
   public static final Gamepad JOYSTICK = new Gamepad(1);
 
-  //public static final DrivetrainSubsystem DRIVE_TRAIN_SUBSYSTEM = new DrivetrainSubsystem();
+  
+
+  
+
+  
+  //public static final DriveTrainSubsystem DRIVE_TRAIN_SUBSYSTEM = new DriveTrainSubsystem();
   public static final ShooterSubsystem SHOOTER_SUBSYSTEM = new ShooterSubsystem();
   //public static final IntakeExtenderSubsystem INTAKE_SUBSYSTEM = new IntakeExtenderSubsystem();
   //public static final ConveyanceSubsystem CONVEYANCE_SUBSYSTEM = new ConveyanceSubsystem();
@@ -51,6 +65,16 @@ public class Robot extends TimedRobot {
   public static final TurretAimAtTargetCommand TURRET_AIM_AT_TARGET = new TurretAimAtTargetCommand();
   public static final TurretFlipCommand TURRET_FLIP = new TurretFlipCommand();
   
+  public static final IntakeRetractCommand IntakeRetract = new IntakeRetractCommand();
+  public static final ClimberSubsystem CLIMBER_SUBSYSTEM = new ClimberSubsystem();
+  public static final ConveyanceCollectCommand CONVEYANCE_COLLECT_COMMAND = new ConveyanceCollectCommand();
+  public static final FeederSubsystem FEEDER_SUBSYSTEM = new FeederSubsystem();
+  public static final ConveyanceEjectCommand CONVEYANCE_EJECT_COMMAND = new ConveyanceEjectCommand();
+  //public static final FeederEjectCommand FeederEject = new FeederEjectCommand();
+  public static final FeederSafetyReverseCommand FeederSafetyReverse = new FeederSafetyReverseCommand(Constants.FEEDER_SAFETY_REVERSE_DURATION);
+  public static final ConveyanceIndexCommmand CONVEYANCE_INDEX_COMMAND = new ConveyanceIndexCommmand();
+  public static final FeederShootCommand FeederShoot = new FeederShootCommand();
+  public static final FeederIndexCommand FeederIndex = new FeederIndexCommand();
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -65,11 +89,9 @@ public class Robot extends TimedRobot {
     SHOOTER_SUBSYSTEM.setDefaultCommand(new RunCommand(() -> SHOOTER_SUBSYSTEM.defaultCommand(), SHOOTER_SUBSYSTEM));
     TURRET_SWIVEL_SUBSYSTEM.setDefaultCommand(TURRET_AIM_AT_TARGET);
 
+    FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
+    configureButtonBindings();
   }
-  
-  
-  
-  
   
   /**
    * This function is called every robot packet, no matter the mode. Use this for items like
@@ -123,9 +145,19 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    //GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(IntakeExtend);
-    GAMEPAD.getButton(ButtonCode.A).whileHeld(ShooterStart);
-    //GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(IntakeRetract);
+  
+  }
+
+
+
+
+  public void configureButtonBindings() {
+    GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(CONVEYANCE_COLLECT_COMMAND);
+    GAMEPAD.getButton(ButtonCode.Y).whileHeld(ShooterStart);
+    GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(CONVEYANCE_EJECT_COMMAND);
+    //GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederEject);
+    GAMEPAD.getButton(ButtonCode.B).whenPressed(FeederSafetyReverse);
+    GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederShoot);
     GAMEPAD.getButton(ButtonCode.RIGHTSTICK).whenPressed(TURRET_FLIP);
   }
 
