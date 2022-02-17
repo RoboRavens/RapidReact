@@ -10,6 +10,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.ravenhardware.BufferedDigitalInput;
 import frc.robot.Constants;
 import frc.robot.RobotMap;
+import frc.robot.commands.ConveyanceCollectCommand;
+import frc.robot.commands.ConveyanceIndexCommmand;
 
 public class ConveyanceSubsystem extends SubsystemBase {
   
@@ -66,6 +68,10 @@ public class ConveyanceSubsystem extends SubsystemBase {
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation 
   }
+
+public void setDefaultCommand(ConveyanceIndexCommmand conveyanceIndexCommand, ConveyanceSubsystem conveyanceSubsystem) {
+}
+ 
   
 
 } 
