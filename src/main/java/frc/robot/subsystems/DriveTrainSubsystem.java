@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
 import frc.robot.RobotMap;
+import frc.util.DriveCharacteristics;
 import frc.util.SwerveModuleConverter;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -84,6 +85,9 @@ public class DriveTrainSubsystem extends SubsystemBase {
   // private ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
   private SwerveModuleState[] _moduleStates = m_kinematics.toSwerveModuleStates(new ChassisSpeeds(0,0,0));
 
+  private final NetworkTableEntry _nteMaxVelocity;
+  private final NetworkTableEntry _nteMaxAngular;
+
   private final NetworkTableEntry _odometryXKinematics;
   private final NetworkTableEntry _odometryYKinematics;
   private final NetworkTableEntry _odometryAngleKinematics;
@@ -101,6 +105,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
   private final NetworkTableEntry _backLeftHardware;
   private final NetworkTableEntry _backRightHardware;
   private final NetworkTableEntry _frontLeftHardwareVel;
+
+  private final DriveCharacteristics _driveCharacteristics;
 
   public DriveTrainSubsystem() {
     m_frontLeftModule = Mk4SwerveModuleHelper.createFalcon500(
@@ -140,6 +146,12 @@ public class DriveTrainSubsystem extends SubsystemBase {
     _odometryFromHardware = new SwerveDriveOdometry(m_kinematics, this.getGyroscopeRotation(), new Pose2d(0, 0, new Rotation2d()));
 
     ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
+    this._nteMaxVelocity  = tab.add("Max Velocity", 0.0).withPosition(0, 0).withSize(1, 1).getEntry();
+    this._nteMaxAngular  = tab.add("Max Angular Vel", 0.0).withPosition(0, 1).withSize(1, 1).getEntry();
+
+    this._nteMaxVelocity.setDouble(DriveTrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND);
+    this._nteMaxAngular.setDouble(DriveTrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND);
+
     _odometryXKinematics = tab.add("X Kinematics", 0.0).withPosition(8, 0).withSize(1, 1).getEntry();
     _odometryYKinematics = tab.add("Y Kinematics", 0.0).withPosition(8, 1).withSize(1, 1).getEntry();
     _odometryAngleKinematics = tab.add("Angle Kinematics", 0.0).withPosition(8, 2).withSize(1, 1).getEntry();
@@ -157,6 +169,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
     _backLeftHardware  = tab.add("BL Hardware A", 0.0).withPosition(5, 2).withSize(1, 1).getEntry();
     _backRightHardware  = tab.add("BR Hardware A", 0.0).withPosition(5, 3).withSize(1, 1).getEntry();
     _frontLeftHardwareVel = tab.add("FL Hardware V", 0.0).withPosition(6, 0).withSize(1, 1).getEntry();
+
+    _driveCharacteristics = new DriveCharacteristics();
   }
 
   /**
@@ -167,6 +181,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
     m_navx.zeroYaw();
     _odometryFromKinematics.resetPosition(new Pose2d(0, 0, new Rotation2d()), this.getGyroscopeRotation());
     _odometryFromHardware.resetPosition(new Pose2d(0, 0, new Rotation2d()), this.getGyroscopeRotation());
+    _driveCharacteristics.reset();
   }
 
   public Rotation2d getGyroscopeRotation() {
@@ -227,6 +242,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
     _frontRightHardware.setDouble(statesHardware[1].angle.getDegrees());
     _backLeftHardware.setDouble(statesHardware[2].angle.getDegrees());
     _backRightHardware.setDouble(statesHardware[3].angle.getDegrees());
+
+    this.calculateDriveCharacteristics();
   }
 
   private Pose2d getPose() {
@@ -250,8 +267,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
     // Create config for trajectory
     TrajectoryConfig config =
     new TrajectoryConfig(
-      MAX_VELOCITY_METERS_PER_SECOND,
-      RobotMap.kMaxAccelerationMetersPerSecondSquared)
+      Constants.TRAJECTORY_CONFIG_MAX_VELOCITY_METERS_PER_SECOND,
+      Constants.TRAJECTORY_CONFIG_MAX_ACCELERATION_METERS_PER_SECOND)
         // Add kinematics to ensure max speed is actually obeyed
         .setKinematics(m_kinematics);
 
@@ -259,10 +276,10 @@ public class DriveTrainSubsystem extends SubsystemBase {
   }
 
   public Command CreateFollowTrajectoryCommand(Trajectory trajectory) {
-    var thetaController =
+    var robotAngleController =
         new ProfiledPIDController(
-          RobotMap.kPThetaController, 0, 0, RobotMap.kThetaControllerConstraints);
-    thetaController.enableContinuousInput(-Math.PI, Math.PI);
+          Constants.SWERVE_CONTROLLER_ANGLE_KP, 0, 0, Constants.SWERVE_CONTROLLER_ANGULAR_CONSTRAINTS);
+    robotAngleController.enableContinuousInput(-Math.PI, Math.PI);
 
     SwerveControllerCommand swerveControllerCommand =
         new SwerveControllerCommand(
@@ -271,9 +288,9 @@ public class DriveTrainSubsystem extends SubsystemBase {
           m_kinematics,
 
           // Position controllers
-          new PIDController(RobotMap.kPXController, 0, 0),
-          new PIDController(RobotMap.kPYController, 0, 0),
-          thetaController,
+          new PIDController(Constants.SWERVE_CONTROLLER_X_KP, 0, 0),
+          new PIDController(Constants.SWERVE_CONTROLLER_Y_KP, 0, 0),
+          robotAngleController,
           this::setModuleStates,
           this);
     
@@ -286,5 +303,9 @@ public class DriveTrainSubsystem extends SubsystemBase {
       .andThen(swerveControllerCommand)
       .andThen(this::stop)
       .andThen(new InstantCommand(() -> System.out.println("trajectory command chain complete")));
+  }
+  
+  private void calculateDriveCharacteristics() {
+    _driveCharacteristics.update(_odometryFromHardware.getPoseMeters(), 360 - m_navx.getAngle());
   }
 }
