@@ -14,6 +14,7 @@ import frc.robot.commands.ConveyanceCollectCommand;
 import frc.robot.commands.ConveyanceEjectCommand;
 import frc.robot.commands.ConveyanceIndexCommmand;
 import frc.robot.commands.DrivetrainDefaultCommand;
+import frc.robot.commands.FeederCollectCommand;
 import frc.robot.commands.FeederEjectCommand;
 import frc.robot.commands.FeederIndexCommand;
 import frc.robot.commands.FeederSafetyReverseCommand;
@@ -40,11 +41,6 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
   
   private Gamepad GAMEPAD = new Gamepad(0);
-
-  
-
-  
-
   
   //public static final DriveTrainSubsystem DRIVE_TRAIN_SUBSYSTEM = new DriveTrainSubsystem();
   public static final ShooterSubsystem SHOOTER_SUBSYSTEM = new ShooterSubsystem();
@@ -62,6 +58,7 @@ public class Robot extends TimedRobot {
   public static final ConveyanceIndexCommmand CONVEYANCE_INDEX_COMMAND = new ConveyanceIndexCommmand();
   public static final FeederShootCommand FeederShoot = new FeederShootCommand();
   public static final FeederIndexCommand FeederIndex = new FeederIndexCommand();
+  public static final FeederCollectCommand FeederCollect = new FeederCollectCommand();
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -133,16 +130,12 @@ public class Robot extends TimedRobot {
   
   }
 
-
-
-
   public void configureButtonBindings() {
     GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(CONVEYANCE_COLLECT_COMMAND);
     GAMEPAD.getButton(ButtonCode.Y).whileHeld(ShooterStart);
     GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(CONVEYANCE_EJECT_COMMAND);
-    //GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederEject);
     GAMEPAD.getButton(ButtonCode.B).whenPressed(FeederSafetyReverse);
-    GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederShoot);
+    GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederCollect);
   }
 
   @Override
@@ -154,6 +147,5 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {}
-
 
 }

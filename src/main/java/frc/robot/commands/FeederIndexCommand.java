@@ -34,14 +34,14 @@ public class FeederIndexCommand extends CommandBase {
             isBallBetweenSensors = true;
             isRobotEmpty = false;
             Robot.FEEDER_SUBSYSTEM.setConveyanceNormalSpeedForward();
-            System.out.println("Conveyance motor running; one ball in conveyance 1");
+            //System.out.println("Conveyance motor running; one ball in conveyance 1");
         }
         // If the ball state is in between sensors on the conveyance,
         // continue to run conveyance stage 2
         if(isBallBetweenSensors == true) {
             isRobotEmpty = false;
             Robot.FEEDER_SUBSYSTEM.setConveyanceNormalSpeedForward();
-            System.out.println("Conveyance motor running; ball in between sensors");
+            //System.out.println("Conveyance motor running; ball in between sensors");
         }
         // If there is a ball completely within conveyance stage 2,
         // set isBallBetweenSensors to false and stop conveyance stage 2
@@ -49,7 +49,7 @@ public class FeederIndexCommand extends CommandBase {
             isBallBetweenSensors = false;
             isRobotEmpty = false;
             Robot.FEEDER_SUBSYSTEM.stopConveyance();
-            System.out.println("Conveyance motor is not running; ball in conveyance stage 2 (robot full)");
+            //System.out.println("Conveyance motor is not running; ball in conveyance stage 2 (robot full)");
         }
         // If there are no balls in the robot,
         // stop conveyance stage 2
@@ -58,7 +58,7 @@ public class FeederIndexCommand extends CommandBase {
         }
         if(isRobotEmpty = true) {
             Robot.FEEDER_SUBSYSTEM.stopConveyance();
-            System.out.println("Conveyance motor is not running; robot is empty");
+            //System.out.println("Conveyance motor is not running; robot is empty");
         }
     }
 
