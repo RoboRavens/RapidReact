@@ -30,7 +30,7 @@ public class TurretSwivelSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        //SmartDashboard.putNumber("Turret Angle", getAngle());
+        SmartDashboard.putNumber("Turret Angle", getAngle());
         SmartDashboard.putNumber("Turret RAW Encoder", _turretMotor.getSelectedSensorPosition());
     }
 
@@ -49,7 +49,7 @@ public class TurretSwivelSubsystem extends SubsystemBase {
     }
 
     public double getAngle() {
-        return _turretMotor.getSelectedSensorPosition() * Constants.TURRET_ENCODER_RATIO;
+        return _turretMotor.getSelectedSensorPosition() / Constants.TURRET_ENCODER_RATIO;
     }
 
     public void flip() {
@@ -57,12 +57,24 @@ public class TurretSwivelSubsystem extends SubsystemBase {
     }
 
     public void seek() {
-        
+        if(_shot.target == Constants.TURRET_RANGE && getIsAtTarget()) {
+            goToAngle(-1 * Constants.TURRET_RANGE);
+        } else if(getIsAtTarget()) {
+            goToAngle(Constants.TURRET_RANGE);
+        }
     }
 
     public void goToAngle(double angle) {
+        //If angle is overshooting bounds farther than the deadzone...
+        if(Math.abs(angle) > (360 - (2 * Constants.TURRET_RANGE) + Constants.TURRET_RANGE)) {
+            //Flip angle...
+            angle += (Math.abs(angle) / angle) * -360; //Adds with an inverted sign to whatever angle is (if angle is +, add - and vice versa)
+        } else if(Math.abs(angle) > Constants.TURRET_RANGE) {
+            angle = (Math.abs(angle) / angle) * -1 * Constants.TURRET_RANGE; //Sets to max value if overshot yet not over deadzone
+        }
         SmartDashboard.putNumber("Turret Target", angle * Constants.TURRET_ENCODER_RATIO);
         _turretMotor.set(ControlMode.Position, angle * Constants.TURRET_ENCODER_RATIO);
+        _shot.target = angle;
     }
 
     public void setShot(TurretCalibration shot) {
@@ -79,10 +91,15 @@ public class TurretSwivelSubsystem extends SubsystemBase {
     }
 
     public void resetEncoder() {
-        setEncoder(0);
+        setEncoder(0);  //PROBLEM: Encoder seemingly resetting randomly?
     }
 
     public void setEncoder(double sensorPos) {
         _turretMotor.setSelectedSensorPosition(sensorPos);
+    }
+
+    public boolean getIsAtTarget() {
+        double buffer = Constants.TURRET_AIM_ALLOWANCE * Constants.TURRET_ENCODER_RATIO;
+        return (getAngle() > _shot.target - buffer && getAngle() < _shot.target + buffer);
     }
 }

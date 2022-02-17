@@ -7,6 +7,7 @@ public class TurretCalibration {
     public double kP;
     public double kI;
     public double kD;
+    public double target;
 
     /**
      * A "shot" object, storing all values needed for revving motors to the shot rpm with PID

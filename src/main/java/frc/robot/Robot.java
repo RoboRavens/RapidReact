@@ -25,6 +25,7 @@ import frc.robot.commands.IntakeRetractCommand;
 import frc.robot.commands.shooter.ShooterStartCommand;
 import frc.robot.commands.turret.TurretAimAtTargetCommand;
 import frc.robot.commands.turret.TurretFlipCommand;
+import frc.robot.commands.turret.TurretSeekCommand;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ConveyanceSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
@@ -44,8 +45,7 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
   
-  private static final Gamepad GAMEPAD = new Gamepad(0);
-  public static final Gamepad JOYSTICK = new Gamepad(1);
+  public static final Gamepad GAMEPAD = new Gamepad(0);
 
   
 
@@ -64,7 +64,7 @@ public class Robot extends TimedRobot {
   public static final TurretSwivelSubsystem TURRET_SWIVEL_SUBSYSTEM = new TurretSwivelSubsystem();
   public static final TurretAimAtTargetCommand TURRET_AIM_AT_TARGET = new TurretAimAtTargetCommand();
   public static final TurretFlipCommand TURRET_FLIP = new TurretFlipCommand();
-  
+  public static final TurretSeekCommand TURRET_SEEK = new TurretSeekCommand();
   public static final ConveyanceCollectCommand CONVEYANCE_COLLECT_COMMAND = new ConveyanceCollectCommand();
   public static final ConveyanceEjectCommand CONVEYANCE_EJECT_COMMAND = new ConveyanceEjectCommand();
   //public static final FeederEjectCommand FeederEject = new FeederEjectCommand();
@@ -72,6 +72,7 @@ public class Robot extends TimedRobot {
   public static final ConveyanceIndexCommmand CONVEYANCE_INDEX_COMMAND = new ConveyanceIndexCommmand();
   public static final FeederShootCommand FeederShoot = new FeederShootCommand();
   public static final FeederIndexCommand FeederIndex = new FeederIndexCommand();
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -85,6 +86,7 @@ public class Robot extends TimedRobot {
     //DRIVE_TRAIN_SUBSYSTEM.setDefaultCommand(new DrivetrainDefaultCommand(DRIVE_TRAIN_SUBSYSTEM, GAMEPAD));
     SHOOTER_SUBSYSTEM.setDefaultCommand(new RunCommand(() -> SHOOTER_SUBSYSTEM.defaultCommand(), SHOOTER_SUBSYSTEM));
     TURRET_SWIVEL_SUBSYSTEM.setDefaultCommand(TURRET_AIM_AT_TARGET);
+    TURRET_SWIVEL_SUBSYSTEM.resetEncoder();
 
     FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     configureButtonBindings();
@@ -155,7 +157,8 @@ public class Robot extends TimedRobot {
     //GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederEject);
     GAMEPAD.getButton(ButtonCode.B).whenPressed(FeederSafetyReverse);
     GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederShoot);
-    GAMEPAD.getButton(ButtonCode.RIGHTSTICK).whenPressed(TURRET_FLIP);
+    GAMEPAD.getButton(ButtonCode.BACK).whenPressed(TURRET_FLIP);
+    GAMEPAD.getButton(ButtonCode.START).whenPressed(TURRET_SEEK);
   }
 
   @Override

@@ -11,7 +11,7 @@ import frc.robot.Robot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-/** An example command that uses an example subsystem. */
+/** Aims the turret at the target */
 public class TurretAimAtTargetCommand extends CommandBase {
 
   public TurretAimAtTargetCommand() {
@@ -28,8 +28,8 @@ public class TurretAimAtTargetCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      double angle = Robot.JOYSTICK.getAxis(AxisCode.RIGHTTRIGGER);
-      Robot.TURRET_SWIVEL_SUBSYSTEM.goToAngle(angle * Constants.TURRET_RANGE);
+      double angle = Robot.GAMEPAD.getAxis(AxisCode.RIGHTSTICKX);
+      Robot.TURRET_SWIVEL_SUBSYSTEM.holdTarget(0.3 * angle * Constants.TURRET_RANGE * Constants.TURRET_ENCODER_RATIO);
   }
 
   // Called once the command ends or is interrupted.

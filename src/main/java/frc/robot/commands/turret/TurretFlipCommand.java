@@ -8,6 +8,7 @@ import frc.controls.AxisCode;
 import frc.controls.Gamepad;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.subsystems.TurretSwivelSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
@@ -37,6 +38,6 @@ public class TurretFlipCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return Robot.TURRET_SWIVEL_SUBSYSTEM.getIsAtTarget();
   }
 }
