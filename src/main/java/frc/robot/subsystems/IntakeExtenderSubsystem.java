@@ -28,12 +28,6 @@ public class IntakeExtenderSubsystem extends SubsystemBase {
     _intakeRetract = new Solenoid(PneumaticsModuleType.CTREPCM, RobotMap.INTAKE_RETRACT_SOLENOID);
   }
 
-  
-
-  public void periodic() {
-
-  }
-
   public void extend() {
     _intakeRetract.set(false);
     _intakeExtend.set(true);
