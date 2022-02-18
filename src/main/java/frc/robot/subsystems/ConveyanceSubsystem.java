@@ -1,16 +1,11 @@
 
 package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.ravenhardware.BufferedDigitalInput;
 import frc.robot.Constants;
 import frc.robot.RobotMap;
-import frc.robot.commands.ConveyanceCollectCommand;
 import frc.robot.commands.ConveyanceIndexCommmand;
 
 public class ConveyanceSubsystem extends SubsystemBase {
