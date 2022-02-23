@@ -113,6 +113,7 @@ public final class Constants {
 	public static final double CLIMBER_RETRACT_TO_LATCH_POWER_MAGNITUDE = .2;
 
     public static final int CLIMBER_TARGET = 8000;
+    public static final int CLIMBER_RETRACT_TARGET = 0;
     public static final double CLIMBER_KF = 0;
     public static final double CLIMBER_KP = 0.05;
     public static final double CLIMBER_KI = 0;
@@ -121,7 +122,10 @@ public final class Constants {
     public static final int CLIMBER_IDX = 0;
     public static final int CLIMBER_TIMEOUT_MS = 100;
 
-    public static final ClimberCalibrations CLIMBER_PID = new ClimberCalibrations("Climber Extend", CLIMBER_TARGET, CLIMBER_KF, CLIMBER_KP, CLIMBER_KI, CLIMBER_KD);
+    //ADD RETRACT VAR
+
+    public static final ClimberCalibrations CLIMBER_PID = new ClimberCalibrations("Climber Extend", CLIMBER_TARGET, CLIMBER_RETRACT_TARGET, CLIMBER_KF, CLIMBER_KP, CLIMBER_KI, CLIMBER_KD);
+    public static final ClimberCalibrations CLIMBER_PID_RETRACT = new ClimberCalibrations("Climber Retract", CLIMBER_TARGET, CLIMBER_RETRACT_TARGET, CLIMBER_KF, CLIMBER_KP, CLIMBER_KI, CLIMBER_KD);
 
 
     public static final double FEEDER_SAFETY_REVERSE_DURATION = .15;

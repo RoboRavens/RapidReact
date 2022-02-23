@@ -49,6 +49,7 @@ public class ClimberSubsystem extends SubsystemBase {
 		_rightClimberMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
 
 		setTarget(Constants.CLIMBER_PID);
+		setTargetRetracted(Constants.CLIMBER_RETRACT_TARGET);
 
 		// _leftClimberMotor.getSensorCollection().setQuadraturePosition(0, 10);
 		// _rightClimberMotor.getSensorCollection().setQuadraturePosition(0, 10);
@@ -105,6 +106,15 @@ public class ClimberSubsystem extends SubsystemBase {
 
 	public void extendPidLeftSide() {
 		_leftClimberMotor.set(ControlMode.Position, _shot.target);
+	}
+
+	//change target
+	public void retractPidRightSide() {
+		_rightClimberMotor.set(ControlMode.Position, _shot.retractTarget);
+	}
+
+	public void retractPidLeftSide() {
+		_leftClimberMotor.set(ControlMode.Position, _shot.retractedTarget);
 	}
 
 	private void retractLeftSide() {
