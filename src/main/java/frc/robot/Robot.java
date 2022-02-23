@@ -4,6 +4,12 @@
 
 package frc.robot;
 
+import java.io.IOException;
+import java.nio.file.Path;
+
+import edu.wpi.first.math.trajectory.TrajectoryUtil;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
@@ -64,15 +70,26 @@ public class Robot extends TimedRobot {
         .andThen(new InstantCommand(() -> System.out.println("START Button Pressed")))
       );
 
-      GAMEPAD.getButton(ButtonCode.BACK)
+    GAMEPAD.getButton(ButtonCode.BACK)
       .whenActive(
         new InstantCommand(() -> System.out.println("BACK Button Pressed"))
         .andThen(DriveTrainTrajectories.sCurveDemo())
         .andThen(new InstantCommand(() -> System.out.println("BACK Button Pressed")))
       );
 
-      GAMEPAD.getButton(ButtonCode.Y)
-        .whenActive(DriveTrainTrajectories.moveAndRotate(1, 90));
+    GAMEPAD.getButton(ButtonCode.Y)
+      .whenActive(DriveTrainTrajectories.moveAndRotate(1, 90));
+
+    String trajectoryJSON = "output/2 ball hangar.wpilib.json";
+    try {
+      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+      var trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+      var command = DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommand(trajectory);
+      GAMEPAD.getButton(ButtonCode.A)
+        .whenActive(command);
+    } catch (IOException ex) {
+      DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
+    }
   }
   
   /**
