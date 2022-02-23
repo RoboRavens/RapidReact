@@ -25,7 +25,6 @@ public class TurretSwivelSubsystem extends SubsystemBase {
         _turretMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
 
         setShot(Constants.TURRET_DEFAULT_PID);
-        resetEncoder();
     }
 
     @Override
@@ -43,6 +42,10 @@ public class TurretSwivelSubsystem extends SubsystemBase {
         
     }
 
+    /**
+     * Adjusts the heading by the input angle
+     * @param relativeChange Angle of which to add to the current angle.
+     */
     public void holdTarget(double relativeChange) {
         double changedAngle = getAngle() + relativeChange;
         goToAngle(changedAngle);
@@ -72,7 +75,7 @@ public class TurretSwivelSubsystem extends SubsystemBase {
         } else if(Math.abs(angle) > Constants.TURRET_RANGE) {
             angle = (Math.abs(angle) / angle) * -1 * Constants.TURRET_RANGE; //Sets to max value if overshot yet not over deadzone
         }
-        SmartDashboard.putNumber("Turret Target", angle * Constants.TURRET_ENCODER_RATIO);
+        SmartDashboard.putNumber("Turret Target", angle);
         _turretMotor.set(ControlMode.Position, angle * Constants.TURRET_ENCODER_RATIO);
         _shot.target = angle;
     }

@@ -5,10 +5,8 @@
 package frc.robot.commands.turret;
 
 import frc.controls.AxisCode;
-import frc.controls.Gamepad;
 import frc.robot.Constants;
 import frc.robot.Robot;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** Aims the turret at the target */
@@ -29,7 +27,7 @@ public class TurretAimAtTargetCommand extends CommandBase {
   @Override
   public void execute() {
       double angle = Robot.GAMEPAD.getAxis(AxisCode.RIGHTSTICKX);
-      Robot.TURRET_SWIVEL_SUBSYSTEM.holdTarget(0.3 * angle * Constants.TURRET_RANGE * Constants.TURRET_ENCODER_RATIO);
+      Robot.TURRET_SWIVEL_SUBSYSTEM.holdTarget(0.3 * angle * Constants.TURRET_RANGE);
   }
 
   // Called once the command ends or is interrupted.

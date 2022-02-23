@@ -4,9 +4,6 @@
 
 package frc.robot.commands.turret;
 
-import frc.controls.AxisCode;
-import frc.controls.Gamepad;
-import frc.robot.Constants;
 import frc.robot.Robot;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
