@@ -3,10 +3,11 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotMap;
-import frc.robot.commands.ConveyanceIndexCommmand;
+import frc.robot.commands.ConveyanceIndexCommand;
 
 public class ConveyanceSubsystem extends SubsystemBase {
   
@@ -46,26 +47,26 @@ public class ConveyanceSubsystem extends SubsystemBase {
   }
 
   public boolean getConveyanceOneSubsystemHasBall() {
-    return _conveyanceSensorA.get();
+    return !_conveyanceSensorA.get();
   }
 
   public void defaultCommand() {
-    //this.stopConveyanceOne();
+    
   }
 
  
    @Override
    public void periodic() {
     // This method will be called once per scheduler run
-   }
+   SmartDashboard.putBoolean("Bruh", getConveyanceOneSubsystemHasBall());
+  }
 
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation 
   }
 
-public void setDefaultCommand(ConveyanceIndexCommmand conveyanceIndexCommand, ConveyanceSubsystem conveyanceSubsystem) {
-}
+   
  
   
 
