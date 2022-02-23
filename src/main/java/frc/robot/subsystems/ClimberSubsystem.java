@@ -8,13 +8,16 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotMap;
+import frc.util.ClimberCalibrations;
 
 public class ClimberSubsystem extends SubsystemBase {
 
-    private TalonSRX _leftClimberMotor;
-	private TalonSRX _rightClimberMotor;
+    private TalonFX _leftClimberMotor;
+	private TalonFX _rightClimberMotor;
 
 	private boolean targetIsExtended = false;
+
+	private ClimberCalibrations _shot;
 
 	private int extendedTarget = 0;
 	private int retractedTarget = 0;
@@ -36,8 +39,8 @@ public class ClimberSubsystem extends SubsystemBase {
     public ClimberSubsystem() {
 
         //Will need to change motors to TalonFX for this season's robot
-		_leftClimberMotor = new TalonSRX(RobotMap.LEFT_CLIMBER_MOTOR);
-		_rightClimberMotor = new TalonSRX(RobotMap.RIGHT_CLIMBER_MOTOR);
+		_leftClimberMotor = new TalonFX(RobotMap.LEFT_CLIMBER_MOTOR);
+		_rightClimberMotor = new TalonFX(RobotMap.RIGHT_CLIMBER_MOTOR);
 		_leftClimberMotor.configFactoryDefault();
 		_rightClimberMotor.configFactoryDefault();
 
@@ -45,12 +48,14 @@ public class ClimberSubsystem extends SubsystemBase {
 		_leftClimberMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
 		_rightClimberMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
 
-		_leftClimberMotor.getSensorCollection().setQuadraturePosition(0, 10);
-		_rightClimberMotor.getSensorCollection().setQuadraturePosition(0, 10);
+		setTarget(Constants.CLIMBER_PID);
+
+		// _leftClimberMotor.getSensorCollection().setQuadraturePosition(0, 10);
+		// _rightClimberMotor.getSensorCollection().setQuadraturePosition(0, 10);
 
 
-//		_shooterMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, TalonSRXConstants.kPIDLoopIdx,
-//        TalonSRXConstants.kTimeoutMs);
+		// _shooterMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, TalonSRXConstants.kPIDLoopIdx,
+ 	    // TalonSRXConstants.kTimeoutMs);
 
 		// _climberMotor.configForwardLimitSwitchSource(LimitSwitchSource.RemoteTalonSRX,
 		// LimitSwitchNormal.NormallyOpen);
@@ -63,6 +68,20 @@ public class ClimberSubsystem extends SubsystemBase {
 
 		_rightClimberMotor.setInverted(true);
 	}
+
+	public void setTarget(ClimberCalibrations shot) {
+        _rightClimberMotor.config_kF(Constants.CLIMBER_IDX, shot.kF, Constants.CLIMBER_TIMEOUT_MS);
+        _rightClimberMotor.config_kP(Constants.CLIMBER_IDX, shot.kP, Constants.CLIMBER_TIMEOUT_MS);
+        _rightClimberMotor.config_kI(Constants.CLIMBER_IDX, shot.kI, Constants.CLIMBER_TIMEOUT_MS);
+        _rightClimberMotor.config_kD(Constants.CLIMBER_IDX, shot.kD, Constants.CLIMBER_TIMEOUT_MS);
+
+        _leftClimberMotor.config_kF(Constants.CLIMBER_IDX, shot.kF, Constants.CLIMBER_TIMEOUT_MS);
+        _leftClimberMotor.config_kP(Constants.CLIMBER_IDX, shot.kP, Constants.CLIMBER_TIMEOUT_MS);
+        _leftClimberMotor.config_kI(Constants.CLIMBER_IDX, shot.kI, Constants.CLIMBER_TIMEOUT_MS);
+        _leftClimberMotor.config_kD(Constants.CLIMBER_IDX, shot.kD, Constants.CLIMBER_TIMEOUT_MS);
+
+        _shot = shot;
+    }
 
 	public void setOverrideOn() {
 		this.encoderAccuracyRange = 0;
@@ -78,6 +97,14 @@ public class ClimberSubsystem extends SubsystemBase {
 
 	private void extendRightSide() {
 		_rightClimberMotor.set(ControlMode.PercentOutput, extendMagnitude);
+	}
+
+	public void extendPidRightSide() {
+		_rightClimberMotor.set(ControlMode.Position, _shot.target);
+	}
+
+	public void extendPidLeftSide() {
+		_leftClimberMotor.set(ControlMode.Position, _shot.target);
 	}
 
 	private void retractLeftSide() {
@@ -206,29 +233,29 @@ boolean retracted = _rightClimberMotor.getSelectedSensorPosition() < (retractedT
 		_rightClimberMotor.set(ControlMode.PercentOutput, 0);
 	}
 
-	public boolean isAtExtensionLimitLimitSwitchVersion() {
-		return (leftMotorIsAtExtensionLimitLimitSwitchVersion() && rightMotorIsAtExtensionLimitLimitSwitchVersion());
-	}
+	// public boolean isAtExtensionLimitLimitSwitchVersion() {
+	// 	return (leftMotorIsAtExtensionLimitLimitSwitchVersion() && rightMotorIsAtExtensionLimitLimitSwitchVersion());
+	// }
 
-	public boolean isAtRetractionLimitLimitSwitchVersion() {
-		return (leftMotorIsAtRetractionLimitLimitSwitchVersion() && rightMotorIsAtRetractionLimitLimitSwitchVersion());
-	}
+	// public boolean isAtRetractionLimitLimitSwitchVersion() {
+	// 	return (leftMotorIsAtRetractionLimitLimitSwitchVersion() && rightMotorIsAtRetractionLimitLimitSwitchVersion());
+	// }
 
-	private boolean leftMotorIsAtExtensionLimitLimitSwitchVersion() {
-		return _leftClimberMotor.getSensorCollection().isRevLimitSwitchClosed();
-	}
+	// private boolean leftMotorIsAtExtensionLimitLimitSwitchVersion() {
+	// 	return _leftClimberMotor.getSensorCollection().isRevLimitSwitchClosed();
+	// }
 
-	private boolean rightMotorIsAtExtensionLimitLimitSwitchVersion() {
-		return _rightClimberMotor.getSensorCollection().isRevLimitSwitchClosed();
-	}
+	// private boolean rightMotorIsAtExtensionLimitLimitSwitchVersion() {
+	// 	return _rightClimberMotor.getSensorCollection().isRevLimitSwitchClosed();
+	// }
 
-	private boolean leftMotorIsAtRetractionLimitLimitSwitchVersion() {
-		return _leftClimberMotor.getSensorCollection().isFwdLimitSwitchClosed();
-	}
+	// private boolean leftMotorIsAtRetractionLimitLimitSwitchVersion() {
+	// 	return _leftClimberMotor.getSensorCollection().isFwdLimitSwitchClosed();
+	// }
 
-	private boolean rightMotorIsAtRetractionLimitLimitSwitchVersion() {
-		return _rightClimberMotor.getSensorCollection().isFwdLimitSwitchClosed();
-	}
+	// private boolean rightMotorIsAtRetractionLimitLimitSwitchVersion() {
+	// 	return _rightClimberMotor.getSensorCollection().isFwdLimitSwitchClosed();
+	// }
 
 	public void holdPositionLeftSide() {
 		_leftClimberMotor.set(ControlMode.PercentOutput, Constants.CLIMBER_HOLD_POSITION_POWER_MAGNITUDE);

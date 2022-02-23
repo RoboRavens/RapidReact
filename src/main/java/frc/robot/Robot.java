@@ -10,6 +10,8 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.controls.ButtonCode;
 import frc.controls.Gamepad;
+import frc.robot.commands.ClimberExtendCommand;
+import frc.robot.commands.ClimberRetractCommand;
 import frc.robot.commands.ConveyanceCollectCommand;
 import frc.robot.commands.ConveyanceEjectCommand;
 import frc.robot.commands.ConveyanceIndexCommmand;
@@ -27,6 +29,7 @@ import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeExtenderSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.util.ClimberCalibrations;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -62,6 +65,9 @@ public class Robot extends TimedRobot {
   public static final ConveyanceIndexCommmand CONVEYANCE_INDEX_COMMAND = new ConveyanceIndexCommmand();
   public static final FeederShootCommand FeederShoot = new FeederShootCommand();
   public static final FeederIndexCommand FeederIndex = new FeederIndexCommand();
+  public static final ClimberExtendCommand ClimberExtend = new ClimberExtendCommand();
+  public static final ClimberRetractCommand ClimberRetract = new ClimberRetractCommand();
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -142,7 +148,8 @@ public class Robot extends TimedRobot {
     GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(CONVEYANCE_EJECT_COMMAND);
     //GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederEject);
     GAMEPAD.getButton(ButtonCode.B).whenPressed(FeederSafetyReverse);
-    GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederShoot);
+    GAMEPAD.getButton(ButtonCode.A).whileHeld(ClimberRetract);
+    GAMEPAD.getButton(ButtonCode.X).whenPressed(ClimberExtend);
   }
 
   @Override
