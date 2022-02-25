@@ -26,7 +26,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
-import frc.robot.RobotMap;
+import frc.robot.commands.DriveTrain.RavenSwerveControllerCommand;
 import frc.util.DriveCharacteristics;
 import frc.util.SwerveModuleConverter;
 import edu.wpi.first.wpilibj.SPI;
@@ -250,9 +250,10 @@ public class DriveTrainSubsystem extends SubsystemBase {
     return _odometryFromKinematics.getPoseMeters();
   }
 
-  private void resetOdometry(Pose2d pose) {
-    _odometryFromKinematics.resetPosition(pose, this.getGyroscopeRotation());
-    _odometryFromHardware.resetPosition(pose, this.getGyroscopeRotation());
+  private void resetOdometry(Pose2d pose, Rotation2d rotation) {
+    var targetPose = new Pose2d(pose.getTranslation(), pose.getRotation());
+    _odometryFromKinematics.resetPosition(targetPose, this.getGyroscopeRotation());
+    _odometryFromHardware.resetPosition(targetPose, this.getGyroscopeRotation());
   }
 
   private void setModuleStates(SwerveModuleState[] moduleStates) {
@@ -281,8 +282,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
           Constants.SWERVE_CONTROLLER_ANGLE_KP, 0, 0, Constants.SWERVE_CONTROLLER_ANGULAR_CONSTRAINTS);
     robotAngleController.enableContinuousInput(-Math.PI, Math.PI);
 
-    SwerveControllerCommand swerveControllerCommand =
-        new SwerveControllerCommand(
+    RavenSwerveControllerCommand swerveControllerCommand =
+        new RavenSwerveControllerCommand(
           trajectory,
           this::getPose, // Functional interface to feed supplier
           m_kinematics,
@@ -295,7 +296,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
           this);
     
     // Set odometry to the starting pose of the trajectory.
-    var setOdometry = new InstantCommand(() -> this.resetOdometry(trajectory.getInitialPose()));
+    var setOdometry = new InstantCommand(() -> this.resetOdometry(trajectory.getInitialPose(), trajectory.getInitialPose().getRotation()));
 
     // Run path following command, then stop at the end.
     return setOdometry

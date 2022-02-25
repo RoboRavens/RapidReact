@@ -80,7 +80,9 @@ public class Robot extends TimedRobot {
     GAMEPAD.getButton(ButtonCode.Y)
       .whenActive(DriveTrainTrajectories.moveAndRotate(1, 90));
 
-    String trajectoryJSON = "output/2 ball hangar.wpilib.json";
+    // String trajectoryJSON = "output/2 ball hangar.wpilib.json";
+    // String trajectoryJSON = "output/a square.wpilib.json";
+    String trajectoryJSON = "output/snake.wpilib.json";
     try {
       Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
       var trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
