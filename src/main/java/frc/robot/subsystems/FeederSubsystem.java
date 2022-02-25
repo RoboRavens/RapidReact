@@ -85,7 +85,7 @@ public class FeederSubsystem extends SubsystemBase {
     this.runWheelAtPercentPower(Constants.CONVEYANCE_TWO_REVERSE_FEEDER);
   }
 
-  public boolean getFeederSubsystemHasBall() {
+  public boolean getFeederHasBall() {
     return _conveyanceSensorB.get();
   }
   

@@ -18,7 +18,6 @@ import frc.ravenhardware.BufferedDigitalInput;
 import frc.robot.RobotMap;
 
 public class IntakeExtenderSubsystem extends SubsystemBase {
-
   private Solenoid _intakeExtend;
   private Solenoid _intakeRetract;
 
@@ -36,11 +35,5 @@ public class IntakeExtenderSubsystem extends SubsystemBase {
   public void retract() {
     _intakeRetract.set(true);
     _intakeExtend.set(false);
-  }
-
- 
-
-  public void defaultCommand() {
-    
   }
 }

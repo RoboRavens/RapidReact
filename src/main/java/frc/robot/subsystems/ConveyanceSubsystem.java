@@ -27,7 +27,7 @@ public class ConveyanceSubsystem extends SubsystemBase {
 
   public void setConveyanceMaxForward() {
     this.runConveyanceAtPercentPower(Constants.CONVEYANCE_ONE_FULL_SPEED);
-    }
+  }
 
   public void setConveyanceNormalSpeedForward() {
     this.runConveyanceAtPercentPower(Constants.CONVEYANCE_ONE_NORMAL_SPEED);
@@ -39,37 +39,27 @@ public class ConveyanceSubsystem extends SubsystemBase {
 
   private void runConveyanceAtPercentPower(double magnitude) {
     this._conveyanceMotorOne.set(ControlMode.PercentOutput, magnitude);
-    System.out.println("Attempting to run conveyance run at 1");
+    System.out.println("Attempting to conveyance run at 1");
   }
 
   public void stopConveyanceOne() {
     this.runConveyanceAtPercentPower(Constants.CONVEYANCE_ONE_STOP);
   }
 
-  public boolean getConveyanceOneSubsystemHasBall() {
-    return !_conveyanceSensorA.get();
+  public boolean getConveyanceHasBall() {
+    return _conveyanceSensorA.get();
   }
 
-  public void defaultCommand() {
-    
-  }
-
- 
    @Override
    public void periodic() {
     // This method will be called once per scheduler run
-   SmartDashboard.putBoolean("Bruh", getConveyanceOneSubsystemHasBall());
+   SmartDashboard.putBoolean("Bruh", getConveyanceHasBall());
   }
 
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation 
   }
-
-   
- 
-  
-
 } 
 
 
