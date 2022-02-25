@@ -124,8 +124,8 @@ public final class Constants {
 
     //ADD RETRACT VAR
 
-    public static final ClimberCalibrations CLIMBER_PID = new ClimberCalibrations("Climber Extend", CLIMBER_TARGET, CLIMBER_RETRACT_TARGET, CLIMBER_KF, CLIMBER_KP, CLIMBER_KI, CLIMBER_KD);
-    public static final ClimberCalibrations CLIMBER_PID_RETRACT = new ClimberCalibrations("Climber Retract", CLIMBER_TARGET, CLIMBER_RETRACT_TARGET, CLIMBER_KF, CLIMBER_KP, CLIMBER_KI, CLIMBER_KD);
+    public static final ClimberCalibrations CLIMBER_PID = new ClimberCalibrations("Climber Extend", CLIMBER_TARGET, CLIMBER_KF, CLIMBER_KP, CLIMBER_KI, CLIMBER_KD);
+    public static final ClimberCalibrations CLIMBER_PID_RETRACT = new ClimberCalibrations("Climber Retract", CLIMBER_RETRACT_TARGET, CLIMBER_KF, CLIMBER_KP, CLIMBER_KI, CLIMBER_KD);
 
 
     public static final double FEEDER_SAFETY_REVERSE_DURATION = .15;

@@ -17,7 +17,7 @@ public class ClimberSubsystem extends SubsystemBase {
 
 	private boolean targetIsExtended = false;
 
-	private ClimberCalibrations _shot;
+	private ClimberCalibrations _climber;
 
 	private int extendedTarget = 0;
 	private int retractedTarget = 0;
@@ -48,8 +48,8 @@ public class ClimberSubsystem extends SubsystemBase {
 		_leftClimberMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
 		_rightClimberMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
 
-		setTarget(Constants.CLIMBER_PID);
-		setTargetRetracted(Constants.CLIMBER_RETRACT_TARGET);
+		
+		setTarget(Constants.CLIMBER_PID_RETRACT);
 
 		// _leftClimberMotor.getSensorCollection().setQuadraturePosition(0, 10);
 		// _rightClimberMotor.getSensorCollection().setQuadraturePosition(0, 10);
@@ -70,18 +70,18 @@ public class ClimberSubsystem extends SubsystemBase {
 		_rightClimberMotor.setInverted(true);
 	}
 
-	public void setTarget(ClimberCalibrations shot) {
-        _rightClimberMotor.config_kF(Constants.CLIMBER_IDX, shot.kF, Constants.CLIMBER_TIMEOUT_MS);
-        _rightClimberMotor.config_kP(Constants.CLIMBER_IDX, shot.kP, Constants.CLIMBER_TIMEOUT_MS);
-        _rightClimberMotor.config_kI(Constants.CLIMBER_IDX, shot.kI, Constants.CLIMBER_TIMEOUT_MS);
-        _rightClimberMotor.config_kD(Constants.CLIMBER_IDX, shot.kD, Constants.CLIMBER_TIMEOUT_MS);
+	public void setTarget(ClimberCalibrations climber) {
+        _rightClimberMotor.config_kF(Constants.CLIMBER_IDX, climber.kF, Constants.CLIMBER_TIMEOUT_MS);
+        _rightClimberMotor.config_kP(Constants.CLIMBER_IDX, climber.kP, Constants.CLIMBER_TIMEOUT_MS);
+        _rightClimberMotor.config_kI(Constants.CLIMBER_IDX, climber.kI, Constants.CLIMBER_TIMEOUT_MS);
+        _rightClimberMotor.config_kD(Constants.CLIMBER_IDX, climber.kD, Constants.CLIMBER_TIMEOUT_MS);
 
-        _leftClimberMotor.config_kF(Constants.CLIMBER_IDX, shot.kF, Constants.CLIMBER_TIMEOUT_MS);
-        _leftClimberMotor.config_kP(Constants.CLIMBER_IDX, shot.kP, Constants.CLIMBER_TIMEOUT_MS);
-        _leftClimberMotor.config_kI(Constants.CLIMBER_IDX, shot.kI, Constants.CLIMBER_TIMEOUT_MS);
-        _leftClimberMotor.config_kD(Constants.CLIMBER_IDX, shot.kD, Constants.CLIMBER_TIMEOUT_MS);
+        _leftClimberMotor.config_kF(Constants.CLIMBER_IDX, climber.kF, Constants.CLIMBER_TIMEOUT_MS);
+        _leftClimberMotor.config_kP(Constants.CLIMBER_IDX, climber.kP, Constants.CLIMBER_TIMEOUT_MS);
+        _leftClimberMotor.config_kI(Constants.CLIMBER_IDX, climber.kI, Constants.CLIMBER_TIMEOUT_MS);
+        _leftClimberMotor.config_kD(Constants.CLIMBER_IDX, climber.kD, Constants.CLIMBER_TIMEOUT_MS);
 
-        _shot = shot;
+        _climber = climber;
     }
 
 	public void setOverrideOn() {
@@ -101,20 +101,24 @@ public class ClimberSubsystem extends SubsystemBase {
 	}
 
 	public void extendPidRightSide() {
-		_rightClimberMotor.set(ControlMode.Position, _shot.target);
+		setTarget(Constants.CLIMBER_PID);
+		_rightClimberMotor.set(ControlMode.Position, _climber.target);
 	}
 
 	public void extendPidLeftSide() {
-		_leftClimberMotor.set(ControlMode.Position, _shot.target);
+		setTarget(Constants.CLIMBER_PID);
+		_leftClimberMotor.set(ControlMode.Position, _climber.target);
 	}
 
 	//change target
 	public void retractPidRightSide() {
-		_rightClimberMotor.set(ControlMode.Position, _shot.retractTarget);
+		setTarget(Constants.CLIMBER_PID_RETRACT);
+		_rightClimberMotor.set(ControlMode.Position, _climber.target);
 	}
 
 	public void retractPidLeftSide() {
-		_leftClimberMotor.set(ControlMode.Position, _shot.retractedTarget);
+		setTarget(Constants.CLIMBER_PID_RETRACT);
+		_leftClimberMotor.set(ControlMode.Position, _climber.target);
 	}
 
 	private void retractLeftSide() {
@@ -186,8 +190,8 @@ public class ClimberSubsystem extends SubsystemBase {
 
 	// The right encoder goes into negative values as the climber is extended.
 	public boolean rightEncoderShowsRetracted() {
-//		boolean retracted = _rightClimberMotor.getSelectedSensorPosition() > (retractedTarget - encoderAccuracyRange);
-boolean retracted = _rightClimberMotor.getSelectedSensorPosition() < (retractedTarget + encoderAccuracyRange);
+	//	boolean retracted = _rightClimberMotor.getSelectedSensorPosition() > (retractedTarget - encoderAccuracyRange);
+	boolean retracted = _rightClimberMotor.getSelectedSensorPosition() < (retractedTarget + encoderAccuracyRange);
 
 	return retracted;
 	}
