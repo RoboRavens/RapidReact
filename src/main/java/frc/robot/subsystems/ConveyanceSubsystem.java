@@ -49,7 +49,7 @@ public class ConveyanceSubsystem extends SubsystemBase {
   }
 
   public boolean getConveyanceOneSubsystemHasBall() {
-    return _conveyanceSensorA.get();
+    return !_conveyanceSensorA.get();
   }
 
   public void defaultCommand() {
