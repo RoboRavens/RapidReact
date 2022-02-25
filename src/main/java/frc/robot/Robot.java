@@ -25,6 +25,7 @@ import frc.robot.commands.IntakeRetractCommand;
 import frc.robot.commands.shooter.ShooterStartCommand;
 import frc.robot.commands.turret.TurretAimAtTargetCommand;
 import frc.robot.commands.turret.TurretFlipCommand;
+import frc.robot.commands.turret.TurretResetEncoderCommand;
 import frc.robot.commands.turret.TurretSeekCommand;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ConveyanceSubsystem;
@@ -56,15 +57,12 @@ public class Robot extends TimedRobot {
   public static final ShooterSubsystem SHOOTER_SUBSYSTEM = new ShooterSubsystem();
   public static final IntakeExtenderSubsystem INTAKE_SUBSYSTEM = new IntakeExtenderSubsystem();
   public static final ConveyanceSubsystem CONVEYANCE_SUBSYSTEM = new ConveyanceSubsystem();
+  public static final TurretSwivelSubsystem TURRET_SWIVEL_SUBSYSTEM = new TurretSwivelSubsystem();
   public static final IntakeExtendCommand IntakeExtend = new IntakeExtendCommand();
   public static final ShooterStartCommand ShooterStart = new ShooterStartCommand();
   public static final IntakeRetractCommand IntakeRetract = new IntakeRetractCommand();
   public static final ClimberSubsystem CLIMBER_SUBSYSTEM = new ClimberSubsystem();
   public static final FeederSubsystem FEEDER_SUBSYSTEM = new FeederSubsystem();
-  public static final TurretSwivelSubsystem TURRET_SWIVEL_SUBSYSTEM = new TurretSwivelSubsystem();
-  public static final TurretAimAtTargetCommand TURRET_AIM_AT_TARGET = new TurretAimAtTargetCommand();
-  public static final TurretFlipCommand TURRET_FLIP = new TurretFlipCommand();
-  public static final TurretSeekCommand TURRET_SEEK = new TurretSeekCommand();
   public static final ConveyanceCollectCommand CONVEYANCE_COLLECT_COMMAND = new ConveyanceCollectCommand();
   public static final ConveyanceEjectCommand CONVEYANCE_EJECT_COMMAND = new ConveyanceEjectCommand();
   //public static final FeederEjectCommand FeederEject = new FeederEjectCommand();
@@ -72,6 +70,11 @@ public class Robot extends TimedRobot {
   public static final ConveyanceIndexCommmand CONVEYANCE_INDEX_COMMAND = new ConveyanceIndexCommmand();
   public static final FeederShootCommand FeederShoot = new FeederShootCommand();
   public static final FeederIndexCommand FeederIndex = new FeederIndexCommand();
+
+  public static final TurretResetEncoderCommand TURRET_RESET = new TurretResetEncoderCommand();
+  public static final TurretFlipCommand TURRET_FLIP = new TurretFlipCommand();
+  public static final TurretSeekCommand TURRET_SEEK = new TurretSeekCommand();
+  public static final TurretAimAtTargetCommand TURRET_AIM_AT_TARGET = new TurretAimAtTargetCommand();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -157,8 +160,11 @@ public class Robot extends TimedRobot {
     //GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederEject);
     GAMEPAD.getButton(ButtonCode.B).whenPressed(FeederSafetyReverse);
     GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederShoot);
+
+    //TURRET SWIVEL
     GAMEPAD.getButton(ButtonCode.BACK).whenPressed(TURRET_FLIP);
     GAMEPAD.getButton(ButtonCode.START).whenPressed(TURRET_SEEK);
+    GAMEPAD.getButton(ButtonCode.RIGHTSTICK).whenPressed(TURRET_RESET);
   }
 
   @Override

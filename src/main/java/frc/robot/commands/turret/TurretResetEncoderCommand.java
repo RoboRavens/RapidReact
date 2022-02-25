@@ -4,15 +4,13 @@
 
 package frc.robot.commands.turret;
 
-import frc.controls.AxisCode;
-import frc.robot.Constants;
 import frc.robot.Robot;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-/** Aims the turret at the target */
-public class TurretAimAtTargetCommand extends CommandBase {
+/** Sets the turret encoder to 0 instantly. */
+public class TurretResetEncoderCommand extends CommandBase {
 
-  public TurretAimAtTargetCommand() {
+  public TurretResetEncoderCommand() {
     addRequirements(Robot.TURRET_SWIVEL_SUBSYSTEM);
   }
 
@@ -20,14 +18,13 @@ public class TurretAimAtTargetCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-      //System.out.println("TurretAimAtTargetCommand init");
+      //System.out.println("TurretResetEncoderCommand init");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      double angle = Robot.GAMEPAD.getAxis(AxisCode.RIGHTSTICKX);
-      Robot.TURRET_SWIVEL_SUBSYSTEM.goToAngle(360 * angle);
+      Robot.TURRET_SWIVEL_SUBSYSTEM.resetEncoder();
   }
 
   // Called once the command ends or is interrupted.
@@ -37,6 +34,6 @@ public class TurretAimAtTargetCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

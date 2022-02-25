@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -43,7 +44,7 @@ public class TurretSwivelSubsystem extends SubsystemBase {
     }
 
     /**
-     * Adjusts the heading by the input angle
+     * Adjusts the heading by the input angle, for holding focus on a target
      * @param relativeChange Angle of which to add to the current angle.
      */
     public void holdTarget(double relativeChange) {
@@ -68,12 +69,11 @@ public class TurretSwivelSubsystem extends SubsystemBase {
     }
 
     public void goToAngle(double angle) {
-        //If angle is overshooting bounds farther than the deadzone...
-        if(Math.abs(angle) > (360 - (2 * Constants.TURRET_RANGE) + Constants.TURRET_RANGE)) {
-            //Flip angle...
-            angle += (Math.abs(angle) / angle) * -360; //Adds with an inverted sign to whatever angle is (if angle is +, add - and vice versa)
-        } else if(Math.abs(angle) > Constants.TURRET_RANGE) {
-            angle = (Math.abs(angle) / angle) * -1 * Constants.TURRET_RANGE; //Sets to max value if overshot yet not over deadzone
+        if(Math.abs(angle) > (360 - Constants.TURRET_RANGE)) { //If angle is overshooting bounds farther than the deadzone...
+            angle += (Math.abs(angle) / angle) * -360; //Flips angle; adds 360 with an inverted sign to whatever angle is (if angle is +, add - and vice versa)
+        } else { //If angle is over bounds but IN deadzone...
+            angle = Math.max(angle, -Constants.TURRET_RANGE); //Limit to turret range pos/neg
+            angle = Math.min(angle, Constants.TURRET_RANGE);
         }
         SmartDashboard.putNumber("Turret Target", angle);
         _turretMotor.set(ControlMode.Position, angle * Constants.TURRET_ENCODER_RATIO);
@@ -94,7 +94,7 @@ public class TurretSwivelSubsystem extends SubsystemBase {
     }
 
     public void resetEncoder() {
-        setEncoder(0);  //PROBLEM: Encoder seemingly resetting randomly?
+        setEncoder(0);
     }
 
     public void setEncoder(double sensorPos) {
