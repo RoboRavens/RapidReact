@@ -24,7 +24,8 @@ public class TurretResetEncoderCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      Robot.TURRET_SWIVEL_SUBSYSTEM.resetEncoder();
+      Robot.TURRET_SWIVEL_SUBSYSTEM.setEncoder(0);
+      System.out.println("Reset encoder!");
   }
 
   // Called once the command ends or is interrupted.

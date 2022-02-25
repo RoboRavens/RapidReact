@@ -23,5 +23,6 @@ public class TurretCalibration {
         this.kP = kP;
         this.kI = kI;
         this.kD = kD;
+        this.target = 0;
     }
 }

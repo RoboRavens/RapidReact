@@ -32,6 +32,7 @@ public class TurretSwivelSubsystem extends SubsystemBase {
     public void periodic() {
         SmartDashboard.putNumber("Turret Angle", getAngle());
         SmartDashboard.putNumber("Turret RAW Encoder", _turretMotor.getSelectedSensorPosition());
+        SmartDashboard.putNumber("Turret Target", _shot.target);
     }
 
     @Override
@@ -75,7 +76,6 @@ public class TurretSwivelSubsystem extends SubsystemBase {
             angle = Math.max(angle, -Constants.TURRET_RANGE); //Limit to turret range pos/neg
             angle = Math.min(angle, Constants.TURRET_RANGE);
         }
-        SmartDashboard.putNumber("Turret Target", angle);
         _turretMotor.set(ControlMode.Position, angle * Constants.TURRET_ENCODER_RATIO);
         _shot.target = angle;
     }
@@ -91,10 +91,6 @@ public class TurretSwivelSubsystem extends SubsystemBase {
 
     public String getShot() {
         return _shot.name;
-    }
-
-    public void resetEncoder() {
-        setEncoder(0);
     }
 
     public void setEncoder(double sensorPos) {
