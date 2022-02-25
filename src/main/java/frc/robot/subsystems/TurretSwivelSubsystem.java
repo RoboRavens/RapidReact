@@ -33,6 +33,7 @@ public class TurretSwivelSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Turret Angle", getAngle());
         SmartDashboard.putNumber("Turret RAW Encoder", _turretMotor.getSelectedSensorPosition());
         SmartDashboard.putNumber("Turret Target", _shot.target);
+        SmartDashboard.putNumber("Turret Volt", _turretMotor.getMotorOutputVoltage());
     }
 
     @Override
