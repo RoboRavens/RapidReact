@@ -52,7 +52,6 @@ public class ConveyanceSubsystem extends SubsystemBase {
    @Override
    public void periodic() {
     // This method will be called once per scheduler run
-   SmartDashboard.putBoolean("Bruh", getConveyanceHasBall());
   }
 
   @Override
