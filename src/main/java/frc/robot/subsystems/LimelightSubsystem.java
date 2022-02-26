@@ -23,44 +23,6 @@ public class LimelightSubsystem extends SubsystemBase {
     double l = tl.getDouble(0.0); // The pipeline’s latency contribution (ms) Add at least 11ms for image capture
     double v = tv.getDouble(0.0); // Whether the limelight has any valid targets (0 or 1)
     double s = ts.getDouble(0.0); // Skew or rotation (-90 degrees to 0 degrees)
-    NetworkTableEntry ledMode = table.getEntry("ledMode");
-    private int _ledState = 0;
-
-
-   
-
-
-
-    public void toggleLED() {
-		if (_ledState == 0) {
-			setBothLEDOn();
-		} else if (_ledState == 3) {
-			setOneLEDOn();
-		}
-	}
-
-	public void setOneLEDOn() {
-		_ledState = 0;
-	}
-
-	public void setBothLEDOn() {
-		_ledState = 3;
-	}
-
-	public void turnLEDOff() {
-		ledMode.setNumber(1);
-	}
-
-	public void turnLEDOn() {
-		ledMode.setNumber(_ledState);
-	}
-
-
-
-
-
-    
-
    
 }
 

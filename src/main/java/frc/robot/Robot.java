@@ -80,7 +80,6 @@ public class Robot extends TimedRobot {
     FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     CONVEYANCE_SUBSYSTEM.setDefaultCommand(CONVEYANCE_INDEX_COMMAND);
     configureButtonBindings();
-    LIMELIGHT_SUBSYSTEM.turnLEDOff();
   }
   
   /**
@@ -140,10 +139,7 @@ public class Robot extends TimedRobot {
   
   }
 
-
-
-
-  public void configureButtonBindings() {
+   public void configureButtonBindings() {
     GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(CONVEYANCE_COLLECT_COMMAND);
     GAMEPAD.getButton(ButtonCode.Y).whileHeld(ShooterStart);
     GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(CONVEYANCE_EJECT_COMMAND);
