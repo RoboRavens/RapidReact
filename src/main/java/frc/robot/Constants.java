@@ -75,7 +75,7 @@ public final class Constants {
     public static final int TURRET_IDX = 0;
     public static final int TURRET_TIMEOUT_MS = 100;
     public static final double TURRET_DEFAULT_KF = 0;
-    public static final double TURRET_DEFAULT_KP = 0.05;
+    public static final double TURRET_DEFAULT_KP = 0.075;
     public static final double TURRET_DEFAULT_KI = 0;
     public static final double TURRET_DEFAULT_KD = 0;
     public static final int TURRET_RANGE = 50; //Degrees of motion in both ways (180 means full movement both ways)

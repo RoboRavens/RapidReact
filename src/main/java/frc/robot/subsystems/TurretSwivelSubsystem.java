@@ -71,12 +71,12 @@ public class TurretSwivelSubsystem extends SubsystemBase {
     }
 
     public void goToAngle(double angle) {
-        /*if(Math.abs(angle) > (360 - Constants.TURRET_RANGE)) { //If angle is overshooting bounds farther than the deadzone...
+        if(Math.abs(angle) > (360 - Constants.TURRET_RANGE)) { //If angle is overshooting bounds farther than the deadzone...
             angle += (Math.abs(angle) / angle) * -360; //Flips angle; adds 360 with an inverted sign to whatever angle is (if angle is +, add - and vice versa)
         } else { //If angle is over bounds but IN deadzone...
             angle = Math.max(angle, -1 * Constants.TURRET_RANGE); //Limit to turret range pos/neg
             angle = Math.min(angle, Constants.TURRET_RANGE);
-        }*/
+        }
         _turretMotor.set(ControlMode.Position, angle * Constants.TURRET_ENCODER_RATIO);
         _shot.target = angle;
     }
@@ -99,7 +99,6 @@ public class TurretSwivelSubsystem extends SubsystemBase {
     }
 
     public boolean getIsAtTarget() {
-        double buffer = Constants.TURRET_AIM_ALLOWANCE * Constants.TURRET_ENCODER_RATIO;
-        return (getAngle() > _shot.target - buffer && getAngle() < _shot.target + buffer);
+        return (getAngle() > _shot.target - Constants.TURRET_AIM_ALLOWANCE && getAngle() < _shot.target + Constants.TURRET_AIM_ALLOWANCE);
     }
 }

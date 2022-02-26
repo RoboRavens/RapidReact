@@ -18,13 +18,13 @@ public class TurretFlipCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-      //System.out.println("TurretFlipCommand init");
+      Robot.TURRET_SWIVEL_SUBSYSTEM.flip();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      Robot.TURRET_SWIVEL_SUBSYSTEM.flip();
+      
   }
 
   // Called once the command ends or is interrupted.
