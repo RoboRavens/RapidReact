@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.controls.ButtonCode;
 import frc.controls.Gamepad;
 import frc.robot.commands.ClimberDefaultBrakeCommand;
+import frc.robot.commands.ClimberExtendCommand;
+import frc.robot.commands.ClimberRetractCommand;
 import frc.robot.commands.ConveyanceCollectCommand;
 import frc.robot.commands.ConveyanceEjectCommand;
 import frc.robot.commands.ConveyanceIndexCommmand;
@@ -41,11 +43,6 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
   
   private Gamepad GAMEPAD = new Gamepad(0);
-
-  
-
-  
-
   
   //public static final DriveTrainSubsystem DRIVE_TRAIN_SUBSYSTEM = new DriveTrainSubsystem();
   public static final ShooterSubsystem SHOOTER_SUBSYSTEM = new ShooterSubsystem();
@@ -63,7 +60,10 @@ public class Robot extends TimedRobot {
   public static final ConveyanceIndexCommmand CONVEYANCE_INDEX_COMMAND = new ConveyanceIndexCommmand();
   public static final FeederShootCommand FeederShoot = new FeederShootCommand();
   public static final FeederIndexCommand FeederIndex = new FeederIndexCommand();
-  public static final ClimberDefaultBrakeCommand climberDefaultBrake = new ClimberDefaultBrakeCommand();
+  public static final ClimberDefaultBrakeCommand ClimberDefaultBrake = new ClimberDefaultBrakeCommand();
+  public static final ClimberRetractCommand ClimberRetract = new ClimberRetractCommand();
+  public static final ClimberExtendCommand ClimberExtend = new ClimberExtendCommand();
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -77,7 +77,7 @@ public class Robot extends TimedRobot {
     //DRIVE_TRAIN_SUBSYSTEM.setDefaultCommand(new DrivetrainDefaultCommand(DRIVE_TRAIN_SUBSYSTEM, GAMEPAD));
     SHOOTER_SUBSYSTEM.setDefaultCommand(new RunCommand(() -> SHOOTER_SUBSYSTEM.defaultCommand(), SHOOTER_SUBSYSTEM));
     FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
-    CLIMBER_SUBSYSTEM.setDefaultCommand(climberDefaultBrake);
+    CLIMBER_SUBSYSTEM.setDefaultCommand(ClimberDefaultBrake);
     configureButtonBindings();
   }
   
@@ -141,7 +141,9 @@ public class Robot extends TimedRobot {
     // GAMEPAD.getButton(ButtonCode.Y).whileHeld(ShooterStart);
     GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(CONVEYANCE_EJECT_COMMAND);
     GAMEPAD.getButton(ButtonCode.B).whenPressed(FeederSafetyReverse);
-    GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederShoot);
+    //GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederShoot);
+    GAMEPAD.getButton(ButtonCode.A).whenPressed(ClimberRetract);
+    GAMEPAD.getButton(ButtonCode.X).whenPressed(ClimberExtend);
   }
 
   @Override

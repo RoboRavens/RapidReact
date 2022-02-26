@@ -38,8 +38,8 @@ public class ClimberSubsystem extends SubsystemBase {
 
 	private int defaultEncoderAccuracyRange = encoderAccuracyRange;
 
-	private Solenoid _climberBrakeRight;
-	private Solenoid _climberBrakeLeft;
+	private Solenoid _climberBrake;
+	private Solenoid _climberReleaseBrake;
 
     public ClimberSubsystem() {
 
@@ -53,8 +53,8 @@ public class ClimberSubsystem extends SubsystemBase {
 		_leftClimberMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
 		_rightClimberMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
 
-		_climberBrakeRight = new Solenoid(PneumaticsModuleType.CTREPCM, RobotMap.LEFT_CLIMBER_SOLENOID);
-    	_climberBrakeLeft = new Solenoid(PneumaticsModuleType.CTREPCM, RobotMap.RIGHT_CLIMBER_SOLENOID);
+		_climberBrake = new Solenoid(PneumaticsModuleType.CTREPCM, RobotMap.CLIMBER_BRAKE_SOLENOID);
+    	_climberReleaseBrake = new Solenoid(PneumaticsModuleType.CTREPCM, RobotMap.CLIMBER_RELEASE_BRAKE_SOLENOID);
 		
 		setTarget(Constants.CLIMBER_PID_RETRACT);
 
@@ -91,17 +91,14 @@ public class ClimberSubsystem extends SubsystemBase {
         _climber = climber;
     }
 
-	public void leftClimberBrake() {
-		_climberBrakeLeft.set(true);
-	}
-
-	public void rightClimberBrake() {
-		_climberBrakeLeft.set(true);
-	}
-
 	public void brakeClimbers() {
-		leftClimberBrake();
-		rightClimberBrake();
+		_climberBrake.set(true);
+		_climberReleaseBrake.set(false);
+	}
+
+	public void releaseClimberBrakes() {
+		_climberBrake.set(false);
+		_climberReleaseBrake.set(true);
 	}
 
 	public void setOverrideOn() {
@@ -160,6 +157,11 @@ public class ClimberSubsystem extends SubsystemBase {
 		*/
 	}
 
+	public void extendPid() {
+		this.extendPidLeftSide();
+		this.extendPidRightSide();
+	}
+
 	public void retract() {
 		this.retractLeftSide();
 		this.retractRightSide();
@@ -169,6 +171,11 @@ public class ClimberSubsystem extends SubsystemBase {
 			this.set(Calibrations.CLIMBER_RETRACT_POWER_MAGNITUDE);
 		}
 		*/
+	}
+
+	public void retractPid() {
+		this.retractPidLeftSide();
+		this.retractPidRightSide();
 	}
 
 	private void set(double magnitude) {

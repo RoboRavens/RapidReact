@@ -28,8 +28,8 @@ public class ClimberRetractCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      Robot.CLIMBER_SUBSYSTEM.retractPidLeftSide();
-      Robot.CLIMBER_SUBSYSTEM.retractPidRightSide();
+      Robot.CLIMBER_SUBSYSTEM.releaseClimberBrakes();
+      Robot.CLIMBER_SUBSYSTEM.retractPid();
   }
 
   // Called once the command ends or is interrupted.
