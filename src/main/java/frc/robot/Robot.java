@@ -71,10 +71,10 @@ public class Robot extends TimedRobot {
   public static final FeederShootCommand FeederShoot = new FeederShootCommand();
   public static final FeederIndexCommand FeederIndex = new FeederIndexCommand();
 
+  public static final TurretAimAtTargetCommand TURRET_AIM_AT_TARGET = new TurretAimAtTargetCommand();
   public static final TurretResetEncoderCommand TURRET_RESET = new TurretResetEncoderCommand();
   public static final TurretFlipCommand TURRET_FLIP = new TurretFlipCommand();
   public static final TurretSeekCommand TURRET_SEEK = new TurretSeekCommand();
-  public static final TurretAimAtTargetCommand TURRET_AIM_AT_TARGET = new TurretAimAtTargetCommand();
 
   /**
    * This function is run when the robot is first started up and should be used for any
