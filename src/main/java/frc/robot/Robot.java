@@ -23,6 +23,7 @@ import frc.robot.commands.*;
 import frc.robot.commands.DriveTrain.DriveTrainTrajectories;
 import frc.robot.commands.shooter.*;
 import frc.robot.subsystems.*;
+import frc.util.FileWriter;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -45,6 +46,8 @@ public class Robot extends TimedRobot {
   public static final IntakeExtendCommand IntakeExtend = new IntakeExtendCommand();
   public static final ShooterStartCommand ShooterStart = new ShooterStartCommand();
   public static final IntakeRetractCommand IntakeRetract = new IntakeRetractCommand();
+
+  public static final FileWriter SHOOTER_DATA = new FileWriter("shooter");
   
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -92,6 +95,8 @@ public class Robot extends TimedRobot {
     } catch (IOException ex) {
       DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
     }
+
+    SHOOTER_DATA.writeLine("wahoo it worked!");
   }
   
   /**
