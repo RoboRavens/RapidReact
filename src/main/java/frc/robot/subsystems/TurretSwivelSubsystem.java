@@ -33,7 +33,11 @@ public class TurretSwivelSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Turret Angle", getAngle());
         SmartDashboard.putNumber("Turret RAW Encoder", _turretMotor.getSelectedSensorPosition());
         SmartDashboard.putNumber("Turret Target", _shot.target);
+<<<<<<< Updated upstream
         SmartDashboard.putString("Turret Errors", _turretMotor.getLastError().toString());
+=======
+        SmartDashboard.putString("Turret Motor Object", _turretMotor.toString());
+>>>>>>> Stashed changes
     }
 
     @Override
@@ -71,12 +75,12 @@ public class TurretSwivelSubsystem extends SubsystemBase {
     }
 
     public void goToAngle(double angle) {
-        if(Math.abs(angle) > (360 - Constants.TURRET_RANGE)) { //If angle is overshooting bounds farther than the deadzone...
+        /*if(Math.abs(angle) > (360 - Constants.TURRET_RANGE)) { //If angle is overshooting bounds farther than the deadzone...
             angle += (Math.abs(angle) / angle) * -360; //Flips angle; adds 360 with an inverted sign to whatever angle is (if angle is +, add - and vice versa)
         } else { //If angle is over bounds but IN deadzone...
-            angle = Math.max(angle, -Constants.TURRET_RANGE); //Limit to turret range pos/neg
+            angle = Math.max(angle, -1 * Constants.TURRET_RANGE); //Limit to turret range pos/neg
             angle = Math.min(angle, Constants.TURRET_RANGE);
-        }
+        }*/
         _turretMotor.set(ControlMode.Position, angle * Constants.TURRET_ENCODER_RATIO);
         _shot.target = angle;
     }
