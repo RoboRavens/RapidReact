@@ -112,5 +112,13 @@ public final class Constants {
 	public static final double CLIMBER_RETRACT_TO_LATCH_POWER_MAGNITUDE = .2;
 
     public static final double FEEDER_SAFETY_REVERSE_DURATION = .15;
-
+    
+    //LimeLight
+    public static final int FLOOR_TO_LIMELIGHT_LENS_HEIGHT = 0;
+    public static final int FLOOR_TO_TARGET_CENTER_HEIGHT = 0;
+    public static final double CAMERA_ANGLE_OFFSET_FROM_HORIZONTAL = 0;
+    public static final double LIMELIGHT_LENS_TO_ROBOT_CENTER_OFFSET_INCHES = 0;
+    public static final double MINIMUM_DISTANCE_FROM_LIMELIGHT = 46.0;
+	public static final double MAXIMUM_DISTANCE_FROM_LIMELIGHT = 240.0;
+    public static final int DESIRED_TURRET_TARGET_BUFFER = 1;
 }
