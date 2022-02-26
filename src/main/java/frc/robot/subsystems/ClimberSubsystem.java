@@ -5,6 +5,8 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotMap;
@@ -36,6 +38,9 @@ public class ClimberSubsystem extends SubsystemBase {
 
 	private int defaultEncoderAccuracyRange = encoderAccuracyRange;
 
+	private Solenoid _climberBrakeRight;
+	private Solenoid _climberBrakeLeft;
+
     public ClimberSubsystem() {
 
         //Will need to change motors to TalonFX for this season's robot
@@ -48,6 +53,8 @@ public class ClimberSubsystem extends SubsystemBase {
 		_leftClimberMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
 		_rightClimberMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
 
+		_climberBrakeRight = new Solenoid(PneumaticsModuleType.CTREPCM, RobotMap.LEFT_CLIMBER_SOLENOID);
+    	_climberBrakeLeft = new Solenoid(PneumaticsModuleType.CTREPCM, RobotMap.RIGHT_CLIMBER_SOLENOID);
 		
 		setTarget(Constants.CLIMBER_PID_RETRACT);
 
@@ -83,6 +90,19 @@ public class ClimberSubsystem extends SubsystemBase {
 
         _climber = climber;
     }
+
+	public void leftClimberBrake() {
+		_climberBrakeLeft.set(true);
+	}
+
+	public void rightClimberBrake() {
+		_climberBrakeLeft.set(true);
+	}
+
+	public void brakeClimbers() {
+		leftClimberBrake();
+		rightClimberBrake();
+	}
 
 	public void setOverrideOn() {
 		this.encoderAccuracyRange = 0;
