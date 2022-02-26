@@ -24,7 +24,7 @@ public class LimelightSubsystem extends SubsystemBase {
     double v = tv.getDouble(0.0); // Whether the limelight has any valid targets (0 or 1)
     double s = ts.getDouble(0.0); // Skew or rotation (-90 degrees to 0 degrees)
     NetworkTableEntry ledMode = table.getEntry("ledMode");
-    private int _ledState = 3;
+    private int _ledState = 0;
 
 
    
