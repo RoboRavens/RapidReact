@@ -22,11 +22,9 @@ public class FeederIndexCommand extends CommandBase {
             Robot.FEEDER_SUBSYSTEM.stopConveyance();
             conveyanceOneHadBall = false;
         }
-        else {
-            if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceOneSubsystemHasBall() || conveyanceOneHadBall) {
-                Robot.FEEDER_SUBSYSTEM.setConveyanceNormalSpeedForward();
-                conveyanceOneHadBall = true;
-            }
+        else if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceOneSubsystemHasBall() || conveyanceOneHadBall) {
+            Robot.FEEDER_SUBSYSTEM.setConveyanceNormalSpeedForward();
+            conveyanceOneHadBall = true;
         }
     }
 
