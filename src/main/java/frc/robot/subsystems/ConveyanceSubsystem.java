@@ -1,13 +1,10 @@
 
 package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.ravenhardware.BufferedDigitalInput;
 import frc.robot.Constants;
 import frc.robot.RobotMap;
 
@@ -29,7 +26,7 @@ public class ConveyanceSubsystem extends SubsystemBase {
 
   public void setConveyanceMaxForward() {
     this.runConveyanceAtPercentPower(Constants.CONVEYANCE_ONE_FULL_SPEED);
-    }
+  }
 
   public void setConveyanceNormalSpeedForward() {
     this.runConveyanceAtPercentPower(Constants.CONVEYANCE_ONE_NORMAL_SPEED);
@@ -41,7 +38,7 @@ public class ConveyanceSubsystem extends SubsystemBase {
 
   private void runConveyanceAtPercentPower(double magnitude) {
     this._conveyanceMotorOne.set(ControlMode.PercentOutput, magnitude);
-    System.out.println("Attempting to run conveyance run at 1");
+    System.out.println("Running ConveyanceMotor at " + magnitude + " PercentOutput");
   }
 
   public void stopConveyanceOne() {
@@ -49,25 +46,18 @@ public class ConveyanceSubsystem extends SubsystemBase {
   }
 
   public boolean getConveyanceOneSubsystemHasBall() {
-    return _conveyanceSensorA.get();
+    return !_conveyanceSensorA.get();
   }
 
-  public void defaultCommand() {
-    //this.stopConveyanceOne();
-  }
-
- 
    @Override
    public void periodic() {
     // This method will be called once per scheduler run
-   }
+  }
 
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation 
   }
-  
-
 } 
 
 
