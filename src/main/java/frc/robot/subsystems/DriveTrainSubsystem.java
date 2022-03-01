@@ -146,11 +146,11 @@ public class DriveTrainSubsystem extends SubsystemBase {
     _odometryFromHardware = new SwerveDriveOdometry(m_kinematics, this.getGyroscopeRotation(), new Pose2d(0, 0, new Rotation2d()));
 
     ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
-    this._nteMaxVelocity  = tab.add("Max Velocity", 0.0).withPosition(0, 0).withSize(1, 1).getEntry();
-    this._nteMaxAngular  = tab.add("Max Angular Vel", 0.0).withPosition(0, 1).withSize(1, 1).getEntry();
+    _nteMaxVelocity  = tab.add("Max Velocity", 0.0).withPosition(0, 0).withSize(1, 1).getEntry();
+    _nteMaxAngular  = tab.add("Max Angular Vel", 0.0).withPosition(0, 1).withSize(1, 1).getEntry();
 
-    this._nteMaxVelocity.setDouble(DriveTrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND);
-    this._nteMaxAngular.setDouble(DriveTrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND);
+    _nteMaxVelocity.setDouble(DriveTrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND);
+    _nteMaxAngular.setDouble(DriveTrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND);
 
     _odometryXKinematics = tab.add("X Kinematics", 0.0).withPosition(8, 0).withSize(1, 1).getEntry();
     _odometryYKinematics = tab.add("Y Kinematics", 0.0).withPosition(8, 1).withSize(1, 1).getEntry();

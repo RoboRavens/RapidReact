@@ -47,7 +47,7 @@ public class Robot extends TimedRobot {
   public static final ShooterStartCommand ShooterStart = new ShooterStartCommand();
   public static final IntakeRetractCommand IntakeRetract = new IntakeRetractCommand();
 
-  public static final FileWriter SHOOTER_DATA = new FileWriter("shooter");
+  // public static final FileWriter SHOOTER_DATA = new FileWriter("shooter");
   
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -96,7 +96,7 @@ public class Robot extends TimedRobot {
       DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
     }
 
-    SHOOTER_DATA.writeLine("wahoo it worked!");
+    // SHOOTER_DATA.writeLine("wahoo it worked!");
   }
   
   /**
