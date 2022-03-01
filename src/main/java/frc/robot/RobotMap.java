@@ -16,6 +16,8 @@ public final class RobotMap {
     //CLIMBER
     public static final int LEFT_CLIMBER_MOTOR = 51;
     public static final int RIGHT_CLIMBER_MOTOR = 52;
+    public static final int LEFT_CLIMBER_SOLENOID = 2;
+    public static final int RIGHT_CLIMBER_SOLENOID = 3;
 
     //SHOOTER
     public static final int SHOOTER_MOTOR_1 = 41;
@@ -31,5 +33,6 @@ public final class RobotMap {
     //SENSORS
     public static final int SENSOR_A_CHANNEL = 0; 
     public static final int SENSOR_B_CHANNEL = 1; 
+
     
 }
