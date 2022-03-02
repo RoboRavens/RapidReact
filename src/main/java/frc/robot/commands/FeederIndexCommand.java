@@ -18,11 +18,11 @@ public class FeederIndexCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        if (Robot.FEEDER_SUBSYSTEM.getFeederSubsystemHasBall()) {
+        if (Robot.FEEDER_SUBSYSTEM.getFeederHasBall()) {
             Robot.FEEDER_SUBSYSTEM.stopConveyance();
             conveyanceOneHadBall = false;
         }
-        else if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceOneSubsystemHasBall() || conveyanceOneHadBall) {
+        else if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() || conveyanceOneHadBall) {
             Robot.FEEDER_SUBSYSTEM.setConveyanceNormalSpeedForward();
             conveyanceOneHadBall = true;
         }
