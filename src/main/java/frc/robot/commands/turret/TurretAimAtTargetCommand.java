@@ -7,7 +7,6 @@ package frc.robot.commands.turret;
 import frc.controls.AxisCode;
 import frc.robot.Constants;
 import frc.robot.Robot;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** Aims the turret at the target */
@@ -21,14 +20,14 @@ public class TurretAimAtTargetCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-      //System.out.println("TurretAimAtTargetCommand init");
+    Robot.TURRET_SWIVEL_SUBSYSTEM.setShot(Constants.TURRET_DEFAULT_PID);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      double angle = Robot.GAMEPAD.getAxis(AxisCode.RIGHTSTICKX);
-      Robot.TURRET_SWIVEL_SUBSYSTEM.holdTarget(15 * angle);
+    double angle = Robot.GAMEPAD.getAxis(AxisCode.RIGHTSTICKX);
+    Robot.TURRET_SWIVEL_SUBSYSTEM.holdTarget(15 * angle);
   }
 
   // Called once the command ends or is interrupted.

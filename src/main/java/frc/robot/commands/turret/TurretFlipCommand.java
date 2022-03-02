@@ -4,6 +4,7 @@
 
 package frc.robot.commands.turret;
 
+import frc.robot.Constants;
 import frc.robot.Robot;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -18,7 +19,8 @@ public class TurretFlipCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-      Robot.TURRET_SWIVEL_SUBSYSTEM.flip();
+    Robot.TURRET_SWIVEL_SUBSYSTEM.setShot(Constants.TURRET_FLIP_PID);
+    Robot.TURRET_SWIVEL_SUBSYSTEM.flip();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

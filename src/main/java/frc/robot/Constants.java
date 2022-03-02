@@ -74,15 +74,22 @@ public final class Constants {
     //TURRET SWIVEL
     public static final int TURRET_IDX = 0;
     public static final int TURRET_TIMEOUT_MS = 100;
-    public static final double TURRET_DEFAULT_KF = 0;
-    public static final double TURRET_DEFAULT_KP = 0.075;
-    public static final double TURRET_DEFAULT_KI = 0;
-    public static final double TURRET_DEFAULT_KD = 0;
     public static final int TURRET_RANGE = 50; //Degrees of motion in both ways (180 means full movement both ways)
     public static final double TURRET_ENCODER_RATIO = 500; //Divide encoder ticks by this, multiply angles by this (encoder ticks are much less than angles)
     public static final double TURRET_AIM_ALLOWANCE = 2; //Degrees of allowance to say that the turret has "reached" its target
     
-    public static final TurretCalibration TURRET_DEFAULT_PID = new TurretCalibration("Default Turret PID", TURRET_DEFAULT_KF, TURRET_DEFAULT_KP, TURRET_DEFAULT_KI, TURRET_DEFAULT_KD);
+    public static final double TURRET_DEFAULT_KF = 0;
+    public static final double TURRET_DEFAULT_KP = 0.075;
+    public static final double TURRET_DEFAULT_KI = 0;
+    public static final double TURRET_DEFAULT_KD = 0;
+
+    public static final double TURRET_FLIP_KF = 0;
+    public static final double TURRET_FLIP_KP = 0.1;
+    public static final double TURRET_FLIP_KI = 0;
+    public static final double TURRET_FLIP_KD = 0;
+
+    public static final TurretCalibration TURRET_DEFAULT_PID = new TurretCalibration("Default", TURRET_DEFAULT_KF, TURRET_DEFAULT_KP, TURRET_DEFAULT_KI, TURRET_DEFAULT_KD);
+    public static final TurretCalibration TURRET_FLIP_PID = new TurretCalibration("Flipping", TURRET_FLIP_KF, TURRET_FLIP_KP, TURRET_FLIP_KI, TURRET_FLIP_KD);
 
     //CONTROLS
     public static final double AXIS_IS_PRESSED_VALUE = .25;

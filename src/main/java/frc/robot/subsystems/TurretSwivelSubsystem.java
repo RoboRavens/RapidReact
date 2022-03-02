@@ -8,7 +8,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -33,7 +32,7 @@ public class TurretSwivelSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Turret Angle", getAngle());
         SmartDashboard.putNumber("Turret RAW Encoder", _turretMotor.getSelectedSensorPosition());
         SmartDashboard.putNumber("Turret Target", _shot.target);
-        SmartDashboard.putString("Turret Errors", _turretMotor.getLastError().toString());
+        SmartDashboard.putString("Turret PID", _shot.name);
     }
 
     @Override

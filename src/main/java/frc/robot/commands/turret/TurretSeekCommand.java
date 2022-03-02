@@ -4,6 +4,7 @@
 
 package frc.robot.commands.turret;
 
+import frc.robot.Constants;
 import frc.robot.Robot;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -18,13 +19,13 @@ public class TurretSeekCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-      //System.out.println("TurretSeekCommand init");
+    Robot.TURRET_SWIVEL_SUBSYSTEM.setShot(Constants.TURRET_DEFAULT_PID);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      Robot.TURRET_SWIVEL_SUBSYSTEM.seek();
+    Robot.TURRET_SWIVEL_SUBSYSTEM.seek();
   }
 
   // Called once the command ends or is interrupted.
@@ -34,6 +35,6 @@ public class TurretSeekCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return false; // Replace this with a "target found" thing (turret should auto-disable seek when target found)
   }
 }
