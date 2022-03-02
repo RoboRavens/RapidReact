@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.controls.ButtonCode;
 import frc.controls.Gamepad;
 import frc.robot.commands.ClimberDefaultBrakeCommand;
-import frc.robot.commands.CompressorTurnOffWhileShootingAndClimbingCommand;
+import frc.robot.commands.CompressorTurnOffWhileShootingOrClimbingCommand;
 import frc.robot.commands.CompressorTurnOffWhileShootingOrClimbingCommand;
 import frc.robot.commands.ConveyanceCollectCommand;
 import frc.robot.commands.ConveyanceEjectCommand;
