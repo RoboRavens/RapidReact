@@ -8,9 +8,12 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.controls.ButtonCode;
 import frc.controls.Gamepad;
 import frc.robot.commands.ClimberDefaultBrakeCommand;
+import frc.robot.commands.CompressorTurnOffWhileShootingAndClimbingCommand;
+import frc.robot.commands.CompressorTurnOffWhileShootingOrClimbingCommand;
 import frc.robot.commands.ConveyanceCollectCommand;
 import frc.robot.commands.ConveyanceEjectCommand;
 import frc.robot.commands.ConveyanceIndexCommand;
@@ -24,6 +27,7 @@ import frc.robot.commands.IntakeExtendCommand;
 import frc.robot.commands.IntakeRetractCommand;
 import frc.robot.commands.shooter.ShooterStartCommand;
 import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.CompressorSubsystem;
 import frc.robot.subsystems.ConveyanceSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
@@ -61,6 +65,8 @@ public class Robot extends TimedRobot {
   public static final FeederIndexCommand FeederIndex = new FeederIndexCommand();
   public static final FeederCollectCommand FeederCollect = new FeederCollectCommand();
   public static final ClimberDefaultBrakeCommand climberDefaultBrake = new ClimberDefaultBrakeCommand();
+  public static final CompressorSubsystem COMPRESSOR_SUBSYSTEM = new CompressorSubsystem();
+  public static final CompressorTurnOffWhileShootingOrClimbingCommand CompressorTurnOffWhileShootingOrClimbing = new CompressorTurnOffWhileShootingOrClimbingCommand();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -77,6 +83,7 @@ public class Robot extends TimedRobot {
     FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     CLIMBER_SUBSYSTEM.setDefaultCommand(climberDefaultBrake);
     CONVEYANCE_SUBSYSTEM.setDefaultCommand(CONVEYANCE_INDEX_COMMAND);
+    COMPRESSOR_SUBSYSTEM.setDefaultCommand(CompressorTurnOffWhileShootingOrClimbing);
     configureButtonBindings();
   }
   
