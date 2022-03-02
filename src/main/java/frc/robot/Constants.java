@@ -58,7 +58,7 @@ public final class Constants {
 
     public static final int SHOOTER_VEL_TO_RPM = 8192 / 600;
 
-    public static final int TARMAC_RPM = 4700;
+    public static final int TARMAC_RPM = 5700;
     public static final double TARMAC_KF = 0;
     public static final double TARMAC_KP = 0.05;
     public static final double TARMAC_KI = 0;
