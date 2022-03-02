@@ -30,6 +30,7 @@ public class ClimberExtendCommand extends CommandBase {
   public void execute() {
       Robot.CLIMBER_SUBSYSTEM.releaseClimberBrakes();
       Robot.CLIMBER_SUBSYSTEM.extendPid();
+      System.out.println("Climber Extending");
   }
 
   // Called once the command ends or is interrupted.
@@ -41,6 +42,12 @@ public class ClimberExtendCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+      if(Robot.CLIMBER_SUBSYSTEM.encodersShowExtended()) {
+          System.out.println("Climber Extended");
+          return true;
+      }
+      else {
+          return false;
+      }
   }
 }

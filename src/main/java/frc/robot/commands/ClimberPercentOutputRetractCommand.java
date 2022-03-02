@@ -9,14 +9,14 @@ import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
-public class ClimberRetractCommand extends CommandBase {  
+public class ClimberTestRetractCommand extends CommandBase {  
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ClimberRetractCommand() {
+  public ClimberTestRetractCommand() {
     addRequirements(Robot.CLIMBER_SUBSYSTEM);
   }
 
@@ -28,9 +28,7 @@ public class ClimberRetractCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      Robot.CLIMBER_SUBSYSTEM.releaseClimberBrakes();
-      Robot.CLIMBER_SUBSYSTEM.retractPid();
-      System.out.println("Climber Retracting");
+      Robot.CLIMBER_SUBSYSTEM.retract();
   }
 
   // Called once the command ends or is interrupted.
@@ -42,12 +40,6 @@ public class ClimberRetractCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(Robot.CLIMBER_SUBSYSTEM.encodersShowRetracted()) {
-        System.out.println("Climber Retracted");
-        return true;
-    }
-    else {
-        return false;
-    }
+    return false;
   }
 }

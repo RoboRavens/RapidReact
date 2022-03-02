@@ -13,6 +13,8 @@ import frc.controls.Gamepad;
 import frc.robot.commands.ClimberDefaultBrakeCommand;
 import frc.robot.commands.ClimberExtendCommand;
 import frc.robot.commands.ClimberRetractCommand;
+import frc.robot.commands.ClimberTestExtendCommand;
+import frc.robot.commands.ClimberTestRetractCommand;
 import frc.robot.commands.ConveyanceCollectCommand;
 import frc.robot.commands.ConveyanceEjectCommand;
 import frc.robot.commands.ConveyanceIndexCommmand;
@@ -63,6 +65,10 @@ public class Robot extends TimedRobot {
   public static final ClimberDefaultBrakeCommand ClimberDefaultBrake = new ClimberDefaultBrakeCommand();
   public static final ClimberRetractCommand ClimberRetract = new ClimberRetractCommand();
   public static final ClimberExtendCommand ClimberExtend = new ClimberExtendCommand();
+  public static final ClimberTestRetractCommand ClimberTestRetract = new ClimberTestRetractCommand();
+  public static final ClimberTestExtendCommand ClimberTestExtend = new ClimberTestExtendCommand();
+
+
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -137,13 +143,15 @@ public class Robot extends TimedRobot {
   }
 
   public void configureButtonBindings() {
-    GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(CONVEYANCE_COLLECT_COMMAND);
+    //GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(CONVEYANCE_COLLECT_COMMAND);
     // GAMEPAD.getButton(ButtonCode.Y).whileHeld(ShooterStart);
-    GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(CONVEYANCE_EJECT_COMMAND);
-    GAMEPAD.getButton(ButtonCode.B).whenPressed(FeederSafetyReverse);
+    //GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(CONVEYANCE_EJECT_COMMAND);
+    //GAMEPAD.getButton(ButtonCode.B).whenPressed(FeederSafetyReverse);
     //GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederShoot);
     GAMEPAD.getButton(ButtonCode.A).whenPressed(ClimberRetract);
     GAMEPAD.getButton(ButtonCode.X).whenPressed(ClimberExtend);
+    GAMEPAD.getButton(ButtonCode.Y).whileHeld(ClimberTestRetract);
+    GAMEPAD.getButton(ButtonCode.B).whileHeld(ClimberTestExtend);
   }
 
   @Override
