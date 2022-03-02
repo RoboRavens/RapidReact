@@ -45,8 +45,8 @@ public class ConveyanceSubsystem extends SubsystemBase {
     this.runConveyanceAtPercentPower(Constants.CONVEYANCE_ONE_STOP);
   }
 
-  public boolean getConveyanceHasBall() {
-    return _conveyanceSensorA.get();
+  public boolean getConveyanceOneSubsystemHasBall() {
+    return !_conveyanceSensorA.get();
   }
 
    @Override

@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.controls.AxisCode;
 import frc.controls.ButtonCode;
 import frc.controls.Gamepad;
+import frc.robot.commands.ClimberDefaultBrakeCommand;
 import frc.robot.commands.ConveyanceCollectCommand;
 import frc.robot.commands.ConveyanceEjectCommand;
 import frc.robot.commands.ConveyanceIndexCommand;
@@ -72,6 +73,7 @@ public class Robot extends TimedRobot {
   public static final ConveyanceIndexCommand CONVEYANCE_INDEX_COMMAND = new ConveyanceIndexCommand();
   public static final FeederShootCommand FeederShoot = new FeederShootCommand();
   public static final FeederIndexCommand FeederIndex = new FeederIndexCommand();
+  public static final ClimberDefaultBrakeCommand climberDefaultBrake = new ClimberDefaultBrakeCommand();
   
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -89,6 +91,7 @@ public class Robot extends TimedRobot {
     TURRET_SWIVEL_SUBSYSTEM.setEncoder(0);
 
     FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
+    CLIMBER_SUBSYSTEM.setDefaultCommand(climberDefaultBrake);
     CONVEYANCE_SUBSYSTEM.setDefaultCommand(CONVEYANCE_INDEX_COMMAND);
     configureButtonBindings();
   }
@@ -150,14 +153,10 @@ public class Robot extends TimedRobot {
   
   }
 
-
-
-
   public void configureButtonBindings() {
     GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(CONVEYANCE_COLLECT_COMMAND);
     GAMEPAD.getButton(ButtonCode.Y).whileHeld(ShooterStart);
     GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(CONVEYANCE_EJECT_COMMAND);
-    //GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederEject);
     GAMEPAD.getButton(ButtonCode.B).whenPressed(FeederSafetyReverse);
     GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederShoot);
     GAMEPAD.getButton(ButtonCode.BACK).whenHeld(TURRET_FLIP);
