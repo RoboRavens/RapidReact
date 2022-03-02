@@ -55,12 +55,13 @@ public final class Constants {
     //SHOOTER
     public static final int SHOOTER_IDX = 0;
     public static final int SHOOTER_TIMEOUT_MS = 100;
+    public static final int SHOOTER_TARGET_ALLOWANCE = 500; //Amount of RPM offset to consider still "on target"
 
     public static final int SHOOTER_VEL_TO_RPM = 8192 / 600;
 
     public static final int TARMAC_RPM = 5700;
     public static final double TARMAC_KF = 0;
-    public static final double TARMAC_KP = 0.05;
+    public static final double TARMAC_KP = 0.06;
     public static final double TARMAC_KI = 0;
     public static final double TARMAC_KD = 0;
 

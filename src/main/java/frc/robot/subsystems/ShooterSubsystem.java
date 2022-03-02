@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -21,6 +22,9 @@ public class ShooterSubsystem extends SubsystemBase {
     private TalonSRX _shooterMotor1;
     private VictorSPX _shooterMotor2;
     private ShooterCalibration _shot;
+    private int _shotTally = 0;
+    private boolean _recovered;
+    private double _lastShotTime = 0;
 
     public ShooterSubsystem() {
         _shooterMotor1 = new TalonSRX(RobotMap.SHOOTER_MOTOR_1);
@@ -33,8 +37,15 @@ public class ShooterSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
-        SmartDashboard.putNumber("Shooter Speed", _shooterMotor1.getSelectedSensorVelocity() / Constants.SHOOTER_VEL_TO_RPM);
+        if(detectShot()) {
+            _lastShotTime = Timer.getMatchTime();
+            _shotTally++;
+        }
+
+        SmartDashboard.putNumber("Shooter Speed", getRPM());
         SmartDashboard.putString("Shooter PID", _shot.name);
+        SmartDashboard.putNumber("Shot Count", getShotCount());
+        SmartDashboard.putNumber("Last Shot Time", getLastShotTime());
     }
 
     @Override
@@ -44,6 +55,10 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public void defaultCommand() {
         stopMotor();
+    }
+
+    public double getRPM() {
+        return _shooterMotor1.getSelectedSensorVelocity() / Constants.SHOOTER_VEL_TO_RPM;
     }
 
     /**
@@ -76,6 +91,7 @@ public class ShooterSubsystem extends SubsystemBase {
     * Starts the motor with the set shot type
     */
     public void startMotor() {
+        _recovered = false;
         _shooterMotor1.set(ControlMode.Velocity, _shot.targetRPM * Constants.SHOOTER_VEL_TO_RPM);
     }
 
@@ -84,5 +100,36 @@ public class ShooterSubsystem extends SubsystemBase {
     */
     public void stopMotor() {
         _shooterMotor1.set(ControlMode.PercentOutput, 0);
+    }
+
+    public void resetShotCount() {
+        _shotTally = 0;
+    }
+
+    public int getShotCount() {
+        return _shotTally;
+    }
+
+    public boolean isRecovered() {
+        return getRPM() > _shot.targetRPM - Constants.SHOOTER_TARGET_ALLOWANCE && getRPM() < _shot.targetRPM + Constants.SHOOTER_TARGET_ALLOWANCE;
+    }
+
+    /**
+     * Tallies up a point if a ball is detected as being fired
+     */
+    public boolean detectShot() {
+        boolean output = false;
+        if(_shooterMotor1.getClosedLoopTarget() == 0) { //If we should be stopped anyway then end because we don't want to misfire
+            return false;
+        }
+        if(_recovered && !isRecovered()) { //If we WERE be at the target yet now we aren't (Ball JUST fired)
+            output = true;
+        }
+        _recovered = isRecovered();
+        return output;
+    }
+
+    public double getLastShotTime() {
+        return _lastShotTime;
     }
 }

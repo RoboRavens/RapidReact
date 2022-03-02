@@ -21,6 +21,7 @@ import frc.robot.commands.FeederSafetyReverseCommand;
 import frc.robot.commands.FeederShootCommand;
 import frc.robot.commands.IntakeExtendCommand;
 import frc.robot.commands.IntakeRetractCommand;
+import frc.robot.commands.groups.ShooterRevCommandgroup;
 import frc.robot.commands.shooter.ShooterLaunchpadCommand;
 import frc.robot.commands.shooter.ShooterStartCommand;
 import frc.robot.commands.shooter.ShooterTarmacCommand;
@@ -65,10 +66,11 @@ public class Robot extends TimedRobot {
   public static final ConveyanceIndexCommand CONVEYANCE_INDEX_COMMAND = new ConveyanceIndexCommand();
   public static final FeederShootCommand FeederShoot = new FeederShootCommand();
   public static final FeederIndexCommand FeederIndex = new FeederIndexCommand();
-  private static final ShooterTarmacCommand SHOOTER_TARMAC_PID_COMMAND = new ShooterTarmacCommand();
-  private static final ShooterLaunchpadCommand SHOOTER_LP_PID_COMMAND = new ShooterLaunchpadCommand();
-
+  public static final ShooterTarmacCommand SHOOTER_TARMAC_PID_COMMAND = new ShooterTarmacCommand();
+  public static final ShooterLaunchpadCommand SHOOTER_LP_PID_COMMAND = new ShooterLaunchpadCommand();
   public static final ClimberDefaultBrakeCommand climberDefaultBrake = new ClimberDefaultBrakeCommand();
+  public static final ShooterRevCommandgroup SHOOTER_REV_COMMANDGROUP = new ShooterRevCommandgroup();
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -129,6 +131,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    SHOOTER_SUBSYSTEM.resetShotCount();
+
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
@@ -146,7 +150,7 @@ public class Robot extends TimedRobot {
 
   public void configureButtonBindings() {
     GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(CONVEYANCE_COLLECT_COMMAND);
-    GAMEPAD.getButton(ButtonCode.Y).whileHeld(SHOOTER_START_COMMAND);
+    GAMEPAD.getButton(ButtonCode.Y).whileHeld(SHOOTER_REV_COMMANDGROUP);
     GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(CONVEYANCE_EJECT_COMMAND);
     GAMEPAD.getButton(ButtonCode.B).whenPressed(FeederSafetyReverse);
     GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederShoot);
