@@ -17,14 +17,14 @@ public class FeederIndexCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        System.out.println(Robot.CONVEYANCE_SUBSYSTEM.getConveyanceOneSubsystemHasBall());
-        System.out.println(Robot.FEEDER_SUBSYSTEM.getFeederSubsystemHasBall());
+        System.out.println(Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall());
+        System.out.println(Robot.FEEDER_SUBSYSTEM.getFeederHasBall());
 
         // (False means no ball in front of the sensor and vice versa)
         
         // If there is a ball in conveyance stage 1 and no ball in conveyance stage 2 (feeder subsystem),
         // run the conveyance stage 2 and set isBallBetweenSensors to true
-        if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceOneSubsystemHasBall() == true && Robot.FEEDER_SUBSYSTEM.getFeederSubsystemHasBall() == false) {
+        if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() == true && Robot.FEEDER_SUBSYSTEM.getFeederHasBall() == false) {
             Robot.FEEDER_SUBSYSTEM.setConveyanceNormalSpeedForward();
             isBallBetweenSensors = true;
             System.out.println("Feeder wheel motor running");
@@ -36,13 +36,13 @@ public class FeederIndexCommand extends CommandBase {
         }
         // If there is a ball completely within conveyance stage 2,
         // set isBallBetweenSensors to false and stop conveyance stage 2
-        if(Robot.FEEDER_SUBSYSTEM.getFeederSubsystemHasBall() == true) {
+        if(Robot.FEEDER_SUBSYSTEM.getFeederHasBall() == true) {
             isBallBetweenSensors = false;
             Robot.FEEDER_SUBSYSTEM.stopConveyance();
         }
         // If there are no balls in the robot,
         // set isBallBetweenSensors to false and stop conveyance stage 2
-        if((Robot.CONVEYANCE_SUBSYSTEM.getConveyanceOneSubsystemHasBall() == false) && (Robot.FEEDER_SUBSYSTEM.getFeederSubsystemHasBall() == false)) {
+        if((Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() == false) && (Robot.FEEDER_SUBSYSTEM.getFeederHasBall() == false)) {
             isBallBetweenSensors = false;
             Robot.FEEDER_SUBSYSTEM.stopConveyance();
         }
