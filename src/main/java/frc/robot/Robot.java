@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.controls.ButtonCode;
 import frc.controls.Gamepad;
 import frc.robot.commands.*;
+import frc.robot.commands.Auto.TwoBallHangarAutoCommand;
 import frc.robot.commands.DriveTrain.DriveTrainTrajectories;
 import frc.robot.commands.shooter.*;
 import frc.robot.subsystems.*;
@@ -65,8 +66,7 @@ public class Robot extends TimedRobot {
 
     GAMEPAD.getButton(ButtonCode.LEFTBUMPER)
       .and(GAMEPAD.getButton(ButtonCode.RIGHTBUMPER))
-      .whenActive(new InstantCommand(DRIVE_TRAIN_SUBSYSTEM::zeroGyroscope, DRIVE_TRAIN_SUBSYSTEM))
-      .whenActive(new InstantCommand(driveTrainDefaultCommand::gyroReset));
+      .whenActive(new InstantCommand(DRIVE_TRAIN_SUBSYSTEM::zeroGyroscope, DRIVE_TRAIN_SUBSYSTEM));
 
     GAMEPAD.getButton(ButtonCode.START)
       .whenActive(
@@ -85,18 +85,22 @@ public class Robot extends TimedRobot {
     GAMEPAD.getButton(ButtonCode.Y)
       .whenActive(DriveTrainTrajectories.moveAndRotate(1, 90));
 
-    // String trajectoryJSON = "output/2 ball hangar.wpilib.json";
-    // String trajectoryJSON = "output/a square.wpilib.json";
-    String trajectoryJSON = "output/snake.wpilib.json";
+    // String trajectoryJSON = "output/2 ball hangar-1.wpilib.json";
+    String trajectoryJSON = "output/a square.wpilib.json";
+    // String trajectoryJSON = "output/snake.wpilib.json";
     try {
       Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
       var trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-      var command = DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommand(trajectory);
+      var command = Robot.DRIVE_TRAIN_SUBSYSTEM.CreateSetOdometryToTrajectoryInitialPositionCommand(trajectory)
+        .andThen(Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommand(trajectory));
       GAMEPAD.getButton(ButtonCode.A)
         .whenActive(command);
     } catch (IOException ex) {
       DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
     }
+
+    GAMEPAD.getButton(ButtonCode.X)
+      .whenActive(TwoBallHangarAutoCommand.get());
 
     // SHOOTER_DATA.writeLine("wahoo it worked!");
   }
@@ -127,8 +131,8 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-
+    // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_autonomousCommand = TwoBallHangarAutoCommand.get();
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();

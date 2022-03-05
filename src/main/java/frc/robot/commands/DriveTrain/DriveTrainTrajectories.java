@@ -28,7 +28,8 @@ public class DriveTrainTrajectories {
             new Pose2d(3, 0, new Rotation2d(0)),
             trajectoryConfig);
 
-        return Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommand(trajectory);
+        return Robot.DRIVE_TRAIN_SUBSYSTEM.CreateSetOdometryToTrajectoryInitialPositionCommand(trajectory)
+            .andThen(Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommand(trajectory));
     }
 
     public static Command driveStraightOneMeter() {
@@ -39,7 +40,8 @@ public class DriveTrainTrajectories {
             new Pose2d(1, 0, new Rotation2d(0)),
             trajectoryConfig);
 
-        return Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommand(trajectory);
+        return Robot.DRIVE_TRAIN_SUBSYSTEM.CreateSetOdometryToTrajectoryInitialPositionCommand(trajectory)
+            .andThen(Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommand(trajectory));
     }
 
     public static Command moveAndRotate(double distanceInMeters, double degrees) {
@@ -50,6 +52,7 @@ public class DriveTrainTrajectories {
             new Pose2d(distanceInMeters, 0, Rotation2d.fromDegrees(degrees)),
             trajectoryConfig);
 
-        return Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommand(trajectory);
+        return Robot.DRIVE_TRAIN_SUBSYSTEM.CreateSetOdometryToTrajectoryInitialPositionCommand(trajectory)
+            .andThen(Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommand(trajectory));
     }
 }

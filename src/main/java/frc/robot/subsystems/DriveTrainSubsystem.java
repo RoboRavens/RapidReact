@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
 import frc.robot.commands.DriveTrain.RavenSwerveControllerCommand;
+import frc.util.DriftCorrection;
 import frc.util.DriveCharacteristics;
 import frc.util.SwerveModuleConverter;
 import edu.wpi.first.wpilibj.SPI;
@@ -180,12 +181,17 @@ public class DriveTrainSubsystem extends SubsystemBase {
    */
   public void zeroGyroscope() {
     m_navx.zeroYaw();
+    DriftCorrection.clearDesiredHeading();
     _odometryFromKinematics.resetPosition(new Pose2d(0, 0, new Rotation2d()), this.getGyroscopeRotation());
     _odometryFromHardware.resetPosition(new Pose2d(0, 0, new Rotation2d()), this.getGyroscopeRotation());
     _driveCharacteristics.reset();
   }
 
-  public Rotation2d getGyroscopeRotation() {
+  public Rotation2d getOdometryRotation() {
+    return _odometryFromHardware.getPoseMeters().getRotation();
+  }
+
+  private Rotation2d getGyroscopeRotation() {
     if (m_navx.isMagnetometerCalibrated()) {
       // We will only get valid fused headings if the magnetometer is calibrated
       return Rotation2d.fromDegrees(m_navx.getFusedHeading());
@@ -196,17 +202,19 @@ public class DriveTrainSubsystem extends SubsystemBase {
   }
 
   public void holdPosition() {
-    this.drive(new ChassisSpeeds(0.0, 0.0, 0.0));
-    // following values when rotating right, we should just want the opposite for hold position
-    // FL:2.356194490192345FR:0.7853981633974483BL:-2.356194490192345BR:-0.7853981633974483
-    // But this will be different for each robot. Maybe we can do an offset given the constants which will occassionally change
-    //m_frontLeftModule.set(0, -2.356194490192345);
-    //m_frontRightModule.set(0, -0.7853981633974483);
-    //m_backLeftModule.set(0, 2.356194490192345);
-    //m_backRightModule.set(0, 0.7853981633974483);
+    // create an X pattern with the wheels to thwart pushing from other robots
+    _moduleStates[0].angle = Rotation2d.fromDegrees(45); // front left
+    _moduleStates[0].speedMetersPerSecond = 0;
+    _moduleStates[1].angle = Rotation2d.fromDegrees(-45); // front right
+    _moduleStates[1].speedMetersPerSecond = 0;
+    _moduleStates[2].angle = Rotation2d.fromDegrees(-45); // back left
+    _moduleStates[2].speedMetersPerSecond = 0;
+    _moduleStates[3].angle = Rotation2d.fromDegrees(45); // back right
+    _moduleStates[3].speedMetersPerSecond = 0;
   }
 
   public void drive(ChassisSpeeds chassisSpeeds) {
+    chassisSpeeds.omegaRadiansPerSecond = DriftCorrection.maintainGyroAngle(chassisSpeeds.vxMetersPerSecond, chassisSpeeds.vyMetersPerSecond, chassisSpeeds.omegaRadiansPerSecond);
     _moduleStates = m_kinematics.toSwerveModuleStates(chassisSpeeds);
   }
 
@@ -278,6 +286,10 @@ public class DriveTrainSubsystem extends SubsystemBase {
     return config;
   }
 
+  public Command CreateSetOdometryToTrajectoryInitialPositionCommand(Trajectory trajectory) {
+    return new InstantCommand(() -> this.resetOdometry(trajectory.getInitialPose(), trajectory.getInitialPose().getRotation()));
+  }
+
   public Command CreateFollowTrajectoryCommand(Trajectory trajectory) {
     var robotAngleController =
         new ProfiledPIDController(
@@ -296,12 +308,9 @@ public class DriveTrainSubsystem extends SubsystemBase {
           robotAngleController,
           this::setModuleStates,
           this);
-    
-    // Set odometry to the starting pose of the trajectory.
-    var setOdometry = new InstantCommand(() -> this.resetOdometry(trajectory.getInitialPose(), trajectory.getInitialPose().getRotation()));
 
     // Run path following command, then stop at the end.
-    return setOdometry
+    return new InstantCommand(() -> DriftCorrection.clearDesiredHeading())
       .andThen(new InstantCommand(() -> System.out.println("starting trajectory")))
       .andThen(swerveControllerCommand)
       .andThen(this::stop)
