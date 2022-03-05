@@ -15,12 +15,18 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
 
 public class CompressorSubsystem extends SubsystemBase {
 
   Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);
-  private boolean _isShooting = false;
-  private boolean _isClimbing = false;
+  // private boolean _isShooting = false;
+  // private boolean _isClimbing = false;
+  // private boolean _compressorWasOn = false;
+
+  public CompressorSubsystem() {
+
+  }
 
   @Override
   public void periodic() {
@@ -33,6 +39,10 @@ public class CompressorSubsystem extends SubsystemBase {
 
   public void stop() {
     compressor.disable();
+  }
+
+  public boolean pressureIsLow() {
+    return compressor.getPressureSwitchValue();
   }
 
   // returns electrical current measured in amps
@@ -48,19 +58,21 @@ public class CompressorSubsystem extends SubsystemBase {
     return !isOn();
   }
 
-  public void setIsShooting(boolean isShooting) {
-    _isShooting = isShooting;
+  public boolean isShooting() {
+    if(Robot.SHOOTER_SUBSYSTEM.isShooting()) {
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 
-  public void setIsClimbing(boolean isClimbing) {
-      _isClimbing = isClimbing;
-  }
-
-  public boolean IsShooting() {
-      return _isShooting;
-  }
-
-  public boolean IsClimbing() {
-    return _isClimbing;
+  public boolean isClimbing() {
+    if(Robot.CLIMBER_SUBSYSTEM.isClimbing()) {
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 }

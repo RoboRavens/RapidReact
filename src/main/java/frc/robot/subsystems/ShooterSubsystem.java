@@ -78,4 +78,13 @@ public class ShooterSubsystem extends SubsystemBase {
     public void stopMotor() {
         this.shooterMotor1.set(ControlMode.PercentOutput, 0);
     }
+
+    public boolean isShooting() {
+		if(shooterMotor1.getMotorOutputPercent() == 0 && shooterMotor2.getMotorOutputPercent() == 0) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
 }

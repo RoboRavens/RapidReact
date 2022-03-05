@@ -26,13 +26,15 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //**refer to slack for further info
-    // figure out a way to set the IsClimbing and IsShooting to true when the robot is actually climbing or shooting.
-    // probably will have to do this within the Climbing and Shooting Subsystems?
-    if(Robot.COMPRESSOR_SUBSYSTEM.IsClimbing() || Robot.COMPRESSOR_SUBSYSTEM.IsShooting()) {
+    if(Robot.COMPRESSOR_SUBSYSTEM.isClimbing() || Robot.COMPRESSOR_SUBSYSTEM.isShooting()) {
       Robot.COMPRESSOR_SUBSYSTEM.stop();
     }
-    // else if the compressor is not full, then run the compressor
+    else if(Robot.COMPRESSOR_SUBSYSTEM.pressureIsLow()) {
+      Robot.COMPRESSOR_SUBSYSTEM.start();
+    }
+    else {
+      Robot.COMPRESSOR_SUBSYSTEM.stop();
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -43,6 +45,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 }

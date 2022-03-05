@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 public class ClimberSubsystem extends SubsystemBase {
@@ -267,6 +268,27 @@ boolean retracted = _rightClimberMotor.getSelectedSensorPosition() < (retractedT
 	public void defaultCommand() {
 		this.holdPosition();
 	}
+
+	public double getRightMotorOutput() {
+		return _rightClimberMotor.getMotorOutputPercent();
+	}
+
+	public double getLeftMotorOutput() {
+		return _leftClimberMotor.getMotorOutputPercent();
+	}
+
+	public boolean isClimbing() {
+		if(getLeftMotorOutput() == 0 && getRightMotorOutput() == 0) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+
+	// public void setCompressorClimberIsClimbing() {
+	// 	if (_rig)
+	// }
 
 	public void setBasedOnTarget() {
         //had to cast this to an int due to an error
