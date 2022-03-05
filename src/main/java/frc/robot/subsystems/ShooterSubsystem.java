@@ -46,6 +46,7 @@ public class ShooterSubsystem extends SubsystemBase {
         SmartDashboard.putString("Shooter PID", _shot.name);
         SmartDashboard.putNumber("Shot Count", getShotCount());
         SmartDashboard.putNumber("Last Shot Time", getLastShotTime());
+        SmartDashboard.putNumber("Shooter Current", _shooterMotor1.getMotorOutputVoltage());
     }
 
     @Override

@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.controls.ButtonCode;
 import frc.controls.Gamepad;
 import frc.robot.commands.ClimberDefaultBrakeCommand;
@@ -31,6 +32,8 @@ import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeExtenderSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.commands.utility.SleepCommand;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -69,7 +72,6 @@ public class Robot extends TimedRobot {
   public static final ShooterTarmacCommand SHOOTER_TARMAC_PID_COMMAND = new ShooterTarmacCommand();
   public static final ShooterLaunchpadCommand SHOOTER_LP_PID_COMMAND = new ShooterLaunchpadCommand();
   public static final ClimberDefaultBrakeCommand climberDefaultBrake = new ClimberDefaultBrakeCommand();
-  public static final ShooterRevCommandgroup SHOOTER_REV_COMMANDGROUP = new ShooterRevCommandgroup();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -150,9 +152,9 @@ public class Robot extends TimedRobot {
 
   public void configureButtonBindings() {
     GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(CONVEYANCE_COLLECT_COMMAND);
-    GAMEPAD.getButton(ButtonCode.Y).whileHeld(SHOOTER_REV_COMMANDGROUP);
+    GAMEPAD.getButton(ButtonCode.Y).whileHeld(new SequentialCommandGroup(new SleepCommand(.15), SHOOTER_START_COMMAND));
     GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(CONVEYANCE_EJECT_COMMAND);
-    GAMEPAD.getButton(ButtonCode.B).whenPressed(FeederSafetyReverse);
+    GAMEPAD.getButton(ButtonCode.Y).whenPressed(FeederSafetyReverse);
     GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederShoot);
 
     OP_PAD.getButton(ButtonCode.Y).whenPressed(SHOOTER_LP_PID_COMMAND);
