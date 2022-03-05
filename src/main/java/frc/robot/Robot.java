@@ -17,6 +17,7 @@ import frc.robot.commands.ConveyanceCollectCommand;
 import frc.robot.commands.ConveyanceEjectCommand;
 import frc.robot.commands.ConveyanceIndexCommand;
 import frc.robot.commands.DrivetrainDefaultCommand;
+import frc.robot.commands.FeederCollectCommand;
 import frc.robot.commands.FeederEjectCommand;
 import frc.robot.commands.FeederIndexCommand;
 import frc.robot.commands.FeederSafetyReverseCommand;
@@ -45,13 +46,8 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
-  
   public static final Gamepad GAMEPAD = new Gamepad(0);
-
-  
-
-  
-
+  private Gamepad GAMEPAD = new Gamepad(0);
   
   //public static final DriveTrainSubsystem DRIVE_TRAIN_SUBSYSTEM = new DriveTrainSubsystem();
   public static final ShooterSubsystem SHOOTER_SUBSYSTEM = new ShooterSubsystem();
@@ -73,8 +69,9 @@ public class Robot extends TimedRobot {
   public static final ConveyanceIndexCommand CONVEYANCE_INDEX_COMMAND = new ConveyanceIndexCommand();
   public static final FeederShootCommand FeederShoot = new FeederShootCommand();
   public static final FeederIndexCommand FeederIndex = new FeederIndexCommand();
+  public static final FeederCollectCommand FeederCollect = new FeederCollectCommand();
   public static final ClimberDefaultBrakeCommand climberDefaultBrake = new ClimberDefaultBrakeCommand();
-  
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -161,6 +158,7 @@ public class Robot extends TimedRobot {
     GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederShoot);
     GAMEPAD.getButton(ButtonCode.BACK).whenHeld(TURRET_FLIP);
     GAMEPAD.getButton(ButtonCode.START).whenHeld(TURRET_SEEK);
+    GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederCollect);
   }
 
   @Override
@@ -172,6 +170,5 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {}
-
 
 }
