@@ -32,4 +32,6 @@ public final class RobotMap {
     public static final int SENSOR_A_CHANNEL = 0; 
     public static final int SENSOR_B_CHANNEL = 1; 
     
+    //LIMELIGHT
+    public static final String CAMERA_NAME = "cam0";
 }

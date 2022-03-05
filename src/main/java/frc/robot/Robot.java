@@ -6,9 +6,11 @@ package frc.robot;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import frc.controls.AxisCode;
 import frc.controls.ButtonCode;
 import frc.controls.Gamepad;
 import frc.robot.commands.ConveyanceCollectCommand;
@@ -80,6 +82,7 @@ public class Robot extends TimedRobot {
     FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     CONVEYANCE_SUBSYSTEM.setDefaultCommand(CONVEYANCE_INDEX_COMMAND);
     configureButtonBindings();
+    LIMELIGHT_SUBSYSTEM.turnLEDOff();
   }
   
   /**
@@ -97,7 +100,12 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
     //System.out.println("Sensor 0: " + CO + " Sensor 1: " + asdfads);
-  
+    //if (GAMEPAD.getAxis(AxisCode.LEFTTRIGGER) >.25) {
+    if (GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER)) {// .getButton(1) > .25)
+      Robot.LIMELIGHT_SUBSYSTEM.turnLEDOn();
+    } else {
+      Robot.LIMELIGHT_SUBSYSTEM.turnLEDOff();
+    }
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -146,7 +154,8 @@ public class Robot extends TimedRobot {
     //GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederEject);
     GAMEPAD.getButton(ButtonCode.B).whenPressed(FeederSafetyReverse);
     GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederShoot);
-  }
+}
+
 
   @Override
   public void testInit() {
