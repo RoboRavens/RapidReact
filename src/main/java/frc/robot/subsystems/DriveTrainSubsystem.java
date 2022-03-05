@@ -32,6 +32,7 @@ import frc.util.SwerveModuleConverter;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import static frc.robot.RobotMap.*;
 
@@ -191,13 +192,14 @@ public class DriveTrainSubsystem extends SubsystemBase {
     }
 
     // We have to invert the angle of the NavX so that rotating the robot counter-clockwise makes the angle increase.
-    return Rotation2d.fromDegrees(360.0 - m_navx.getYaw());
+    return Rotation2d.fromDegrees(360.0 - m_navx.getAngle());
   }
 
   public void holdPosition() {
-    this.drive(ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, this.getGyroscopeRotation()));
+    this.drive(new ChassisSpeeds(0.0, 0.0, 0.0));
     // following values when rotating right, we should just want the opposite for hold position
     // FL:2.356194490192345FR:0.7853981633974483BL:-2.356194490192345BR:-0.7853981633974483
+    // But this will be different for each robot. Maybe we can do an offset given the constants which will occassionally change
     //m_frontLeftModule.set(0, -2.356194490192345);
     //m_frontRightModule.set(0, -0.7853981633974483);
     //m_backLeftModule.set(0, 2.356194490192345);

@@ -59,12 +59,14 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
 
-    DRIVE_TRAIN_SUBSYSTEM.setDefaultCommand(new DriveTrainDefaultCommand(DRIVE_TRAIN_SUBSYSTEM));
+    var driveTrainDefaultCommand = new DriveTrainDefaultCommand(DRIVE_TRAIN_SUBSYSTEM);
+    DRIVE_TRAIN_SUBSYSTEM.setDefaultCommand(driveTrainDefaultCommand);
     SHOOTER_SUBSYSTEM.setDefaultCommand(new RunCommand(() -> SHOOTER_SUBSYSTEM.defaultCommand(), SHOOTER_SUBSYSTEM));
 
     GAMEPAD.getButton(ButtonCode.LEFTBUMPER)
       .and(GAMEPAD.getButton(ButtonCode.RIGHTBUMPER))
-      .whenActive(new InstantCommand(DRIVE_TRAIN_SUBSYSTEM::zeroGyroscope, DRIVE_TRAIN_SUBSYSTEM));
+      .whenActive(new InstantCommand(DRIVE_TRAIN_SUBSYSTEM::zeroGyroscope, DRIVE_TRAIN_SUBSYSTEM))
+      .whenActive(new InstantCommand(driveTrainDefaultCommand::gyroReset));
 
     GAMEPAD.getButton(ButtonCode.START)
       .whenActive(

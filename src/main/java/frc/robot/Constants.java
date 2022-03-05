@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import frc.util.ShooterCalibration;
 
@@ -18,7 +19,7 @@ import frc.util.ShooterCalibration;
 public final class Constants {
     // CONTROLS
     public static final double JOYSTICK_DEADBAND = .05;
-    public static final double DRIVE_MAX_TURN_RADIANS_PER_SECOND = 5;
+    public static final double DRIVE_MAX_TURN_RADIANS_PER_SECOND = 2;
 
     //SHOOTER
     public static final int SHOOTER_IDX = 0;
@@ -85,4 +86,7 @@ public final class Constants {
         new TrapezoidProfile.Constraints(
             TRAJECTORY_CONFIG_MAX_ANGULAR_SPEED_RADIANS_PER_SECOND, TRAJECTORY_CONFIG_MAX_ANGULAR_ACCELERATION_RADIANS_PER_SECOND);
 
+    public static final double DRIVE_ANGLE_DRIFT_CORRECTION_KP = 1;
+    public static final double DRIVE_ANGLE_DRIFT_CORRECTION_KI = .01;
+    public static final double DRIVE_ANGLE_DRIFT_CORRECTION_KD = 0;
 }
