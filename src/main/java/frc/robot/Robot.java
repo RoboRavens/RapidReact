@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.controls.ButtonCode;
 import frc.controls.Gamepad;
 import frc.robot.commands.ClimberDefaultBrakeCommand;
+import frc.robot.commands.ClimberPercentOutputExtendCommand;
+import frc.robot.commands.ClimberPercentOutputRetractCommand;
 import frc.robot.commands.CompressorTurnOffWhileShootingOrClimbingCommand;
 import frc.robot.commands.ConveyanceCollectCommand;
 import frc.robot.commands.ConveyanceEjectCommand;
@@ -66,6 +68,9 @@ public class Robot extends TimedRobot {
   public static final ClimberDefaultBrakeCommand climberDefaultBrake = new ClimberDefaultBrakeCommand();
   public static final CompressorSubsystem COMPRESSOR_SUBSYSTEM = new CompressorSubsystem();
   public static final CompressorTurnOffWhileShootingOrClimbingCommand CompressorTurnOffWhileShootingOrClimbing = new CompressorTurnOffWhileShootingOrClimbingCommand();
+  public static final ClimberPercentOutputExtendCommand ClimberPercentOutputExtend = new ClimberPercentOutputExtendCommand();
+  public static final ClimberPercentOutputRetractCommand ClimberPercentOutputRetract = new ClimberPercentOutputRetractCommand();
+
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -144,9 +149,9 @@ public class Robot extends TimedRobot {
   }
 
   public void configureButtonBindings() {
-    GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(CONVEYANCE_COLLECT_COMMAND);
+    GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(ClimberPercentOutputExtend);
     GAMEPAD.getButton(ButtonCode.Y).whileHeld(ShooterStart);
-    GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(CONVEYANCE_EJECT_COMMAND);
+    GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(ClimberPercentOutputRetract);
     GAMEPAD.getButton(ButtonCode.B).whenPressed(FeederSafetyReverse);
     GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederCollect);
   }
