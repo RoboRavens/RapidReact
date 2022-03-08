@@ -17,6 +17,7 @@ public class ShooterSubsystem extends SubsystemBase {
     private TalonFX shooterMotor1;
     private TalonFX shooterMotor2;
     private ShooterCalibration _shot;
+    private boolean isShooting;
 
     public ShooterSubsystem() {
         shooterMotor1 = new TalonFX(RobotMap.SHOOTER_MOTOR_1);
@@ -70,6 +71,7 @@ public class ShooterSubsystem extends SubsystemBase {
     */
     public void startMotor() {
         this.shooterMotor1.set(ControlMode.Velocity, _shot.targetRPM);
+        isShooting = true;
     }
 
     /**
@@ -77,14 +79,15 @@ public class ShooterSubsystem extends SubsystemBase {
     */
     public void stopMotor() {
         this.shooterMotor1.set(ControlMode.PercentOutput, 0);
+        isShooting = false;
     }
 
-    public boolean isShooting() {
-		if(shooterMotor1.getMotorOutputPercent() == 0 && shooterMotor2.getMotorOutputPercent() == 0) {
-			return false;
+    public boolean getIsShooting() {
+		if(isShooting) {
+			return true;
 		}
 		else {
-			return true;
+			return false;
 		}
 	}
 }
