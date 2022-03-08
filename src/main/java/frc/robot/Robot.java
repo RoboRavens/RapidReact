@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -32,6 +33,7 @@ import frc.robot.subsystems.ConveyanceSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeExtenderSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TurretSwivelSubsystem;
 
@@ -74,7 +76,7 @@ public class Robot extends TimedRobot {
   public static final FeederShootCommand FeederShoot = new FeederShootCommand();
   public static final FeederIndexCommand FeederIndex = new FeederIndexCommand();
   public static final ClimberDefaultBrakeCommand climberDefaultBrake = new ClimberDefaultBrakeCommand();
-  
+  public static final LimelightSubsystem LIMELIGHT_SUBSYSTEM = new LimelightSubsystem();
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -94,6 +96,7 @@ public class Robot extends TimedRobot {
     CLIMBER_SUBSYSTEM.setDefaultCommand(climberDefaultBrake);
     CONVEYANCE_SUBSYSTEM.setDefaultCommand(CONVEYANCE_INDEX_COMMAND);
     configureButtonBindings();
+    LIMELIGHT_SUBSYSTEM.turnLEDOff();
   }
   
   /**
@@ -111,7 +114,12 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
     //System.out.println("Sensor 0: " + CO + " Sensor 1: " + asdfads);
-  
+    //if (GAMEPAD.getAxis(AxisCode.LEFTTRIGGER) >.25) {
+    if (GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER)) {// .getButton(1) > .25)
+      Robot.LIMELIGHT_SUBSYSTEM.turnLEDOn();
+    } else {
+      Robot.LIMELIGHT_SUBSYSTEM.turnLEDOff();
+    }
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
