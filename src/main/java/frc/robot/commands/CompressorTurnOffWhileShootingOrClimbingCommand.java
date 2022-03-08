@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
  import frc.robot.Robot;
-import frc.robot.subsystems.ConveyanceSubsystem;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -29,11 +28,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
     if(Robot.COMPRESSOR_SUBSYSTEM.isClimbing() || Robot.COMPRESSOR_SUBSYSTEM.isShooting()) {
       Robot.COMPRESSOR_SUBSYSTEM.stop();
     }
-    else if(Robot.COMPRESSOR_SUBSYSTEM.pressureIsLow()) {
-      Robot.COMPRESSOR_SUBSYSTEM.start();
-    }
     else {
-      Robot.COMPRESSOR_SUBSYSTEM.stop();
+      Robot.COMPRESSOR_SUBSYSTEM.start();
     }
   }
 

@@ -41,10 +41,6 @@ public class CompressorSubsystem extends SubsystemBase {
     compressor.disable();
   }
 
-  public boolean pressureIsLow() {
-    return compressor.getPressureSwitchValue();
-  }
-
   // returns electrical current measured in amps
   public double getCurrentAmps() {
     return compressor.getCurrent();
@@ -59,7 +55,7 @@ public class CompressorSubsystem extends SubsystemBase {
   }
 
   public boolean isShooting() {
-    if(Robot.SHOOTER_SUBSYSTEM.isShooting()) {
+    if(Robot.SHOOTER_SUBSYSTEM.getIsShooting()) {
       return true;
     }
     else {

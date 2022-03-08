@@ -81,6 +81,14 @@ public class ClimberSubsystem extends SubsystemBase {
 		_climberBrakeLeft.set(true);
 	}
 
+	public boolean isRightClimberBraked() {
+		return _climberBrakeRight.get();
+	}
+
+	public boolean isLeftClimberBraked() {
+		return _climberBrakeLeft.get();
+	}
+
 	public void brakeClimbers() {
 		leftClimberBrake();
 		rightClimberBrake();
@@ -278,7 +286,7 @@ boolean retracted = _rightClimberMotor.getSelectedSensorPosition() < (retractedT
 	}
 
 	public boolean isClimbing() {
-		if(getLeftMotorOutput() == 0 && getRightMotorOutput() == 0) {
+		if(isLeftClimberBraked() && isRightClimberBraked()) {
 			return false;
 		}
 		else {
