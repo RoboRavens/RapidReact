@@ -15,12 +15,12 @@ public class LimelightSubsystem extends SubsystemBase {
     NetworkTableEntry ts = table.getEntry("ts");
     NetworkTableEntry ledMode = table.getEntry("ledMode");
     //read values periodically
-    double x = tx.getDouble(0.0);
-    double y = ty.getDouble(0.0);
-    double area = ta.getDouble(0.5);
-    double l = tl.getDouble(0.0); // The pipeline’s latency contribution (ms) Add at least 11ms for image capture
-    double v = tv.getDouble(0.0); // Whether the limelight has any valid targets (0 or 1)
-    double s = ts.getDouble(0.0); // Skew or rotation (-90 degrees to 0 degrees)
+    public double x = tx.getDouble(0.0);
+    public double y = ty.getDouble(0.0);
+    public double area = ta.getDouble(0.5);
+    public double l = tl.getDouble(0.0); // The pipeline’s latency contribution (ms) Add at least 11ms for image capture
+    public double v = tv.getDouble(0.0); // Whether the limelight has any valid targets (0 or 1)
+    public double s = ts.getDouble(0.0); // Skew or rotation (-90 degrees to 0 degrees)
     public int _ledState = 3;
     public int camMode = 0; 
 

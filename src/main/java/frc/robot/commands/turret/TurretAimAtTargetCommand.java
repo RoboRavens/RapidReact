@@ -26,8 +26,8 @@ public class TurretAimAtTargetCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double angle = Robot.GAMEPAD.getAxis(AxisCode.RIGHTSTICKX);
-    Robot.TURRET_SWIVEL_SUBSYSTEM.holdTarget(15 * angle);
+    //double angle = Robot.GAMEPAD.getAxis(AxisCode.RIGHTSTICKX);
+    Robot.TURRET_SWIVEL_SUBSYSTEM.goToAngle(Robot.LIMELIGHT_SUBSYSTEM.x);
   }
 
   // Called once the command ends or is interrupted.
