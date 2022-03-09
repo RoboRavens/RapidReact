@@ -56,19 +56,19 @@ public class CompressorSubsystem extends SubsystemBase {
 
   public boolean isShooting() {
     if(Robot.SHOOTER_SUBSYSTEM.getIsShooting()) {
-      return true;
-    }
-    else {
-      return false;
-    }
+			return true;
+		}
+		else {
+			return false;
+		}
   }
 
   public boolean isClimbing() {
-    if(Robot.CLIMBER_SUBSYSTEM.isClimbing()) {
-      return true;
-    }
-    else {
-      return false;
-    }
+    if(Robot.CLIMBER_SUBSYSTEM.getIsClimbing()) {
+			return true;
+		}
+		else {      
+			return false;
+		}
   }
 }

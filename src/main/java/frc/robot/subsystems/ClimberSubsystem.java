@@ -2,14 +2,12 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 public class ClimberSubsystem extends SubsystemBase {
@@ -39,6 +37,7 @@ public class ClimberSubsystem extends SubsystemBase {
 	private Solenoid _climberBrakeRight;
 	private Solenoid _climberBrakeLeft;
 
+	private boolean isClimbing;
 
     public ClimberSubsystem() {
 
@@ -81,17 +80,28 @@ public class ClimberSubsystem extends SubsystemBase {
 		_climberBrakeLeft.set(true);
 	}
 
-	public boolean isRightClimberBraked() {
-		return _climberBrakeRight.get();
+	public void leftClimberReleaseBrake() {
+		_climberBrakeLeft.set(false);
 	}
 
-	public boolean isLeftClimberBraked() {
-		return _climberBrakeLeft.get();
+	public void rightClimberReleaseBrake() {
+		_climberBrakeLeft.set(false);
 	}
 
 	public void brakeClimbers() {
 		leftClimberBrake();
 		rightClimberBrake();
+		isClimbing = false;
+	}
+
+	public void releaseClimberBrakes() {
+		leftClimberReleaseBrake();
+		rightClimberReleaseBrake();
+		isClimbing = true;
+	}
+
+	public boolean getIsClimbing() {
+		return isClimbing;
 	}
 
 	public void setOverrideOn() {
@@ -163,8 +173,6 @@ public class ClimberSubsystem extends SubsystemBase {
 		
 		return extended;
 	}
-
-
 
 	public boolean encodersShowRetracted() {
 		boolean bothSidesRetracted = leftEncoderShowsRetracted() && rightEncoderShowsRetracted();
@@ -283,15 +291,6 @@ boolean retracted = _rightClimberMotor.getSelectedSensorPosition() < (retractedT
 
 	public double getLeftMotorOutput() {
 		return _leftClimberMotor.getMotorOutputPercent();
-	}
-
-	public boolean isClimbing() {
-		if(isLeftClimberBraked() && isRightClimberBraked()) {
-			return false;
-		}
-		else {
-			return true;
-		}
 	}
 
 	// public void setCompressorClimberIsClimbing() {
