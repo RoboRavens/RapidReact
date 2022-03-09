@@ -17,6 +17,7 @@ import frc.robot.commands.ConveyanceCollectCommand;
 import frc.robot.commands.ConveyanceEjectCommand;
 import frc.robot.commands.ConveyanceIndexCommand;
 import frc.robot.commands.DrivetrainDefaultCommand;
+import frc.robot.commands.FeederCollectCommand;
 import frc.robot.commands.FeederEjectCommand;
 import frc.robot.commands.FeederIndexCommand;
 import frc.robot.commands.FeederSafetyReverseCommand;
@@ -32,6 +33,7 @@ import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeExtenderSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import edu.wpi.first.cameraserver.CameraServer;
 
 
 /**
@@ -47,10 +49,6 @@ public class Robot extends TimedRobot {
   
   private Gamepad GAMEPAD = new Gamepad(0);
   private Gamepad OP_PAD = new Gamepad(1);
-  
-
-  
-
   
   //public static final DriveTrainSubsystem DRIVE_TRAIN_SUBSYSTEM = new DriveTrainSubsystem();
   public static final ShooterSubsystem SHOOTER_SUBSYSTEM = new ShooterSubsystem();
@@ -70,6 +68,7 @@ public class Robot extends TimedRobot {
   public static final FeederIndexCommand FeederIndex = new FeederIndexCommand();
   public static final ShooterTarmacCommand SHOOTER_TARMAC_PID_COMMAND = new ShooterTarmacCommand();
   public static final ShooterLaunchpadCommand SHOOTER_LP_PID_COMMAND = new ShooterLaunchpadCommand();
+  public static final FeederCollectCommand FeederCollect = new FeederCollectCommand();
   public static final ClimberDefaultBrakeCommand climberDefaultBrake = new ClimberDefaultBrakeCommand();
 
   /**
@@ -88,6 +87,8 @@ public class Robot extends TimedRobot {
     CLIMBER_SUBSYSTEM.setDefaultCommand(climberDefaultBrake);
     CONVEYANCE_SUBSYSTEM.setDefaultCommand(CONVEYANCE_INDEX_COMMAND);
     configureButtonBindings();
+
+    CameraServer.startAutomaticCapture();
   }
   
   /**
@@ -169,6 +170,5 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {}
-
 
 }
