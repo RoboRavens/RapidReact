@@ -62,11 +62,16 @@ public class Robot extends TimedRobot {
 
     var driveTrainDefaultCommand = new DriveTrainDefaultCommand(DRIVE_TRAIN_SUBSYSTEM);
     DRIVE_TRAIN_SUBSYSTEM.setDefaultCommand(driveTrainDefaultCommand);
-    SHOOTER_SUBSYSTEM.setDefaultCommand(new RunCommand(() -> SHOOTER_SUBSYSTEM.defaultCommand(), SHOOTER_SUBSYSTEM));
+    //SHOOTER_SUBSYSTEM.setDefaultCommand(new RunCommand(() -> SHOOTER_SUBSYSTEM.defaultCommand(), SHOOTER_SUBSYSTEM));
 
     GAMEPAD.getButton(ButtonCode.LEFTBUMPER)
       .and(GAMEPAD.getButton(ButtonCode.RIGHTBUMPER))
       .whenActive(new InstantCommand(DRIVE_TRAIN_SUBSYSTEM::zeroGyroscope, DRIVE_TRAIN_SUBSYSTEM));
+
+    GAMEPAD.getButton(ButtonCode.LEFTBUMPER)
+      .and(GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).negate())
+      .whenActive(DRIVE_TRAIN_SUBSYSTEM::cutPower)
+      .whenInactive(DRIVE_TRAIN_SUBSYSTEM::stopCutPower);
 
     GAMEPAD.getButton(ButtonCode.START)
       .whenActive(

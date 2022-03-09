@@ -27,12 +27,12 @@ public class DriveTrainDefaultCommand extends CommandBase {
         double r = Robot.GAMEPAD.getAxis(AxisCode.RIGHTSTICKX) * -1; // Robot.JOYSTICK.getRawAxis(2); // The angular rate of the robot.
         Rotation2d a = _drivetrainSubsystem.getOdometryRotation(); // The angle of the robot as measured by a gyroscope. The robot's angle is considered to be zero when it is facing directly away from your alliance station wall.
 
-        x = Deadband.adjustValue(x, Constants.JOYSTICK_DEADBAND);
-        y = Deadband.adjustValue(y, Constants.JOYSTICK_DEADBAND);
-        r = Deadband.adjustValue(r, Constants.JOYSTICK_DEADBAND);
+        x = Deadband.adjustValueToZero(x, Constants.JOYSTICK_DEADBAND);
+        y = Deadband.adjustValueToZero(y, Constants.JOYSTICK_DEADBAND);
+        r = Deadband.adjustValueToZero(r, Constants.JOYSTICK_DEADBAND);
 
         r = r * Constants.DRIVE_MAX_TURN_RADIANS_PER_SECOND;
-        
+
         if (x == 0 && y == 0 && r == 0) {
             _drivetrainSubsystem.holdPosition();
         } else {

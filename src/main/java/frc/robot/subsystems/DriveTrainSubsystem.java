@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
 import frc.robot.commands.DriveTrain.RavenSwerveControllerCommand;
+import frc.util.Deadband;
 import frc.util.DriftCorrection;
 import frc.util.DriveCharacteristics;
 import frc.util.SwerveModuleConverter;
@@ -109,6 +110,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
   private final NetworkTableEntry _frontLeftHardwareVel;
 
   private final DriveCharacteristics _driveCharacteristics;
+
+  private Boolean _cutPower = false;
 
   public DriveTrainSubsystem() {
     m_frontLeftModule = Mk4SwerveModuleHelper.createFalcon500(
@@ -213,7 +216,21 @@ public class DriveTrainSubsystem extends SubsystemBase {
     _moduleStates[3].speedMetersPerSecond = 0;
   }
 
+  public void cutPower() {
+    _cutPower = true;
+  }
+
+  public void stopCutPower() {
+    _cutPower = false;
+  }
+
   public void drive(ChassisSpeeds chassisSpeeds) {
+    if (_cutPower) {
+      chassisSpeeds.omegaRadiansPerSecond =  chassisSpeeds.omegaRadiansPerSecond * 0.5;
+      chassisSpeeds.vxMetersPerSecond =  chassisSpeeds.vxMetersPerSecond * 0.5;
+      chassisSpeeds.vyMetersPerSecond =  chassisSpeeds.vyMetersPerSecond * 0.5;
+    }
+
     chassisSpeeds.omegaRadiansPerSecond = DriftCorrection.maintainGyroAngle(chassisSpeeds.vxMetersPerSecond, chassisSpeeds.vyMetersPerSecond, chassisSpeeds.omegaRadiansPerSecond);
     _moduleStates = m_kinematics.toSwerveModuleStates(chassisSpeeds);
   }
@@ -222,6 +239,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
   public void periodic() {
     SwerveModuleState[] states = _moduleStates; // states and _modulestates still point to the same data
     SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
+    this.applySwerveRotationDeadband(states);
 
     m_frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[0].angle.getRadians());
     m_frontRightModule.set(states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[1].angle.getRadians());
@@ -319,5 +337,22 @@ public class DriveTrainSubsystem extends SubsystemBase {
   
   private void calculateDriveCharacteristics() {
     _driveCharacteristics.update(_odometryFromHardware.getPoseMeters(), 360 - m_navx.getAngle());
+  }
+
+  private void applySwerveRotationDeadband(SwerveModuleState[] states) {
+    double deadbandValue = 0.12; // 0.0872665; // 5 degrees
+    // var newFLSteer = new Rotation2d(Deadband.adjustValueRotation(states[0].angle.getRadians(), m_frontLeftModule.getSteerAngle(), deadbandValue));
+    // SmartDashboard.putNumber("FLDB target", states[0].angle.getRadians());
+    // SmartDashboard.putNumber("FLDB actual", m_frontLeftModule.getSteerAngle());
+    // SmartDashboard.putNumber("FLDB result", newFLSteer.getRadians());
+    // Math.copySign(magnitude, sign)
+    states[0].angle = new Rotation2d(Deadband.adjustValueRotation(states[0].angle.getRadians(), m_frontLeftModule.getSteerAngle(), deadbandValue));
+    states[1].angle = new Rotation2d(Deadband.adjustValueRotation(states[1].angle.getRadians(), m_frontRightModule.getSteerAngle(), deadbandValue));
+    states[2].angle = new Rotation2d(Deadband.adjustValueRotation(states[2].angle.getRadians(), m_backLeftModule.getSteerAngle(), deadbandValue));
+    states[3].angle = new Rotation2d(Deadband.adjustValueRotation(states[3].angle.getRadians(), m_backRightModule.getSteerAngle(), deadbandValue));
+    SmartDashboard.putBoolean("FLDB", states[0].angle.getRadians() == m_frontLeftModule.getSteerAngle());
+    SmartDashboard.putBoolean("FRDB", states[1].angle.getRadians() == m_frontRightModule.getSteerAngle());
+    SmartDashboard.putBoolean("BLDB", states[2].angle.getRadians() == m_backLeftModule.getSteerAngle());
+    SmartDashboard.putBoolean("BRDB", states[3].angle.getRadians() == m_backRightModule.getSteerAngle());
   }
 }
