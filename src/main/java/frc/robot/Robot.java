@@ -87,8 +87,10 @@ public class Robot extends TimedRobot {
     FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     CLIMBER_SUBSYSTEM.setDefaultCommand(climberDefaultBrake);
     CONVEYANCE_SUBSYSTEM.setDefaultCommand(CONVEYANCE_INDEX_COMMAND);
-    COMPRESSOR_SUBSYSTEM.setDefaultCommand(CompressorTurnOffWhileShootingOrClimbing);
+    // COMPRESSOR_SUBSYSTEM.setDefaultCommand(CompressorTurnOffWhileShootingOrClimbing);
     configureButtonBindings();
+
+    CompressorTurnOffWhileShootingOrClimbingCommand.Setup();
   }
   
   /**
