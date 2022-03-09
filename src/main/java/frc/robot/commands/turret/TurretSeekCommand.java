@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class TurretSeekCommand extends CommandBase {
 
   public TurretSeekCommand() {
-    addRequirements(Robot.TURRET_SWIVEL_SUBSYSTEM);
+    addRequirements(Robot.TURRET_SWIVEL_SUBSYSTEM, Robot.LIMELIGHT_SUBSYSTEM);
   }
 
  
@@ -20,6 +20,7 @@ public class TurretSeekCommand extends CommandBase {
   @Override
   public void initialize() {
     Robot.TURRET_SWIVEL_SUBSYSTEM.setShot(Constants.TURRET_DEFAULT_PID);
+    Robot.LIMELIGHT_SUBSYSTEM.turnLEDOn();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -34,11 +35,13 @@ public class TurretSeekCommand extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    Robot.LIMELIGHT_SUBSYSTEM.turnLEDOff();
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false; // Replace this with a "target found" thing (turret should auto-disable seek when target found)
+    return Math.abs(Robot.TURRET_SWIVEL_SUBSYSTEM.xAngle) < Constants.DESIRED_TURRET_TARGET_BUFFER && Robot.TURRET_SWIVEL_SUBSYSTEM.hasTargetSighted; // Replace this with a "target found" thing (turret should auto-disable seek when target found)
   }
 }

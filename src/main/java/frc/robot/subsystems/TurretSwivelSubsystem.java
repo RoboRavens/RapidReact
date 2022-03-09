@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.util.TurretCalibration;
 
@@ -18,6 +19,8 @@ public class TurretSwivelSubsystem extends SubsystemBase {
 
     private TalonSRX _turretMotor;
     private TurretCalibration _shot;
+    public double xAngle = 0.0;
+    public boolean hasTargetSighted = false;
 
     public TurretSwivelSubsystem() {
         _turretMotor = new TalonSRX(RobotMap.TURRET_MOTOR);
@@ -34,7 +37,10 @@ public class TurretSwivelSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Turret Angle", getAngle());
         SmartDashboard.putNumber("Turret RAW Encoder", _turretMotor.getSelectedSensorPosition());
         SmartDashboard.putNumber("Turret Target", _shot.target);
-        SmartDashboard.putString("Turret PID", _shot.name);
+        SmartDashboard.putBoolean("Turret Target Sighted", hasTargetSighted);
+
+        xAngle = (Robot.LIMELIGHT_SUBSYSTEM.table.getEntry("tx")).getDouble(0.0);
+        hasTargetSighted = Robot.LIMELIGHT_SUBSYSTEM.table.getEntry("tv").getDouble(0.0) == 1;
     }
 
     @Override

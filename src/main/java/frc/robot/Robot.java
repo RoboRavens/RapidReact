@@ -68,9 +68,6 @@ public class Robot extends TimedRobot {
   public static final ClimberSubsystem CLIMBER_SUBSYSTEM = new ClimberSubsystem();
   public static final FeederSubsystem FEEDER_SUBSYSTEM = new FeederSubsystem();
   public static final TurretSwivelSubsystem TURRET_SWIVEL_SUBSYSTEM = new TurretSwivelSubsystem();
-  public static final TurretAimAtTargetCommand TURRET_AIM_AT_TARGET = new TurretAimAtTargetCommand();
-  public static final TurretFlipCommand TURRET_FLIP = new TurretFlipCommand();
-  public static final TurretSeekCommand TURRET_SEEK = new TurretSeekCommand();
   public static final ConveyanceCollectCommand CONVEYANCE_COLLECT_COMMAND = new ConveyanceCollectCommand();
   public static final ConveyanceEjectCommand CONVEYANCE_EJECT_COMMAND = new ConveyanceEjectCommand();
   //public static final FeederEjectCommand FeederEject = new FeederEjectCommand();
@@ -83,6 +80,9 @@ public class Robot extends TimedRobot {
   public static final FeederCollectCommand FeederCollect = new FeederCollectCommand();
   public static final ClimberDefaultBrakeCommand climberDefaultBrake = new ClimberDefaultBrakeCommand();
   public static final LimelightSubsystem LIMELIGHT_SUBSYSTEM = new LimelightSubsystem();
+  public static final TurretAimAtTargetCommand TURRET_AIM_AT_TARGET = new TurretAimAtTargetCommand();
+  public static final TurretFlipCommand TURRET_FLIP = new TurretFlipCommand();
+  public static final TurretSeekCommand TURRET_SEEK = new TurretSeekCommand();
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
