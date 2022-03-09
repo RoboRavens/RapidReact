@@ -1,46 +1,80 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.commands;
+import java.util.function.BooleanSupplier;
 
- import frc.robot.Robot;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Robot;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+// // Copyright (c) FIRST and other WPILib contributors.
+// // Open Source Software; you can modify and/or share it under the terms of
+// // the WPILib BSD license file in the root directory of this project.
 
-/** An example command that uses an example subsystem. */
- public class CompressorTurnOffWhileShootingOrClimbingCommand extends CommandBase {
+
+
+// import frc.robot.Robot;
+
+// import edu.wpi.first.wpilibj2.command.CommandBase;
+
+// /** An example command that uses an example subsystem. */
+// public class CompressorTurnOffWhileShootingOrClimbingCommand extends CommandBase {
   
 
-  public CompressorTurnOffWhileShootingOrClimbingCommand() {
-    addRequirements(Robot.COMPRESSOR_SUBSYSTEM);
-  }
+//   public CompressorTurnOffWhileShootingOrClimbingCommand() {
+//     addRequirements(Robot.COMPRESSOR_SUBSYSTEM);
+//   }
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
+//   // Called when the command is initially scheduled.
+//   @Override
+//   public void initialize() {
       
-  }
+//   }
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    if(Robot.COMPRESSOR_SUBSYSTEM.isClimbing() || Robot.COMPRESSOR_SUBSYSTEM.isShooting()) {
-      Robot.COMPRESSOR_SUBSYSTEM.stop();
+//   // Called every time the scheduler runs while the command is scheduled.
+//   @Override
+//   public void execute() {
+//     if(Robot.CLIMBER_SUBSYSTEM.getIsClimbing() || Robot.SHOOTER_SUBSYSTEM.getIsShooting()) {
+//       Robot.COMPRESSOR_SUBSYSTEM.stop();
+//     }
+//     else {
+//       Robot.COMPRESSOR_SUBSYSTEM.start();
+//     }
+//   }
+
+//   // Called once the command ends or is interrupted.
+//   @Override
+//   public void end(boolean interrupted) {
+//   }
+
+//   // Returns true when the command should end.
+//   @Override
+//   public boolean isFinished() {
+//     return false;
+//   }
+// }
+
+
+
+public class CompressorTurnOffWhileShootingOrClimbingCommand {
+
+  public class IsClimbingSupplier implements BooleanSupplier {
+    @Override
+    public boolean getAsBoolean() {
+      return Robot.CLIMBER_SUBSYSTEM.getIsClimbing();
     }
-    else {
-      Robot.COMPRESSOR_SUBSYSTEM.start();
+  }
+
+  public class IsShootingSupplier implements BooleanSupplier {
+    @Override
+    public boolean getAsBoolean() {
+      return Robot.SHOOTER_SUBSYSTEM.getIsShooting();
     }
   }
 
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-  }
+  public static void Setup() {
+    Trigger isClimbing = new Trigger(new IsClimbingSupplier());
+    Trigger isShooting = new Trigger(new IsShootingSupplier());
 
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
+    isClimbing.or(isShooting)
+    .whenActive(Robot.COMPRESSOR_SUBSYSTEM::stop)
+    .whenInactive(Robot.COMPRESSOR_SUBSYSTEM::start);
   }
 }

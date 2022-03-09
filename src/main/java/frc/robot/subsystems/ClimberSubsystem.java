@@ -285,18 +285,6 @@ boolean retracted = _rightClimberMotor.getSelectedSensorPosition() < (retractedT
 		this.holdPosition();
 	}
 
-	public double getRightMotorOutput() {
-		return _rightClimberMotor.getMotorOutputPercent();
-	}
-
-	public double getLeftMotorOutput() {
-		return _leftClimberMotor.getMotorOutputPercent();
-	}
-
-	// public void setCompressorClimberIsClimbing() {
-	// 	if (_rig)
-	// }
-
 	public void setBasedOnTarget() {
         //had to cast this to an int due to an error
 		int leftSidePosition = (int) _leftClimberMotor.getSelectedSensorPosition();

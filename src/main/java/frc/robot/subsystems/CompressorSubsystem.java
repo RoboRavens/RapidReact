@@ -46,29 +46,12 @@ public class CompressorSubsystem extends SubsystemBase {
     return compressor.getCurrent();
   }
 
-  public Boolean isOn() {
+  private Boolean isOn() {
     return compressor.getPressureSwitchValue();
   }
 
-  public Boolean isOff() {
+  private Boolean isOff() {
     return !isOn();
   }
 
-  public boolean isShooting() {
-    if(Robot.SHOOTER_SUBSYSTEM.getIsShooting()) {
-			return true;
-		}
-		else {
-			return false;
-		}
-  }
-
-  public boolean isClimbing() {
-    if(Robot.CLIMBER_SUBSYSTEM.getIsClimbing()) {
-			return true;
-		}
-		else {      
-			return false;
-		}
-  }
 }
