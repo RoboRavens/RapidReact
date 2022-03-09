@@ -7,10 +7,13 @@ package frc.robot.commands.turret;
 import frc.controls.AxisCode;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** Aims the turret at the target */
 public class TurretAimAtTargetCommand extends CommandBase {
+
+  edu.wpi.first.networktables.NetworkTable table;
 
   public TurretAimAtTargetCommand() {
     addRequirements(Robot.TURRET_SWIVEL_SUBSYSTEM);
@@ -21,13 +24,14 @@ public class TurretAimAtTargetCommand extends CommandBase {
   @Override
   public void initialize() {
     Robot.TURRET_SWIVEL_SUBSYSTEM.setShot(Constants.TURRET_DEFAULT_PID);
+    table = NetworkTableInstance.getDefault().getTable("limelight");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     //double angle = Robot.GAMEPAD.getAxis(AxisCode.RIGHTSTICKX);
-    Robot.TURRET_SWIVEL_SUBSYSTEM.goToAngle(Robot.LIMELIGHT_SUBSYSTEM.x);
+    Robot.TURRET_SWIVEL_SUBSYSTEM.holdTarget((table.getEntry("tx")).getDouble(0.0));
   }
 
   // Called once the command ends or is interrupted.
