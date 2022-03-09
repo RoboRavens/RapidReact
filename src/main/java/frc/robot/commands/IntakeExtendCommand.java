@@ -18,19 +18,19 @@ public class IntakeExtendCommand extends CommandBase {
   
 
   public IntakeExtendCommand() {
-    addRequirements(Robot.INTAKE_SUBSYSTEM);
+    //addRequirements(Robot.INTAKE_SUBSYSTEM);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    System.out.println("IntakeExtendCommand init");
+    //System.out.println("IntakeExtendCommand init");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Robot.INTAKE_SUBSYSTEM.extend();
+    //Robot.INTAKE_SUBSYSTEM.extend();
   }
 
   // Called once the command ends or is interrupted.

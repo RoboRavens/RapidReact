@@ -5,7 +5,7 @@
 package frc.robot;
 
 import frc.util.ShooterCalibration;
-//import frc.util.TurretCalibration;
+import frc.util.TurretCalibration;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -77,7 +77,22 @@ public final class Constants {
     //TURRET SWIVEL
     public static final int TURRET_IDX = 0;
     public static final int TURRET_TIMEOUT_MS = 100;
-    //public static final TurretCalibration TURRET_PID = new TurretCalibration(0, 0.05, 0, 0);
+    public static final int TURRET_RANGE = 50; //Degrees of motion in both ways (180 means full movement both ways)
+    public static final double TURRET_ENCODER_RATIO = 500; //Divide encoder ticks by this, multiply angles by this (encoder ticks are much less than angles)
+    public static final double TURRET_AIM_ALLOWANCE = 2; //Degrees of allowance to say that the turret has "reached" its target
+    
+    public static final double TURRET_DEFAULT_KF = 0;
+    public static final double TURRET_DEFAULT_KP = 0.075;
+    public static final double TURRET_DEFAULT_KI = 0;
+    public static final double TURRET_DEFAULT_KD = 0;
+
+    public static final double TURRET_FLIP_KF = 0;
+    public static final double TURRET_FLIP_KP = 0.1;
+    public static final double TURRET_FLIP_KI = 0;
+    public static final double TURRET_FLIP_KD = 0;
+
+    public static final TurretCalibration TURRET_DEFAULT_PID = new TurretCalibration("Default", TURRET_DEFAULT_KF, TURRET_DEFAULT_KP, TURRET_DEFAULT_KI, TURRET_DEFAULT_KD);
+    public static final TurretCalibration TURRET_FLIP_PID = new TurretCalibration("Flipping", TURRET_FLIP_KF, TURRET_FLIP_KP, TURRET_FLIP_KI, TURRET_FLIP_KD);
 
     //CONTROLS
     public static final double AXIS_IS_PRESSED_VALUE = .25;
@@ -115,5 +130,13 @@ public final class Constants {
 	public static final double CLIMBER_RETRACT_TO_LATCH_POWER_MAGNITUDE = .2;
 
     public static final double FEEDER_SAFETY_REVERSE_DURATION = .15;
-
+    
+    //LimeLight
+    public static final int FLOOR_TO_LIMELIGHT_LENS_HEIGHT = 0;
+    public static final int FLOOR_TO_TARGET_CENTER_HEIGHT = 0;
+    public static final double CAMERA_ANGLE_OFFSET_FROM_HORIZONTAL = 0;
+    public static final double LIMELIGHT_LENS_TO_ROBOT_CENTER_OFFSET_INCHES = 0;
+    public static final double MINIMUM_DISTANCE_FROM_LIMELIGHT = 46.0;
+	public static final double MAXIMUM_DISTANCE_FROM_LIMELIGHT = 240.0;
+    public static final int DESIRED_TURRET_TARGET_BUFFER = 1;
 }
