@@ -44,31 +44,14 @@ public class TurretSwivelSubsystem extends SubsystemBase {
         
     }
 
-    /**
-     * Adjusts the heading by the input angle, for holding focus on a target
-     * @param relativeChange Angle of which to add to the current angle.
-     */
-    public void holdTarget(double relativeChange) {
-        double changedAngle = getAngle() + relativeChange;
-        goToAngle(changedAngle);
-    }
-
     public double getAngle() {
         return _turretMotor.getSelectedSensorPosition() / Constants.TURRET_ENCODER_RATIO;
     }
 
-    public void flip() {
-        goToAngle(-1 * getAngle());
-    }
-
-    public void seek() {
-        if(_shot.target == Constants.TURRET_RANGE && getIsAtTarget()) {
-            goToAngle(-1 * Constants.TURRET_RANGE);
-        } else if(getIsAtTarget()) {
-            goToAngle(Constants.TURRET_RANGE);
-        }
-    }
-
+    /**
+     * Aims to the input angle. Will stop at edges of deadzone and flip if target is past deadzone.
+     * @param angle - the angle in degrees.
+     */
     public void goToAngle(double angle) {
         if(Math.abs(angle) > (360 - Constants.TURRET_RANGE)) { //If angle is overshooting bounds farther than the deadzone...
             angle += (Math.abs(angle) / angle) * -360; //Flips angle; adds 360 with an inverted sign to whatever angle is (if angle is +, add - and vice versa)
@@ -80,6 +63,10 @@ public class TurretSwivelSubsystem extends SubsystemBase {
         _shot.target = angle;
     }
 
+    /**
+     * Sets the subsystem's _shot value, along with all PID configs for the turret motor
+     * @param shot - The TurretCalibration value to set _shot to
+     */
     public void setShot(TurretCalibration shot) {
         _turretMotor.config_kF(Constants.TURRET_IDX, shot.kF, Constants.TURRET_TIMEOUT_MS);
         _turretMotor.config_kP(Constants.TURRET_IDX, shot.kP, Constants.TURRET_TIMEOUT_MS);
@@ -89,8 +76,8 @@ public class TurretSwivelSubsystem extends SubsystemBase {
         _shot = shot;
     }
 
-    public String getShot() {
-        return _shot.name;
+    public TurretCalibration getShot() {
+        return _shot;
     }
 
     public void setEncoder(double sensorPos) {

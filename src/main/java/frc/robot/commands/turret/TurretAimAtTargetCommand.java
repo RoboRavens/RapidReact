@@ -31,7 +31,8 @@ public class TurretAimAtTargetCommand extends CommandBase {
   @Override
   public void execute() {
     //double angle = Robot.GAMEPAD.getAxis(AxisCode.RIGHTSTICKX);
-    Robot.TURRET_SWIVEL_SUBSYSTEM.holdTarget((table.getEntry("tx")).getDouble(0.0));
+    double changedAngle = Robot.TURRET_SWIVEL_SUBSYSTEM.getAngle() + (table.getEntry("tx")).getDouble(0.0);
+    Robot.TURRET_SWIVEL_SUBSYSTEM.goToAngle(changedAngle);
   }
 
   // Called once the command ends or is interrupted.

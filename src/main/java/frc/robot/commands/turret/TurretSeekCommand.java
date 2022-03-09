@@ -25,7 +25,11 @@ public class TurretSeekCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Robot.TURRET_SWIVEL_SUBSYSTEM.seek();
+    if(Robot.TURRET_SWIVEL_SUBSYSTEM.getShot().target == Constants.TURRET_RANGE && Robot.TURRET_SWIVEL_SUBSYSTEM.getIsAtTarget()) {
+      Robot.TURRET_SWIVEL_SUBSYSTEM.goToAngle(-1 * Constants.TURRET_RANGE);
+  } else if(Robot.TURRET_SWIVEL_SUBSYSTEM.getIsAtTarget()) {
+      Robot.TURRET_SWIVEL_SUBSYSTEM.goToAngle(Constants.TURRET_RANGE);
+  }
   }
 
   // Called once the command ends or is interrupted.
