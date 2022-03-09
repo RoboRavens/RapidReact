@@ -55,14 +55,17 @@ public final class Constants {
     //SHOOTER
     public static final int SHOOTER_IDX = 0;
     public static final int SHOOTER_TIMEOUT_MS = 100;
+    public static final int SHOOTER_TARGET_ALLOWANCE = 500; //Amount of RPM offset to consider still "on target"
 
-    public static final int TARMAC_RPM = 2000;
+    public static final int SHOOTER_VEL_TO_RPM = 8192 / 600;
+
+    public static final int TARMAC_RPM = 5700;
     public static final double TARMAC_KF = 0;
-    public static final double TARMAC_KP = 0.05;
+    public static final double TARMAC_KP = 0.06;
     public static final double TARMAC_KI = 0;
     public static final double TARMAC_KD = 0;
 
-    public static final int LAUNCHPAD_RPM = 2000;
+    public static final int LAUNCHPAD_RPM = 4700;
     public static final double LAUNCHPAD_KF = 0;
     public static final double LAUNCHPAD_KP = 0.05;
     public static final double LAUNCHPAD_KI = 0;
@@ -102,22 +105,22 @@ public final class Constants {
 
     //CONVEYANCE TWO
     //Not sure if these are the correct speeds for the conveyance motor (needs to be calibrated)
-    public static final double CONVEYANCE_TWO_FULL_SPEED_REVERSE = -1;
-    public static final double CONVEYANCE_TWO_NORMAL_SPEED = 0.75;
-    public static final double CONVEYANCE_TWO_NORMAL_REVERSE_SPEED = -0.75;
+    public static final double CONVEYANCE_TWO_FULL_SPEED_REVERSE = .25;
+    public static final double CONVEYANCE_TWO_NORMAL_SPEED = -0.25;
+    public static final double CONVEYANCE_TWO_NORMAL_REVERSE_SPEED = 0.25;
     public static final double CONVEYANCE_TWO_STOP = 0;
-    public static final double CONVEYANCE_TWO_FEEDER_SPEED = 0.75;
+    public static final double CONVEYANCE_TWO_FEEDER_SPEED = 0.25;
 	public static final double CONVEYANCE_TWO_FEEDER_STOP = 0;
-	public static final double CONVEYANCE_TWO_REVERSE_FEEDER = -.75;
-    public static final double CONVEYANCE_TWO_FULL_SPEED = 1;
+	public static final double CONVEYANCE_TWO_REVERSE_FEEDER = -.25;
+    public static final double CONVEYANCE_TWO_FULL_SPEED = -.25;
 
 
 
     //CONVEYANCE ONE
-    public static final double CONVEYANCE_ONE_FULL_SPEED_REVERSE = -1;
-    public static final double CONVEYANCE_ONE_FULL_SPEED = 1;
-    public static final double CONVEYANCE_ONE_NORMAL_SPEED = 1;
-    public static final double CONVEYANCE_ONE_NORMAL_REVERSE_SPEED = 1;
+    public static final double CONVEYANCE_ONE_FULL_SPEED_REVERSE = .25;
+    public static final double CONVEYANCE_ONE_FULL_SPEED = -.25;
+    public static final double CONVEYANCE_ONE_NORMAL_SPEED = -.25;
+    public static final double CONVEYANCE_ONE_NORMAL_REVERSE_SPEED = -.25;
     public static final double CONVEYANCE_ONE_STOP = 0;
 
     //CLIMBER
