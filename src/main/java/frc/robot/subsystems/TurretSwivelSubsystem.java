@@ -25,6 +25,8 @@ public class TurretSwivelSubsystem extends SubsystemBase {
         _turretMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
 
         setShot(Constants.TURRET_DEFAULT_PID);
+
+        setEncoder(0);
     }
 
     @Override
@@ -80,7 +82,7 @@ public class TurretSwivelSubsystem extends SubsystemBase {
         return _shot;
     }
 
-    public void setEncoder(double sensorPos) {
+    private void setEncoder(double sensorPos) {
         _turretMotor.setSelectedSensorPosition(sensorPos);
     }
 

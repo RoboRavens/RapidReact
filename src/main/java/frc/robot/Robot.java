@@ -96,7 +96,6 @@ public class Robot extends TimedRobot {
     //DRIVE_TRAIN_SUBSYSTEM.setDefaultCommand(new DrivetrainDefaultCommand(DRIVE_TRAIN_SUBSYSTEM, GAMEPAD));
     SHOOTER_SUBSYSTEM.setDefaultCommand(new RunCommand(() -> SHOOTER_SUBSYSTEM.defaultCommand(), SHOOTER_SUBSYSTEM));
     TURRET_SWIVEL_SUBSYSTEM.setDefaultCommand(TURRET_AIM_AT_TARGET);
-    TURRET_SWIVEL_SUBSYSTEM.setEncoder(0);
 
     FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     CLIMBER_SUBSYSTEM.setDefaultCommand(climberDefaultBrake);
