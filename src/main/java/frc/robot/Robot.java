@@ -4,12 +4,17 @@
 
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.controls.AxisCode;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.controls.ButtonCode;
 import frc.controls.Gamepad;
 import frc.robot.commands.ClimberDefaultBrakeCommand;
@@ -27,14 +32,23 @@ import frc.robot.commands.FeederSafetyReverseCommand;
 import frc.robot.commands.FeederShootCommand;
 import frc.robot.commands.IntakeExtendCommand;
 import frc.robot.commands.IntakeRetractCommand;
+import frc.robot.commands.shooter.ShooterLaunchpadCommand;
 import frc.robot.commands.shooter.ShooterStartCommand;
+import frc.robot.commands.turret.TurretAimAtTargetCommand;
+import frc.robot.commands.turret.TurretFlipCommand;
+import frc.robot.commands.turret.TurretSeekCommand;
+import frc.robot.commands.shooter.ShooterTarmacCommand;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CompressorSubsystem;
 import frc.robot.subsystems.ConveyanceSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeExtenderSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.TurretSwivelSubsystem;
+import edu.wpi.first.cameraserver.CameraServer;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -48,31 +62,38 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
   
   private Gamepad GAMEPAD = new Gamepad(0);
+  private Gamepad OP_PAD = new Gamepad(1);
   
   //public static final DriveTrainSubsystem DRIVE_TRAIN_SUBSYSTEM = new DriveTrainSubsystem();
   public static final ShooterSubsystem SHOOTER_SUBSYSTEM = new ShooterSubsystem();
   public static final IntakeExtenderSubsystem INTAKE_SUBSYSTEM = new IntakeExtenderSubsystem();
   public static final ConveyanceSubsystem CONVEYANCE_SUBSYSTEM = new ConveyanceSubsystem();
   public static final IntakeExtendCommand IntakeExtend = new IntakeExtendCommand();
-  public static final ShooterStartCommand ShooterStart = new ShooterStartCommand();
+  public static final ShooterStartCommand SHOOTER_START_COMMAND = new ShooterStartCommand();
   public static final IntakeRetractCommand IntakeRetract = new IntakeRetractCommand();
   public static final ClimberSubsystem CLIMBER_SUBSYSTEM = new ClimberSubsystem();
-  public static final ConveyanceCollectCommand CONVEYANCE_COLLECT_COMMAND = new ConveyanceCollectCommand();
   public static final FeederSubsystem FEEDER_SUBSYSTEM = new FeederSubsystem();
+  public static final TurretSwivelSubsystem TURRET_SWIVEL_SUBSYSTEM = new TurretSwivelSubsystem();
+  public static final ConveyanceCollectCommand CONVEYANCE_COLLECT_COMMAND = new ConveyanceCollectCommand();
   public static final ConveyanceEjectCommand CONVEYANCE_EJECT_COMMAND = new ConveyanceEjectCommand();
   //public static final FeederEjectCommand FeederEject = new FeederEjectCommand();
   public static final FeederSafetyReverseCommand FeederSafetyReverse = new FeederSafetyReverseCommand(Constants.FEEDER_SAFETY_REVERSE_DURATION);
   public static final ConveyanceIndexCommand CONVEYANCE_INDEX_COMMAND = new ConveyanceIndexCommand();
   public static final FeederShootCommand FeederShoot = new FeederShootCommand();
   public static final FeederIndexCommand FeederIndex = new FeederIndexCommand();
+  public static final ShooterTarmacCommand SHOOTER_TARMAC_PID_COMMAND = new ShooterTarmacCommand();
+  public static final ShooterLaunchpadCommand SHOOTER_LP_PID_COMMAND = new ShooterLaunchpadCommand();
   public static final FeederCollectCommand FeederCollect = new FeederCollectCommand();
   public static final ClimberDefaultBrakeCommand climberDefaultBrake = new ClimberDefaultBrakeCommand();
   public static final CompressorSubsystem COMPRESSOR_SUBSYSTEM = new CompressorSubsystem();
   public static final CompressorTurnOffWhileShootingOrClimbingCommand CompressorTurnOffWhileShootingOrClimbing = new CompressorTurnOffWhileShootingOrClimbingCommand();
   public static final ClimberPercentOutputExtendCommand ClimberPercentOutputExtend = new ClimberPercentOutputExtendCommand();
   public static final ClimberPercentOutputRetractCommand ClimberPercentOutputRetract = new ClimberPercentOutputRetractCommand();
-
-
+  public static final LimelightSubsystem LIMELIGHT_SUBSYSTEM = new LimelightSubsystem();
+  public static final TurretAimAtTargetCommand TURRET_AIM_AT_TARGET = new TurretAimAtTargetCommand();
+  public static final TurretFlipCommand TURRET_FLIP = new TurretFlipCommand();
+  public static final TurretSeekCommand TURRET_SEEK = new TurretSeekCommand();
+  
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -85,13 +106,14 @@ public class Robot extends TimedRobot {
 
     //DRIVE_TRAIN_SUBSYSTEM.setDefaultCommand(new DrivetrainDefaultCommand(DRIVE_TRAIN_SUBSYSTEM, GAMEPAD));
     SHOOTER_SUBSYSTEM.setDefaultCommand(new RunCommand(() -> SHOOTER_SUBSYSTEM.defaultCommand(), SHOOTER_SUBSYSTEM));
+    TURRET_SWIVEL_SUBSYSTEM.setDefaultCommand(TURRET_AIM_AT_TARGET);
     FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     CLIMBER_SUBSYSTEM.setDefaultCommand(climberDefaultBrake);
     CONVEYANCE_SUBSYSTEM.setDefaultCommand(CONVEYANCE_INDEX_COMMAND);
-    // COMPRESSOR_SUBSYSTEM.setDefaultCommand(CompressorTurnOffWhileShootingOrClimbing);
     configureButtonBindings();
-
     CompressorTurnOffWhileShootingOrClimbingCommand.Setup();
+    LIMELIGHT_SUBSYSTEM.turnLEDOff();
+    CameraServer.startAutomaticCapture();
   }
   
   /**
@@ -109,7 +131,12 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
     //System.out.println("Sensor 0: " + CO + " Sensor 1: " + asdfads);
-  
+    //if (GAMEPAD.getAxis(AxisCode.LEFTTRIGGER) >.25) {
+    if (GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER)) {// .getButton(1) > .25)
+      Robot.LIMELIGHT_SUBSYSTEM.turnLEDOn();
+    } else {
+      Robot.LIMELIGHT_SUBSYSTEM.turnLEDOff();
+    }
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -136,6 +163,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    SHOOTER_SUBSYSTEM.resetShotCount();
+
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
@@ -155,26 +184,33 @@ public class Robot extends TimedRobot {
     GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(new StartEndCommand(
       () -> 
       {
-        System.out.println("Climber retracting");
         Robot.CLIMBER_SUBSYSTEM.releaseClimberBrakes();
         Robot.CLIMBER_SUBSYSTEM.retract();
       },
       () -> Robot.CLIMBER_SUBSYSTEM.stop(),
       Robot.CLIMBER_SUBSYSTEM
     ));
-    GAMEPAD.getButton(ButtonCode.Y).whileHeld(ShooterStart);
     GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(new StartEndCommand(
       () -> 
       {
-        System.out.println("Climber extending");
         Robot.CLIMBER_SUBSYSTEM.releaseClimberBrakes();
         Robot.CLIMBER_SUBSYSTEM.extend();
       },
       () -> Robot.CLIMBER_SUBSYSTEM.stop(),
       Robot.CLIMBER_SUBSYSTEM
     ));
-    GAMEPAD.getButton(ButtonCode.B).whenPressed(FeederSafetyReverse);
-    GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederCollect);
+    GAMEPAD.getButton(ButtonCode.X).whileHeld(ShooterStart);
+    //GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(CONVEYANCE_COLLECT_COMMAND);
+    GAMEPAD.getButton(ButtonCode.B).whileHeld(new SequentialCommandGroup(new WaitCommand(.15), SHOOTER_START_COMMAND));
+    //GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(CONVEYANCE_EJECT_COMMAND);
+    //GAMEPAD.getButton(ButtonCode.B).whenPressed(FeederSafetyReverse);
+    //GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederShoot);
+    GAMEPAD.getButton(ButtonCode.BACK).whenHeld(TURRET_FLIP);
+    GAMEPAD.getButton(ButtonCode.START).whenHeld(TURRET_SEEK);
+    //GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederCollect);
+    //GAMEPAD.getButton(ButtonCode.Y).whenPressed(FeederSafetyReverse);
+    OP_PAD.getButton(ButtonCode.Y).whenPressed(SHOOTER_LP_PID_COMMAND);
+    OP_PAD.getButton(ButtonCode.A).whenPressed(SHOOTER_TARMAC_PID_COMMAND);
   }
 
   @Override
