@@ -93,7 +93,6 @@ public class ShooterSubsystem extends SubsystemBase {
     * Starts the motor with the set shot type
     */
     public void startMotor() {
-        this.shooterMotor1.set(ControlMode.Velocity, _shot.targetRPM);
         _recovered = false;
         _shooterMotor1.set(ControlMode.Velocity, _shot.targetRPM * Constants.SHOOTER_VEL_TO_RPM);
         isShooting = true;
@@ -103,7 +102,6 @@ public class ShooterSubsystem extends SubsystemBase {
     * Stops the motor (sets it to 0% power)
     */
     public void stopMotor() {
-        this.shooterMotor1.set(ControlMode.PercentOutput, 0);
         _shooterMotor1.set(ControlMode.PercentOutput, 0);
         isShooting = false;
     }
