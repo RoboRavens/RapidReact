@@ -22,9 +22,9 @@ public class DriveTrainDefaultCommand extends CommandBase {
     @Override
     public void execute() {
         // You can use `new ChassisSpeeds(...)` for robot-oriented movement instead of field-oriented movement
-        double x = Robot.GAMEPAD.getAxis(AxisCode.LEFTSTICKY) * -1; // Robot.JOYSTICK.getRawAxis(1); // Positive x is away from your alliance wall.
-        double y = Robot.GAMEPAD.getAxis(AxisCode.LEFTSTICKX) * -1; // Robot.JOYSTICK.getRawAxis(0); // Positive y is to your left when standing behind the alliance wall.
-        double r = Robot.GAMEPAD.getAxis(AxisCode.RIGHTSTICKX) * -1; // Robot.JOYSTICK.getRawAxis(2); // The angular rate of the robot.
+        double x = Robot.GAMEPAD.getAxis(AxisCode.LEFTSTICKY) * -1 * DriveTrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND; // Robot.JOYSTICK.getRawAxis(1); // Positive x is away from your alliance wall.
+        double y = Robot.GAMEPAD.getAxis(AxisCode.LEFTSTICKX) * -1 * DriveTrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND; // Robot.JOYSTICK.getRawAxis(0); // Positive y is to your left when standing behind the alliance wall.
+        double r = Robot.GAMEPAD.getAxis(AxisCode.RIGHTSTICKX) * -1 * Constants.DRIVE_MAX_TURN_RADIANS_PER_SECOND; // Robot.JOYSTICK.getRawAxis(2); // The angular rate of the robot.
         Rotation2d a = _drivetrainSubsystem.getOdometryRotation(); // The angle of the robot as measured by a gyroscope. The robot's angle is considered to be zero when it is facing directly away from your alliance station wall.
 
         x = Deadband.adjustValueToZero(x, Constants.JOYSTICK_DEADBAND);
