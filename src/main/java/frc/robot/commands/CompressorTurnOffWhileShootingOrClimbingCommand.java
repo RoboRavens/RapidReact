@@ -55,14 +55,14 @@ import frc.robot.Robot;
 
 public class CompressorTurnOffWhileShootingOrClimbingCommand {
 
-  public class IsClimbingSupplier implements BooleanSupplier {
+  public static class IsClimbingSupplier implements BooleanSupplier {
     @Override
     public boolean getAsBoolean() {
       return Robot.CLIMBER_SUBSYSTEM.getIsClimbing();
     }
   }
 
-  public class IsShootingSupplier implements BooleanSupplier {
+  public static class IsShootingSupplier implements BooleanSupplier {
     @Override
     public boolean getAsBoolean() {
       return Robot.SHOOTER_SUBSYSTEM.getIsShooting();

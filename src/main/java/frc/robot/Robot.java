@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.controls.ButtonCode;
 import frc.controls.Gamepad;
@@ -151,9 +152,27 @@ public class Robot extends TimedRobot {
   }
 
   public void configureButtonBindings() {
-    GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(ClimberPercentOutputExtend);
+    GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(new StartEndCommand(
+      () -> 
+      {
+        System.out.println("Climber retracting");
+        Robot.CLIMBER_SUBSYSTEM.releaseClimberBrakes();
+        Robot.CLIMBER_SUBSYSTEM.retract();
+      },
+      () -> Robot.CLIMBER_SUBSYSTEM.stop(),
+      Robot.CLIMBER_SUBSYSTEM
+    ));
     GAMEPAD.getButton(ButtonCode.Y).whileHeld(ShooterStart);
-    GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(ClimberPercentOutputRetract);
+    GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(new StartEndCommand(
+      () -> 
+      {
+        System.out.println("Climber extending");
+        Robot.CLIMBER_SUBSYSTEM.releaseClimberBrakes();
+        Robot.CLIMBER_SUBSYSTEM.extend();
+      },
+      () -> Robot.CLIMBER_SUBSYSTEM.stop(),
+      Robot.CLIMBER_SUBSYSTEM
+    ));
     GAMEPAD.getButton(ButtonCode.B).whenPressed(FeederSafetyReverse);
     GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederCollect);
   }

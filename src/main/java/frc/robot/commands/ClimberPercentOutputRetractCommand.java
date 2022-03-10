@@ -48,6 +48,7 @@ public class ClimberPercentOutputRetractCommand extends CommandBase {
     new StartEndCommand(
       () -> 
       {
+        System.out.println("Climber retracting");
         Robot.CLIMBER_SUBSYSTEM.releaseClimberBrakes();
         Robot.CLIMBER_SUBSYSTEM.retract();
       },

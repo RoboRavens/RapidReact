@@ -47,6 +47,7 @@ public class ClimberPercentOutputExtendCommand extends CommandBase {
     new StartEndCommand(
       () -> 
       {
+        System.out.println("Climber extending");
         Robot.CLIMBER_SUBSYSTEM.releaseClimberBrakes();
         Robot.CLIMBER_SUBSYSTEM.extend();
       },
