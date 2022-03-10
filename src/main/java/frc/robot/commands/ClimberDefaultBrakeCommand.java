@@ -5,13 +5,11 @@
 package frc.robot.commands;
 
  import frc.robot.Robot;
-import frc.robot.subsystems.ConveyanceSubsystem;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
  public class ClimberDefaultBrakeCommand extends CommandBase {
-  
 
   public ClimberDefaultBrakeCommand() {
     addRequirements(Robot.CLIMBER_SUBSYSTEM);
