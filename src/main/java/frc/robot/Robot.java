@@ -9,32 +9,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.controls.ButtonCode;
 import frc.controls.Gamepad;
-import frc.robot.commands.ClimberDefaultBrakeCommand;
-import frc.robot.commands.ClimberPercentOutputExtendCommand;
-import frc.robot.commands.ClimberPercentOutputRetractCommand;
-import frc.robot.commands.CompressorTurnOffWhileShootingOrClimbingCommand;
-import frc.robot.commands.ConveyanceCollectCommand;
-import frc.robot.commands.ConveyanceEjectCommand;
-import frc.robot.commands.ConveyanceIndexCommand;
-import frc.robot.commands.DrivetrainDefaultCommand;
-import frc.robot.commands.FeederCollectCommand;
-import frc.robot.commands.FeederEjectCommand;
-import frc.robot.commands.FeederIndexCommand;
-import frc.robot.commands.FeederSafetyReverseCommand;
-import frc.robot.commands.FeederShootCommand;
-import frc.robot.commands.IntakeExtendCommand;
-import frc.robot.commands.IntakeRetractCommand;
-import frc.robot.commands.shooter.ShooterStartCommand;
-import frc.robot.subsystems.ClimberSubsystem;
-import frc.robot.subsystems.CompressorSubsystem;
-import frc.robot.subsystems.ConveyanceSubsystem;
-import frc.robot.subsystems.DriveTrainSubsystem;
-import frc.robot.subsystems.FeederSubsystem;
-import frc.robot.subsystems.IntakeExtenderSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.commands.*;
+import frc.robot.commands.shooter.*;
+import frc.robot.subsystems.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -68,10 +47,6 @@ public class Robot extends TimedRobot {
   public static final FeederCollectCommand FeederCollect = new FeederCollectCommand();
   public static final ClimberDefaultBrakeCommand climberDefaultBrake = new ClimberDefaultBrakeCommand();
   public static final CompressorSubsystem COMPRESSOR_SUBSYSTEM = new CompressorSubsystem();
-  public static final CompressorTurnOffWhileShootingOrClimbingCommand CompressorTurnOffWhileShootingOrClimbing = new CompressorTurnOffWhileShootingOrClimbingCommand();
-  public static final ClimberPercentOutputExtendCommand ClimberPercentOutputExtend = new ClimberPercentOutputExtendCommand();
-  public static final ClimberPercentOutputRetractCommand ClimberPercentOutputRetract = new ClimberPercentOutputRetractCommand();
-
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -91,7 +66,7 @@ public class Robot extends TimedRobot {
     // COMPRESSOR_SUBSYSTEM.setDefaultCommand(CompressorTurnOffWhileShootingOrClimbing);
     configureButtonBindings();
 
-    CompressorTurnOffWhileShootingOrClimbingCommand.Setup();
+    COMPRESSOR_SUBSYSTEM.Setup();
   }
   
   /**
@@ -153,23 +128,13 @@ public class Robot extends TimedRobot {
 
   public void configureButtonBindings() {
     GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(new StartEndCommand(
-      () -> 
-      {
-        System.out.println("Climber retracting");
-        Robot.CLIMBER_SUBSYSTEM.releaseClimberBrakes();
-        Robot.CLIMBER_SUBSYSTEM.retract();
-      },
+      () -> Robot.CLIMBER_SUBSYSTEM.retract(),
       () -> Robot.CLIMBER_SUBSYSTEM.stop(),
       Robot.CLIMBER_SUBSYSTEM
     ));
     GAMEPAD.getButton(ButtonCode.Y).whileHeld(ShooterStart);
     GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(new StartEndCommand(
-      () -> 
-      {
-        System.out.println("Climber extending");
-        Robot.CLIMBER_SUBSYSTEM.releaseClimberBrakes();
-        Robot.CLIMBER_SUBSYSTEM.extend();
-      },
+      () -> Robot.CLIMBER_SUBSYSTEM.extend(),
       () -> Robot.CLIMBER_SUBSYSTEM.stop(),
       Robot.CLIMBER_SUBSYSTEM
     ));
