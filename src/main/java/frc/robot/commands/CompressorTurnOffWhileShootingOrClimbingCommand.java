@@ -54,24 +54,9 @@ import frc.robot.Robot;
 
 
 public class CompressorTurnOffWhileShootingOrClimbingCommand {
-
-  public static class IsClimbingSupplier implements BooleanSupplier {
-    @Override
-    public boolean getAsBoolean() {
-      return Robot.CLIMBER_SUBSYSTEM.getIsClimbing();
-    }
-  }
-
-  public static class IsShootingSupplier implements BooleanSupplier {
-    @Override
-    public boolean getAsBoolean() {
-      return Robot.SHOOTER_SUBSYSTEM.getIsShooting();
-    }
-  }
-
   public static void Setup() {
-    Trigger isClimbing = new Trigger(new IsClimbingSupplier());
-    Trigger isShooting = new Trigger(new IsShootingSupplier());
+    Trigger isClimbing = new Trigger(() -> Robot.CLIMBER_SUBSYSTEM.getIsClimbing());
+    Trigger isShooting = new Trigger(() -> Robot.SHOOTER_SUBSYSTEM.getIsShooting());
 
     isClimbing.or(isShooting)
     .whenActive(Robot.COMPRESSOR_SUBSYSTEM::stop)
