@@ -15,6 +15,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Robot;
 
 public class CompressorSubsystem extends SubsystemBase {
@@ -54,4 +55,12 @@ public class CompressorSubsystem extends SubsystemBase {
     return !isOn();
   }
 
+  public void Setup() {
+    Trigger isClimbing = new Trigger(() -> Robot.CLIMBER_SUBSYSTEM.getIsClimbing());
+    Trigger isShooting = new Trigger(() -> Robot.SHOOTER_SUBSYSTEM.getIsShooting());
+
+    isClimbing.or(isShooting)
+    .whenActive(this::stop)
+    .whenInactive(this::start);
+  }
 }

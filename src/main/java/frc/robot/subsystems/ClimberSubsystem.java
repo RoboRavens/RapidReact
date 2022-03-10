@@ -94,7 +94,7 @@ public class ClimberSubsystem extends SubsystemBase {
 		isClimbing = false;
 	}
 
-	public void releaseClimberBrakes() {
+	private void releaseClimberBrakes() {
 		leftClimberReleaseBrake();
 		rightClimberReleaseBrake();
 		isClimbing = true;
@@ -129,6 +129,7 @@ public class ClimberSubsystem extends SubsystemBase {
 	}
 
 	public void extend() {
+		this.releaseClimberBrakes();
 		this.extendLeftSide();
 		this.extendRightSide();
 		/*
@@ -140,6 +141,7 @@ public class ClimberSubsystem extends SubsystemBase {
 	}
 
 	public void retract() {
+		this.releaseClimberBrakes();
 		this.retractLeftSide();
 		this.retractRightSide();
 		/*
