@@ -24,7 +24,10 @@ public final class RobotMap {
     public static final int SHOOTER_MOTOR_2 = 42;
 
     //TURRET
-    public static final int TURRET_MOTOR = -1; //Set this to real value ASAP
+    public static final int TURRET_MOTOR = LEFT_CLIMBER_MOTOR; //Set this to real value ASAP
+    //public static final int TURRET_RESET_SENSOR = ;
+    //public static final int TURRET_CLOCKWISE_SENSOR = ;
+    //public static final int TURRET_COUNTERCLOCKWISE_SENSOR = ;
 
     //INTAKE 
      public static final int INTAKE_EXTEND_SOLENOID = 0;
@@ -35,4 +38,6 @@ public final class RobotMap {
     public static final int SENSOR_B_CHANNEL = 1; 
 
     
+    //LIMELIGHT
+    public static final String CAMERA_NAME = "cam0";
 }
