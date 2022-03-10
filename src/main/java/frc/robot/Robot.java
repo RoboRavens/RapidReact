@@ -6,13 +6,14 @@ package frc.robot;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.PS4Controller.Button;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.controls.AxisCode;
 import frc.controls.ButtonCode;
 import frc.controls.Gamepad;
+import frc.ravenhardware.RavenBlinkin;
 import frc.robot.commands.ConveyanceCollectCommand;
 import frc.robot.commands.ConveyanceEjectCommand;
 import frc.robot.commands.ConveyanceIndexCommand;
@@ -67,6 +68,7 @@ public class Robot extends TimedRobot {
   public static final FeederShootCommand FeederShoot = new FeederShootCommand();
   public static final FeederIndexCommand FeederIndex = new FeederIndexCommand();
   public static final LimelightSubsystem LIMELIGHT_SUBSYSTEM = new LimelightSubsystem();
+  public static boolean isRedAlliance;
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -144,7 +146,24 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+    if (Timer.getMatchTime() == 60) {
+      RavenBlinkin.flashGreen();
+    } else if (Timer.getMatchTime() == 30) {
+      RavenBlinkin.flashYellow();
+    } else if (Timer.getMatchTime() == 15) {
+      RavenBlinkin.flashRed();
+    }
   
+    if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() ==false  && Robot.FEEDER_SUBSYSTEM.getFeederHasBall() ==false ) {
+      RavenBlinkin.solidRed();
+    } else if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() == false && Robot.FEEDER_SUBSYSTEM.getFeederHasBall() ==true ) {
+      RavenBlinkin.solidYellow();
+    } else if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() == true && Robot.FEEDER_SUBSYSTEM.getFeederHasBall() == true ) {
+      RavenBlinkin.solidGreen();
+    }
+  
+     
+
   }
 
    public void configureButtonBindings() {

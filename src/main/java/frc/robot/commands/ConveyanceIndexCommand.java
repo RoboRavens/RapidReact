@@ -20,10 +20,10 @@ public class ConveyanceIndexCommand extends CommandBase {
        if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall()  && Robot.FEEDER_SUBSYSTEM.getFeederHasBall() == false ) {
          Robot.CONVEYANCE_SUBSYSTEM.setConveyanceMaxForward();   //when there is a ball in conveyance stage 1 and 2 conveyance wont run        
        } 
-       else if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall()  && Robot.FEEDER_SUBSYSTEM.getFeederHasBall() )    {        
+         else if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall()  && Robot.FEEDER_SUBSYSTEM.getFeederHasBall() )    {        
          Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne();  //if there is a ball in comveyance stage 1 but nothing at stage 2 conveyance will run at 1
        } 
-       else if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() == false ) {
+        else if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() == false ) {
          Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne();
        }
     }     
