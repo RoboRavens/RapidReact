@@ -42,7 +42,7 @@ public class RavenSwerveControllerCommand extends CommandBase {
   private final SwerveDriveKinematics m_kinematics;
   private final HolonomicDriveController m_controller;
   private final Consumer<SwerveModuleState[]> m_outputModuleStates;
-  private final Supplier<Rotation2d> m_desiredRotation;
+  // private final Supplier<Rotation2d> m_desiredRotation;
 
   /**
    * Constructs a new SwerveControllerCommand that when executed will follow the provided
@@ -88,8 +88,7 @@ public class RavenSwerveControllerCommand extends CommandBase {
     m_outputModuleStates =
         requireNonNullParam(outputModuleStates, "frontLeftOutput", "SwerveControllerCommand");
 
-    m_desiredRotation =
-        requireNonNullParam(desiredRotation, "desiredRotation", "SwerveControllerCommand");
+    // m_desiredRotation = requireNonNullParam(desiredRotation, "desiredRotation", "SwerveControllerCommand");
 
     addRequirements(requirements);
   }
