@@ -1,6 +1,5 @@
 package frc.util;
 
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 
 public class Deadband {
@@ -37,38 +36,40 @@ public class Deadband {
         //SmartDashboard.putBoolean("FRDB", desiredStates[1].angle.getRadians() == hardwareStates[1].angle.getRadians());
         //SmartDashboard.putBoolean("BLDB", desiredStates[2].angle.getRadians() == hardwareStates[2].angle.getRadians());
         //SmartDashboard.putBoolean("BRDB", desiredStates[3].angle.getRadians() == hardwareStates[3].angle.getRadians());
+    }
+      
+    /*
+    private static void adjustRotationWhenStopped(SwerveModuleState[] desiredStates, SwerveModuleState[] hardwareStates) {
+      for(int i = 0; i < 4; i++) {
+        Deadband.adjustRotationWhenStopped(desiredStates[i], hardwareStates[i]);
       }
-    
-      private static void adjustRotationWhenStopped(SwerveModuleState[] desiredStates, SwerveModuleState[] hardwareStates) {
-        for(int i = 0; i < 4; i++) {
-          Deadband.adjustRotationWhenStopped(desiredStates[i], hardwareStates[i]);
-        }
+    }
+  
+    private static void adjustRotationWhenStopped(SwerveModuleState target, SwerveModuleState actual) {
+      // double targetRad = (target.angle.getRadians() + (Math.PI*2)) % Math.PI;
+      // double smallDiff = (diff.getRadians() + (Math.PI*2)) % Math.PI;
+      if(target.speedMetersPerSecond == 0 ) {
+        //target.angle = actual.angle;
       }
-    
-      private static void adjustRotationWhenStopped(SwerveModuleState target, SwerveModuleState actual) {
-        // double targetRad = (target.angle.getRadians() + (Math.PI*2)) % Math.PI;
-        // double smallDiff = (diff.getRadians() + (Math.PI*2)) % Math.PI;
-        if(target.speedMetersPerSecond == 0 ) {
-          //target.angle = actual.angle;
-        }
+    }
+  
+    private static SwerveModuleState adjustValueRotation(SwerveModuleState target, SwerveModuleState actual, double maxDifferenceInRadians) {
+      double fullCircle = Math.PI*2;
+      double directionOffset = 0;
+  
+      if (actual.speedMetersPerSecond < 0) {
+          directionOffset = Math.PI;
       }
-    
-      private static SwerveModuleState adjustValueRotation(SwerveModuleState target, SwerveModuleState actual, double maxDifferenceInRadians) {
-        double fullCircle = Math.PI*2;
-        double directionOffset = 0;
-    
-        if (actual.speedMetersPerSecond < 0) {
-            directionOffset = Math.PI;
-        }
-    
-        double normalizedTarget = (target.angle.getRadians() + fullCircle + directionOffset) % fullCircle;
-        double normalizedActual = (actual.angle.getRadians() + fullCircle) % fullCircle;
-    
-        double diff = normalizedActual - normalizedTarget;
-        if (diff > Math.abs(maxDifferenceInRadians)) {
-            return target;
-        }
-    
-        return new SwerveModuleState(target.speedMetersPerSecond, new Rotation2d(target.angle.getRadians() + diff));
+  
+      double normalizedTarget = (target.angle.getRadians() + fullCircle + directionOffset) % fullCircle;
+      double normalizedActual = (actual.angle.getRadians() + fullCircle) % fullCircle;
+  
+      double diff = normalizedActual - normalizedTarget;
+      if (diff > Math.abs(maxDifferenceInRadians)) {
+          return target;
       }
+  
+      return new SwerveModuleState(target.speedMetersPerSecond, new Rotation2d(target.angle.getRadians() + diff));
+    }
+    */
 }
