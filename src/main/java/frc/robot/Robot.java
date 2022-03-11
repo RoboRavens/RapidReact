@@ -11,22 +11,26 @@ import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.controls.AxisCode;
 import frc.controls.ButtonCode;
 import frc.controls.Gamepad;
 import frc.robot.commands.*;
 import frc.robot.commands.Auto.TwoBallHangarAutoCommand;
-import frc.robot.commands.DriveTrain.DriveTrainTrajectories;
 import frc.robot.commands.shooter.*;
+import frc.robot.commands.turret.*;
 import frc.robot.subsystems.*;
-import frc.util.FileWriter;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -41,16 +45,34 @@ public class Robot extends TimedRobot {
   
   public static final Joystick JOYSTICK = new Joystick(0);
   public static final Gamepad GAMEPAD = new Gamepad(JOYSTICK);
-
+  private Gamepad OP_PAD = new Gamepad(1);
+  
   public static final DriveTrainSubsystem DRIVE_TRAIN_SUBSYSTEM = new DriveTrainSubsystem();
   public static final ShooterSubsystem SHOOTER_SUBSYSTEM = new ShooterSubsystem();
   public static final IntakeExtenderSubsystem INTAKE_SUBSYSTEM = new IntakeExtenderSubsystem();
   public static final ConveyanceSubsystem CONVEYANCE_SUBSYSTEM = new ConveyanceSubsystem();
   public static final IntakeExtendCommand IntakeExtend = new IntakeExtendCommand();
-  public static final ShooterStartCommand ShooterStart = new ShooterStartCommand();
+  public static final ShooterStartCommand SHOOTER_START_COMMAND = new ShooterStartCommand();
   public static final IntakeRetractCommand IntakeRetract = new IntakeRetractCommand();
-
-  // public static final FileWriter SHOOTER_DATA = new FileWriter("shooter");
+  public static final ClimberSubsystem CLIMBER_SUBSYSTEM = new ClimberSubsystem();
+  public static final FeederSubsystem FEEDER_SUBSYSTEM = new FeederSubsystem();
+  public static final TurretSwivelSubsystem TURRET_SWIVEL_SUBSYSTEM = new TurretSwivelSubsystem();
+  public static final ConveyanceCollectCommand CONVEYANCE_COLLECT_COMMAND = new ConveyanceCollectCommand();
+  public static final ConveyanceEjectCommand CONVEYANCE_EJECT_COMMAND = new ConveyanceEjectCommand();
+  //public static final FeederEjectCommand FeederEject = new FeederEjectCommand();
+  public static final FeederSafetyReverseCommand FeederSafetyReverse = new FeederSafetyReverseCommand(Constants.FEEDER_SAFETY_REVERSE_DURATION);
+  public static final ConveyanceIndexCommand CONVEYANCE_INDEX_COMMAND = new ConveyanceIndexCommand();
+  public static final FeederShootCommand FeederShoot = new FeederShootCommand();
+  public static final FeederIndexCommand FeederIndex = new FeederIndexCommand();
+  public static final ShooterTarmacCommand SHOOTER_TARMAC_PID_COMMAND = new ShooterTarmacCommand();
+  public static final ShooterLaunchpadCommand SHOOTER_LP_PID_COMMAND = new ShooterLaunchpadCommand();
+  public static final FeederCollectCommand FeederCollect = new FeederCollectCommand();
+  public static final ClimberDefaultBrakeCommand climberDefaultBrake = new ClimberDefaultBrakeCommand();
+  public static final CompressorSubsystem COMPRESSOR_SUBSYSTEM = new CompressorSubsystem();
+  public static final LimelightSubsystem LIMELIGHT_SUBSYSTEM = new LimelightSubsystem();
+  public static final TurretAimAtTargetCommand TURRET_AIM_AT_TARGET = new TurretAimAtTargetCommand();
+  public static final TurretFlipCommand TURRET_FLIP = new TurretFlipCommand();
+  public static final TurretSeekCommand TURRET_SEEK = new TurretSeekCommand();
   
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -66,49 +88,16 @@ public class Robot extends TimedRobot {
     DRIVE_TRAIN_SUBSYSTEM.setDefaultCommand(driveTrainDefaultCommand);
     //SHOOTER_SUBSYSTEM.setDefaultCommand(new RunCommand(() -> SHOOTER_SUBSYSTEM.defaultCommand(), SHOOTER_SUBSYSTEM));
 
-    GAMEPAD.getButton(ButtonCode.LEFTBUMPER)
-      .and(GAMEPAD.getButton(ButtonCode.RIGHTBUMPER))
-      .whenActive(new InstantCommand(DRIVE_TRAIN_SUBSYSTEM::zeroGyroscope, DRIVE_TRAIN_SUBSYSTEM));
-
-    new Trigger(() -> GAMEPAD.getAxisIsPressed(AxisCode.RIGHTTRIGGER))
-      .whenActive(DRIVE_TRAIN_SUBSYSTEM::cutPower)
-      .whenInactive(DRIVE_TRAIN_SUBSYSTEM::stopCutPower);
-
-    GAMEPAD.getButton(ButtonCode.START)
-      .whenActive(
-        new InstantCommand(() -> System.out.println("START Button Pressed"))
-        .andThen(DriveTrainTrajectories.driveStraightOneMeter())
-        .andThen(new InstantCommand(() -> System.out.println("START Button Pressed")))
-      );
-
-    GAMEPAD.getButton(ButtonCode.BACK)
-      .whenActive(
-        new InstantCommand(() -> System.out.println("BACK Button Pressed"))
-        .andThen(DriveTrainTrajectories.sCurveDemo())
-        .andThen(new InstantCommand(() -> System.out.println("BACK Button Pressed")))
-      );
-
-    GAMEPAD.getButton(ButtonCode.Y)
-      .whenActive(DriveTrainTrajectories.moveAndRotate(1, 90));
-
-    // String trajectoryJSON = "output/2 ball hangar-1.wpilib.json";
-    String trajectoryJSON = "output/a square.wpilib.json";
-    // String trajectoryJSON = "output/snake.wpilib.json";
-    try {
-      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-      var trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-      var command = Robot.DRIVE_TRAIN_SUBSYSTEM.CreateSetOdometryToTrajectoryInitialPositionCommand(trajectory)
-        .andThen(Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommand(trajectory));
-      GAMEPAD.getButton(ButtonCode.A)
-        .whenActive(command);
-    } catch (IOException ex) {
-      DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
-    }
-
-    GAMEPAD.getButton(ButtonCode.X)
-      .whenActive(TwoBallHangarAutoCommand.get());
-
-    // SHOOTER_DATA.writeLine("wahoo it worked!");
+    SHOOTER_SUBSYSTEM.setDefaultCommand(new RunCommand(() -> SHOOTER_SUBSYSTEM.defaultCommand(), SHOOTER_SUBSYSTEM));
+    TURRET_SWIVEL_SUBSYSTEM.setDefaultCommand(TURRET_AIM_AT_TARGET);
+    FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
+    CLIMBER_SUBSYSTEM.setDefaultCommand(climberDefaultBrake);
+    CONVEYANCE_SUBSYSTEM.setDefaultCommand(CONVEYANCE_INDEX_COMMAND);
+    configureButtonBindings();
+    
+    COMPRESSOR_SUBSYSTEM.Setup();
+    LIMELIGHT_SUBSYSTEM.turnLEDOff();
+    CameraServer.startAutomaticCapture();
   }
   
   /**
@@ -125,6 +114,13 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    //System.out.println("Sensor 0: " + CO + " Sensor 1: " + asdfads);
+    //if (GAMEPAD.getAxis(AxisCode.LEFTTRIGGER) >.25) {
+    if (GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER)) {// .getButton(1) > .25)
+      Robot.LIMELIGHT_SUBSYSTEM.turnLEDOn();
+    } else {
+      Robot.LIMELIGHT_SUBSYSTEM.turnLEDOff();
+    }
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -151,6 +147,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    SHOOTER_SUBSYSTEM.resetShotCount();
+
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
@@ -163,9 +161,40 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    // AMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(IntakeExtend);
-    // GAMEPAD.getButton(ButtonCode.A).whileHeld(ShooterStart);
-    // GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(IntakeRetract);
+  
+  }
+
+  public void configureButtonBindings() {
+    GAMEPAD.getButton(ButtonCode.LEFTBUMPER)
+      .and(GAMEPAD.getButton(ButtonCode.RIGHTBUMPER))
+      .whenActive(new InstantCommand(DRIVE_TRAIN_SUBSYSTEM::zeroGyroscope, DRIVE_TRAIN_SUBSYSTEM));
+
+    new Trigger(() -> GAMEPAD.getAxisIsPressed(AxisCode.RIGHTTRIGGER))
+      .whenActive(DRIVE_TRAIN_SUBSYSTEM::cutPower)
+      .whenInactive(DRIVE_TRAIN_SUBSYSTEM::stopCutPower);
+      
+    GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(new StartEndCommand(
+      () -> Robot.CLIMBER_SUBSYSTEM.retract(),
+      () -> Robot.CLIMBER_SUBSYSTEM.stop(),
+      Robot.CLIMBER_SUBSYSTEM
+    ));
+    GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(new StartEndCommand(
+      () -> Robot.CLIMBER_SUBSYSTEM.extend(),
+      () -> Robot.CLIMBER_SUBSYSTEM.stop(),
+      Robot.CLIMBER_SUBSYSTEM
+    ));
+    GAMEPAD.getButton(ButtonCode.X).whileHeld(SHOOTER_START_COMMAND);
+    //GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(CONVEYANCE_COLLECT_COMMAND);
+    GAMEPAD.getButton(ButtonCode.B).whileHeld(new SequentialCommandGroup(new WaitCommand(.15), SHOOTER_START_COMMAND));
+    //GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(CONVEYANCE_EJECT_COMMAND);
+    //GAMEPAD.getButton(ButtonCode.B).whenPressed(FeederSafetyReverse);
+    //GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederShoot);
+    GAMEPAD.getButton(ButtonCode.BACK).whenHeld(TURRET_FLIP);
+    GAMEPAD.getButton(ButtonCode.START).whenHeld(TURRET_SEEK);
+    //GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederCollect);
+    //GAMEPAD.getButton(ButtonCode.Y).whenPressed(FeederSafetyReverse);
+    OP_PAD.getButton(ButtonCode.Y).whenPressed(SHOOTER_LP_PID_COMMAND);
+    OP_PAD.getButton(ButtonCode.A).whenPressed(SHOOTER_TARMAC_PID_COMMAND);
   }
 
   @Override
@@ -177,6 +206,5 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {}
-
 
 }

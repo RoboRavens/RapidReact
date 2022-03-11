@@ -6,27 +6,32 @@ package frc.robot;
 
 public final class RobotMap {
 
-    //MOTORS
+    //FEEDER
+    public static final int FEEDER_MOTOR = 32;
+    public static final int FEEDER_CONVEYANCE_MOTOR = 31;
 
-    public static final int CONVEYANCE_MOTOR_TWO = 25;
-    public static final int CONVEYANCE_MOTOR_ONE = 26;
-    public static final int CONVEYANCE_WHEEL = 27;
-    
-    //Set to -1 just so we don't conflict, but add the right values asap!
+    //CONVEYANCE
+     public static final int CONVEYANCE_MOTOR = 11;
+
+    //CLIMBER
+    public static final int LEFT_CLIMBER_MOTOR = 51;
+    public static final int RIGHT_CLIMBER_MOTOR = 52;
+    public static final int LEFT_CLIMBER_SOLENOID = 2;
+    public static final int RIGHT_CLIMBER_SOLENOID = 3;
+
+    //SHOOTER
     public static final int SHOOTER_MOTOR_1 = 41;
     public static final int SHOOTER_MOTOR_2 = 42;
 
-    
+    //TURRET
+    public static final int TURRET_MOTOR = LEFT_CLIMBER_MOTOR; //Set this to real value ASAP
+    //public static final int TURRET_RESET_SENSOR = ;
+    //public static final int TURRET_CLOCKWISE_SENSOR = ;
+    //public static final int TURRET_COUNTERCLOCKWISE_SENSOR = ;
 
-    //INTAKE
-     
+    //INTAKE 
      public static final int INTAKE_EXTEND_SOLENOID = 0;
-     public static final int INTAKE_RETRACT_SOLENOID = 1;
-    
-   
-     //SENSORS
-    public static final int SENSOR_A_CHANNEL = 1;
-    public static final int SENSOR_B_CHANNEL = 1;
+     public static final int INTAKE_RETRACT_SOLENOID = 1; 
     
     // DRIVETRAIN
     public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0.5715; // The left-to-right distance between the drivetrain wheels
@@ -51,4 +56,12 @@ public final class RobotMap {
     public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 4;
     public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 23;
     public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(201.885);
+
+    //SENSORS
+    public static final int SENSOR_A_CHANNEL = 0; 
+    public static final int SENSOR_B_CHANNEL = 1; 
+
+    
+    //LIMELIGHT
+    public static final String CAMERA_NAME = "cam0";
 }

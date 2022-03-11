@@ -12,6 +12,10 @@ public class Gamepad {
 		_joystick = joystick;
 	}
 
+	public Gamepad(int port) {
+		_joystick = new Joystick(port);
+	}
+
 	public boolean getButtonValue(ButtonCode button) {
 		return _joystick.getRawButton(getButtonNumber(button));
 	}

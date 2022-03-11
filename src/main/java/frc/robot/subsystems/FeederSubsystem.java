@@ -10,7 +10,6 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 public class FeederSubsystem extends SubsystemBase {
@@ -21,9 +20,9 @@ public class FeederSubsystem extends SubsystemBase {
 
 
   public FeederSubsystem() {
-      //_conveyanceMotorTwo = new TalonFX(RobotMap.CONVEYANCE_MOTOR_TWO);
-      //_feederWheelMotor = new TalonFX(RobotMap.CONVEYANCE_WHEEL);
-      //_conveyanceSensorB = new DigitalInput(RobotMap.SENSOR_B_CHANNEL);
+      _conveyanceMotorTwo = new TalonFX(RobotMap.FEEDER_CONVEYANCE_MOTOR);
+      _feederWheelMotor = new TalonFX(RobotMap.FEEDER_MOTOR);
+      _conveyanceSensorB = new DigitalInput(RobotMap.SENSOR_B_CHANNEL);
   }
 
   @Override
@@ -44,7 +43,7 @@ public class FeederSubsystem extends SubsystemBase {
     this.runConveyanceAtPercentPower(Constants.CONVEYANCE_TWO_FULL_SPEED_REVERSE);
   }
 
-  public void setConveyanceMaxForward() {
+  public void setConveyanceTwoMaxForward() {
     this.runConveyanceAtPercentPower(Constants.CONVEYANCE_TWO_FULL_SPEED);
   }
 
@@ -57,7 +56,7 @@ public class FeederSubsystem extends SubsystemBase {
   }
 
   private void runConveyanceAtPercentPower(double magnitude) {
-    //_conveyanceMotorTwo.set(ControlMode.PercentOutput, magnitude);
+    _conveyanceMotorTwo.set(ControlMode.PercentOutput, magnitude);
   }
 
   public void stopConveyance() {
@@ -69,7 +68,7 @@ public class FeederSubsystem extends SubsystemBase {
   }
 
   private void runWheelAtPercentPower(double magnitude) {
-    //_feederWheelMotor.set(ControlMode.PercentOutput, magnitude);
+    _feederWheelMotor.set(ControlMode.PercentOutput, magnitude);
   }
 
   public void feederWheelForward() {
@@ -84,12 +83,8 @@ public class FeederSubsystem extends SubsystemBase {
     this.runWheelAtPercentPower(Constants.CONVEYANCE_TWO_REVERSE_FEEDER);
   }
 
-  public boolean getConveyanceSensorBReading() {
-    return false; //_conveyanceSensorB.get();
-  }
-
-  public boolean getConveyanceSensorAReading() {
-    return false; // Robot.INTAKE_SUBSYSTEM.getConveyanceSensorAReading();
+  public boolean getFeederHasBall() {
+    return !_conveyanceSensorB.get();
   }
 
 }
