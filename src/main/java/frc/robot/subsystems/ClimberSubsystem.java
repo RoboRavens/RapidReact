@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -38,6 +37,7 @@ public class ClimberSubsystem extends SubsystemBase {
 	private Solenoid _climberBrakeRight;
 	private Solenoid _climberBrakeLeft;
 
+	private boolean isClimbing;
 
     public ClimberSubsystem() {
 
@@ -80,9 +80,28 @@ public class ClimberSubsystem extends SubsystemBase {
 		_climberBrakeLeft.set(true);
 	}
 
+	public void leftClimberReleaseBrake() {
+		_climberBrakeLeft.set(false);
+	}
+
+	public void rightClimberReleaseBrake() {
+		_climberBrakeLeft.set(false);
+	}
+
 	public void brakeClimbers() {
 		leftClimberBrake();
 		rightClimberBrake();
+		isClimbing = false;
+	}
+
+	private void releaseClimberBrakes() {
+		leftClimberReleaseBrake();
+		rightClimberReleaseBrake();
+		isClimbing = true;
+	}
+
+	public boolean getIsClimbing() {
+		return isClimbing;
 	}
 
 	public void setOverrideOn() {
@@ -110,6 +129,7 @@ public class ClimberSubsystem extends SubsystemBase {
 	}
 
 	public void extend() {
+		this.releaseClimberBrakes();
 		this.extendLeftSide();
 		this.extendRightSide();
 		/*
@@ -121,6 +141,7 @@ public class ClimberSubsystem extends SubsystemBase {
 	}
 
 	public void retract() {
+		this.releaseClimberBrakes();
 		this.retractLeftSide();
 		this.retractRightSide();
 		/*
@@ -154,8 +175,6 @@ public class ClimberSubsystem extends SubsystemBase {
 		
 		return extended;
 	}
-
-
 
 	public boolean encodersShowRetracted() {
 		boolean bothSidesRetracted = leftEncoderShowsRetracted() && rightEncoderShowsRetracted();

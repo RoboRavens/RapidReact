@@ -22,6 +22,7 @@ public class ShooterSubsystem extends SubsystemBase {
     private TalonSRX _shooterMotor1;
     private VictorSPX _shooterMotor2;
     private ShooterCalibration _shot;
+    private boolean isShooting;
     private int _shotTally = 0;
     private boolean _recovered;
     private double _lastShotTime = 0;
@@ -94,6 +95,7 @@ public class ShooterSubsystem extends SubsystemBase {
     public void startMotor() {
         _recovered = false;
         _shooterMotor1.set(ControlMode.Velocity, _shot.targetRPM * Constants.SHOOTER_VEL_TO_RPM);
+        isShooting = true;
     }
 
     /**
@@ -101,6 +103,7 @@ public class ShooterSubsystem extends SubsystemBase {
     */
     public void stopMotor() {
         _shooterMotor1.set(ControlMode.PercentOutput, 0);
+        isShooting = false;
     }
 
     public void resetShotCount() {
@@ -133,4 +136,9 @@ public class ShooterSubsystem extends SubsystemBase {
     public double getLastShotTime() {
         return _lastShotTime;
     }
+
+    public boolean getIsShooting() {
+        return isShooting;
+    }
+
 }
