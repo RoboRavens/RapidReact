@@ -10,11 +10,8 @@ import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.util.Deadband;
 
 public class DriveTrainDefaultCommand extends CommandBase {
-    private final DriveTrainSubsystem _drivetrainSubsystem;
-
-    public DriveTrainDefaultCommand(DriveTrainSubsystem drivetrainSubsystem) {
-        _drivetrainSubsystem = drivetrainSubsystem;
-        addRequirements(drivetrainSubsystem);
+    public DriveTrainDefaultCommand() {
+        addRequirements(Robot.DRIVE_TRAIN_SUBSYSTEM);
     }
 
     @Override
@@ -23,7 +20,7 @@ public class DriveTrainDefaultCommand extends CommandBase {
         double x = Robot.GAMEPAD.getAxis(AxisCode.LEFTSTICKY) * -1 * DriveTrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND; // Robot.JOYSTICK.getRawAxis(1); // Positive x is away from your alliance wall.
         double y = Robot.GAMEPAD.getAxis(AxisCode.LEFTSTICKX) * -1 * DriveTrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND; // Robot.JOYSTICK.getRawAxis(0); // Positive y is to your left when standing behind the alliance wall.
         double r = Robot.GAMEPAD.getAxis(AxisCode.RIGHTSTICKX) * -1 * Constants.DRIVE_MAX_TURN_RADIANS_PER_SECOND; // Robot.JOYSTICK.getRawAxis(2); // The angular rate of the robot.
-        Rotation2d a = _drivetrainSubsystem.getOdometryRotation(); // The angle of the robot as measured by a gyroscope. The robot's angle is considered to be zero when it is facing directly away from your alliance station wall.
+        Rotation2d a = Robot.DRIVE_TRAIN_SUBSYSTEM.getOdometryRotation(); // The angle of the robot as measured by a gyroscope. The robot's angle is considered to be zero when it is facing directly away from your alliance station wall.
 
         x = Deadband.adjustValueToZero(x, Constants.JOYSTICK_DEADBAND);
         y = Deadband.adjustValueToZero(y, Constants.JOYSTICK_DEADBAND);
@@ -32,9 +29,9 @@ public class DriveTrainDefaultCommand extends CommandBase {
         r = r * Constants.DRIVE_MAX_TURN_RADIANS_PER_SECOND;
 
         if (x == 0 && y == 0 && r == 0) {
-            _drivetrainSubsystem.holdPosition();
+            Robot.DRIVE_TRAIN_SUBSYSTEM.holdPosition();
         } else {
-            _drivetrainSubsystem.drive(
+            Robot.DRIVE_TRAIN_SUBSYSTEM.drive(
                 ChassisSpeeds.fromFieldRelativeSpeeds(
                     x, // x translation
                     y, // y translation
@@ -47,6 +44,6 @@ public class DriveTrainDefaultCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        _drivetrainSubsystem.drive(new ChassisSpeeds(0.0, 0.0, 0.0));
+        Robot.DRIVE_TRAIN_SUBSYSTEM.drive(new ChassisSpeeds(0.0, 0.0, 0.0));
     }
 }

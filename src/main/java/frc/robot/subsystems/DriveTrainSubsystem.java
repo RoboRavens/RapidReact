@@ -23,7 +23,6 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.commands.DriveTrain.RavenSwerveControllerCommand;
 import frc.util.DriftCorrection;
@@ -36,7 +35,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import static frc.robot.RobotMap.*;
 
 // Template From: https://github.com/SwerveDriveSpecialties/swerve-template/blob/master/src/main/java/frc/robot/subsystems/DrivetrainSubsystem.java
-public class DriveTrainSubsystem extends SubsystemBase {
+public class DriveTrainSubsystem extends DriveTrainSubsystemBase {
   /**
    * The maximum voltage that will be delivered to the drive motors.
    * <p>
@@ -179,6 +178,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
    * Sets the gyroscope angle to zero. This can be used to set the direction the robot is currently facing to the
    * 'forwards' direction.
    */
+  @Override
   public void zeroGyroscope() {
     m_navx.zeroYaw();
     DriftCorrection.clearDesiredHeading();
@@ -187,6 +187,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
     _driveCharacteristics.reset();
   }
 
+  @Override
   public Rotation2d getOdometryRotation() {
     return _odometryFromHardware.getPoseMeters().getRotation();
   }
@@ -201,6 +202,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
     return Rotation2d.fromDegrees(360.0 - m_navx.getAngle());
   }
 
+  @Override
   public void holdPosition() {
     // create an X pattern with the wheels to thwart pushing from other robots
     _moduleStates[0].angle = Rotation2d.fromDegrees(45); // front left
@@ -213,14 +215,17 @@ public class DriveTrainSubsystem extends SubsystemBase {
     _moduleStates[3].speedMetersPerSecond = 0;
   }
 
+  @Override
   public void cutPower() {
     _cutPower = true;
   }
 
+  @Override
   public void stopCutPower() {
     _cutPower = false;
   }
 
+  @Override
   public void drive(ChassisSpeeds chassisSpeeds) {
     if (_cutPower) {
       chassisSpeeds.omegaRadiansPerSecond =  chassisSpeeds.omegaRadiansPerSecond * 0.5;
@@ -285,10 +290,11 @@ public class DriveTrainSubsystem extends SubsystemBase {
     _moduleStates = moduleStates;
   }
 
-  public void stop() {
+  private void stop() {
     this.drive(new ChassisSpeeds(0,0,0));
   }
 
+  @Override
   public TrajectoryConfig GetTrajectoryConfig() {
     // Create config for trajectory
     TrajectoryConfig config =
@@ -301,10 +307,12 @@ public class DriveTrainSubsystem extends SubsystemBase {
     return config;
   }
 
+  @Override
   public Command CreateSetOdometryToTrajectoryInitialPositionCommand(Trajectory trajectory) {
     return new InstantCommand(() -> this.resetOdometry(trajectory.getInitialPose(), trajectory.getInitialPose().getRotation()));
   }
 
+  @Override
   public Command CreateFollowTrajectoryCommand(Trajectory trajectory) {
     var robotAngleController =
         new ProfiledPIDController(

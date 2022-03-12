@@ -37,7 +37,7 @@ public class Robot extends TimedRobot {
   public static final Gamepad GAMEPAD = new Gamepad(JOYSTICK);
   private Gamepad OP_PAD = new Gamepad(1);
   
-  public static final DriveTrainSubsystem DRIVE_TRAIN_SUBSYSTEM = new DriveTrainSubsystem();
+  public static final DriveTrainSubsystemBase DRIVE_TRAIN_SUBSYSTEM = new DriveTrainSubsystem();
   public static final ShooterSubsystem SHOOTER_SUBSYSTEM = new ShooterSubsystem();
   public static final IntakeExtenderSubsystem INTAKE_SUBSYSTEM = new IntakeExtenderSubsystem();
   public static final ConveyanceSubsystem CONVEYANCE_SUBSYSTEM = new ConveyanceSubsystem();
@@ -70,7 +70,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    var driveTrainDefaultCommand = new DriveTrainDefaultCommand(DRIVE_TRAIN_SUBSYSTEM);
+    var driveTrainDefaultCommand = new DriveTrainDefaultCommand();
     DRIVE_TRAIN_SUBSYSTEM.setDefaultCommand(driveTrainDefaultCommand);
     //SHOOTER_SUBSYSTEM.setDefaultCommand(new RunCommand(() -> SHOOTER_SUBSYSTEM.defaultCommand(), SHOOTER_SUBSYSTEM));
 
