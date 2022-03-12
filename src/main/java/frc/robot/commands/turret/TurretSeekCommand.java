@@ -42,6 +42,6 @@ public class TurretSeekCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(Robot.TURRET_SWIVEL_SUBSYSTEM.xAngle) < Constants.DESIRED_TURRET_TARGET_BUFFER && Robot.TURRET_SWIVEL_SUBSYSTEM.hasTargetSighted; // Replace this with a "target found" thing (turret should auto-disable seek when target found)
+    return Math.abs(Robot.LIMELIGHT_SUBSYSTEM.getTargetOffsetAngle()) < Constants.DESIRED_TURRET_TARGET_BUFFER && Robot.LIMELIGHT_SUBSYSTEM.hasTargetSighted(); // Replace this with a "target found" thing (turret should auto-disable seek when target found)
   }
 }

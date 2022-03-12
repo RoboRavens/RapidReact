@@ -76,8 +76,8 @@ public final class Constants {
     //CONVEYANCE TWO
     //Not sure if these are the correct speeds for the conveyance motor (needs to be calibrated)
     public static final double CONVEYANCE_TWO_FULL_SPEED_REVERSE = .25;
-    public static final double CONVEYANCE_TWO_NORMAL_SPEED = -0.25;
-    public static final double CONVEYANCE_TWO_NORMAL_REVERSE_SPEED = 0.25;
+    public static final double CONVEYANCE_TWO_NORMAL_SPEED = 0.25;
+    public static final double CONVEYANCE_TWO_NORMAL_REVERSE_SPEED = -0.25;
     public static final double CONVEYANCE_TWO_STOP = 0;
     public static final double CONVEYANCE_TWO_FEEDER_SPEED = 0.25;
 	public static final double CONVEYANCE_TWO_FEEDER_STOP = 0;
@@ -87,8 +87,8 @@ public final class Constants {
 
 
     //CONVEYANCE ONE
-    public static final double CONVEYANCE_ONE_FULL_SPEED_REVERSE = .25;
-    public static final double CONVEYANCE_ONE_FULL_SPEED = -.25;
+    public static final double CONVEYANCE_ONE_FULL_SPEED_REVERSE = .75;
+    public static final double CONVEYANCE_ONE_FULL_SPEED = -75;
     public static final double CONVEYANCE_ONE_NORMAL_SPEED = -.25;
     public static final double CONVEYANCE_ONE_NORMAL_REVERSE_SPEED = -.25;
     public static final double CONVEYANCE_ONE_STOP = 0;
