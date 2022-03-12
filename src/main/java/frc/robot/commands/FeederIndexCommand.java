@@ -18,8 +18,6 @@ public class FeederIndexCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        SmartDashboard.putBoolean("SensorB", Robot.FEEDER_SUBSYSTEM.getFeederHasBall());
-       // System.out.println(Robot.FEEDER_SUBSYSTEM.getFeederHasBall());
 
         // (False means no ball in front of the sensor and vice versa)
         
