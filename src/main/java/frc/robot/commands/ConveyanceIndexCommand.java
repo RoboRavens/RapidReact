@@ -1,4 +1,5 @@
 package frc.robot.commands;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
@@ -17,7 +18,8 @@ public class ConveyanceIndexCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-       if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall()  && Robot.FEEDER_SUBSYSTEM.getFeederHasBall() == false ) {
+      SmartDashboard.putBoolean("SensorA", Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall());
+      if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall()  && Robot.FEEDER_SUBSYSTEM.getFeederHasBall() == false ) {
          Robot.CONVEYANCE_SUBSYSTEM.setConveyanceMaxForward();   //when there is a ball in conveyance stage 1 and 2 conveyance wont run        
        } 
          else if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall()  && Robot.FEEDER_SUBSYSTEM.getFeederHasBall() )    {        

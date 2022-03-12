@@ -17,17 +17,17 @@ public class RavenBlinkin {
     private RavenBlinkinPatternCodes nextPatternState;
 
     // Non-color setters
-
-    
-    public RavenBlinkin(int PWM) {
-        initializeBlinkin(0);
-    }
-    
     private void initializeBlinkin(int PWM) {
-        _blinkin = new Spark(0);
+        _blinkin = new Spark(PWM);
         ledDelayer = new Timer();
         nextPatternState = RavenBlinkinPatternCodes.SOLID_OFF;
     }
+    
+    public RavenBlinkin(int PWM) {
+        initializeBlinkin(PWM);
+    }
+    
+    
     
     private boolean isDelayOver() {        
         if (ledDelayer.get() == 0.0) {
@@ -113,8 +113,20 @@ public class RavenBlinkin {
         _blinkin.set(BlinkinCalibrations.SOLID_RED);
     }
 
-    public static void flashRed() {
-        // erik magic
+    public void flashRed() {
+        if (isDelayOver()) {
+            if (nextPatternState.equals(RavenBlinkinPatternCodes.SOLID_RED)) {
+
+                solidBlue();
+                nextPatternState = RavenBlinkinPatternCodes.SOLID_OFF;
+
+            } else {
+
+                solidOff();
+                nextPatternState = RavenBlinkinPatternCodes.SOLID_RED;
+
+            }
+        }
     }
 
     public void blinkBlue() {

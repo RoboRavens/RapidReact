@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
@@ -17,8 +18,8 @@ public class FeederIndexCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        System.out.println(Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall());
-        System.out.println(Robot.FEEDER_SUBSYSTEM.getFeederHasBall());
+        SmartDashboard.putBoolean("SensorB", Robot.FEEDER_SUBSYSTEM.getFeederHasBall());
+       // System.out.println(Robot.FEEDER_SUBSYSTEM.getFeederHasBall());
 
         // (False means no ball in front of the sensor and vice versa)
         

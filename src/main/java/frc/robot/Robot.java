@@ -69,6 +69,8 @@ public class Robot extends TimedRobot {
   public static final FeederIndexCommand FeederIndex = new FeederIndexCommand();
   public static final LimelightSubsystem LIMELIGHT_SUBSYSTEM = new LimelightSubsystem();
   public static boolean isRedAlliance;
+
+  public static final RavenBlinkin ravenBlinkin3 = new RavenBlinkin(3);
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -146,19 +148,21 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    if (Timer.getMatchTime() == 60) {
-      RavenBlinkin.flashGreen();
-    } else if (Timer.getMatchTime() == 30) {
-      RavenBlinkin.flashYellow();
-    } else if (Timer.getMatchTime() == 15) {
-      RavenBlinkin.flashRed();
-    }
+    //if (Timer.getMatchTime() == 60) {
+     // RavenBlinkin.flashGreen();
+ // } else if (Timer.getMatchTime() == 30) {
+     // RavenBlinkin.flashYellow();
+    //} //else if (Timer.getMatchTime() == 15) {
+      //ravenBlinkin3.flashRed();
+    //}
   
     if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() ==false  && Robot.FEEDER_SUBSYSTEM.getFeederHasBall() ==false ) {
       RavenBlinkin.solidRed();
-    } else if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() == false && Robot.FEEDER_SUBSYSTEM.getFeederHasBall() ==true ) {
+    } 
+    if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() == true | Robot.FEEDER_SUBSYSTEM.getFeederHasBall() ==true ) {
       RavenBlinkin.solidYellow();
-    } else if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() == true && Robot.FEEDER_SUBSYSTEM.getFeederHasBall() == true ) {
+    } 
+    if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() == true && Robot.FEEDER_SUBSYSTEM.getFeederHasBall() == true ) {
       RavenBlinkin.solidGreen();
     }
   

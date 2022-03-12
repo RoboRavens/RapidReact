@@ -46,7 +46,7 @@ public class ConveyanceSubsystem extends SubsystemBase {
   }
 
   public boolean getConveyanceHasBall() {
-    return _conveyanceSensorA.get();
+    return !_conveyanceSensorA.get();
   }
 
    @Override

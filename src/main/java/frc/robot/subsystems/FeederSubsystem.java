@@ -86,7 +86,7 @@ public class FeederSubsystem extends SubsystemBase {
   }
 
   public boolean getFeederHasBall() {
-    return _conveyanceSensorB.get();
+    return !_conveyanceSensorB.get();
   }
   
 
