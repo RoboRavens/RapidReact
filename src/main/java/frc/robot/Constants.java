@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import frc.util.ShooterCalibration;
 import frc.util.TurretCalibration;
 
@@ -16,41 +18,9 @@ import frc.util.TurretCalibration;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    // DRIVETRAIN
-        /**
-     * The left-to-right distance between the drivetrain wheels
-     *
-     * Should be measured from center to center.
-     */
-    public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0.5715; // FIXME Measure and set trackwidth
-    /**
-     * The front-to-back distance between the drivetrain wheels.
-     *
-     * Should be measured from center to center.
-     */
-    public static final double DRIVETRAIN_WHEELBASE_METERS = 0.5715; // FIXME Measure and set wheelbase
-
-    public static final int DRIVETRAIN_PIGEON_ID = 0; // FIXME Set Pigeon ID
-
-    public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 8;
-    public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 6;
-    public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 24;
-    public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(253.301);
-
-    public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 1;
-    public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 5;
-    public static final int FRONT_RIGHT_MODULE_STEER_ENCODER = 22;
-    public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(140.625);
-
-    public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 3;
-    public static final int BACK_LEFT_MODULE_STEER_MOTOR = 2;
-    public static final int BACK_LEFT_MODULE_STEER_ENCODER = 21;
-    public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(11.338);
-
-    public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 7;
-    public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 4;
-    public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 23;
-    public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(21.885);
+    // CONTROLS
+    public static final double JOYSTICK_DEADBAND = .05;
+    public static final double DRIVE_MAX_TURN_RADIANS_PER_SECOND = 2;
 
     //SHOOTER
     public static final int SHOOTER_IDX = 0;
@@ -123,6 +93,25 @@ public final class Constants {
     public static final double CONVEYANCE_ONE_NORMAL_REVERSE_SPEED = -.25;
     public static final double CONVEYANCE_ONE_STOP = 0;
 
+    // DRIVETRAIN PATHFINDING
+    public static final double TRAJECTORY_CONFIG_MAX_VELOCITY_METERS_PER_SECOND = 2;
+    public static final double TRAJECTORY_CONFIG_MAX_ACCELERATION_METERS_PER_SECOND = 2;
+    public static final double TRAJECTORY_CONFIG_MAX_ANGULAR_SPEED_RADIANS_PER_SECOND = Math.PI;
+    public static final double TRAJECTORY_CONFIG_MAX_ANGULAR_ACCELERATION_RADIANS_PER_SECOND = Math.PI;
+
+    public static final double SWERVE_CONTROLLER_X_KP = 1;
+    public static final double SWERVE_CONTROLLER_Y_KP = 1;
+    public static final double SWERVE_CONTROLLER_ANGLE_KP = 4;
+
+    // Constraint for the motion profilied robot angle controller
+    public static final TrapezoidProfile.Constraints SWERVE_CONTROLLER_ANGULAR_CONSTRAINTS =
+        new TrapezoidProfile.Constraints(
+            TRAJECTORY_CONFIG_MAX_ANGULAR_SPEED_RADIANS_PER_SECOND, TRAJECTORY_CONFIG_MAX_ANGULAR_ACCELERATION_RADIANS_PER_SECOND);
+
+    public static final double DRIVE_ANGLE_DRIFT_CORRECTION_KP = 1;
+    public static final double DRIVE_ANGLE_DRIFT_CORRECTION_KI = .01;
+    public static final double DRIVE_ANGLE_DRIFT_CORRECTION_KD = 0;
+    
     //CLIMBER
     public static final double CLIMBER_HOLD_POSITION_POWER_MAGNITUDE = 0; // .13
 	public static final double CLIMBER_EXTEND_POWER_MAGNITUDE = 1;

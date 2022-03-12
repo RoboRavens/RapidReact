@@ -1,0 +1,9 @@
+# top-most EditorConfig file
+root = true
+
+# for all java files
+[*.java]
+indent_style = space
+indent_size = 2
+charset = utf-8
+trim_trailing_whitespace = true

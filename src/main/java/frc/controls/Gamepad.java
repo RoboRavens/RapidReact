@@ -8,6 +8,10 @@ import frc.robot.Constants;
 public class Gamepad {
 	private Joystick _joystick;
 
+	public Gamepad(Joystick joystick) {
+		_joystick = joystick;
+	}
+
 	public Gamepad(int port) {
 		_joystick = new Joystick(port);
 	}

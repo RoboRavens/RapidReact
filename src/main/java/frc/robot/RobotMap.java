@@ -33,6 +33,30 @@ public final class RobotMap {
      public static final int INTAKE_EXTEND_SOLENOID = 0;
      public static final int INTAKE_RETRACT_SOLENOID = 1; 
     
+    // DRIVETRAIN
+    public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0.5715; // The left-to-right distance between the drivetrain wheels
+    public static final double DRIVETRAIN_WHEELBASE_METERS = 0.5715; // The front-to-back distance between the drivetrain wheels.
+
+    public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 8;
+    public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 6;
+    public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 24;
+    public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(73.301);
+
+    public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 1;
+    public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 5;
+    public static final int FRONT_RIGHT_MODULE_STEER_ENCODER = 22;
+    public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(320.625);
+
+    public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 3;
+    public static final int BACK_LEFT_MODULE_STEER_MOTOR = 2;
+    public static final int BACK_LEFT_MODULE_STEER_ENCODER = 21;
+    public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(191.338);
+
+    public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 7;
+    public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 4;
+    public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 23;
+    public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(201.885);
+
     //SENSORS
     public static final int SENSOR_A_CHANNEL = 0; 
     public static final int SENSOR_B_CHANNEL = 1; 

@@ -4,20 +4,22 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.controls.AxisCode;
 import frc.controls.ButtonCode;
 import frc.controls.Gamepad;
 import frc.robot.commands.*;
+import frc.robot.commands.Auto.TwoBallHangarAutoCommand;
 import frc.robot.commands.shooter.*;
 import frc.robot.commands.turret.*;
 import frc.robot.subsystems.*;
@@ -30,13 +32,12 @@ import frc.robot.subsystems.*;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-
-  private RobotContainer m_robotContainer;
   
-  private Gamepad GAMEPAD = new Gamepad(0);
+  public static final Joystick JOYSTICK = new Joystick(0);
+  public static final Gamepad GAMEPAD = new Gamepad(JOYSTICK);
   private Gamepad OP_PAD = new Gamepad(1);
   
-  //public static final DriveTrainSubsystem DRIVE_TRAIN_SUBSYSTEM = new DriveTrainSubsystem();
+  public static final DriveTrainSubsystemBase DRIVE_TRAIN_SUBSYSTEM = new DriveTrainSubsystem();
   public static final ShooterSubsystem SHOOTER_SUBSYSTEM = new ShooterSubsystem();
   public static final IntakeExtenderSubsystem INTAKE_SUBSYSTEM = new IntakeExtenderSubsystem();
   public static final ConveyanceSubsystem CONVEYANCE_SUBSYSTEM = new ConveyanceSubsystem();
@@ -69,11 +70,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
-    // autonomous chooser on the dashboard.
-    m_robotContainer = new RobotContainer();
+    var driveTrainDefaultCommand = new DriveTrainDefaultCommand();
+    DRIVE_TRAIN_SUBSYSTEM.setDefaultCommand(driveTrainDefaultCommand);
+    //SHOOTER_SUBSYSTEM.setDefaultCommand(new RunCommand(() -> SHOOTER_SUBSYSTEM.defaultCommand(), SHOOTER_SUBSYSTEM));
 
-    //DRIVE_TRAIN_SUBSYSTEM.setDefaultCommand(new DrivetrainDefaultCommand(DRIVE_TRAIN_SUBSYSTEM, GAMEPAD));
     SHOOTER_SUBSYSTEM.setDefaultCommand(new RunCommand(() -> SHOOTER_SUBSYSTEM.defaultCommand(), SHOOTER_SUBSYSTEM));
     TURRET_SWIVEL_SUBSYSTEM.setDefaultCommand(TURRET_AIM_AT_TARGET);
     FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
@@ -119,8 +119,8 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-
+    // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_autonomousCommand = TwoBallHangarAutoCommand.get();
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
@@ -151,6 +151,14 @@ public class Robot extends TimedRobot {
   }
 
   public void configureButtonBindings() {
+    GAMEPAD.getButton(ButtonCode.LEFTBUMPER)
+      .and(GAMEPAD.getButton(ButtonCode.RIGHTBUMPER))
+      .whenActive(new InstantCommand(DRIVE_TRAIN_SUBSYSTEM::zeroGyroscope, DRIVE_TRAIN_SUBSYSTEM));
+
+    new Trigger(() -> GAMEPAD.getAxisIsPressed(AxisCode.RIGHTTRIGGER))
+      .whenActive(DRIVE_TRAIN_SUBSYSTEM::cutPower)
+      .whenInactive(DRIVE_TRAIN_SUBSYSTEM::stopCutPower);
+      
     GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(new StartEndCommand(
       () -> Robot.CLIMBER_SUBSYSTEM.retract(),
       () -> Robot.CLIMBER_SUBSYSTEM.stop(),
