@@ -36,6 +36,7 @@ public class Robot extends TimedRobot {
   public static final Joystick JOYSTICK = new Joystick(0);
   public static final Gamepad GAMEPAD = new Gamepad(JOYSTICK);
   private Gamepad OP_PAD = new Gamepad(1);
+  private Gamepad OP_PAD2 = new Gamepad(2);
   
   public static final DriveTrainSubsystemBase DRIVE_TRAIN_SUBSYSTEM = new DriveTrainSubsystem();
   public static final ShooterSubsystem SHOOTER_SUBSYSTEM = new ShooterSubsystem();
@@ -71,7 +72,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    var driveTrainDefaultCommand = new DriveTrainDefaultCommand();
+    var driveTrainDefaultCommand = new DrivetrainDefaultCommand();
     DRIVE_TRAIN_SUBSYSTEM.setDefaultCommand(driveTrainDefaultCommand);
     //SHOOTER_SUBSYSTEM.setDefaultCommand(new RunCommand(() -> SHOOTER_SUBSYSTEM.defaultCommand(), SHOOTER_SUBSYSTEM));
 
@@ -171,7 +172,7 @@ public class Robot extends TimedRobot {
       Robot.CLIMBER_SUBSYSTEM
     ));
     */
-    GAMEPAD.getButton(ButtonCode.X)
+    OP_PAD.getButton(ButtonCode.SHOOTER_REV)
       .whileHeld(SHOOTER_START_COMMAND)
       .whenInactive(SHOOTER_STOP_COMMAND);
 
@@ -179,7 +180,7 @@ public class Robot extends TimedRobot {
     //GAMEPAD.getButton(ButtonCode.B).whileHeld(new SequentialCommandGroup(new WaitCommand(.15), SHOOTER_START_COMMAND));
     GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(CONVEYANCE_EJECT_COMMAND);
     //GAMEPAD.getButton(ButtonCode.B).whenPressed(FeederSafetyReverse);
-    GAMEPAD.getButton(ButtonCode.Y).whileHeld(FeederShoot);
+    OP_PAD2.getButton(ButtonCode.SHOOTER_OVERRIDE).whileHeld(FeederShoot);
     //GAMEPAD.getButton(ButtonCode.BACK).whenHeld(TURRET_FLIP);
     //GAMEPAD.getButton(ButtonCode.START).whenHeld(TURRET_SEEK);
     GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederCollect);

@@ -10,11 +10,11 @@ import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.util.Deadband;
 
-public class DriveTrainDefaultCommand extends CommandBase {
+public class DrivetrainDefaultCommand extends CommandBase {
     private boolean _followLimelight = false;
     private PIDController _followLimelightPID = new PIDController(5, 1, 1);
 
-    public DriveTrainDefaultCommand() {
+    public DrivetrainDefaultCommand() {
         addRequirements(Robot.DRIVE_TRAIN_SUBSYSTEM);
     }
 

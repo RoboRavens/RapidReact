@@ -124,7 +124,15 @@ public class ShooterSubsystem extends SubsystemBase {
      * Tallies up a point if a ball is detected as being fired
      */
     public boolean detectShot() {
+        // This variable can be used to turn off this function.
+        boolean testingMode = false;
+
+        if (testingMode == false) {
+            return false;
+        }
+
         boolean output = false;
+        
         if(_shooterMotor1.getClosedLoopTarget() == 0) { //If we should be stopped anyway then end because we don't want to misfire
             return false;
         }

@@ -98,6 +98,12 @@ public class Gamepad {
 		case RIGHTSTICK:
 			buttonNumber = 10;
 			break;
+		case SHOOTER_REV:
+			buttonNumber = 2;
+			break;
+		case SHOOTER_OVERRIDE:
+			buttonNumber = 7;
+			break;
 		default:
 			throw new IllegalArgumentException("Invalid Button Code");
 		}
