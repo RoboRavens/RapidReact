@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
@@ -19,8 +20,8 @@ import frc.util.ShooterCalibration;
 public class ShooterSubsystem extends SubsystemBase {
 
     //Replace the motor type ASAP
-    private TalonSRX _shooterMotor1;
-    private VictorSPX _shooterMotor2;
+    private TalonFX _shooterMotor1;
+    private TalonFX _shooterMotor2;
     private ShooterCalibration _shot;
     private boolean isShooting;
     private int _shotTally = 0;
@@ -28,11 +29,12 @@ public class ShooterSubsystem extends SubsystemBase {
     private double _lastShotTime = 0;
 
     public ShooterSubsystem() {
-        _shooterMotor1 = new TalonSRX(RobotMap.SHOOTER_MOTOR_1);
-        _shooterMotor2 = new VictorSPX(RobotMap.SHOOTER_MOTOR_2);
+        _shooterMotor1 = new TalonFX(RobotMap.SHOOTER_MOTOR_1);
+        _shooterMotor2 = new TalonFX(RobotMap.SHOOTER_MOTOR_2);
+        _shooterMotor1.setInverted(true);
         _shooterMotor2.follow(_shooterMotor1);
-        _shooterMotor2.setInverted(true);
-        _shot = Constants.TARMAC_SHOT;
+        _shooterMotor2.setInverted(InvertType.OpposeMaster);
+        this.setShot(Constants.TARMAC_SHOT);
     }
 
     @Override

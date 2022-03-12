@@ -22,12 +22,14 @@ public class FeederShootCommand extends CommandBase {
   @Override
   public void execute() {
     Robot.FEEDER_SUBSYSTEM.feederWheelForward();
+    Robot.FEEDER_SUBSYSTEM.setConveyanceNormalSpeedForward();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     Robot.FEEDER_SUBSYSTEM.wheelStop();
+    Robot.FEEDER_SUBSYSTEM.stopConveyance();
   }
 
   // Returns true when the command should end.

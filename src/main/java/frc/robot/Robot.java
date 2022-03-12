@@ -43,13 +43,14 @@ public class Robot extends TimedRobot {
   public static final ConveyanceSubsystem CONVEYANCE_SUBSYSTEM = new ConveyanceSubsystem();
   public static final IntakeExtendCommand IntakeExtend = new IntakeExtendCommand();
   public static final ShooterStartCommand SHOOTER_START_COMMAND = new ShooterStartCommand();
+  public static final ShooterStopCommand SHOOTER_STOP_COMMAND = new ShooterStopCommand();
   public static final IntakeRetractCommand IntakeRetract = new IntakeRetractCommand();
   public static final ClimberSubsystem CLIMBER_SUBSYSTEM = new ClimberSubsystem();
   public static final FeederSubsystem FEEDER_SUBSYSTEM = new FeederSubsystem();
   public static final TurretSwivelSubsystem TURRET_SWIVEL_SUBSYSTEM = new TurretSwivelSubsystem();
   public static final ConveyanceCollectCommand CONVEYANCE_COLLECT_COMMAND = new ConveyanceCollectCommand();
   public static final ConveyanceEjectCommand CONVEYANCE_EJECT_COMMAND = new ConveyanceEjectCommand();
-  //public static final FeederEjectCommand FeederEject = new FeederEjectCommand();
+  public static final FeederEjectCommand FeederEject = new FeederEjectCommand();
   public static final FeederSafetyReverseCommand FeederSafetyReverse = new FeederSafetyReverseCommand(Constants.FEEDER_SAFETY_REVERSE_DURATION);
   public static final ConveyanceIndexCommand CONVEYANCE_INDEX_COMMAND = new ConveyanceIndexCommand();
   public static final FeederShootCommand FeederShoot = new FeederShootCommand();
@@ -158,7 +159,7 @@ public class Robot extends TimedRobot {
     new Trigger(() -> GAMEPAD.getAxisIsPressed(AxisCode.RIGHTTRIGGER))
       .whenActive(DRIVE_TRAIN_SUBSYSTEM::cutPower)
       .whenInactive(DRIVE_TRAIN_SUBSYSTEM::stopCutPower);
-      
+    /*
     GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(new StartEndCommand(
       () -> Robot.CLIMBER_SUBSYSTEM.retract(),
       () -> Robot.CLIMBER_SUBSYSTEM.stop(),
@@ -169,15 +170,20 @@ public class Robot extends TimedRobot {
       () -> Robot.CLIMBER_SUBSYSTEM.stop(),
       Robot.CLIMBER_SUBSYSTEM
     ));
-    GAMEPAD.getButton(ButtonCode.X).whileHeld(SHOOTER_START_COMMAND);
-    //GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(CONVEYANCE_COLLECT_COMMAND);
-    GAMEPAD.getButton(ButtonCode.B).whileHeld(new SequentialCommandGroup(new WaitCommand(.15), SHOOTER_START_COMMAND));
-    //GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(CONVEYANCE_EJECT_COMMAND);
+    */
+    GAMEPAD.getButton(ButtonCode.X)
+      .whileHeld(SHOOTER_START_COMMAND)
+      .whenInactive(SHOOTER_STOP_COMMAND);
+
+    GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(CONVEYANCE_COLLECT_COMMAND);
+    //GAMEPAD.getButton(ButtonCode.B).whileHeld(new SequentialCommandGroup(new WaitCommand(.15), SHOOTER_START_COMMAND));
+    GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(CONVEYANCE_EJECT_COMMAND);
     //GAMEPAD.getButton(ButtonCode.B).whenPressed(FeederSafetyReverse);
-    //GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederShoot);
-    GAMEPAD.getButton(ButtonCode.BACK).whenHeld(TURRET_FLIP);
-    GAMEPAD.getButton(ButtonCode.START).whenHeld(TURRET_SEEK);
-    //GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederCollect);
+    GAMEPAD.getButton(ButtonCode.Y).whileHeld(FeederShoot);
+    //GAMEPAD.getButton(ButtonCode.BACK).whenHeld(TURRET_FLIP);
+    //GAMEPAD.getButton(ButtonCode.START).whenHeld(TURRET_SEEK);
+    GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederCollect);
+    GAMEPAD.getButton(ButtonCode.B).whileHeld(FeederEject);
     //GAMEPAD.getButton(ButtonCode.Y).whenPressed(FeederSafetyReverse);
     OP_PAD.getButton(ButtonCode.Y).whenPressed(SHOOTER_LP_PID_COMMAND);
     OP_PAD.getButton(ButtonCode.A).whenPressed(SHOOTER_TARMAC_PID_COMMAND);
