@@ -21,7 +21,7 @@ import frc.util.TurretCalibration;
 public final class Constants {
     // TALONFX
     public static final double TALONFX_TICKS_PER_REVOLUTION = 2048;
-
+    public static final double TALON_TPS_TO_RPM = 600 * TALONFX_TICKS_PER_REVOLUTION;
 
     // CONTROLS
     public static final double JOYSTICK_DEADBAND = .05;
@@ -36,37 +36,37 @@ public final class Constants {
     //public static final int SHOOTER_TOPSPIN_VEL_TO_RPM = SHOOTER_BACKSPIN_VEL_TO_RPM * 2/1; // Big Wheel:Small Wheel
 
     // All three shots need to be tuned.
-    public static final int LOW_GOAL_BACKSPIN_RPM = 1500;
+    public static final int LOW_GOAL_BACKSPIN_RPM = 100;
     public static final double LOW_GOAL_BACKSPIN_KF = 0;
     public static final double LOW_GOAL_BACKSPIN_KP = 0.06;
     public static final double LOW_GOAL_BACKSPIN_KI = 0;
     public static final double LOW_GOAL_BACKSPIN_KD = 0;
 
-    public static final int LOW_GOAL_TOPSPIN_RPM = 3000;
+    public static final int LOW_GOAL_TOPSPIN_RPM = 100;
     public static final double LOW_GOAL_TOPSPIN_KF = 0;
     public static final double LOW_GOAL_TOPSPIN_KP = 0.05;
     public static final double LOW_GOAL_TOPSPIN_KI = 0;
     public static final double LOW_GOAL_TOPSPIN_KD = 0;
 
-    public static final int TARMAC_BACKSPIN_RPM = 2500;
+    public static final int TARMAC_BACKSPIN_RPM = 300;
     public static final double TARMAC_BACKSPIN_KF = 0;
     public static final double TARMAC_BACKSPIN_KP = 0.06;
     public static final double TARMAC_BACKSPIN_KI = 0;
     public static final double TARMAC_BACKSPIN_KD = 0;
 
-    public static final int TARMAC_TOPSPIN_RPM = 4000;
+    public static final int TARMAC_TOPSPIN_RPM = 300;
     public static final double TARMAC_TOPSPIN_KF = 0;
     public static final double TARMAC_TOPSPIN_KP = 0.06;
     public static final double TARMAC_TOPSPIN_KI = 0;
     public static final double TARMAC_TOPSPIN_KD = 0;
 
-    public static final int LAUNCHPAD_BACKSPIN_RPM = 3500;
+    public static final int LAUNCHPAD_BACKSPIN_RPM = 500;
     public static final double LAUNCHPAD_BACKSPIN_KF = 0;
     public static final double LAUNCHPAD_BACKSPIN_KP = 0.05;
     public static final double LAUNCHPAD_BACKSPIN_KI = 0;
     public static final double LAUNCHPAD_BACKSPIN_KD = 0;
 
-    public static final int LAUNCHPAD_TOPSPIN_RPM = 5000;
+    public static final int LAUNCHPAD_TOPSPIN_RPM = 500;
     public static final double LAUNCHPAD_TOPSPIN_KF = 0;
     public static final double LAUNCHPAD_TOPSPIN_KP = 0.05;
     public static final double LAUNCHPAD_TOPSPIN_KI = 0;
