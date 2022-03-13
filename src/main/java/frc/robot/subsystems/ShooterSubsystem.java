@@ -33,6 +33,8 @@ public class ShooterSubsystem extends SubsystemBase {
         _backspinMotor.setNeutralMode(NeutralMode.Coast);
         _topspinMotor.setNeutralMode(NeutralMode.Coast);
         this.setShot(Constants.TARMAC_SHOT_CALIBRATION_PAIR);
+        _backspinMotor.setSelectedSensorPosition(0);
+        _topspinMotor.setSelectedSensorPosition(0);
     }
 
     @Override
@@ -48,6 +50,7 @@ public class ShooterSubsystem extends SubsystemBase {
         SmartDashboard.putString("Shooter PID", getShot()._name);
         SmartDashboard.putNumber("Shot Count", getShotCount());
         SmartDashboard.putNumber("Last Shot Time", getLastShotTime());
+        SmartDashboard.putNumber("Back Shooter Rot", _backspinMotor.getSelectedSensorPosition() / Constants.TALONFX_TICKS_PER_REVOLUTION);
     }
 
     @Override

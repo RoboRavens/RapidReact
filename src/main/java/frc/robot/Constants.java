@@ -22,7 +22,7 @@ public final class Constants {
     // TALONFX
     public static final double TALONFX_TICKS_PER_REVOLUTION = 2048;
     public static final double TALON_TPS_TO_RPM = 600;
-    public static final double TALON_VELOCITY_TO_RPM = TALONFX_TICKS_PER_REVOLUTION / TALON_TPS_TO_RPM;
+    public static final double TALON_VELOCITY_TO_RPM = TALON_TPS_TO_RPM / TALONFX_TICKS_PER_REVOLUTION;
 
     // CONTROLS
     public static final double JOYSTICK_DEADBAND = .05;
