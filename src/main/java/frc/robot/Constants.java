@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import frc.util.ShooterCalibration;
+import frc.util.ShooterCalibrationPair;
 import frc.util.TurretCalibration;
 
 /**
@@ -27,22 +28,58 @@ public final class Constants {
     public static final int SHOOTER_TIMEOUT_MS = 100;
     public static final int SHOOTER_TARGET_ALLOWANCE = 500; //Amount of RPM offset to consider still "on target"
 
-    public static final int SHOOTER_VEL_TO_RPM = 8192 / 600;
+    public static final int SHOOTER_BACKSPIN_VEL_TO_RPM = 8192 / 600;
+    public static final int SHOOTER_TOPSPIN_VEL_TO_RPM = SHOOTER_BACKSPIN_VEL_TO_RPM * 2/1; // Big Wheel:Small Wheel
 
-    public static final int TARMAC_RPM = 5700;
-    public static final double TARMAC_KF = 0;
-    public static final double TARMAC_KP = 0.06;
-    public static final double TARMAC_KI = 0;
-    public static final double TARMAC_KD = 0;
+    // All three shots need to be tuned.
+    public static final int LOW_GOAL_BACKSPIN_RPM = 1500;
+    public static final double LOW_GOAL_BACKSPIN_KF = 0;
+    public static final double LOW_GOAL_BACKSPIN_KP = 0.06;
+    public static final double LOW_GOAL_BACKSPIN_KI = 0;
+    public static final double LOW_GOAL_BACKSPIN_KD = 0;
 
-    public static final int LAUNCHPAD_RPM = 4700;
-    public static final double LAUNCHPAD_KF = 0;
-    public static final double LAUNCHPAD_KP = 0.05;
-    public static final double LAUNCHPAD_KI = 0;
-    public static final double LAUNCHPAD_KD = 0;
+    public static final int LOW_GOAL_TOPSPIN_RPM = 3000;
+    public static final double LOW_GOAL_TOPSPIN_KF = 0;
+    public static final double LOW_GOAL_TOPSPIN_KP = 0.05;
+    public static final double LOW_GOAL_TOPSPIN_KI = 0;
+    public static final double LOW_GOAL_TOPSPIN_KD = 0;
 
-    public static final ShooterCalibration TARMAC_SHOT = new ShooterCalibration("Tarmac Shot", TARMAC_RPM, TARMAC_KF, TARMAC_KP, TARMAC_KI, TARMAC_KD);
-    public static final ShooterCalibration LAUNCHPAD_SHOT = new ShooterCalibration("Launchpad Shot", LAUNCHPAD_RPM, LAUNCHPAD_KF, LAUNCHPAD_KP, LAUNCHPAD_KI, LAUNCHPAD_KD);
+    public static final int TARMAC_BACKSPIN_RPM = 2500;
+    public static final double TARMAC_BACKSPIN_KF = 0;
+    public static final double TARMAC_BACKSPIN_KP = 0.06;
+    public static final double TARMAC_BACKSPIN_KI = 0;
+    public static final double TARMAC_BACKSPIN_KD = 0;
+
+    public static final int TARMAC_TOPSPIN_RPM = 4000;
+    public static final double TARMAC_TOPSPIN_KF = 0;
+    public static final double TARMAC_TOPSPIN_KP = 0.06;
+    public static final double TARMAC_TOPSPIN_KI = 0;
+    public static final double TARMAC_TOPSPIN_KD = 0;
+
+    public static final int LAUNCHPAD_BACKSPIN_RPM = 3500;
+    public static final double LAUNCHPAD_BACKSPIN_KF = 0;
+    public static final double LAUNCHPAD_BACKSPIN_KP = 0.05;
+    public static final double LAUNCHPAD_BACKSPIN_KI = 0;
+    public static final double LAUNCHPAD_BACKSPIN_KD = 0;
+
+    public static final int LAUNCHPAD_TOPSPIN_RPM = 5000;
+    public static final double LAUNCHPAD_TOPSPIN_KF = 0;
+    public static final double LAUNCHPAD_TOPSPIN_KP = 0.05;
+    public static final double LAUNCHPAD_TOPSPIN_KI = 0;
+    public static final double LAUNCHPAD_TOPSPIN_KD = 0;
+
+    public static final ShooterCalibration LOW_GOAL_SHOT_BACKSPIN_CALIBRATION = new ShooterCalibration("Low Goal Shot", LOW_GOAL_BACKSPIN_RPM, LOW_GOAL_BACKSPIN_KF, LOW_GOAL_BACKSPIN_KP, LOW_GOAL_BACKSPIN_KI, LOW_GOAL_BACKSPIN_KD);
+    public static final ShooterCalibration LOW_GOAL_SHOT_TOPSPIN_CALIBRATION = new ShooterCalibration("Low Goal Alt Shot", LOW_GOAL_TOPSPIN_RPM, LOW_GOAL_TOPSPIN_KF, LOW_GOAL_TOPSPIN_KP, LOW_GOAL_TOPSPIN_KI, LOW_GOAL_TOPSPIN_KD);
+    
+    public static final ShooterCalibration TARMAC_SHOT_BACKSPIN_CALIBRATION = new ShooterCalibration("Tarmac Shot", TARMAC_BACKSPIN_RPM, TARMAC_BACKSPIN_KF, TARMAC_BACKSPIN_KP, TARMAC_BACKSPIN_KI, TARMAC_BACKSPIN_KD);
+    public static final ShooterCalibration TARMAC_SHOT_TOPSPIN_CALIBRATION = new ShooterCalibration("Tarmac Alt Shot", TARMAC_TOPSPIN_RPM, TARMAC_TOPSPIN_KF, TARMAC_TOPSPIN_KP, TARMAC_TOPSPIN_KI, TARMAC_TOPSPIN_KD);
+
+    public static final ShooterCalibration LAUNCHPAD_SHOT_BACKSPIN_CALIBRATION = new ShooterCalibration("Launchpad Shot", LAUNCHPAD_BACKSPIN_RPM, LAUNCHPAD_BACKSPIN_KF, LAUNCHPAD_BACKSPIN_KP, LAUNCHPAD_BACKSPIN_KI, LAUNCHPAD_BACKSPIN_KD);
+    public static final ShooterCalibration LAUNCHPAD_SHOT_TOPSPIN_CALIBRATION = new ShooterCalibration("Launchpad Alt Shot", LAUNCHPAD_TOPSPIN_RPM, LAUNCHPAD_TOPSPIN_KF, LAUNCHPAD_TOPSPIN_KP, LAUNCHPAD_TOPSPIN_KI, LAUNCHPAD_TOPSPIN_KD);
+
+    public static final ShooterCalibrationPair LOW_GOAL_SHOT_CALIBRATION_PAIR = new ShooterCalibrationPair("Low Goal Shot", LOW_GOAL_SHOT_BACKSPIN_CALIBRATION, LOW_GOAL_SHOT_TOPSPIN_CALIBRATION);
+    public static final ShooterCalibrationPair TARMAC_SHOT_CALIBRATION_PAIR = new ShooterCalibrationPair("Tarmac Shot", TARMAC_SHOT_BACKSPIN_CALIBRATION, TARMAC_SHOT_TOPSPIN_CALIBRATION);
+    public static final ShooterCalibrationPair LAUNCHPAD_SHOT_CALIBRATION_PAIR = new ShooterCalibrationPair("Launchpad Shot", LAUNCHPAD_SHOT_BACKSPIN_CALIBRATION, LAUNCHPAD_SHOT_TOPSPIN_CALIBRATION);
 
     //TURRET SWIVEL
     public static final int TURRET_IDX = 0;

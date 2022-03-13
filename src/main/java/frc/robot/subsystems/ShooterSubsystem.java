@@ -6,9 +6,8 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -16,40 +15,42 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotMap;
 import frc.util.ShooterCalibration;
+import frc.util.ShooterCalibrationPair;
 
 public class ShooterSubsystem extends SubsystemBase {
-
-    //Replace the motor type ASAP
-    private TalonFX _shooterMotor1;
-    private TalonFX _shooterMotor2;
-    private ShooterCalibration _shot;
-    private boolean isShooting;
+    private TalonFX _backspinMotor;
+    private TalonFX _topspinMotor;
+    // private ShooterCalibration _shot;
+    ShooterCalibrationPair _shot;
+    private boolean _isShooting;
     private int _shotTally = 0;
     private boolean _recovered;
     private double _lastShotTime = 0;
 
     public ShooterSubsystem() {
-        _shooterMotor1 = new TalonFX(RobotMap.SHOOTER_MOTOR_1);
-        _shooterMotor2 = new TalonFX(RobotMap.SHOOTER_MOTOR_2);
-        _shooterMotor1.setInverted(true);
-        _shooterMotor2.follow(_shooterMotor1);
-        _shooterMotor2.setInverted(InvertType.OpposeMaster);
-        this.setShot(Constants.TARMAC_SHOT);
+        _backspinMotor = new TalonFX(RobotMap.SHOOTER_BACKSPIN_MOTOR);
+        _topspinMotor = new TalonFX(RobotMap.SHOOTER_TOPSPIN_MOTOR);
+        _backspinMotor.setInverted(true);
+        _topspinMotor.setInverted(false);
+        _backspinMotor.setNeutralMode(NeutralMode.Coast);
+        _topspinMotor.setNeutralMode(NeutralMode.Coast);
+        this.setShot(Constants.TARMAC_SHOT_CALIBRATION_PAIR);
     }
 
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
         if(detectShot()) {
-            _lastShotTime = Timer.getMatchTime();
+            _lastShotTime = Timer.getFPGATimestamp(); //Timer.getMatchTime();
             _shotTally++;
         }
 
-        SmartDashboard.putNumber("Shooter Speed", getRPM());
-        SmartDashboard.putString("Shooter PID", _shot.name);
+        SmartDashboard.putNumber("Backspin Shooter Speed", getBackspinShooterRPM());
+        SmartDashboard.putNumber("Topspin Shooter Speed", getTopspinShooterRPM());
+        SmartDashboard.putString("Shooter PID", _shot._name);
         SmartDashboard.putNumber("Shot Count", getShotCount());
         SmartDashboard.putNumber("Last Shot Time", getLastShotTime());
-        SmartDashboard.putNumber("Shooter Current", _shooterMotor1.getMotorOutputVoltage());
+        SmartDashboard.putNumber("Backspin Motor Current", _backspinMotor.getMotorOutputVoltage());
     }
 
     @Override
@@ -61,26 +62,30 @@ public class ShooterSubsystem extends SubsystemBase {
         stopMotor();
     }
 
-    public double getRPM() {
-        return _shooterMotor1.getSelectedSensorVelocity() / Constants.SHOOTER_VEL_TO_RPM;
+    public double getBackspinShooterRPM() {
+        return _backspinMotor.getSelectedSensorVelocity() / Constants.SHOOTER_BACKSPIN_VEL_TO_RPM;
+    }
+
+    public double getTopspinShooterRPM() {
+        return _topspinMotor.getSelectedSensorVelocity() / Constants.SHOOTER_TOPSPIN_VEL_TO_RPM;
+    }
+
+    public void setShot(ShooterCalibrationPair shot) {
+        setMotorShot(_backspinMotor, shot._backspinMotorCalibration);
+        setMotorShot(_topspinMotor, shot._topspinMotorCalibration);
+
+        this._shot = shot;
     }
 
     /**
      * Sets both shooter motors to the specified shot type
      * @param shot The ShooterCalibration shot to set the motors to
      */
-    public void setShot(ShooterCalibration shot) {
-        _shooterMotor1.config_kF(Constants.SHOOTER_IDX, shot.kF, Constants.SHOOTER_TIMEOUT_MS);
-        _shooterMotor1.config_kP(Constants.SHOOTER_IDX, shot.kP, Constants.SHOOTER_TIMEOUT_MS);
-        _shooterMotor1.config_kI(Constants.SHOOTER_IDX, shot.kI, Constants.SHOOTER_TIMEOUT_MS);
-        _shooterMotor1.config_kD(Constants.SHOOTER_IDX, shot.kD, Constants.SHOOTER_TIMEOUT_MS);
-
-        _shooterMotor2.config_kF(Constants.SHOOTER_IDX, shot.kF, Constants.SHOOTER_TIMEOUT_MS);
-        _shooterMotor2.config_kP(Constants.SHOOTER_IDX, shot.kP, Constants.SHOOTER_TIMEOUT_MS);
-        _shooterMotor2.config_kI(Constants.SHOOTER_IDX, shot.kI, Constants.SHOOTER_TIMEOUT_MS);
-        _shooterMotor2.config_kD(Constants.SHOOTER_IDX, shot.kD, Constants.SHOOTER_TIMEOUT_MS);
-
-        _shot = shot;
+    public void setMotorShot(TalonFX motor, ShooterCalibration shot) {
+        motor.config_kF(Constants.SHOOTER_IDX, shot.kF, Constants.SHOOTER_TIMEOUT_MS);
+        motor.config_kP(Constants.SHOOTER_IDX, shot.kP, Constants.SHOOTER_TIMEOUT_MS);
+        motor.config_kI(Constants.SHOOTER_IDX, shot.kI, Constants.SHOOTER_TIMEOUT_MS);
+        motor.config_kD(Constants.SHOOTER_IDX, shot.kD, Constants.SHOOTER_TIMEOUT_MS);
     }
 
     /**
@@ -88,7 +93,7 @@ public class ShooterSubsystem extends SubsystemBase {
      * @return String of the current shot name
      */
     public String getShot() {
-        return _shot.name;
+        return _shot._name;
     }
 
     /**
@@ -96,16 +101,18 @@ public class ShooterSubsystem extends SubsystemBase {
     */
     public void startMotor() {
         _recovered = false;
-        _shooterMotor1.set(ControlMode.Velocity, _shot.targetRPM * Constants.SHOOTER_VEL_TO_RPM);
-        isShooting = true;
+        _backspinMotor.set(ControlMode.Velocity, _shot._backspinMotorCalibration.targetRPM * Constants.SHOOTER_BACKSPIN_VEL_TO_RPM);
+        _topspinMotor.set(ControlMode.Velocity, _shot._topspinMotorCalibration.targetRPM * Constants.SHOOTER_TOPSPIN_VEL_TO_RPM);
+        _isShooting = true;
     }
 
     /**
     * Stops the motor (sets it to 0% power)
     */
     public void stopMotor() {
-        _shooterMotor1.set(ControlMode.PercentOutput, 0);
-        isShooting = false;
+        _backspinMotor.set(ControlMode.Velocity, 0);
+        _topspinMotor.set(ControlMode.Velocity, 0);
+        _isShooting = false;
     }
 
     public void resetShotCount() {
@@ -116,8 +123,22 @@ public class ShooterSubsystem extends SubsystemBase {
         return _shotTally;
     }
 
-    public boolean isRecovered() {
-        return getRPM() > _shot.targetRPM - Constants.SHOOTER_TARGET_ALLOWANCE && getRPM() < _shot.targetRPM + Constants.SHOOTER_TARGET_ALLOWANCE;
+    public boolean motorsAreRecovered() {
+        return backspinMotorIsRecovered() && topspinMotorIsRecovered();
+    }
+
+    public boolean backspinMotorIsRecovered() {
+        boolean isAboveMinimumRPM = getBackspinShooterRPM() > _shot._backspinMotorCalibration.targetRPM - Constants.SHOOTER_TARGET_ALLOWANCE;
+        boolean isBelowMaximumRPM = getBackspinShooterRPM() < _shot._backspinMotorCalibration.targetRPM + Constants.SHOOTER_TARGET_ALLOWANCE;
+
+        return isAboveMinimumRPM && isBelowMaximumRPM;
+    }
+
+    public boolean topspinMotorIsRecovered() {
+        boolean isAboveMinimumRPM = getTopspinShooterRPM() > _shot._topspinMotorCalibration.targetRPM - Constants.SHOOTER_TARGET_ALLOWANCE;
+        boolean isBelowMaximumRPM = getTopspinShooterRPM() < _shot._topspinMotorCalibration.targetRPM + Constants.SHOOTER_TARGET_ALLOWANCE;
+
+        return isAboveMinimumRPM && isBelowMaximumRPM;
     }
 
     /**
@@ -133,13 +154,15 @@ public class ShooterSubsystem extends SubsystemBase {
 
         boolean output = false;
         
-        if(_shooterMotor1.getClosedLoopTarget() == 0) { //If we should be stopped anyway then end because we don't want to misfire
+        if (_backspinMotor.getClosedLoopTarget() == 0) { //If we should be stopped anyway then end because we don't want to misfire
             return false;
         }
-        if(_recovered && !isRecovered()) { //If we WERE be at the target yet now we aren't (Ball JUST fired)
+        if (_recovered && motorsAreRecovered() == false) { //If we WERE be at the target yet now we aren't (Ball JUST fired)
             output = true;
         }
-        _recovered = isRecovered();
+
+        _recovered = motorsAreRecovered();
+        
         return output;
     }
 
@@ -148,7 +171,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public boolean getIsShooting() {
-        return isShooting;
+        return _isShooting;
     }
 
 }

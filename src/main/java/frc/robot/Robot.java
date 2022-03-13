@@ -56,8 +56,9 @@ public class Robot extends TimedRobot {
   public static final ConveyanceIndexCommand CONVEYANCE_INDEX_COMMAND = new ConveyanceIndexCommand();
   public static final FeederShootCommand FeederShoot = new FeederShootCommand();
   public static final FeederIndexCommand FeederIndex = new FeederIndexCommand();
+  public static final ShooterLowGoalCommand SHOOTER_LOW_GOAL_PID_COMMAND = new ShooterLowGoalCommand();
   public static final ShooterTarmacCommand SHOOTER_TARMAC_PID_COMMAND = new ShooterTarmacCommand();
-  public static final ShooterLaunchpadCommand SHOOTER_LP_PID_COMMAND = new ShooterLaunchpadCommand();
+  public static final ShooterLaunchpadCommand SHOOTER_LAUNCH_PAD_PID_COMMAND = new ShooterLaunchpadCommand();
   public static final FeederCollectCommand FeederCollect = new FeederCollectCommand();
   public static final ClimberDefaultBrakeCommand climberDefaultBrake = new ClimberDefaultBrakeCommand();
   public static final CompressorSubsystem COMPRESSOR_SUBSYSTEM = new CompressorSubsystem();
@@ -83,7 +84,6 @@ public class Robot extends TimedRobot {
     CONVEYANCE_SUBSYSTEM.setDefaultCommand(CONVEYANCE_INDEX_COMMAND);
     configureButtonBindings();
     
-    COMPRESSOR_SUBSYSTEM.Setup();
     LIMELIGHT_SUBSYSTEM.turnLEDOff();
     CameraServer.startAutomaticCapture();
   }
@@ -102,9 +102,8 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    //System.out.println("Sensor 0: " + CO + " Sensor 1: " + asdfads);
-    //if (GAMEPAD.getAxis(AxisCode.LEFTTRIGGER) >.25) {
-    if (GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER)) {// .getButton(1) > .25)
+
+    if (GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER)) {
       Robot.LIMELIGHT_SUBSYSTEM.turnLEDOn();
     } else {
       Robot.LIMELIGHT_SUBSYSTEM.turnLEDOff();
@@ -137,10 +136,7 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     SHOOTER_SUBSYSTEM.resetShotCount();
 
-    // This makes sure that the autonomous stops running when
-    // teleop starts running. If you want the autonomous to
-    // continue until interrupted by another command, remove
-    // this line or comment it out.
+    // Stop any autonomous command that might still be running.
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
@@ -186,8 +182,9 @@ public class Robot extends TimedRobot {
     GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederCollect);
     GAMEPAD.getButton(ButtonCode.B).whileHeld(FeederEject);
     //GAMEPAD.getButton(ButtonCode.Y).whenPressed(FeederSafetyReverse);
-    OP_PAD.getButton(ButtonCode.Y).whenPressed(SHOOTER_LP_PID_COMMAND);
-    OP_PAD.getButton(ButtonCode.A).whenPressed(SHOOTER_TARMAC_PID_COMMAND);
+    OP_PAD.getButton(ButtonCode.SHOOTER_LAUNCH_PAD_SHOT).whenPressed(SHOOTER_LAUNCH_PAD_PID_COMMAND);
+    OP_PAD.getButton(ButtonCode.SHOOTER_TARMAC_SHOT).whenPressed(SHOOTER_TARMAC_PID_COMMAND);
+    OP_PAD.getButton(ButtonCode.SHOOTER_LOW_GOAL_SHOT).whenPressed(SHOOTER_LOW_GOAL_PID_COMMAND);
   }
 
   @Override

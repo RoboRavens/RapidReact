@@ -104,6 +104,15 @@ public class Gamepad {
 		case SHOOTER_OVERRIDE:
 			buttonNumber = 7;
 			break;
+		case SHOOTER_LAUNCH_PAD_SHOT:
+			buttonNumber = 9;
+			break;
+		case SHOOTER_TARMAC_SHOT:
+			buttonNumber = 10;
+			break;
+		case SHOOTER_LOW_GOAL_SHOT:
+			buttonNumber = 11;
+			break;
 		default:
 			throw new IllegalArgumentException("Invalid Button Code");
 		}

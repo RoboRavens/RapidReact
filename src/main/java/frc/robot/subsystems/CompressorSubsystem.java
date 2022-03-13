@@ -19,21 +19,15 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Robot;
 
 public class CompressorSubsystem extends SubsystemBase {
-
   Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);
-  // private boolean _isShooting = false;
-  // private boolean _isClimbing = false;
-  // private boolean _compressorWasOn = false;
 
   public CompressorSubsystem() {
-
+    this.setup();
   }
 
   @Override
-  public void periodic() {
-  }
+  public void periodic() {}
 
-  // enable/disable the auto function
   public void start() {
     compressor.enableDigital();
   }
@@ -42,7 +36,7 @@ public class CompressorSubsystem extends SubsystemBase {
     compressor.disable();
   }
 
-  // returns electrical current measured in amps
+  // Returns electrical current measured in amps.
   public double getCurrentAmps() {
     return compressor.getCurrent();
   }
@@ -51,16 +45,12 @@ public class CompressorSubsystem extends SubsystemBase {
     return compressor.getPressureSwitchValue();
   }
 
-  private Boolean isOff() {
-    return !isOn();
-  }
-
-  public void Setup() {
+  public void setup() {
     Trigger isClimbing = new Trigger(() -> Robot.CLIMBER_SUBSYSTEM.getIsClimbing());
     Trigger isShooting = new Trigger(() -> Robot.SHOOTER_SUBSYSTEM.getIsShooting());
 
     isClimbing.or(isShooting)
-    .whenActive(this::stop)
-    .whenInactive(this::start);
+      .whenActive(this::stop)
+      .whenInactive(this::start);
   }
 }

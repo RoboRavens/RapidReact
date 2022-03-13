@@ -1,21 +1,18 @@
-
 package frc.robot.subsystems;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotMap;
 
 public class ConveyanceSubsystem extends SubsystemBase {
   
-    private TalonSRX _conveyanceMotorOne;
-    private DigitalInput _conveyanceSensorA;
- 
- 
- 
-   public ConveyanceSubsystem() {
+  private TalonSRX _conveyanceMotorOne;
+  private DigitalInput _conveyanceSensorA;
+
+  public ConveyanceSubsystem() {
     _conveyanceMotorOne = new TalonSRX(RobotMap.CONVEYANCE_MOTOR);
     _conveyanceSensorA = new DigitalInput(RobotMap.SENSOR_A_CHANNEL);
   }
@@ -38,7 +35,6 @@ public class ConveyanceSubsystem extends SubsystemBase {
 
   private void runConveyanceAtPercentPower(double magnitude) {
     this._conveyanceMotorOne.set(ControlMode.PercentOutput, magnitude);
-    //System.out.println("Running ConveyanceMotor at " + magnitude + " PercentOutput");
   }
 
   public void stopConveyanceOne() {
