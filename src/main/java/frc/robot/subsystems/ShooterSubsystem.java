@@ -48,7 +48,6 @@ public class ShooterSubsystem extends SubsystemBase {
         SmartDashboard.putString("Shooter PID", getShot()._name);
         SmartDashboard.putNumber("Shot Count", getShotCount());
         SmartDashboard.putNumber("Last Shot Time", getLastShotTime());
-        SmartDashboard.putNumber("Backspin Motor Current", _backspinMotor.getMotorOutputVoltage());
     }
 
     @Override
@@ -61,11 +60,11 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public double getBackspinShooterRPM() {
-        return _backspinMotor.getSelectedSensorVelocity() / Constants.TALON_TPS_TO_RPM;
+        return _backspinMotor.getSelectedSensorVelocity() * Constants.TALON_VELOCITY_TO_RPM;
     }
 
     public double getTopspinShooterRPM() {
-        return _topspinMotor.getSelectedSensorVelocity() / Constants.TALON_TPS_TO_RPM;
+        return _topspinMotor.getSelectedSensorVelocity() * Constants.TALON_VELOCITY_TO_RPM;
     }
 
     public void setShot(ShooterCalibrationPair shot) {
@@ -91,7 +90,7 @@ public class ShooterSubsystem extends SubsystemBase {
      * @return Current ShooterCalibrationPair value
      */
     public ShooterCalibrationPair getShot() {
-        return this._shot;
+        return _shot;
     }
 
     /**
@@ -99,8 +98,8 @@ public class ShooterSubsystem extends SubsystemBase {
     */
     public void startMotor() {
         _recovered = false;
-        _backspinMotor.set(ControlMode.Velocity, _shot._backspinMotorCalibration.targetRPM * Constants.TALON_TPS_TO_RPM);
-        _topspinMotor.set(ControlMode.Velocity, _shot._topspinMotorCalibration.targetRPM * Constants.TALON_TPS_TO_RPM);
+        _backspinMotor.set(ControlMode.Velocity, _shot._backspinMotorCalibration.targetRPM * Constants.TALON_VELOCITY_TO_RPM);
+        _topspinMotor.set(ControlMode.Velocity, _shot._topspinMotorCalibration.targetRPM * Constants.TALON_VELOCITY_TO_RPM);
         _isShooting = true;
     }
 
