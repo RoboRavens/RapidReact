@@ -20,8 +20,8 @@ public final class RobotMap {
     public static final int RIGHT_CLIMBER_SOLENOID = 3;
 
     //SHOOTER
-    public static final int SHOOTER_MOTOR_1 = 61;
-    public static final int SHOOTER_MOTOR_2 = 62;
+    public static final int SHOOTER_BACKSPIN_MOTOR = 61;
+    public static final int SHOOTER_TOPSPIN_MOTOR = 62;
 
     //TURRET
     public static final int TURRET_MOTOR = 11; //Set this to real value ASAP
