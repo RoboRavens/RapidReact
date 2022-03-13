@@ -112,14 +112,12 @@ public class Robot extends TimedRobot {
 
     if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() ==false  && Robot.FEEDER_SUBSYSTEM.getFeederHasBall() ==false ) {
       RavenBlinkin.solidRed();
-    } else if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() == false && Robot.FEEDER_SUBSYSTEM.getFeederHasBall() ==true ) {
+    } else if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() == true | Robot.FEEDER_SUBSYSTEM.getFeederHasBall() ==true ) {
       RavenBlinkin.solidYellow();
     } else if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() == true && Robot.FEEDER_SUBSYSTEM.getFeederHasBall() == true ) {
       RavenBlinkin.solidGreen();
     }
-
-
-  }
+}
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
@@ -164,10 +162,7 @@ public class Robot extends TimedRobot {
     } else if (Timer.getFPGATimestamp() == 15) {
       RAVEN_BLINKIN_3.blinkRed();
     }
-  
-    
-  
-  }
+   }
 
    public void configureButtonBindings() {
     GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(CONVEYANCE_COLLECT_COMMAND);
