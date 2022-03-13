@@ -5,7 +5,6 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
@@ -20,8 +19,7 @@ import frc.util.ShooterCalibrationPair;
 public class ShooterSubsystem extends SubsystemBase {
     private TalonFX _backspinMotor;
     private TalonFX _topspinMotor;
-    // private ShooterCalibration _shot;
-    ShooterCalibrationPair _shot;
+    private ShooterCalibrationPair _shot;
     private boolean _isShooting;
     private int _shotTally = 0;
     private boolean _recovered;
@@ -41,13 +39,13 @@ public class ShooterSubsystem extends SubsystemBase {
     public void periodic() {
         // This method will be called once per scheduler run
         if(detectShot()) {
-            _lastShotTime = Timer.getFPGATimestamp(); //Timer.getMatchTime();
+            _lastShotTime = Timer.getFPGATimestamp();
             _shotTally++;
         }
 
         SmartDashboard.putNumber("Backspin Shooter Speed", getBackspinShooterRPM());
         SmartDashboard.putNumber("Topspin Shooter Speed", getTopspinShooterRPM());
-        SmartDashboard.putString("Shooter PID", _shot._name);
+        SmartDashboard.putString("Shooter PID", getShot()._name);
         SmartDashboard.putNumber("Shot Count", getShotCount());
         SmartDashboard.putNumber("Last Shot Time", getLastShotTime());
         SmartDashboard.putNumber("Backspin Motor Current", _backspinMotor.getMotorOutputVoltage());
@@ -63,11 +61,11 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public double getBackspinShooterRPM() {
-        return _backspinMotor.getSelectedSensorVelocity() / Constants.SHOOTER_BACKSPIN_VEL_TO_RPM;
+        return _backspinMotor.getSelectedSensorVelocity() / Constants.TALONFX_TICKS_PER_REVOLUTION;
     }
 
     public double getTopspinShooterRPM() {
-        return _topspinMotor.getSelectedSensorVelocity() / Constants.SHOOTER_TOPSPIN_VEL_TO_RPM;
+        return _topspinMotor.getSelectedSensorVelocity() / Constants.TALONFX_TICKS_PER_REVOLUTION;
     }
 
     public void setShot(ShooterCalibrationPair shot) {
@@ -89,11 +87,11 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     /**
-     * Returns shot name
-     * @return String of the current shot name
+     * Returns shot
+     * @return Current ShooterCalibrationPair value
      */
-    public String getShot() {
-        return _shot._name;
+    public ShooterCalibrationPair getShot() {
+        return this._shot;
     }
 
     /**
@@ -101,8 +99,8 @@ public class ShooterSubsystem extends SubsystemBase {
     */
     public void startMotor() {
         _recovered = false;
-        _backspinMotor.set(ControlMode.Velocity, _shot._backspinMotorCalibration.targetRPM * Constants.SHOOTER_BACKSPIN_VEL_TO_RPM);
-        _topspinMotor.set(ControlMode.Velocity, _shot._topspinMotorCalibration.targetRPM * Constants.SHOOTER_TOPSPIN_VEL_TO_RPM);
+        _backspinMotor.set(ControlMode.Velocity, _shot._backspinMotorCalibration.targetRPM * Constants.TALONFX_TICKS_PER_REVOLUTION);
+        _topspinMotor.set(ControlMode.Velocity, _shot._topspinMotorCalibration.targetRPM * Constants.TALONFX_TICKS_PER_REVOLUTION);
         _isShooting = true;
     }
 

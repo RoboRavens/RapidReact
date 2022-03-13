@@ -19,6 +19,10 @@ import frc.util.TurretCalibration;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    // TALONFX
+    public static final double TALONFX_TICKS_PER_REVOLUTION = 2048;
+
+
     // CONTROLS
     public static final double JOYSTICK_DEADBAND = .05;
     public static final double DRIVE_MAX_TURN_RADIANS_PER_SECOND = 2;
@@ -28,8 +32,8 @@ public final class Constants {
     public static final int SHOOTER_TIMEOUT_MS = 100;
     public static final int SHOOTER_TARGET_ALLOWANCE = 500; //Amount of RPM offset to consider still "on target"
 
-    public static final int SHOOTER_BACKSPIN_VEL_TO_RPM = 8192 / 600;
-    public static final int SHOOTER_TOPSPIN_VEL_TO_RPM = SHOOTER_BACKSPIN_VEL_TO_RPM * 2/1; // Big Wheel:Small Wheel
+    //public static final int SHOOTER_BACKSPIN_VEL_TO_RPM = 8192 / 600;
+    //public static final int SHOOTER_TOPSPIN_VEL_TO_RPM = SHOOTER_BACKSPIN_VEL_TO_RPM * 2/1; // Big Wheel:Small Wheel
 
     // All three shots need to be tuned.
     public static final int LOW_GOAL_BACKSPIN_RPM = 1500;

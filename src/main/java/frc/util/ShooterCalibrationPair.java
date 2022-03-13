@@ -4,7 +4,7 @@
 
 package frc.util;
 
-/** Add your docs here. */
+/** Binds a backspin and topspin calibration together, with the shot name. */
 public class ShooterCalibrationPair {
     public String _name;
     public ShooterCalibration _backspinMotorCalibration;

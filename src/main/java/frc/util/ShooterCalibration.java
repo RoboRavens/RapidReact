@@ -7,6 +7,7 @@
 
 package frc.util;
 
+/** Calibrations for a shooter motor */
 public class ShooterCalibration {
 
     public String name;
