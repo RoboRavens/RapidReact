@@ -15,18 +15,15 @@ public class ShooterTarmacCommand extends CommandBase {
     addRequirements(Robot.SHOOTER_SUBSYSTEM);
   }
 
- 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-      //System.out.println("ShooterTarmacCommand init");
+    Robot.SHOOTER_SUBSYSTEM.setShot(Constants.TARMAC_SHOT_CALIBRATION_PAIR);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-      Robot.SHOOTER_SUBSYSTEM.setShot(Constants.TARMAC_SHOT);
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override

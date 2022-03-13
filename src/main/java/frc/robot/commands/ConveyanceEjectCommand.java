@@ -4,17 +4,13 @@
 
 package frc.robot.commands;
 
- import frc.robot.Robot;
-import frc.robot.subsystems.ConveyanceSubsystem;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Robot;
 
 /** An example command that uses an example subsystem. */
  public class ConveyanceEjectCommand extends CommandBase {
-  
-
   public ConveyanceEjectCommand() {
-  addRequirements(Robot.CONVEYANCE_SUBSYSTEM);
+    addRequirements(Robot.CONVEYANCE_SUBSYSTEM);
   }
 
   // Called when the command is initially scheduled.

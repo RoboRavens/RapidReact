@@ -2,9 +2,10 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotMap;
@@ -33,6 +34,11 @@ public class ClimberSubsystem extends SubsystemBase {
 
 	private int defaultEncoderAccuracyRange = encoderAccuracyRange;
 
+	private Solenoid _climberBrakeRight;
+	private Solenoid _climberBrakeLeft;
+
+	private boolean isClimbing;
+
     public ClimberSubsystem() {
 
         //Will need to change motors to TalonFX for this season's robot
@@ -48,9 +54,11 @@ public class ClimberSubsystem extends SubsystemBase {
 		_leftClimberMotor.getSensorCollection().setQuadraturePosition(0, 10);
 		_rightClimberMotor.getSensorCollection().setQuadraturePosition(0, 10);
 
+		_climberBrakeRight = new Solenoid(PneumaticsModuleType.CTREPCM, RobotMap.LEFT_CLIMBER_SOLENOID);
+    	_climberBrakeLeft = new Solenoid(PneumaticsModuleType.CTREPCM, RobotMap.RIGHT_CLIMBER_SOLENOID);
 
-//		_shooterMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, TalonSRXConstants.kPIDLoopIdx,
-//        TalonSRXConstants.kTimeoutMs);
+		// _shooterMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, TalonSRXConstants.kPIDLoopIdx,
+		// TalonSRXConstants.kTimeoutMs);
 
 		// _climberMotor.configForwardLimitSwitchSource(LimitSwitchSource.RemoteTalonSRX,
 		// LimitSwitchNormal.NormallyOpen);
@@ -62,6 +70,38 @@ public class ClimberSubsystem extends SubsystemBase {
 		// LimitSwitchNormal.NormallyOpen);
 
 		_rightClimberMotor.setInverted(true);
+	}
+
+	public void leftClimberBrake() {
+		_climberBrakeLeft.set(true);
+	}
+
+	public void rightClimberBrake() {
+		_climberBrakeLeft.set(true);
+	}
+
+	public void leftClimberReleaseBrake() {
+		_climberBrakeLeft.set(false);
+	}
+
+	public void rightClimberReleaseBrake() {
+		_climberBrakeLeft.set(false);
+	}
+
+	public void brakeClimbers() {
+		leftClimberBrake();
+		rightClimberBrake();
+		isClimbing = false;
+	}
+
+	private void releaseClimberBrakes() {
+		leftClimberReleaseBrake();
+		rightClimberReleaseBrake();
+		isClimbing = true;
+	}
+
+	public boolean getIsClimbing() {
+		return isClimbing;
 	}
 
 	public void setOverrideOn() {
@@ -89,6 +129,7 @@ public class ClimberSubsystem extends SubsystemBase {
 	}
 
 	public void extend() {
+		this.releaseClimberBrakes();
 		this.extendLeftSide();
 		this.extendRightSide();
 		/*
@@ -100,6 +141,7 @@ public class ClimberSubsystem extends SubsystemBase {
 	}
 
 	public void retract() {
+		this.releaseClimberBrakes();
 		this.retractLeftSide();
 		this.retractRightSide();
 		/*
@@ -133,8 +175,6 @@ public class ClimberSubsystem extends SubsystemBase {
 		
 		return extended;
 	}
-
-
 
 	public boolean encodersShowRetracted() {
 		boolean bothSidesRetracted = leftEncoderShowsRetracted() && rightEncoderShowsRetracted();

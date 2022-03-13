@@ -8,6 +8,10 @@ import frc.robot.Constants;
 public class Gamepad {
 	private Joystick _joystick;
 
+	public Gamepad(Joystick joystick) {
+		_joystick = joystick;
+	}
+
 	public Gamepad(int port) {
 		_joystick = new Joystick(port);
 	}
@@ -93,6 +97,21 @@ public class Gamepad {
 			break;
 		case RIGHTSTICK:
 			buttonNumber = 10;
+			break;
+		case SHOOTER_REV:
+			buttonNumber = 2;
+			break;
+		case SHOOTER_OVERRIDE:
+			buttonNumber = 7;
+			break;
+		case SHOOTER_LAUNCH_PAD_SHOT:
+			buttonNumber = 9;
+			break;
+		case SHOOTER_TARMAC_SHOT:
+			buttonNumber = 10;
+			break;
+		case SHOOTER_LOW_GOAL_SHOT:
+			buttonNumber = 11;
 			break;
 		default:
 			throw new IllegalArgumentException("Invalid Button Code");
