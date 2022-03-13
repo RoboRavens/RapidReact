@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.ParamEnum;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
@@ -47,10 +48,11 @@ public class ShooterSubsystem extends SubsystemBase {
 
         SmartDashboard.putNumber("Backspin Shooter Speed", getBackspinShooterRPM());
         SmartDashboard.putNumber("Topspin Shooter Speed", getTopspinShooterRPM());
-        SmartDashboard.putString("Shooter PID", getShot()._name);
+        SmartDashboard.putString("Shooter PID", _shot._name);
         SmartDashboard.putNumber("Shot Count", getShotCount());
         SmartDashboard.putNumber("Last Shot Time", getLastShotTime());
         SmartDashboard.putNumber("Back Shooter Rot", _backspinMotor.getSelectedSensorPosition() / Constants.TALONFX_TICKS_PER_REVOLUTION);
+        SmartDashboard.putNumber("Backspin Target Speed", _backspinMotor.getSupplyCurrent());
     }
 
     @Override
