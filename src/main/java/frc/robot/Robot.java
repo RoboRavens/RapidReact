@@ -5,7 +5,6 @@
 package frc.robot;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -69,8 +68,8 @@ public class Robot extends TimedRobot {
   public static final FeederShootCommand FeederShoot = new FeederShootCommand();
   public static final FeederIndexCommand FeederIndex = new FeederIndexCommand();
   public static final LimelightSubsystem LIMELIGHT_SUBSYSTEM = new LimelightSubsystem();
+  public static final RavenBlinkin RAVEN_BLINKIN_3 = new RavenBlinkin(3);
   public static boolean isRedAlliance;
-  public static final RavenBlinkin ravenBlinkin3 = new RavenBlinkin(3);
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -110,18 +109,17 @@ public class Robot extends TimedRobot {
     } else {
       Robot.LIMELIGHT_SUBSYSTEM.turnLEDOff();
     }
-   
-  
+
     if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() ==false  && Robot.FEEDER_SUBSYSTEM.getFeederHasBall() ==false ) {
       RavenBlinkin.solidRed();
-    } 
-    if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() == true | Robot.FEEDER_SUBSYSTEM.getFeederHasBall() ==true ) {
+    } else if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() == false && Robot.FEEDER_SUBSYSTEM.getFeederHasBall() ==true ) {
       RavenBlinkin.solidYellow();
-    } 
-    if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() == true && Robot.FEEDER_SUBSYSTEM.getFeederHasBall() == true ) {
-     RavenBlinkin.solidGreen();
+    } else if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() == true && Robot.FEEDER_SUBSYSTEM.getFeederHasBall() == true ) {
+      RavenBlinkin.solidGreen();
     }
- }
+
+
+  }
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
@@ -159,7 +157,16 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-
+    if (Timer.getFPGATimestamp() == 60) {
+      RAVEN_BLINKIN_3.blinkGreen();
+    } else if (Timer.getFPGATimestamp() == 30) {
+      RAVEN_BLINKIN_3.blinkYellow();
+    } else if (Timer.getFPGATimestamp() == 15) {
+      RAVEN_BLINKIN_3.blinkRed();
+    }
+  
+    
+  
   }
 
    public void configureButtonBindings() {
