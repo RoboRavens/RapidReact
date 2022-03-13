@@ -4,7 +4,11 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
+
+import java.sql.Driver;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
@@ -39,6 +43,8 @@ public class Robot extends TimedRobot {
   public static final Gamepad GAMEPAD = new Gamepad(JOYSTICK);
   private Gamepad OP_PAD = new Gamepad(1);
   private Gamepad OP_PAD2 = new Gamepad(2);
+
+  
   
   public static final DriveTrainSubsystemBase DRIVE_TRAIN_SUBSYSTEM = new DriveTrainSubsystem();
   public static final ShooterSubsystem SHOOTER_SUBSYSTEM = new ShooterSubsystem();
@@ -85,8 +91,7 @@ public class Robot extends TimedRobot {
     CLIMBER_SUBSYSTEM.setDefaultCommand(climberDefaultBrake);
     CONVEYANCE_SUBSYSTEM.setDefaultCommand(CONVEYANCE_INDEX_COMMAND);
     configureButtonBindings();
-    
-    LIMELIGHT_SUBSYSTEM.turnLEDOff();
+     LIMELIGHT_SUBSYSTEM.turnLEDOff();
     CameraServer.startAutomaticCapture();
   }
   
@@ -121,10 +126,7 @@ public class Robot extends TimedRobot {
   
   
   }
-
-    
-  
-    /** This function is called once each time the robot enters Disabled mode. */
+   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {}
 
@@ -154,16 +156,17 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+     Timer.getFPGATimestamp();
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    if (Timer.getFPGATimestamp() == 60) {
+    if (Timer.getFPGATimestamp() <= 60) {
       RAVEN_BLINKIN_3.blinkGreen();
-    } else if (Timer.getFPGATimestamp() == 30) {
+    } else if (Timer.getFPGATimestamp() <= 30) {
       RAVEN_BLINKIN_3.blinkYellow();
-    } else if (Timer.getFPGATimestamp() == 15) {
+    } else if (Timer.getFPGATimestamp() <= 15) {
       RAVEN_BLINKIN_3.blinkRed();
     }
    }
