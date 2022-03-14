@@ -33,8 +33,8 @@ public final class Constants {
     public static final int SHOOTER_TIMEOUT_MS = 100;
     public static final int SHOOTER_TARGET_ALLOWANCE = 500; //Amount of RPM offset to consider still "on target"
 
-    public static final double BACKSPIN_GEAR_RATIO = 16/36;
-    public static final double TOPSPIN_GEAR_RATIO = 16/24;
+    public static final double BACKSPIN_GEAR_RATIO = 16.0 / 36.0;
+    public static final double TOPSPIN_GEAR_RATIO = 16.0 / 24.0;
 
     //public static final int SHOOTER_BACKSPIN_VEL_TO_RPM = 8192 / 600;
     //public static final int SHOOTER_TOPSPIN_VEL_TO_RPM = SHOOTER_BACKSPIN_VEL_TO_RPM * 2/1; // Big Wheel:Small Wheel
@@ -64,15 +64,15 @@ public final class Constants {
     public static final double TARMAC_TOPSPIN_KI = 0;
     public static final double TARMAC_TOPSPIN_KD = 0;
 
-    public static final int LAUNCHPAD_BACKSPIN_RPM = 500;
-    public static final double LAUNCHPAD_BACKSPIN_KF = 0;
-    public static final double LAUNCHPAD_BACKSPIN_KP = 0.05;
+    public static final int LAUNCHPAD_BACKSPIN_RPM = 1825;
+    public static final double LAUNCHPAD_BACKSPIN_KF = 0.3;
+    public static final double LAUNCHPAD_BACKSPIN_KP = 0.15;
     public static final double LAUNCHPAD_BACKSPIN_KI = 0;
     public static final double LAUNCHPAD_BACKSPIN_KD = 0;
 
-    public static final int LAUNCHPAD_TOPSPIN_RPM = 500;
-    public static final double LAUNCHPAD_TOPSPIN_KF = 0;
-    public static final double LAUNCHPAD_TOPSPIN_KP = 0.05;
+    public static final int LAUNCHPAD_TOPSPIN_RPM = 1825;
+    public static final double LAUNCHPAD_TOPSPIN_KF = 0.3;
+    public static final double LAUNCHPAD_TOPSPIN_KP = 0.15;
     public static final double LAUNCHPAD_TOPSPIN_KI = 0;
     public static final double LAUNCHPAD_TOPSPIN_KD = 0;
 
