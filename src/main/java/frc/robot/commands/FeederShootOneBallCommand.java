@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import frc.robot.Robot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class FeederShootOneBallCommand extends CommandBase {
@@ -21,6 +22,7 @@ public class FeederShootOneBallCommand extends CommandBase {
     @Override
     public void execute() {
         Robot.FEEDER_SUBSYSTEM.shoot();
+        SmartDashboard.putString("FSOBC Status", "Shooting one ball");
     }
 
     // Called once the command ends or is interrupted.
@@ -28,6 +30,8 @@ public class FeederShootOneBallCommand extends CommandBase {
     public void end(boolean interrupted) {
         Robot.FEEDER_SUBSYSTEM.feederWheelStop();
         Robot.FEEDER_SUBSYSTEM.conveyanceStop();
+        
+        SmartDashboard.putString("FSOBC Status", "DONE SHOOTING");
     }
 
     // Returns true when the command should end.

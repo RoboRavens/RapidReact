@@ -113,6 +113,9 @@ public class Gamepad {
 		case SHOOTER_LOW_GOAL_SHOT:
 			buttonNumber = 11;
 			break;
+		case SHOOTER_AUTO_RADIUS_SHOT:
+			buttonNumber = 12;
+			break;
 		default:
 			throw new IllegalArgumentException("Invalid Button Code");
 		}

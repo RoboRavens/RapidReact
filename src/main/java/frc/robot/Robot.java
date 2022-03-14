@@ -59,6 +59,7 @@ public class Robot extends TimedRobot {
   public static final ShooterLowGoalCommand SHOOTER_LOW_GOAL_PID_COMMAND = new ShooterLowGoalCommand();
   public static final ShooterTarmacCommand SHOOTER_TARMAC_PID_COMMAND = new ShooterTarmacCommand();
   public static final ShooterLaunchpadCommand SHOOTER_LAUNCH_PAD_PID_COMMAND = new ShooterLaunchpadCommand();
+  public static final ShooterAutoRadiusCommand SHOOTER_AUTO_RADIUS_PID_COMMAND = new ShooterAutoRadiusCommand();
   public static final FeederCollectCommand FeederCollect = new FeederCollectCommand();
   public static final ClimberDefaultBrakeCommand climberDefaultBrake = new ClimberDefaultBrakeCommand();
   public static final CompressorSubsystem COMPRESSOR_SUBSYSTEM = new CompressorSubsystem();
@@ -67,7 +68,8 @@ public class Robot extends TimedRobot {
   public static final TurretFlipCommand TURRET_FLIP = new TurretFlipCommand();
   public static final TurretSeekCommand TURRET_SEEK = new TurretSeekCommand();
   public static final DrivetrainDefaultCommand DRIVE_TRAIN_DEFAULT_COMMAND = new DrivetrainDefaultCommand();
-  
+  public static final FeederShootOneBallCommand FEEDER_SHOOT_ONE_BALL = new FeederShootOneBallCommand();
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -187,9 +189,11 @@ public class Robot extends TimedRobot {
     GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederCollect);
     GAMEPAD.getButton(ButtonCode.B).whileHeld(FeederEject);
     //GAMEPAD.getButton(ButtonCode.Y).whenPressed(FeederSafetyReverse);
+    GAMEPAD.getButton(ButtonCode.Y).whenPressed(FEEDER_SHOOT_ONE_BALL);
     OP_PAD.getButton(ButtonCode.SHOOTER_LAUNCH_PAD_SHOT).whenPressed(SHOOTER_LAUNCH_PAD_PID_COMMAND);
     OP_PAD.getButton(ButtonCode.SHOOTER_TARMAC_SHOT).whenPressed(SHOOTER_TARMAC_PID_COMMAND);
     OP_PAD.getButton(ButtonCode.SHOOTER_LOW_GOAL_SHOT).whenPressed(SHOOTER_LOW_GOAL_PID_COMMAND);
+    OP_PAD.getButton(ButtonCode.SHOOTER_AUTO_RADIUS_SHOT).whenPressed(SHOOTER_AUTO_RADIUS_PID_COMMAND);
   }
 
   @Override

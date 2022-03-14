@@ -40,52 +40,60 @@ public final class Constants {
     //public static final int SHOOTER_BACKSPIN_VEL_TO_RPM = 8192 / 600;
     //public static final int SHOOTER_TOPSPIN_VEL_TO_RPM = SHOOTER_BACKSPIN_VEL_TO_RPM * 2/1; // Big Wheel:Small Wheel
 
-    // All three shots need to be tuned.
-    public static final int LOW_GOAL_BACKSPIN_RPM = 100;
-    public static final double LOW_GOAL_BACKSPIN_KF = 0;
-    public static final double LOW_GOAL_BACKSPIN_KP = 0.06;
+    // All shots need to be tuned.
+    public static final int LOW_GOAL_BACKSPIN_RPM = 1000;
+    public static final double LOW_GOAL_BACKSPIN_KF = 0.1043;  
+ //   public static final double LOW_GOAL_BACKSPIN_KF = 0.0;
+    public static final double LOW_GOAL_BACKSPIN_KP = 0;//0.17;
     public static final double LOW_GOAL_BACKSPIN_KI = 0;
     public static final double LOW_GOAL_BACKSPIN_KD = 0;
 
-    public static final int LOW_GOAL_TOPSPIN_RPM = 100;
-    public static final double LOW_GOAL_TOPSPIN_KF = 0;
-    public static final double LOW_GOAL_TOPSPIN_KP = 0.05;
+    public static final int LOW_GOAL_TOPSPIN_RPM = 1000;
+    public static final double LOW_GOAL_TOPSPIN_KF = 0.106;
+//    public static final double LOW_GOAL_TOPSPIN_KF = 0.0;
+    public static final double LOW_GOAL_TOPSPIN_KP = 0;//0.17;
     public static final double LOW_GOAL_TOPSPIN_KI = 0;
     public static final double LOW_GOAL_TOPSPIN_KD = 0;
 
     public static final int TARMAC_BACKSPIN_RPM = 1825;
-    public static final double TARMAC_BACKSPIN_KF = 0.3;
-    public static final double TARMAC_BACKSPIN_KP = 0.15;
+    public static final double TARMAC_BACKSPIN_KF = 0.1033;
+//    public static final double TARMAC_BACKSPIN_KF = 0.0;
+    public static final double TARMAC_BACKSPIN_KP = 0;//0.21;
     public static final double TARMAC_BACKSPIN_KI = 0;
     public static final double TARMAC_BACKSPIN_KD = 0;
 
     public static final int TARMAC_TOPSPIN_RPM = 1825;
-    public static final double TARMAC_TOPSPIN_KF = 0.3;
-    public static final double TARMAC_TOPSPIN_KP = 0.15;
+    public static final double TARMAC_TOPSPIN_KF = 0.1065;
+//    public static final double TARMAC_TOPSPIN_KF = 0.0;
+    public static final double TARMAC_TOPSPIN_KP = 0;//0.21;
     public static final double TARMAC_TOPSPIN_KI = 0;
     public static final double TARMAC_TOPSPIN_KD = 0;
 
     public static final int AUTO_RADIUS_BACKSPIN_RPM = 1925;
-    public static final double AUTO_RADIUS_BACKSPIN_KF = 0.3;
-    public static final double AUTO_RADIUS_BACKSPIN_KP = 0.15;
+//    public static final double AUTO_RADIUS_BACKSPIN_KF = 0.0;
+    public static final double AUTO_RADIUS_BACKSPIN_KF = 0.1038;
+    public static final double AUTO_RADIUS_BACKSPIN_KP = 0;//0.21;
     public static final double AUTO_RADIUS_BACKSPIN_KI = 0;
     public static final double AUTO_RADIUS_BACKSPIN_KD = 0;
 
     public static final int AUTO_RADIUS_TOPSPIN_RPM = 1925;
-    public static final double AUTO_RADIUS_TOPSPIN_KF = 0.3;
-    public static final double AUTO_RADIUS_TOPSPIN_KP = 0.15;
+    public static final double AUTO_RADIUS_TOPSPIN_KF = 0.1068;
+    //public static final double AUTO_RADIUS_TOPSPIN_KF = 0.0;
+    public static final double AUTO_RADIUS_TOPSPIN_KP = 0;//0.21;
     public static final double AUTO_RADIUS_TOPSPIN_KI = 0;
     public static final double AUTO_RADIUS_TOPSPIN_KD = 0;
 
     public static final int LAUNCHPAD_BACKSPIN_RPM = 2000;
-    public static final double LAUNCHPAD_BACKSPIN_KF = 0.3;
-    public static final double LAUNCHPAD_BACKSPIN_KP = 0.15;
+   // public static final double LAUNCHPAD_BACKSPIN_KF = 0.0;
+    public static final double LAUNCHPAD_BACKSPIN_KF = 0.1039;
+    public static final double LAUNCHPAD_BACKSPIN_KP = 0;//0.22;
     public static final double LAUNCHPAD_BACKSPIN_KI = 0;
     public static final double LAUNCHPAD_BACKSPIN_KD = 0;
 
     public static final int LAUNCHPAD_TOPSPIN_RPM = 2000;
-    public static final double LAUNCHPAD_TOPSPIN_KF = 0.3;
-    public static final double LAUNCHPAD_TOPSPIN_KP = 0.15;
+    public static final double LAUNCHPAD_TOPSPIN_KF = 0.1068;
+    //public static final double LAUNCHPAD_TOPSPIN_KF = 0.0;
+    public static final double LAUNCHPAD_TOPSPIN_KP = 0;//0.22;
     public static final double LAUNCHPAD_TOPSPIN_KI = 0;
     public static final double LAUNCHPAD_TOPSPIN_KD = 0;
 
@@ -144,7 +152,7 @@ public final class Constants {
     public static final double CONVEYANCE_TWO_FEEDER_SPEED = 0.25;
 	public static final double CONVEYANCE_TWO_FEEDER_STOP = 0;
 	public static final double CONVEYANCE_TWO_REVERSE_FEEDER = -.25;
-    public static final double CONVEYANCE_TWO_FULL_SPEED = -.25;
+    public static final double CONVEYANCE_TWO_FULL_SPEED = .25;
 
 
 
