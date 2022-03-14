@@ -23,6 +23,7 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
 import frc.robot.commands.DriveTrain.RavenSwerveControllerCommand;
 import frc.util.DriftCorrection;
@@ -314,30 +315,59 @@ public class DriveTrainSubsystem extends DriveTrainSubsystemBase {
 
   @Override
   public Command CreateFollowTrajectoryCommand(Trajectory trajectory) {
+    return CreateFollowTrajectoryCommand(trajectory, false);
+  }
+
+  @Override
+  public Command CreateFollowTrajectoryCommandSwerveOptimized(Trajectory trajectory) {
+    return CreateFollowTrajectoryCommand(trajectory, true);
+  }
+  
+  private Command CreateFollowTrajectoryCommand(Trajectory trajectory, boolean swerveOptimized) {
     var robotAngleController =
         new ProfiledPIDController(
           Constants.SWERVE_CONTROLLER_ANGLE_KP, 0, 0, Constants.SWERVE_CONTROLLER_ANGULAR_CONSTRAINTS);
     robotAngleController.enableContinuousInput(-Math.PI, Math.PI);
 
-    RavenSwerveControllerCommand swerveControllerCommand =
-        new RavenSwerveControllerCommand(
-          trajectory,
-          this::getPose, // Functional interface to feed supplier
-          m_kinematics,
+    Command followTrajectory;
+    if (swerveOptimized) {
+      followTrajectory = CreateSwerveCommandWhichImmediatelyRotatesToRotationOfLastPointInTrajectory(trajectory, robotAngleController);
+    } else {
+      followTrajectory = CreateSwerveCommandWhichRespectsTheRotationOfEachPoint(trajectory, robotAngleController);
+    }
 
-          // Position controllers
-          new PIDController(Constants.SWERVE_CONTROLLER_X_KP, 0, 0),
-          new PIDController(Constants.SWERVE_CONTROLLER_Y_KP, 0, 0),
-          robotAngleController,
-          this::setModuleStates,
-          this);
-
-    // Run path following command, then stop at the end.
     return new InstantCommand(() -> DriftCorrection.clearDesiredHeading())
-      .andThen(new InstantCommand(() -> System.out.println("starting trajectory")))
-      .andThen(swerveControllerCommand)
-      .andThen(this::stop)
-      .andThen(new InstantCommand(() -> System.out.println("trajectory command chain complete")));
+      // .andThen(new InstantCommand(() -> System.out.println("starting trajectory")))
+      .andThen(followTrajectory)
+      .andThen(this::stop);
+  }
+
+  private RavenSwerveControllerCommand CreateSwerveCommandWhichRespectsTheRotationOfEachPoint(Trajectory trajectory, ProfiledPIDController robotAngleController) {
+    return new RavenSwerveControllerCommand(
+      trajectory,
+      this::getPose, // Functional interface to feed supplier
+      m_kinematics,
+
+      // Position controllers
+      new PIDController(Constants.SWERVE_CONTROLLER_X_KP, 0, 0),
+      new PIDController(Constants.SWERVE_CONTROLLER_Y_KP, 0, 0),
+      robotAngleController,
+      this::setModuleStates,
+      this);
+  }
+
+  private SwerveControllerCommand CreateSwerveCommandWhichImmediatelyRotatesToRotationOfLastPointInTrajectory(Trajectory trajectory, ProfiledPIDController robotAngleController) {
+    return new SwerveControllerCommand(
+      trajectory,
+      this::getPose, // Functional interface to feed supplier
+      m_kinematics,
+
+      // Position controllers
+      new PIDController(Constants.SWERVE_CONTROLLER_X_KP, 0, 0),
+      new PIDController(Constants.SWERVE_CONTROLLER_Y_KP, 0, 0),
+      robotAngleController,
+      this::setModuleStates,
+      this);
   }
   
   private void calculateDriveCharacteristics() {

@@ -29,16 +29,16 @@ public class DrivetrainDefaultCommand extends CommandBase {
         x = Deadband.adjustValueToZero(x, Constants.JOYSTICK_DEADBAND);
         y = Deadband.adjustValueToZero(y, Constants.JOYSTICK_DEADBAND);
 
-        //var limelightAngle = this.getLimelightTargetOffset();
-        //if (limelightAngle != null) {
-        //    r = _followLimelightPID.calculate(limelightAngle.doubleValue());
-        //    SmartDashboard.putNumber("", r);
-        //} else {
+        var limelightAngle = this.getLimelightTargetOffset();
+        if (limelightAngle != null) {
+            r = _followLimelightPID.calculate(limelightAngle.doubleValue());
+            // SmartDashboard.putNumber("", r);
+        } else {
             // _followLimelightPID.reset();
             r = Robot.GAMEPAD.getAxis(AxisCode.RIGHTSTICKX) * -1 * Constants.DRIVE_MAX_TURN_RADIANS_PER_SECOND; // Robot.JOYSTICK.getRawAxis(2);
             r = Deadband.adjustValueToZero(r, Constants.JOYSTICK_DEADBAND);
             r = r * Constants.DRIVE_MAX_TURN_RADIANS_PER_SECOND;
-        //}
+        }
 
         if (x == 0 && y == 0 && r == 0) {
             Robot.DRIVE_TRAIN_SUBSYSTEM.holdPosition();
