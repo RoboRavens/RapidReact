@@ -103,8 +103,12 @@ public class ShooterSubsystem extends SubsystemBase {
     */
     public void startMotor() {
         _recovered = false;
-        _backspinMotor.set(ControlMode.Velocity, _shot._backspinMotorCalibration.targetRPM * (1 / Constants.TALON_VELOCITY_TO_RPM));
-        _topspinMotor.set(ControlMode.Velocity, _shot._topspinMotorCalibration.targetRPM * (1 / Constants.TALON_VELOCITY_TO_RPM));
+        // _backspinMotor.set(ControlMode.Velocity, _shot._backspinMotorCalibration.targetRPM * Constants.TALON_RPM_TO_VELOCITY);
+        // _topspinMotor.set(ControlMode.Velocity, _shot._topspinMotorCalibration.targetRPM * Constants.TALON_RPM_TO_VELOCITY);
+
+        _backspinMotor.set(ControlMode.Velocity, _shot._backspinMotorCalibration.targetRPM * Constants.TALON_RPM_TO_VELOCITY / Constants.BACKSPIN_GEAR_RATIO);
+        _topspinMotor.set(ControlMode.Velocity, _shot._topspinMotorCalibration.targetRPM * Constants.TALON_RPM_TO_VELOCITY / Constants.TOPSPIN_GEAR_RATIO);
+
         _isShooting = true;
     }
 

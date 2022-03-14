@@ -66,6 +66,7 @@ public class Robot extends TimedRobot {
   public static final TurretAimAtTargetCommand TURRET_AIM_AT_TARGET = new TurretAimAtTargetCommand();
   public static final TurretFlipCommand TURRET_FLIP = new TurretFlipCommand();
   public static final TurretSeekCommand TURRET_SEEK = new TurretSeekCommand();
+  public static final DrivetrainDefaultCommand DRIVE_TRAIN_DEFAULT_COMMAND = new DrivetrainDefaultCommand();
   
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -73,8 +74,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    var driveTrainDefaultCommand = new DrivetrainDefaultCommand();
-    DRIVE_TRAIN_SUBSYSTEM.setDefaultCommand(driveTrainDefaultCommand);
+    DRIVE_TRAIN_SUBSYSTEM.setDefaultCommand(DRIVE_TRAIN_DEFAULT_COMMAND);
     //SHOOTER_SUBSYSTEM.setDefaultCommand(new RunCommand(() -> SHOOTER_SUBSYSTEM.defaultCommand(), SHOOTER_SUBSYSTEM));
 
     SHOOTER_SUBSYSTEM.setDefaultCommand(new RunCommand(() -> SHOOTER_SUBSYSTEM.defaultCommand(), SHOOTER_SUBSYSTEM));
@@ -156,6 +156,11 @@ public class Robot extends TimedRobot {
     new Trigger(() -> GAMEPAD.getAxisIsPressed(AxisCode.RIGHTTRIGGER))
       .whenActive(DRIVE_TRAIN_SUBSYSTEM::cutPower)
       .whenInactive(DRIVE_TRAIN_SUBSYSTEM::stopCutPower);
+
+    new Trigger(() -> GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER))
+      .whenActive(() -> DRIVE_TRAIN_DEFAULT_COMMAND.followLimelight())
+      .whenInactive(() -> DRIVE_TRAIN_DEFAULT_COMMAND.stopFollowingLimelight());
+
     /*
     GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(new StartEndCommand(
       () -> Robot.CLIMBER_SUBSYSTEM.retract(),
