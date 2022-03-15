@@ -64,6 +64,7 @@ public class Robot extends TimedRobot {
   public static final ConveyanceIndexCommand CONVEYANCE_INDEX_COMMAND = new ConveyanceIndexCommand();
   public static final FeederShootCommand FeederShoot = new FeederShootCommand();
   public static final FeederIndexCommand FeederIndex = new FeederIndexCommand();
+  public static final FeederWheelReverseCommand FeederWheelReverse = new FeederWheelReverseCommand();
   public static final ShooterLowGoalCommand SHOOTER_LOW_GOAL_PID_COMMAND = new ShooterLowGoalCommand();
   public static final ShooterTarmacCommand SHOOTER_TARMAC_PID_COMMAND = new ShooterTarmacCommand();
   public static final ShooterLaunchpadCommand SHOOTER_LAUNCH_PAD_PID_COMMAND = new ShooterLaunchpadCommand();

@@ -33,7 +33,9 @@ public class CompressorSubsystem extends SubsystemBase {
   }
 
   public void stop() {
-    compressor.disable();
+    // compressor.disable();
+    
+    compressor.enableDigital();
   }
 
   // Returns electrical current measured in amps.
