@@ -67,6 +67,7 @@ public class Robot extends TimedRobot {
   public static final ShooterLowGoalCommand SHOOTER_LOW_GOAL_PID_COMMAND = new ShooterLowGoalCommand();
   public static final ShooterTarmacCommand SHOOTER_TARMAC_PID_COMMAND = new ShooterTarmacCommand();
   public static final ShooterLaunchpadCommand SHOOTER_LAUNCH_PAD_PID_COMMAND = new ShooterLaunchpadCommand();
+  public static final ShooterAutoRadiusCommand SHOOTER_AUTO_RADIUS_PID_COMMAND = new ShooterAutoRadiusCommand();
   public static final FeederCollectCommand FeederCollect = new FeederCollectCommand();
   public static final ClimberDefaultBrakeCommand climberDefaultBrake = new ClimberDefaultBrakeCommand();
   public static final CompressorSubsystem COMPRESSOR_SUBSYSTEM = new CompressorSubsystem();
@@ -74,15 +75,18 @@ public class Robot extends TimedRobot {
   public static final TurretAimAtTargetCommand TURRET_AIM_AT_TARGET = new TurretAimAtTargetCommand();
   public static final TurretFlipCommand TURRET_FLIP = new TurretFlipCommand();
   public static final TurretSeekCommand TURRET_SEEK = new TurretSeekCommand();
+  public static final DrivetrainDefaultCommand DRIVE_TRAIN_DEFAULT_COMMAND = new DrivetrainDefaultCommand();
+  public static final FeederShootOneBallCommand FEEDER_SHOOT_ONE_BALL = new FeederShootOneBallCommand();
   public static final RavenBlinkin RAVEN_BLINKIN_3 = new RavenBlinkin(3);
+  public static final FeederWheelReverseCommand FeederWheelReverse = new FeederWheelReverseCommand();
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
   @Override
   public void robotInit() {
-    var driveTrainDefaultCommand = new DrivetrainDefaultCommand();
-    DRIVE_TRAIN_SUBSYSTEM.setDefaultCommand(driveTrainDefaultCommand);
+    DRIVE_TRAIN_SUBSYSTEM.setDefaultCommand(DRIVE_TRAIN_DEFAULT_COMMAND);
     //SHOOTER_SUBSYSTEM.setDefaultCommand(new RunCommand(() -> SHOOTER_SUBSYSTEM.defaultCommand(), SHOOTER_SUBSYSTEM));
 
     SHOOTER_SUBSYSTEM.setDefaultCommand(new RunCommand(() -> SHOOTER_SUBSYSTEM.defaultCommand(), SHOOTER_SUBSYSTEM));
@@ -170,22 +174,57 @@ public class Robot extends TimedRobot {
       RAVEN_BLINKIN_3.blinkRed();
     }
    }
+  
+  
 
    public void configureButtonBindings() {
+    GAMEPAD.getButton(ButtonCode.LEFTBUMPER)
+      .and(GAMEPAD.getButton(ButtonCode.RIGHTBUMPER))
+      .whenActive(new InstantCommand(DRIVE_TRAIN_SUBSYSTEM::zeroGyroscope, DRIVE_TRAIN_SUBSYSTEM));
+
+    new Trigger(() -> GAMEPAD.getAxisIsPressed(AxisCode.RIGHTTRIGGER))
+      .whenActive(DRIVE_TRAIN_SUBSYSTEM::cutPower)
+      .whenInactive(DRIVE_TRAIN_SUBSYSTEM::stopCutPower);
+
+    new Trigger(() -> GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER))
+      .whenActive(() -> DRIVE_TRAIN_DEFAULT_COMMAND.followLimelight())
+      .whenInactive(() -> DRIVE_TRAIN_DEFAULT_COMMAND.stopFollowingLimelight());
+
+    /*
+    GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(new StartEndCommand(
+      () -> Robot.CLIMBER_SUBSYSTEM.retract(),
+      () -> Robot.CLIMBER_SUBSYSTEM.stop(),
+      Robot.CLIMBER_SUBSYSTEM
+    ));
+    GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(new StartEndCommand(
+      () -> Robot.CLIMBER_SUBSYSTEM.extend(),
+      () -> Robot.CLIMBER_SUBSYSTEM.stop(),
+      Robot.CLIMBER_SUBSYSTEM
+    ));
+    */
+    OP_PAD.getButton(ButtonCode.SHOOTER_REV)
+      .whileHeld(SHOOTER_START_COMMAND)
+      .whenInactive(SHOOTER_STOP_COMMAND);
+
     GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(CONVEYANCE_COLLECT_COMMAND);
     //GAMEPAD.getButton(ButtonCode.B).whileHeld(new SequentialCommandGroup(new WaitCommand(.15), SHOOTER_START_COMMAND));
     GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(CONVEYANCE_EJECT_COMMAND);
     //GAMEPAD.getButton(ButtonCode.B).whenPressed(FeederSafetyReverse);
     OP_PAD2.getButton(ButtonCode.SHOOTER_OVERRIDE).whileHeld(FeederShoot);
+    OP_PAD2.getButton(ButtonCode.FEEDER_WHEEL_REVERSE).whileHeld(FeederWheelReverse);
     //GAMEPAD.getButton(ButtonCode.BACK).whenHeld(TURRET_FLIP);
     //GAMEPAD.getButton(ButtonCode.START).whenHeld(TURRET_SEEK);
     GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederCollect);
     GAMEPAD.getButton(ButtonCode.B).whileHeld(FeederEject);
     //GAMEPAD.getButton(ButtonCode.Y).whenPressed(FeederSafetyReverse);
+    GAMEPAD.getButton(ButtonCode.Y).whenPressed(FEEDER_SHOOT_ONE_BALL);
     OP_PAD.getButton(ButtonCode.SHOOTER_LAUNCH_PAD_SHOT).whenPressed(SHOOTER_LAUNCH_PAD_PID_COMMAND);
     OP_PAD.getButton(ButtonCode.SHOOTER_TARMAC_SHOT).whenPressed(SHOOTER_TARMAC_PID_COMMAND);
     OP_PAD.getButton(ButtonCode.SHOOTER_LOW_GOAL_SHOT).whenPressed(SHOOTER_LOW_GOAL_PID_COMMAND);
+    OP_PAD.getButton(ButtonCode.SHOOTER_AUTO_RADIUS_SHOT).whenPressed(SHOOTER_AUTO_RADIUS_PID_COMMAND);
   }
+
+   
 
   @Override
   public void testInit() {
