@@ -17,6 +17,7 @@ public class ConveyanceCollectCommand extends CommandBase {
   @Override
   public void execute() {
     Robot.CONVEYANCE_SUBSYSTEM.setConveyanceMaxForward();
+    Robot.INTAKE_SUBSYSTEM.extend();
   }
 
   // Called once the command ends or is interrupted.
