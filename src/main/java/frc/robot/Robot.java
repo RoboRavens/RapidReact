@@ -79,7 +79,7 @@ public class Robot extends TimedRobot {
   public static final DrivetrainDefaultCommand DRIVE_TRAIN_DEFAULT_COMMAND = new DrivetrainDefaultCommand();
   public static final FeederShootOneBallCommand FEEDER_SHOOT_ONE_BALL = new FeederShootOneBallCommand();
   public static final RavenBlinkin RAVEN_BLINKIN_3 = new RavenBlinkin(3);
-  public static final FeederWheelReverseCommand FeederWheelReverse = new FeederWheelReverseCommand();
+  
 
   /**
    * This function is run when the robot is first started up and should be used for any
