@@ -52,7 +52,6 @@ public class ShooterSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Shot Count", getShotCount());
         SmartDashboard.putNumber("Last Shot Time", getLastShotTime());
         SmartDashboard.putNumber("Back Shooter Rot", _backspinMotor.getSelectedSensorPosition() / Constants.TALONFX_TICKS_PER_REVOLUTION);
-        SmartDashboard.putNumber("Backspin Target Speed", _backspinMotor.getSupplyCurrent());
     }
 
     @Override
