@@ -56,6 +56,7 @@ public class Robot extends TimedRobot {
   public static final ConveyanceIndexCommand CONVEYANCE_INDEX_COMMAND = new ConveyanceIndexCommand();
   public static final FeederShootCommand FeederShoot = new FeederShootCommand();
   public static final FeederIndexCommand FeederIndex = new FeederIndexCommand();
+  public static final FeederWheelReverseCommand FeederWheelReverse = new FeederWheelReverseCommand();
   public static final ShooterLowGoalCommand SHOOTER_LOW_GOAL_PID_COMMAND = new ShooterLowGoalCommand();
   public static final ShooterTarmacCommand SHOOTER_TARMAC_PID_COMMAND = new ShooterTarmacCommand();
   public static final ShooterLaunchpadCommand SHOOTER_LAUNCH_PAD_PID_COMMAND = new ShooterLaunchpadCommand();
@@ -184,6 +185,7 @@ public class Robot extends TimedRobot {
     GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(CONVEYANCE_EJECT_COMMAND);
     //GAMEPAD.getButton(ButtonCode.B).whenPressed(FeederSafetyReverse);
     OP_PAD2.getButton(ButtonCode.SHOOTER_OVERRIDE).whileHeld(FeederShoot);
+    OP_PAD2.getButton(ButtonCode.FEEDER_WHEEL_REVERSE).whileHeld(FeederWheelReverse);
     //GAMEPAD.getButton(ButtonCode.BACK).whenHeld(TURRET_FLIP);
     //GAMEPAD.getButton(ButtonCode.START).whenHeld(TURRET_SEEK);
     GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederCollect);

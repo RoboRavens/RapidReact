@@ -149,9 +149,9 @@ public final class Constants {
     public static final double CONVEYANCE_TWO_NORMAL_SPEED = 0.25;
     public static final double CONVEYANCE_TWO_NORMAL_REVERSE_SPEED = -0.25;
     public static final double CONVEYANCE_TWO_STOP = 0;
-    public static final double CONVEYANCE_TWO_FEEDER_SPEED = 0.25;
+    public static final double CONVEYANCE_TWO_FEEDER_SPEED = 1.0;
 	public static final double CONVEYANCE_TWO_FEEDER_STOP = 0;
-	public static final double CONVEYANCE_TWO_REVERSE_FEEDER = -.25;
+	public static final double CONVEYANCE_TWO_REVERSE_FEEDER = -1.0;
     public static final double CONVEYANCE_TWO_FULL_SPEED = .25;
 
 
@@ -165,7 +165,7 @@ public final class Constants {
 
     // DRIVETRAIN PATHFINDING
     public static final double TRAJECTORY_CONFIG_MAX_VELOCITY_METERS_PER_SECOND = 2;
-    public static final double TRAJECTORY_CONFIG_MAX_ACCELERATION_METERS_PER_SECOND = 2;
+    public static final double TRAJECTORY_CONFIG_MAX_ACCELERATION_METERS_PER_SECOND = .8;
     public static final double TRAJECTORY_CONFIG_MAX_ANGULAR_SPEED_RADIANS_PER_SECOND = Math.PI;
     public static final double TRAJECTORY_CONFIG_MAX_ANGULAR_ACCELERATION_RADIANS_PER_SECOND = Math.PI;
 

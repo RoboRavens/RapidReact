@@ -16,8 +16,11 @@ public final class RobotMap {
     //CLIMBER
     public static final int LEFT_CLIMBER_MOTOR = 51;
     public static final int RIGHT_CLIMBER_MOTOR = 52;
-    public static final int LEFT_CLIMBER_SOLENOID = 2;
-    public static final int RIGHT_CLIMBER_SOLENOID = 3;
+    public static final int CLIMBER_EXTENSION_SOLENOID = 4;
+    public static final int CLIMBER_RETRACTION_SOLENOID = 5;
+    
+    // public static final int LEFT_CLIMBER_SOLENOID = 2;
+    // public static final int RIGHT_CLIMBER_SOLENOID = 3;
 
     //SHOOTER
     public static final int SHOOTER_BACKSPIN_MOTOR = 61;
@@ -30,8 +33,10 @@ public final class RobotMap {
     //public static final int TURRET_COUNTERCLOCKWISE_SENSOR = ;
 
     //INTAKE 
-     public static final int INTAKE_EXTEND_SOLENOID = 0;
-     public static final int INTAKE_RETRACT_SOLENOID = 1; 
+    public static final int INTAKE_EXTEND_LEFT_SOLENOID = 0;
+    public static final int INTAKE_RETRACT_LEFT_SOLENOID = 1;
+    public static final int INTAKE_EXTEND_RIGHT_SOLENOID = 2;
+    public static final int INTAKE_RETRACT_RIGHT_SOLENOID = 3; 
     
     // DRIVETRAIN
     public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0.5715; // The left-to-right distance between the drivetrain wheels

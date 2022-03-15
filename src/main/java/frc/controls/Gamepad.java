@@ -116,6 +116,9 @@ public class Gamepad {
 		case SHOOTER_AUTO_RADIUS_SHOT:
 			buttonNumber = 12;
 			break;
+		case FEEDER_WHEEL_REVERSE:
+			buttonNumber = 6;
+			break;
 		default:
 			throw new IllegalArgumentException("Invalid Button Code");
 		}
