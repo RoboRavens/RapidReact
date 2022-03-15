@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import frc.robot.Robot;
-import frc.robot.subsystems.FeederSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class FeederEjectCommand extends CommandBase {
@@ -27,7 +26,7 @@ public class FeederEjectCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Robot.FEEDER_SUBSYSTEM.stopConveyance();
+    Robot.FEEDER_SUBSYSTEM.conveyanceStop();
   }
 
   // Returns true when the command should end.

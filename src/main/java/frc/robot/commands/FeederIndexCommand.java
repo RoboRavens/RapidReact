@@ -19,7 +19,7 @@ public class FeederIndexCommand extends CommandBase {
     @Override
     public void execute() {
         if (Robot.FEEDER_SUBSYSTEM.getFeederHasBall()) {
-            Robot.FEEDER_SUBSYSTEM.stopConveyance();
+            Robot.FEEDER_SUBSYSTEM.conveyanceStop();
             conveyanceOneHadBall = false;
         }
         else if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() || conveyanceOneHadBall) {
@@ -31,7 +31,7 @@ public class FeederIndexCommand extends CommandBase {
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        Robot.FEEDER_SUBSYSTEM.stopConveyance();
+        Robot.FEEDER_SUBSYSTEM.conveyanceStop();
         conveyanceOneHadBall = false;
     }
 

@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 public class FeederSubsystem extends SubsystemBase {
@@ -35,6 +36,8 @@ public class FeederSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run during simulation
   }
 
+
+
   public void setConveyanceMagnitude() {
 
   }
@@ -59,12 +62,12 @@ public class FeederSubsystem extends SubsystemBase {
     _conveyanceMotorTwo.set(ControlMode.PercentOutput, magnitude);
   }
 
-  public void stopConveyance() {
+  public void conveyanceStop() {
     this.runConveyanceAtPercentPower(Constants.CONVEYANCE_TWO_STOP);
   }
 
   public void defaultCommand() {
-    this.stopConveyance();
+    this.conveyanceStop();
   }
 
   private void runWheelAtPercentPower(double magnitude) {
@@ -75,7 +78,7 @@ public class FeederSubsystem extends SubsystemBase {
     this.runWheelAtPercentPower(Constants.CONVEYANCE_TWO_FEEDER_SPEED);
   }
 
-  public void wheelStop() {
+  public void feederWheelStop() {
     this.runWheelAtPercentPower(Constants.CONVEYANCE_TWO_FEEDER_STOP);
   }
 
@@ -87,4 +90,16 @@ public class FeederSubsystem extends SubsystemBase {
     return !_conveyanceSensorB.get();
   }
 
+  // This method runs the feeder wheel and the conveyance, but only
+  // if the shooter is at an appropriate RPM.
+  public void shoot() {
+    if (Robot.SHOOTER_SUBSYSTEM.motorsAreRecovered()) {
+      feederWheelForward();
+      setConveyanceTwoMaxForward();
+    }
+    else {
+      feederWheelStop();
+      conveyanceStop();
+    }
+  }
 }
