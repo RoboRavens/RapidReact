@@ -124,8 +124,8 @@ public class ShooterSubsystem extends SubsystemBase {
     * Stops the motor (sets it to 0% power)
     */
     public void stopMotor() {
-        _backspinMotor.set(ControlMode.Velocity, 0);
-        _topspinMotor.set(ControlMode.Velocity, 0);
+        _backspinMotor.set(ControlMode.Current, 0);
+        _topspinMotor.set(ControlMode.Current, 0);
         _isShooting = false;
     }
 
