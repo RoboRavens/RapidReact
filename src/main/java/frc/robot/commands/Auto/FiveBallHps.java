@@ -33,7 +33,7 @@ public class FiveBallHps {
             .andThen(new ShooterStartInstantCommand())
             .andThen(moveToTarmacShot)
             .andThen(shootFourthAndFifthBalls)
-            .andThen(new WaitCommand(1))
+            .andThen(new WaitCommand(.25))
             .andThen(new ShooterStopCommand());
     }
 }

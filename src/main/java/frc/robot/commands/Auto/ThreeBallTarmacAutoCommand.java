@@ -33,7 +33,7 @@ public class ThreeBallTarmacAutoCommand {
             .andThen(pickUpThirdBall)
             .andThen(moveToTarmacShot)
             .andThen(shootThirdBall)
-            .andThen(new WaitCommand(1))
+            .andThen(new WaitCommand(.25))
             .andThen(new ShooterStopCommand());
     }
 }
