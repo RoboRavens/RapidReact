@@ -20,7 +20,7 @@ public class FiveBallHps {
         var threeBall = ThreeBallTarmacAutoCommand.get();
         var moveToPlayerStationThenWait = Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommandSwerveOptimized(trajectory1).andThen(new WaitCommand(3));
         var pickUpBallsFromPlayerStation = new ParallelDeadlineGroup(moveToPlayerStationThenWait, new ConveyanceCollectCommand());
-        var moveToTarmacShot = Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommand(trajectory2);
+        var moveToTarmacShot = Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommandSwerveOptimized(trajectory2);
 
         var shootFourthAndFifthBalls = new ShooterWaitUntilIsRecoveredCommand()
             .andThen(new FeederShootOneBallCommand())
