@@ -8,6 +8,8 @@ import frc.robot.commands.ConveyanceCollectCommand;
 import frc.robot.commands.FeederShootOneBallCommand;
 import frc.robot.commands.shooter.ShooterLaunchpadCommand;
 import frc.robot.commands.shooter.ShooterStartCommand;
+import frc.robot.commands.shooter.ShooterStartInstantCommand;
+import frc.robot.commands.shooter.ShooterStopCommand;
 import frc.robot.commands.shooter.ShooterWaitUntilIsRecoveredCommand;
 import frc.util.PathWeaver;
 
@@ -22,11 +24,8 @@ public class FiveBallHps {
         var shootThirdBall = new ShooterWaitUntilIsRecoveredCommand()
             .andThen(new FeederShootOneBallCommand());
 
-        var moveToPlayerStationWhileCollectingAndWait = new ParallelDeadlineGroup(
-            Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommand(trajectory2)
-                .andThen(new WaitCommand(3)),
-            new ConveyanceCollectCommand()
-        );
+        var moveToPlayerStationAndWait = Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommand(trajectory2).andThen(new WaitCommand(3));
+        var moveToPlayerStationWhileCollectingAndWait = new ParallelDeadlineGroup(moveToPlayerStationAndWait, new ConveyanceCollectCommand());
 
         var moveToLaunchpadShotFromPlayerStation = Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommand(trajectory3);
 
@@ -35,14 +34,14 @@ public class FiveBallHps {
             .andThen(new ShooterWaitUntilIsRecoveredCommand())
             .andThen(new FeederShootOneBallCommand());
 
-        var everything = everythingUpToThirdBall
+        return everythingUpToThirdBall
             .andThen(new ShooterLaunchpadCommand())
+            .andThen(new ShooterStartInstantCommand())
             .andThen(moveToLaunchpadShotFromThirdBall)
             .andThen(shootThirdBall)
             .andThen(moveToPlayerStationWhileCollectingAndWait)
             .andThen(moveToLaunchpadShotFromPlayerStation)
-            .andThen(shootFourthAndFifthBalls);
-
-        return new ParallelDeadlineGroup(everything, new ShooterStartCommand());
+            .andThen(shootFourthAndFifthBalls)
+            .andThen(new ShooterStopCommand());
     }
 }
