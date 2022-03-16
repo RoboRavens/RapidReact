@@ -6,7 +6,8 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Robot;
 import frc.robot.commands.ConveyanceCollectCommand;
 import frc.robot.commands.FeederShootOneBallCommand;
-import frc.robot.commands.shooter.ShooterStartCommand;
+import frc.robot.commands.shooter.ShooterStartInstantCommand;
+import frc.robot.commands.shooter.ShooterStopCommand;
 import frc.robot.commands.shooter.ShooterTarmacCommand;
 import frc.robot.commands.shooter.ShooterWaitUntilIsRecoveredCommand;
 import frc.util.PathWeaver;
@@ -16,13 +17,12 @@ public class ThreeBallTarmacAutoCommand {
         var trajectory1 = PathWeaver.getTrajectoryFromFile("output/3 ball tarmac-1.wpilib.json");
         var trajectory2 = PathWeaver.getTrajectoryFromFile("output/3 ball tarmac-2.wpilib.json");
         var trajectory3 = PathWeaver.getTrajectoryFromFile("output/3 ball tarmac-3.wpilib.json");
+        
+        var driveCommand = Robot.DRIVE_TRAIN_SUBSYSTEM.CreateSetOdometryToTrajectoryInitialPositionCommand(trajectory1)
+            .andThen(Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommand(trajectory1))
+            .andThen(new WaitCommand(1));
 
-        var pickUpSecondBall = new ParallelDeadlineGroup(
-            Robot.DRIVE_TRAIN_SUBSYSTEM.CreateSetOdometryToTrajectoryInitialPositionCommand(trajectory1))
-                .andThen(Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommand(trajectory1)
-                .andThen(new WaitCommand(1)),
-            new ConveyanceCollectCommand()
-        );
+        var pickUpSecondBall = new ParallelDeadlineGroup(driveCommand, new ConveyanceCollectCommand());
 
         var moveForTarmacShot = Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommand(trajectory2);
 
@@ -38,6 +38,7 @@ public class ThreeBallTarmacAutoCommand {
         );
 
         var everything = new ShooterTarmacCommand()
+            .andThen(new ShooterStartInstantCommand())
             .andThen(pickUpSecondBall)
             .andThen(moveForTarmacShot)
             .andThen(shootFirstTwoBalls)
@@ -54,10 +55,9 @@ public class ThreeBallTarmacAutoCommand {
         var shootThirdBall = new ShooterWaitUntilIsRecoveredCommand()
             .andThen(new FeederShootOneBallCommand());
 
-        var everything = everythingUpToThirdBall
+        return everythingUpToThirdBall
             .andThen(moveToTarmacShot)
-            .andThen(shootThirdBall);
-
-        return new ParallelDeadlineGroup(everything, new ShooterStartCommand());
+            .andThen(shootThirdBall)
+            .andThen(new ShooterStopCommand());
     }
 }
