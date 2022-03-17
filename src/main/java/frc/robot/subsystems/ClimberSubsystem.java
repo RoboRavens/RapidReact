@@ -35,7 +35,8 @@ public class ClimberSubsystem extends SubsystemBase {
 	private int defaultEncoderAccuracyRange = encoderAccuracyRange;
 
 	// private Solenoid _climberBrakeRight;
-	private Solenoid _climberBrakeLeft;
+	private Solenoid _climberBrakeLeftExtend;
+	private Solenoid _climberBrakeLeftRetract;
 
 	private boolean isClimbing;
 
@@ -55,8 +56,8 @@ public class ClimberSubsystem extends SubsystemBase {
 		_rightClimberMotor.getSensorCollection().setQuadraturePosition(0, 10);
 
 		// _climberBrakeRight = new Solenoid(PneumaticsModuleType.CTREPCM, RobotMap.LEFT_CLIMBER_SOLENOID);
-    	_climberBrakeLeft = new Solenoid(PneumaticsModuleType.CTREPCM, RobotMap.CLIMBER_EXTENSION_SOLENOID);
-
+    	_climberBrakeLeftExtend = new Solenoid(PneumaticsModuleType.CTREPCM, RobotMap.CLIMBER_EXTENSION_SOLENOID);
+		_climberBrakeLeftRetract = new Solenoid(PneumaticsModuleType.CTREPCM, RobotMap.CLIMBER_RETRACTION_SOLENOID);
 		// _shooterMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, TalonSRXConstants.kPIDLoopIdx,
 		// TalonSRXConstants.kTimeoutMs);
 
@@ -73,7 +74,8 @@ public class ClimberSubsystem extends SubsystemBase {
 	}
 
 	public void leftClimberBrake() {
-		_climberBrakeLeft.set(true);
+		_climberBrakeLeftExtend.set(true);
+		_climberBrakeLeftRetract.set(false);
 	}
 
 	/*
@@ -83,7 +85,8 @@ public class ClimberSubsystem extends SubsystemBase {
 	*/
 
 	public void leftClimberReleaseBrake() {
-		_climberBrakeLeft.set(false);
+		_climberBrakeLeftExtend.set(false);
+		_climberBrakeLeftRetract.set(true);
 	}
 
 	/*

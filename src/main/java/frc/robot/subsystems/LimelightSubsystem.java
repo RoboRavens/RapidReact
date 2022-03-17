@@ -31,6 +31,10 @@ public class LimelightSubsystem extends SubsystemBase {
     return _tx.getDouble(0.0);
   }
 
+  public double getArea(){
+    return _ta.getDouble(0.0);
+  }
+
   public void toggleLED() {
 		if (_ledState == 0) {
 			setBothLEDOn();

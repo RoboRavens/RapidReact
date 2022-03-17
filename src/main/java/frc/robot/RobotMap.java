@@ -11,7 +11,7 @@ public final class RobotMap {
     public static final int FEEDER_CONVEYANCE_MOTOR = 42;
 
     //CONVEYANCE
-     public static final int CONVEYANCE_MOTOR = 41;
+    public static final int CONVEYANCE_MOTOR = 41;
 
     //CLIMBER
     public static final int LEFT_CLIMBER_MOTOR = 51;
