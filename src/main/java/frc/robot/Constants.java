@@ -83,14 +83,14 @@ public final class Constants {
     public static final double AUTO_RADIUS_TOPSPIN_KI = 0;
     public static final double AUTO_RADIUS_TOPSPIN_KD = 0;
 
-    public static final int LAUNCHPAD_BACKSPIN_RPM = 2000;
+    public static final int LAUNCHPAD_BACKSPIN_RPM = 3000;
    // public static final double LAUNCHPAD_BACKSPIN_KF = 0.0;
     public static final double LAUNCHPAD_BACKSPIN_KF = 0.1039;
     public static final double LAUNCHPAD_BACKSPIN_KP = 0;//0.22;
     public static final double LAUNCHPAD_BACKSPIN_KI = 0;
     public static final double LAUNCHPAD_BACKSPIN_KD = 0;
 
-    public static final int LAUNCHPAD_TOPSPIN_RPM = 2000;
+    public static final int LAUNCHPAD_TOPSPIN_RPM = 3000;
     public static final double LAUNCHPAD_TOPSPIN_KF = 0.1068;
     //public static final double LAUNCHPAD_TOPSPIN_KF = 0.0;
     public static final double LAUNCHPAD_TOPSPIN_KP = 0;//0.22;
@@ -164,10 +164,10 @@ public final class Constants {
     public static final double CONVEYANCE_ONE_STOP = 0;
 
     // DRIVETRAIN PATHFINDING
-    public static final double TRAJECTORY_CONFIG_MAX_VELOCITY_METERS_PER_SECOND = 2;
-    public static final double TRAJECTORY_CONFIG_MAX_ACCELERATION_METERS_PER_SECOND = .8;
+    public static final double TRAJECTORY_CONFIG_MAX_VELOCITY_METERS_PER_SECOND = 1.5;
+    public static final double TRAJECTORY_CONFIG_MAX_ACCELERATION_METERS_PER_SECOND = .6;
     public static final double TRAJECTORY_CONFIG_MAX_ANGULAR_SPEED_RADIANS_PER_SECOND = Math.PI;
-    public static final double TRAJECTORY_CONFIG_MAX_ANGULAR_ACCELERATION_RADIANS_PER_SECOND = Math.PI;
+    public static final double TRAJECTORY_CONFIG_MAX_ANGULAR_ACCELERATION_RADIANS_PER_SECOND = Math.PI * .75;
 
     public static final double SWERVE_CONTROLLER_X_KP = 1;
     public static final double SWERVE_CONTROLLER_Y_KP = 1;

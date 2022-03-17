@@ -119,6 +119,12 @@ public class Gamepad {
 		case FEEDER_WHEEL_REVERSE:
 			buttonNumber = 6;
 			break;
+		case CLIMBER_EXTEND:
+			buttonNumber = 1;
+			break;
+		case CLIMBER_RETRACT:
+			buttonNumber = 2;
+			break;
 		default:
 			throw new IllegalArgumentException("Invalid Button Code");
 		}
