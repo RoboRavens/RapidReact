@@ -36,7 +36,6 @@ public class ConveyanceSubsystem extends SubsystemBase {
   private void runConveyanceAtPercentPower(double magnitude) {
     this._conveyanceMotorOne.set(ControlMode.PercentOutput, magnitude);
   }
-    
 
   public void stopConveyanceOne() {
     this.runConveyanceAtPercentPower(Constants.CONVEYANCE_ONE_STOP);

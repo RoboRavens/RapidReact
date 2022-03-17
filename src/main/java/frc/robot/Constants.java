@@ -157,10 +157,10 @@ public final class Constants {
 
 
     //CONVEYANCE ONE
-    public static final double CONVEYANCE_ONE_FULL_SPEED_REVERSE = -1;
-    public static final double CONVEYANCE_ONE_FULL_SPEED = 1;
-    public static final double CONVEYANCE_ONE_NORMAL_SPEED = -.75;
-    public static final double CONVEYANCE_ONE_NORMAL_REVERSE_SPEED = -.75 ;
+    public static final double CONVEYANCE_ONE_FULL_SPEED_REVERSE = .75;
+    public static final double CONVEYANCE_ONE_FULL_SPEED = -75;
+    public static final double CONVEYANCE_ONE_NORMAL_SPEED = -.25;
+    public static final double CONVEYANCE_ONE_NORMAL_REVERSE_SPEED = -.25;
     public static final double CONVEYANCE_ONE_STOP = 0;
 
     // DRIVETRAIN PATHFINDING

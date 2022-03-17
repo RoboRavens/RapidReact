@@ -4,11 +4,7 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
-
-import java.sql.Driver;
-
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
@@ -48,8 +44,6 @@ public class Robot extends TimedRobot {
   public static final Gamepad GAMEPAD = new Gamepad(JOYSTICK);
   private Gamepad OP_PAD = new Gamepad(1);
   private Gamepad OP_PAD2 = new Gamepad(2);
-
-  
   
   public static final DriveTrainSubsystemBase DRIVE_TRAIN_SUBSYSTEM = new DriveTrainSubsystem();
   public static final ShooterSubsystem SHOOTER_SUBSYSTEM = new ShooterSubsystem();
@@ -101,7 +95,7 @@ public class Robot extends TimedRobot {
     CLIMBER_SUBSYSTEM.setDefaultCommand(climberDefaultBrake);
     CONVEYANCE_SUBSYSTEM.setDefaultCommand(CONVEYANCE_INDEX_COMMAND);
     configureButtonBindings();
-     LIMELIGHT_SUBSYSTEM.turnLEDOff();
+    LIMELIGHT_SUBSYSTEM.turnLEDOff();
     CameraServer.startAutomaticCapture();
 
     _autoChooser.setDefaultOption("Two Ball Hangar", TwoBallAutoCommand.getHangarCommand());
@@ -173,7 +167,6 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-     Timer.getFPGATimestamp();
   }
 
   /** This function is called periodically during operator control. */
@@ -186,11 +179,11 @@ public class Robot extends TimedRobot {
     } else if (Timer.getFPGATimestamp() <= 15) {
       RAVEN_BLINKIN_3.blinkRed();
     }
-   }
+  }
   
   
 
-   public void configureButtonBindings() {
+  public void configureButtonBindings() {
     GAMEPAD.getButton(ButtonCode.LEFTBUMPER)
       .and(GAMEPAD.getButton(ButtonCode.RIGHTBUMPER))
       .whenActive(new InstantCommand(DRIVE_TRAIN_SUBSYSTEM::zeroGyroscope, DRIVE_TRAIN_SUBSYSTEM));
@@ -236,8 +229,6 @@ public class Robot extends TimedRobot {
     OP_PAD.getButton(ButtonCode.SHOOTER_LOW_GOAL_SHOT).whenPressed(SHOOTER_LOW_GOAL_PID_COMMAND);
     OP_PAD.getButton(ButtonCode.SHOOTER_AUTO_RADIUS_SHOT).whenPressed(SHOOTER_AUTO_RADIUS_PID_COMMAND);
   }
-
-   
 
   @Override
   public void testInit() {
