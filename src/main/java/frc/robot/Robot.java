@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -20,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.controls.AxisCode;
 import frc.controls.ButtonCode;
 import frc.controls.Gamepad;
+import frc.ravenhardware.RavenBlinkin;
 import frc.robot.commands.*;
 import frc.robot.commands.Auto.FiveBallHps;
 import frc.robot.commands.Auto.ThreeBallTarmacAutoCommand;
@@ -75,6 +77,8 @@ public class Robot extends TimedRobot {
   public static final TurretSeekCommand TURRET_SEEK = new TurretSeekCommand();
   public static final DrivetrainDefaultCommand DRIVE_TRAIN_DEFAULT_COMMAND = new DrivetrainDefaultCommand();
   public static final FeederShootOneBallCommand FEEDER_SHOOT_ONE_BALL = new FeederShootOneBallCommand();
+  public static final RavenBlinkin RAVEN_BLINKIN_3 = new RavenBlinkin(3);
+  
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -91,7 +95,6 @@ public class Robot extends TimedRobot {
     CLIMBER_SUBSYSTEM.setDefaultCommand(climberDefaultBrake);
     CONVEYANCE_SUBSYSTEM.setDefaultCommand(CONVEYANCE_INDEX_COMMAND);
     configureButtonBindings();
-    
     LIMELIGHT_SUBSYSTEM.turnLEDOff();
     CameraServer.startAutomaticCapture();
 
@@ -125,9 +128,18 @@ public class Robot extends TimedRobot {
     } else {
       Robot.LIMELIGHT_SUBSYSTEM.turnLEDOff();
     }
+    
+    if(Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() == false && Robot.FEEDER_SUBSYSTEM.getFeederHasBall() == false) {
+      RavenBlinkin.solidRed();
+    } else if(Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() == true | Robot.FEEDER_SUBSYSTEM.getFeederHasBall() == true) {
+      RavenBlinkin.solidYellow();
+    }else if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() == true && Robot.FEEDER_SUBSYSTEM.getFeederHasBall() == true ){
+      RavenBlinkin.solidGreen();
+    }
+  
+  
   }
-
-  /** This function is called once each time the robot enters Disabled mode. */
+   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {}
 
@@ -163,8 +175,16 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-  
+    if (Timer.getFPGATimestamp() <= 60) {
+      RAVEN_BLINKIN_3.blinkGreen();
+    } else if (Timer.getFPGATimestamp() <= 30) {
+      RAVEN_BLINKIN_3.blinkYellow();
+    } else if (Timer.getFPGATimestamp() <= 15) {
+      RAVEN_BLINKIN_3.blinkRed();
+    }
   }
+  
+  
 
   public void configureButtonBindings() {
     GAMEPAD.getButton(ButtonCode.LEFTBUMPER)
