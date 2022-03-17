@@ -37,22 +37,20 @@ public class Deadband {
         //SmartDashboard.putBoolean("BLDB", desiredStates[2].angle.getRadians() == hardwareStates[2].angle.getRadians());
         //SmartDashboard.putBoolean("BRDB", desiredStates[3].angle.getRadians() == hardwareStates[3].angle.getRadians());
     }
-      
-    /*
-    private static void adjustRotationWhenStopped(SwerveModuleState[] desiredStates, SwerveModuleState[] hardwareStates) {
+    
+    // if all 4 swerve modules have 0 velocity then stop modules from rotating
+    public static void adjustRotationWhenStopped(SwerveModuleState[] desiredStates, SwerveModuleState[] hardwareStates) {
       for(int i = 0; i < 4; i++) {
-        Deadband.adjustRotationWhenStopped(desiredStates[i], hardwareStates[i]);
+        if (desiredStates[i].speedMetersPerSecond != 0) {
+          return;
+        }
+      }
+
+      for(int i = 0; i < 4; i++) {
+        desiredStates[i].angle = hardwareStates[i].angle;
       }
     }
-  
-    private static void adjustRotationWhenStopped(SwerveModuleState target, SwerveModuleState actual) {
-      // double targetRad = (target.angle.getRadians() + (Math.PI*2)) % Math.PI;
-      // double smallDiff = (diff.getRadians() + (Math.PI*2)) % Math.PI;
-      if(target.speedMetersPerSecond == 0 ) {
-        //target.angle = actual.angle;
-      }
-    }
-  
+    /*
     private static SwerveModuleState adjustValueRotation(SwerveModuleState target, SwerveModuleState actual, double maxDifferenceInRadians) {
       double fullCircle = Math.PI*2;
       double directionOffset = 0;
