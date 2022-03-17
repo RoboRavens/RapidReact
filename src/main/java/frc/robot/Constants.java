@@ -26,19 +26,37 @@ public final class Constants {
     public static final double TALON_RPM_TO_VELOCITY = 1 / TALON_VELOCITY_TO_RPM;
 
     // CONTROLS
-    public static final double JOYSTICK_DEADBAND = .05;
+    public static final double JOYSTICK_DEADBAND = .15;
     public static final double DRIVE_MAX_TURN_RADIANS_PER_SECOND = 2;
+
+    // SHOOTER RPM ALLOWANCE TESTED AT 50 for TELEOP BUT SHOULD NOT MATTER
 
     //SHOOTER
     public static final int SHOOTER_IDX = 0;
     public static final int SHOOTER_TIMEOUT_MS = 100;
-    public static final int SHOOTER_TARGET_ALLOWANCE = 50; //Amount of RPM offset to consider still "on target"
+    public static final int SHOOTER_TARGET_ALLOWANCE = 800; //Amount of RPM offset to consider still "on target"
 
     public static final double BACKSPIN_GEAR_RATIO = 16.0 / 36.0;
     public static final double TOPSPIN_GEAR_RATIO = 16.0 / 24.0;
 
     //public static final int SHOOTER_BACKSPIN_VEL_TO_RPM = 8192 / 600;
     //public static final int SHOOTER_TOPSPIN_VEL_TO_RPM = SHOOTER_BACKSPIN_VEL_TO_RPM * 2/1; // Big Wheel:Small Wheel
+
+    /* SHOOTER SETPOINTS AS TUNED MARCH 16th WITH ONLY KF:
+        Tarmac shot:
+            Setpoint 2460
+            Actual 2404
+            With shot sequence: 3050 up to 2200
+
+
+        Launch pad shot:
+            Setpoint 3k
+            Actual: Topspin 2935, backspin 2825
+            With shot sequence: top dip to 2500, normalize at 2700. Back dip to 24-2500, normalize at 2590
+    */
+
+
+
 
     // All shots need to be tuned.
     public static final int LOW_GOAL_BACKSPIN_RPM = 1000;
@@ -55,14 +73,14 @@ public final class Constants {
     public static final double LOW_GOAL_TOPSPIN_KI = 0;
     public static final double LOW_GOAL_TOPSPIN_KD = 0;
 
-    public static final int TARMAC_BACKSPIN_RPM = 1825;
+    public static final int TARMAC_BACKSPIN_RPM = 2460;
     public static final double TARMAC_BACKSPIN_KF = 0.1033;
 //    public static final double TARMAC_BACKSPIN_KF = 0.0;
     public static final double TARMAC_BACKSPIN_KP = 0;//0.21;
     public static final double TARMAC_BACKSPIN_KI = 0;
     public static final double TARMAC_BACKSPIN_KD = 0;
 
-    public static final int TARMAC_TOPSPIN_RPM = 1825;
+    public static final int TARMAC_TOPSPIN_RPM = 2460;
     public static final double TARMAC_TOPSPIN_KF = 0.1065;
 //    public static final double TARMAC_TOPSPIN_KF = 0.0;
     public static final double TARMAC_TOPSPIN_KP = 0;//0.21;
@@ -96,6 +114,10 @@ public final class Constants {
     public static final double LAUNCHPAD_TOPSPIN_KP = 0;//0.22;
     public static final double LAUNCHPAD_TOPSPIN_KI = 0;
     public static final double LAUNCHPAD_TOPSPIN_KD = 0;
+
+    // 3k RPM was about a 17 foot shot (16.6666 to middle of hub, slightly less to outer ring.)
+    // Shot was not super consistent as of March 16.
+
 
     public static final ShooterCalibration LOW_GOAL_SHOT_BACKSPIN_CALIBRATION = new ShooterCalibration("Low Goal Shot", LOW_GOAL_BACKSPIN_RPM, LOW_GOAL_BACKSPIN_KF, LOW_GOAL_BACKSPIN_KP, LOW_GOAL_BACKSPIN_KI, LOW_GOAL_BACKSPIN_KD);
     public static final ShooterCalibration LOW_GOAL_SHOT_TOPSPIN_CALIBRATION = new ShooterCalibration("Low Goal Alt Shot", LOW_GOAL_TOPSPIN_RPM, LOW_GOAL_TOPSPIN_KF, LOW_GOAL_TOPSPIN_KP, LOW_GOAL_TOPSPIN_KI, LOW_GOAL_TOPSPIN_KD);
