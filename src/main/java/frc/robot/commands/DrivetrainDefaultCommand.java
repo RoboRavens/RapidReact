@@ -73,7 +73,7 @@ public class DrivetrainDefaultCommand extends CommandBase {
             return null;
         }
 
-        if (Robot.LIMELIGHT_SUBSYSTEM.getArea() > 3) {
+        if (Robot.LIMELIGHT_SUBSYSTEM.hasTargetSighted() == false) {
             return null;
         }
 
