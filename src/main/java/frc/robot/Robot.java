@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -20,7 +21,9 @@ import frc.controls.AxisCode;
 import frc.controls.ButtonCode;
 import frc.controls.Gamepad;
 import frc.robot.commands.*;
-import frc.robot.commands.Auto.TwoBallHangarAutoCommand;
+import frc.robot.commands.Auto.FiveBallHps;
+import frc.robot.commands.Auto.ThreeBallTarmacAutoCommand;
+import frc.robot.commands.Auto.TwoBallAutoCommand;
 import frc.robot.commands.shooter.*;
 import frc.robot.commands.turret.*;
 import frc.robot.subsystems.*;
@@ -33,6 +36,7 @@ import frc.robot.subsystems.*;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
+  private SendableChooser<Command> _autoChooser = new SendableChooser<>();
   
   public static final Joystick JOYSTICK = new Joystick(0);
   public static final Gamepad GAMEPAD = new Gamepad(JOYSTICK);
@@ -90,6 +94,12 @@ public class Robot extends TimedRobot {
     
     LIMELIGHT_SUBSYSTEM.turnLEDOff();
     CameraServer.startAutomaticCapture();
+
+    _autoChooser.setDefaultOption("Two Ball Hangar", TwoBallAutoCommand.getHangarCommand());
+    _autoChooser.addOption("Two Ball Wall", TwoBallAutoCommand.getWallCommand());
+    _autoChooser.addOption("Three Ball Tarmac", ThreeBallTarmacAutoCommand.get());
+    _autoChooser.addOption("Five Ball HPS", FiveBallHps.get());
+    SmartDashboard.putData("Autonomous", _autoChooser);
   }
   
   /**
@@ -128,7 +138,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    m_autonomousCommand = TwoBallHangarAutoCommand.get();
+    m_autonomousCommand = _autoChooser.getSelected();
+    
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
