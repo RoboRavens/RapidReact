@@ -152,6 +152,8 @@ public class Robot extends TimedRobot {
     } else {
       Robot.LIMELIGHT_SUBSYSTEM.turnLEDOff();
     }  
+
+    
   }
    /** This function is called once each time the robot enters Disabled mode. */
   @Override
@@ -198,31 +200,32 @@ public class Robot extends TimedRobot {
       RAVEN_BLINKIN_3.blinkRed();
     }
     */
-
+/*
     if (SHOOTER_SUBSYSTEM.motorsAreRecovered()) {
       RAVEN_BLINKIN_3.solidGreen();
       // RAVEN_BLINKIN_3.blinkGreen();
     }
+    */
 
 
     if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() == false && Robot.FEEDER_SUBSYSTEM.getFeederHasBall() == false) {
       RAVEN_BLINKIN_3.solidRed();
     }
-    else if(Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() == true | Robot.FEEDER_SUBSYSTEM.getFeederHasBall() == true) {
-      if (SHOOTER_SUBSYSTEM.motorsAreRecovered()) {
-        RAVEN_BLINKIN_3.blinkYellow();
-      }
-      else {
-        RAVEN_BLINKIN_3.solidYellow();
-      }      
-    }
     else if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() == true && Robot.FEEDER_SUBSYSTEM.getFeederHasBall() == true ){
-      if (SHOOTER_SUBSYSTEM.motorsAreRecovered()) {
+      if (SHOOTER_SUBSYSTEM.motorsAreSpinning()) {
         RAVEN_BLINKIN_3.blinkGreen();
       }
       else {
         RAVEN_BLINKIN_3.solidGreen();
       }
+    }
+    else if(Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() == true || Robot.FEEDER_SUBSYSTEM.getFeederHasBall() == true) {
+      if (SHOOTER_SUBSYSTEM.motorsAreSpinning()) {
+        RAVEN_BLINKIN_3.blinkYellow();
+      }
+      else {
+        RAVEN_BLINKIN_3.solidYellow();
+      }      
     }
   }
   

@@ -147,6 +147,16 @@ public class ShooterSubsystem extends SubsystemBase {
         return backspinMotorIsRecovered() && topspinMotorIsRecovered();
     }
 
+    public boolean motorsAreSpinning() {
+        boolean motorsAreSpinning = false;
+
+        if ((getBackspinShooterRPM() + getTopspinShooterRPM()) / 2 > 200) {
+            motorsAreSpinning = true;
+        }
+
+        return motorsAreSpinning;
+    }
+
     public boolean backspinMotorIsRecovered() {
         boolean isAboveMinimumRPM = getBackspinShooterRPM() > _shot._backspinMotorCalibration.targetRPM - Constants.SHOOTER_TARGET_ALLOWANCE;
         boolean isBelowMaximumRPM = getBackspinShooterRPM() < _shot._backspinMotorCalibration.targetRPM + Constants.SHOOTER_TARGET_ALLOWANCE;

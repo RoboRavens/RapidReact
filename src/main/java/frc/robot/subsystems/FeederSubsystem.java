@@ -107,4 +107,15 @@ public class FeederSubsystem extends SubsystemBase {
     feederWheelForward();
     setConveyanceTwoMaxForward();
   }
+
+  public void forceShootTeleop() {
+    if (Robot.SHOOTER_SUBSYSTEM.motorsAreSpinning()) {
+      feederWheelForward();
+      setConveyanceTwoMaxForward();
+    }
+    else {
+      feederWheelStop();
+      conveyanceStop();
+    }
+  }
 }
