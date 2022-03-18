@@ -102,4 +102,9 @@ public class FeederSubsystem extends SubsystemBase {
       conveyanceStop();
     }
   }
+
+  public void forceShoot() {
+    feederWheelForward();
+    setConveyanceTwoMaxForward();
+  }
 }

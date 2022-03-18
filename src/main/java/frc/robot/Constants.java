@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import frc.util.ShooterCalibration;
 import frc.util.ShooterCalibrationPair;
@@ -19,6 +18,11 @@ import frc.util.TurretCalibration;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    // LIVONIA AUTO CONSTANTS
+    public static final double TWO_BALL_SHOOTER_DURATION = 4;
+    public static final double THIRD_BALL_SHOOTER_DURATION = 4;
+
+
     // TALONFX
     public static final double TALONFX_TICKS_PER_REVOLUTION = 2048;
     public static final double TALON_TPS_TO_RPM = 600;
@@ -26,7 +30,7 @@ public final class Constants {
     public static final double TALON_RPM_TO_VELOCITY = 1 / TALON_VELOCITY_TO_RPM;
 
     // CONTROLS
-    public static final double JOYSTICK_DEADBAND = .15;
+    public static final double JOYSTICK_DEADBAND = .05;
     public static final double DRIVE_MAX_TURN_RADIANS_PER_SECOND = 2;
 
     // SHOOTER RPM ALLOWANCE TESTED AT 50 for TELEOP BUT SHOULD NOT MATTER
@@ -34,7 +38,7 @@ public final class Constants {
     //SHOOTER
     public static final int SHOOTER_IDX = 0;
     public static final int SHOOTER_TIMEOUT_MS = 100;
-    public static final int SHOOTER_TARGET_ALLOWANCE = 800; //Amount of RPM offset to consider still "on target"
+    public static final int SHOOTER_TARGET_ALLOWANCE = 50; //Amount of RPM offset to consider still "on target"
 
     public static final double BACKSPIN_GEAR_RATIO = 16.0 / 36.0;
     public static final double TOPSPIN_GEAR_RATIO = 16.0 / 24.0;
@@ -220,4 +224,5 @@ public final class Constants {
     public static final double MINIMUM_DISTANCE_FROM_LIMELIGHT = 46.0;
 	public static final double MAXIMUM_DISTANCE_FROM_LIMELIGHT = 240.0;
     public static final int DESIRED_TURRET_TARGET_BUFFER = 1;
+    public static final double CLIMBER_EXTEND_ENCODER_TARGET = 5000;
 }

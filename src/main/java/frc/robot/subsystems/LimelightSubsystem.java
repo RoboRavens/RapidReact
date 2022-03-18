@@ -7,11 +7,11 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 public class LimelightSubsystem extends SubsystemBase {
   private NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
   private NetworkTableEntry _tx = table.getEntry("tx");
-  private NetworkTableEntry _ty = table.getEntry("ty");
+  // private NetworkTableEntry _ty = table.getEntry("ty");
   private NetworkTableEntry _ta = table.getEntry("ta"); // area
-  private NetworkTableEntry _tl = table.getEntry("Tl"); // The pipeline’s latency contribution (ms) Add at least 11ms for image capture
+  // private NetworkTableEntry _tl = table.getEntry("Tl"); // The pipeline’s latency contribution (ms) Add at least 11ms for image capture
   private NetworkTableEntry _tv = table.getEntry("tv"); // Whether the limelight has any valid targets (0 or 1)
-  private NetworkTableEntry _ts = table.getEntry("ts"); // Skew or rotation (-90 degrees to 0 degrees)
+  // private NetworkTableEntry _ts = table.getEntry("ts"); // Skew or rotation (-90 degrees to 0 degrees)
 
   NetworkTableEntry ledMode = table.getEntry("ledMode");
   // double x = tx.getDouble(0.0);

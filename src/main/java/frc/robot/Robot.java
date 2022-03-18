@@ -4,31 +4,55 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.controls.AxisCode;
 import frc.controls.ButtonCode;
 import frc.controls.Gamepad;
 import frc.ravenhardware.RavenBlinkin;
-import frc.robot.commands.*;
 import frc.robot.commands.Auto.FiveBallHps;
 import frc.robot.commands.Auto.ThreeBallTarmacAutoCommand;
 import frc.robot.commands.Auto.TwoBallAutoCommand;
-import frc.robot.commands.shooter.*;
-import frc.robot.commands.turret.*;
-import frc.robot.subsystems.*;
+import frc.robot.commands.Climber.ClimberDefaultBrakeCommand;
+import frc.robot.commands.Conveyance.ConveyanceCollectCommand;
+import frc.robot.commands.Conveyance.ConveyanceEjectCommand;
+import frc.robot.commands.Conveyance.ConveyanceIndexCommand;
+import frc.robot.commands.Conveyance.IntakeRetractCommand;
+import frc.robot.commands.Drivetrain.DrivetrainDefaultCommand;
+import frc.robot.commands.Feeder.FeederCollectCommand;
+import frc.robot.commands.Feeder.FeederEjectCommand;
+import frc.robot.commands.Feeder.FeederIndexCommand;
+import frc.robot.commands.Feeder.FeederSafetyReverseCommand;
+import frc.robot.commands.Feeder.FeederShootCommand;
+import frc.robot.commands.Feeder.FeederShootOneBallCommand;
+import frc.robot.commands.Feeder.FeederWheelReverseCommand;
+import frc.robot.commands.Shooter.ShooterAutoRadiusCommand;
+import frc.robot.commands.Shooter.ShooterLaunchpadCommand;
+import frc.robot.commands.Shooter.ShooterLowGoalCommand;
+import frc.robot.commands.Shooter.ShooterStartCommand;
+import frc.robot.commands.Shooter.ShooterStopCommand;
+import frc.robot.commands.Shooter.ShooterTarmacCommand;
+import frc.robot.commands.Turret.TurretAimAtTargetCommand;
+import frc.robot.commands.Turret.TurretFlipCommand;
+import frc.robot.commands.Turret.TurretSeekCommand;
+import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.CompressorSubsystem;
+import frc.robot.subsystems.ConveyanceSubsystem;
+import frc.robot.subsystems.DriveTrainSubsystem;
+import frc.robot.subsystems.DriveTrainSubsystemBase;
+import frc.robot.subsystems.FeederSubsystem;
+import frc.robot.subsystems.IntakeExtenderSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -49,7 +73,7 @@ public class Robot extends TimedRobot {
   public static final ShooterSubsystem SHOOTER_SUBSYSTEM = new ShooterSubsystem();
   public static final IntakeExtenderSubsystem INTAKE_SUBSYSTEM = new IntakeExtenderSubsystem();
   public static final ConveyanceSubsystem CONVEYANCE_SUBSYSTEM = new ConveyanceSubsystem();
-  public static final IntakeExtendCommand IntakeExtend = new IntakeExtendCommand();
+  // public static final IntakeExtendCommand IntakeExtend = new IntakeExtendCommand();
   public static final ShooterStartCommand SHOOTER_START_COMMAND = new ShooterStartCommand();
   public static final ShooterStopCommand SHOOTER_STOP_COMMAND = new ShooterStopCommand();
   public static final IntakeRetractCommand IntakeRetract = new IntakeRetractCommand();
@@ -127,17 +151,7 @@ public class Robot extends TimedRobot {
       Robot.LIMELIGHT_SUBSYSTEM.turnLEDOn();
     } else {
       Robot.LIMELIGHT_SUBSYSTEM.turnLEDOff();
-    }
-    
-    if(Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() == false && Robot.FEEDER_SUBSYSTEM.getFeederHasBall() == false) {
-      RavenBlinkin.solidRed();
-    } else if(Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() == true | Robot.FEEDER_SUBSYSTEM.getFeederHasBall() == true) {
-      RavenBlinkin.solidYellow();
-    }else if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() == true && Robot.FEEDER_SUBSYSTEM.getFeederHasBall() == true ){
-      RavenBlinkin.solidGreen();
-    }
-  
-  
+    }  
   }
    /** This function is called once each time the robot enters Disabled mode. */
   @Override
@@ -175,6 +189,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+    /*
     if (Timer.getFPGATimestamp() <= 60) {
       RAVEN_BLINKIN_3.blinkGreen();
     } else if (Timer.getFPGATimestamp() <= 30) {
@@ -182,10 +197,35 @@ public class Robot extends TimedRobot {
     } else if (Timer.getFPGATimestamp() <= 15) {
       RAVEN_BLINKIN_3.blinkRed();
     }
+    */
+
+    if (SHOOTER_SUBSYSTEM.motorsAreRecovered()) {
+      RAVEN_BLINKIN_3.solidGreen();
+      // RAVEN_BLINKIN_3.blinkGreen();
+    }
+
+
+    if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() == false && Robot.FEEDER_SUBSYSTEM.getFeederHasBall() == false) {
+      RAVEN_BLINKIN_3.solidRed();
+    }
+    else if(Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() == true | Robot.FEEDER_SUBSYSTEM.getFeederHasBall() == true) {
+      if (SHOOTER_SUBSYSTEM.motorsAreRecovered()) {
+        RAVEN_BLINKIN_3.blinkYellow();
+      }
+      else {
+        RAVEN_BLINKIN_3.solidYellow();
+      }      
+    }
+    else if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() == true && Robot.FEEDER_SUBSYSTEM.getFeederHasBall() == true ){
+      if (SHOOTER_SUBSYSTEM.motorsAreRecovered()) {
+        RAVEN_BLINKIN_3.blinkGreen();
+      }
+      else {
+        RAVEN_BLINKIN_3.solidGreen();
+      }
+    }
   }
   
-  
-
   public void configureButtonBindings() {
     GAMEPAD.getButton(ButtonCode.LEFTBUMPER)
       .and(GAMEPAD.getButton(ButtonCode.RIGHTBUMPER))

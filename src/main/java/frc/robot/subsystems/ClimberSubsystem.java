@@ -1,8 +1,8 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -12,16 +12,10 @@ import frc.robot.RobotMap;
 
 public class ClimberSubsystem extends SubsystemBase {
 
-    private TalonSRX _leftClimberMotor;
-	private TalonSRX _rightClimberMotor;
+    private TalonFX _climberMotor;
 
-	private boolean targetIsExtended = false;
-
-	private int extendedTarget = 0;
+	private double _extendedTarget = Constants.CLIMBER_EXTEND_ENCODER_TARGET;
 	private int retractedTarget = 0;
-
-	private int leftSideEncoderTarget = 60000;
-	private int rightSideEncoderTarget = 63000;
 
 	private double extendMagnitude = 1; // Constants file is 1.0
 	private double retractMagnitude = -.5; // Constants file is -.4
@@ -38,78 +32,36 @@ public class ClimberSubsystem extends SubsystemBase {
 	private Solenoid _climberBrakeLeftExtend;
 	private Solenoid _climberBrakeLeftRetract;
 
-	private boolean isClimbing;
+	private boolean _isClimbing;
 
     public ClimberSubsystem() {
+		_climberMotor = new TalonFX(RobotMap.LEFT_CLIMBER_MOTOR);
+		_climberMotor.configFactoryDefault();
+		_climberMotor.setNeutralMode(NeutralMode.Brake);		
+		_climberMotor.setSelectedSensorPosition(0);
 
-        //Will need to change motors to TalonFX for this season's robot
-		_leftClimberMotor = new TalonSRX(RobotMap.LEFT_CLIMBER_MOTOR);
-		_rightClimberMotor = new TalonSRX(RobotMap.RIGHT_CLIMBER_MOTOR);
-		_leftClimberMotor.configFactoryDefault();
-		_rightClimberMotor.configFactoryDefault();
+		// _climberMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder)
 
-
-		_leftClimberMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
-		_rightClimberMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
-
-		_leftClimberMotor.getSensorCollection().setQuadraturePosition(0, 10);
-		_rightClimberMotor.getSensorCollection().setQuadraturePosition(0, 10);
-
-		// _climberBrakeRight = new Solenoid(PneumaticsModuleType.CTREPCM, RobotMap.LEFT_CLIMBER_SOLENOID);
     	_climberBrakeLeftExtend = new Solenoid(PneumaticsModuleType.CTREPCM, RobotMap.CLIMBER_EXTENSION_SOLENOID);
 		_climberBrakeLeftRetract = new Solenoid(PneumaticsModuleType.CTREPCM, RobotMap.CLIMBER_RETRACTION_SOLENOID);
-		// _shooterMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, TalonSRXConstants.kPIDLoopIdx,
-		// TalonSRXConstants.kTimeoutMs);
-
-		// _climberMotor.configForwardLimitSwitchSource(LimitSwitchSource.RemoteTalonSRX,
-		// LimitSwitchNormal.NormallyOpen);
-		// _climberMotor.configReverseLimitSwitchSource(LimitSwitchSource.RemoteTalonSRX,
-		// LimitSwitchNormal.NormallyOpen);
-		// _climberMotor2.configForwardLimitSwitchSource(LimitSwitchSource.RemoteTalonSRX,
-		// LimitSwitchNormal.NormallyOpen);
-		// _climberMotor2.configReverseLimitSwitchSource(LimitSwitchSource.RemoteTalonSRX,
-		// LimitSwitchNormal.NormallyOpen);
-
-		_rightClimberMotor.setInverted(true);
 	}
 
-	public void leftClimberBrake() {
+	public void brakeClimber() {
 		_climberBrakeLeftExtend.set(true);
 		_climberBrakeLeftRetract.set(false);
+
+		_isClimbing = false;
 	}
 
-	/*
-	public void rightClimberBrake() {
-		_climberBrakeRight.set(true);
-	}
-	*/
-
-	public void leftClimberReleaseBrake() {
+	private void releaseClimberBrake() {
 		_climberBrakeLeftExtend.set(false);
 		_climberBrakeLeftRetract.set(true);
-	}
-
-	/*
-	public void rightClimberReleaseBrake() {
-		_climberBrakeRight.set(false);
-	}
-
-	*/
-
-	public void brakeClimbers() {
-		leftClimberBrake();
-		// rightClimberBrake();
-		isClimbing = false;
-	}
-
-	private void releaseClimberBrakes() {
-		leftClimberReleaseBrake();
-		// rightClimberReleaseBrake();
-		isClimbing = true;
+		
+		_isClimbing = true;
 	}
 
 	public boolean getIsClimbing() {
-		return isClimbing;
+		return _isClimbing;
 	}
 
 	public void setOverrideOn() {
@@ -121,25 +73,16 @@ public class ClimberSubsystem extends SubsystemBase {
 	}
 
 	private void extendLeftSide() {
-		_leftClimberMotor.set(ControlMode.PercentOutput, extendMagnitude);
-	}
-
-	private void extendRightSide() {
-		_rightClimberMotor.set(ControlMode.PercentOutput, extendMagnitude);
+		_climberMotor.set(ControlMode.PercentOutput, extendMagnitude);
 	}
 
 	private void retractLeftSide() {
-		_leftClimberMotor.set(ControlMode.PercentOutput, retractMagnitude);
-	}
-
-	private void retractRightSide() {
-		_rightClimberMotor.set(ControlMode.PercentOutput, retractMagnitude);
+		_climberMotor.set(ControlMode.PercentOutput, retractMagnitude);
 	}
 
 	public void extend() {
-		this.releaseClimberBrakes();
+		this.releaseClimberBrake();
 		this.extendLeftSide();
-		this.extendRightSide();
 		/*
 		if (Robot.OPERATION_PANEL.getButtonValue(ButtonCode.CLIMB_ENABLE_1)
 				&& Robot.OPERATION_PANEL.getButtonValue(ButtonCode.CLIMB_ENABLE_2)) {
@@ -149,9 +92,9 @@ public class ClimberSubsystem extends SubsystemBase {
 	}
 
 	public void retract() {
-		this.releaseClimberBrakes();
+		this.releaseClimberBrake();
 		this.retractLeftSide();
-		this.retractRightSide();
+		
 		/*
 		if (Robot.OPERATION_PANEL.getButtonValue(ButtonCode.CLIMB_ENABLE_1)
 				&& Robot.OPERATION_PANEL.getButtonValue(ButtonCode.CLIMB_ENABLE_2)) {
@@ -160,176 +103,40 @@ public class ClimberSubsystem extends SubsystemBase {
 		*/
 	}
 
-	private void set(double magnitude) {
-		_leftClimberMotor.set(ControlMode.PercentOutput, magnitude);
-		_rightClimberMotor.set(ControlMode.PercentOutput, -1 * magnitude);
-	}
-
-	public boolean encodersShowExtended() {
-		boolean bothSidesExtended = leftEncoderShowsExtended() && rightEncoderShowsExtended();
+	public boolean isAtEncoderExtensionLimit() {
+		boolean isAtExtensionLimit = false;
 		
-		return bothSidesExtended;
-	}
+		double encoderPosition = _climberMotor.getSelectedSensorPosition();
 
-	public boolean leftEncoderShowsExtended() {
-		boolean extended = _leftClimberMotor.getSelectedSensorPosition() > (leftSideEncoderTarget - encoderAccuracyRange);
-		return extended;
-	}
+		if (encoderPosition >= _extendedTarget) {
+			isAtExtensionLimit = true;
+		}
 
-	// The right encoder goes into negative values as the climber is extended.
-	public boolean rightEncoderShowsExtended() {
-	//	boolean extended = _rightClimberMotor.getSelectedSensorPosition() < (rightSideEncoderTarget + encoderAccuracyRange);
-	boolean extended = _rightClimberMotor.getSelectedSensorPosition() > (rightSideEncoderTarget - encoderAccuracyRange);
-		
-		return extended;
+		return isAtExtensionLimit;
 	}
 
 	public boolean encodersShowRetracted() {
-		boolean bothSidesRetracted = leftEncoderShowsRetracted() && rightEncoderShowsRetracted();
+		boolean bothSidesRetracted = leftEncoderShowsRetracted();
 		
 		return bothSidesRetracted;
 	}
 
 	public boolean leftEncoderShowsRetracted() {
-		boolean retracted = _leftClimberMotor.getSelectedSensorPosition() < (retractedTarget + encoderAccuracyRange);
+		boolean retracted = _climberMotor.getSelectedSensorPosition() < (retractedTarget + encoderAccuracyRange);
 		return retracted;
 	}
 
-	// The right encoder goes into negative values as the climber is extended.
-	public boolean rightEncoderShowsRetracted() {
-//		boolean retracted = _rightClimberMotor.getSelectedSensorPosition() > (retractedTarget - encoderAccuracyRange);
-boolean retracted = _rightClimberMotor.getSelectedSensorPosition() < (retractedTarget + encoderAccuracyRange);
-
-	return retracted;
-	}
-
-	public void setTargetExtended() {
-		this.targetIsExtended = true;
-	}
-
-	public void setTargetRetracted() {
-		this.targetIsExtended = false;
-
-	}
-
-	public void periodic() {
-		// System.out.println("Climber motor 1 Vel:" + _climberMotor.getSensorCollection().getQuadraturePosition() + " Climber motor 2 Vel:" + _climberMotor2.getSensorCollection().getQuadratureVelocity());
-		// System.out.println("Climber motor 1 Pos:" + _climberMotor.getSensorCollection().getQuadraturePosition() + " Climber motor 2 Pos:" + _climberMotor2.getSensorCollection().getQuadratureVelocity());
-		
-
-		// System.out.println("Climber motor 1 Vel:" + _leftClimberMotor.getSelectedSensorVelocity() + " Climber motor 2 Vel:" + _rightClimberMotor.getSelectedSensorVelocity());
-		// System.out.println("Climber motor 1 Pos:" + _leftClimberMotor.getSelectedSensorPosition() + " Climber motor 2 Pos:" + _rightClimberMotor.getSelectedSensorPosition());
-		
-
-		// _climberMotor.getSensorCollection()
-		
-		
-		// getIntegratedSensorPosition();
-
-		// _shooterMotor.getSelectedSensorVelocity();
-		// System.out.println(_climberMotor. );
-
-		/*
-		 * SmartDashboard.putBoolean("Left Climber Is At Extension Limit",
-		 * this.leftMotorIsAtExtensionLimit());
-		 * SmartDashboard.putBoolean("Left Climber Is At Retraction Limit",
-		 * this.leftMotorIsAtRetractionLimit());
-		 * SmartDashboard.putBoolean("Right Climber Is At Extension Limit",
-		 * this.rightMotorIsAtExtensionLimit());
-		 * SmartDashboard.putBoolean("Right Climber Is At Retraction Limit",
-		 * this.rightMotorIsAtRetractionLimit());
-		 */ }
+	public void periodic() {}
 
 	public void stop() {
-		_leftClimberMotor.set(ControlMode.PercentOutput, 0);
-		_rightClimberMotor.set(ControlMode.PercentOutput, 0);
-	}
-
-	// Not sure which side is which
-	public void stopLeftSide() {
-		_leftClimberMotor.set(ControlMode.PercentOutput, 0);
-	}
-
-	public void stopRightSide() {
-		_rightClimberMotor.set(ControlMode.PercentOutput, 0);
-	}
-
-	public boolean isAtExtensionLimitLimitSwitchVersion() {
-		return (leftMotorIsAtExtensionLimitLimitSwitchVersion() && rightMotorIsAtExtensionLimitLimitSwitchVersion());
-	}
-
-	public boolean isAtRetractionLimitLimitSwitchVersion() {
-		return (leftMotorIsAtRetractionLimitLimitSwitchVersion() && rightMotorIsAtRetractionLimitLimitSwitchVersion());
-	}
-
-	private boolean leftMotorIsAtExtensionLimitLimitSwitchVersion() {
-		return _leftClimberMotor.getSensorCollection().isRevLimitSwitchClosed();
-	}
-
-	private boolean rightMotorIsAtExtensionLimitLimitSwitchVersion() {
-		return _rightClimberMotor.getSensorCollection().isRevLimitSwitchClosed();
-	}
-
-	private boolean leftMotorIsAtRetractionLimitLimitSwitchVersion() {
-		return _leftClimberMotor.getSensorCollection().isFwdLimitSwitchClosed();
-	}
-
-	private boolean rightMotorIsAtRetractionLimitLimitSwitchVersion() {
-		return _rightClimberMotor.getSensorCollection().isFwdLimitSwitchClosed();
-	}
-
-	public void holdPositionLeftSide() {
-		_leftClimberMotor.set(ControlMode.PercentOutput, Constants.CLIMBER_HOLD_POSITION_POWER_MAGNITUDE);
-	}
-
-	public void holdPositionRightSide() {
-		_rightClimberMotor.set(ControlMode.PercentOutput, Constants.CLIMBER_HOLD_POSITION_POWER_MAGNITUDE);
+		_climberMotor.set(ControlMode.PercentOutput, 0);
 	}
 
 	public void holdPosition() {
-		_leftClimberMotor.set(ControlMode.PercentOutput, Constants.CLIMBER_HOLD_POSITION_POWER_MAGNITUDE);
-		_rightClimberMotor.set(ControlMode.PercentOutput, Constants.CLIMBER_HOLD_POSITION_POWER_MAGNITUDE);
+		_climberMotor.set(ControlMode.PercentOutput, Constants.CLIMBER_HOLD_POSITION_POWER_MAGNITUDE);
 	}
 
 	public void defaultCommand() {
 		this.holdPosition();
-	}
-
-	public void setBasedOnTarget() {
-        //had to cast this to an int due to an error
-		int leftSidePosition = (int) _leftClimberMotor.getSelectedSensorPosition();
-		int rightSidePosition = (int) _rightClimberMotor.getSelectedSensorPosition();
-
-		if (targetIsExtended) {
-			if (leftEncoderShowsExtended() == false) {
-				extendLeftSide();
-			}
-			else {
-				holdPositionLeftSide();
-			}
-
-			if (rightEncoderShowsExtended() == false) {
-				extendRightSide();
-			}
-			else {
-				holdPositionRightSide();
-			}
-		}
-		// Target is retracted
-		else {
-			if (leftEncoderShowsRetracted() == false) {
-				retractLeftSide();
-			}
-			else {
-				stopLeftSide();
-			}
-
-			if (rightEncoderShowsRetracted() == false) {
-				retractRightSide();
-			}
-			else {
-				stopRightSide();
-			}
-		}
 	}
 }

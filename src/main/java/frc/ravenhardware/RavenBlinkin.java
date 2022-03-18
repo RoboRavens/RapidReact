@@ -2,7 +2,6 @@ package frc.ravenhardware;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
-import frc.ravenhardware.BlinkinCalibrations;
 
 /**
  * "ButtonCode" but for colors of LEDs, mixed with acutal methods for setting the color.
@@ -11,8 +10,7 @@ import frc.ravenhardware.BlinkinCalibrations;
  * 
  */
 public class RavenBlinkin {
-
-    private static Spark _blinkin;
+    private Spark _blinkin;
     private Timer ledDelayer;
     private RavenBlinkinPatternCodes nextPatternState;
 
@@ -50,16 +48,15 @@ public class RavenBlinkin {
             if (nextPatternState.equals(RavenBlinkinPatternCodes.SOLID_GREEN)) {
                 solidGreen();
                 nextPatternState = RavenBlinkinPatternCodes.SOLID_OFF;
-
-            } else {
+            }
+            else {
                 solidOff();
                 nextPatternState = RavenBlinkinPatternCodes.SOLID_GREEN;
-
             }
         }
     }
 
-    public static void solidGreen() {
+    public void solidGreen() {
         _blinkin.set(BlinkinCalibrations.SOLID_GREEN);
     }
 
@@ -80,12 +77,12 @@ public class RavenBlinkin {
         }
     }
 
-    public static void solidYellow() {
+    public void solidYellow() {
         _blinkin.set(BlinkinCalibrations.SOLID_YELLOW);
     }
 
 
-    public static void solidRed() {
+    public void solidRed() {
         _blinkin.set(BlinkinCalibrations.SOLID_RED);
     }
 
@@ -144,7 +141,5 @@ public class RavenBlinkin {
     
     public void solidWhite() {
         _blinkin.set(BlinkinCalibrations.SOLID_WHITE);
-    }
-
-   
+    }  
 }
