@@ -126,7 +126,6 @@ public class Robot extends TimedRobot {
     _autoChooser.addOption("Two Ball Wall", TwoBallAutoCommand.getWallCommand());
     _autoChooser.addOption("Three Ball Tarmac", ThreeBallTarmacAutoCommand.get());
     _autoChooser.addOption("Five Ball HPS", FiveBallHps.get());
-    SmartDashboard.putData("Autonomous", _autoChooser);
   }
   
   /**
@@ -143,6 +142,7 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    SmartDashboard.putData("Autonomous", _autoChooser);
 
     SmartDashboard.putBoolean("Target Sighted", Robot.LIMELIGHT_SUBSYSTEM.hasTargetSighted());
     SmartDashboard.putNumber("Limelight Offset", Robot.LIMELIGHT_SUBSYSTEM.getTargetOffsetAngle());
@@ -273,7 +273,7 @@ public class Robot extends TimedRobot {
     GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederCollect);
     GAMEPAD.getButton(ButtonCode.B).whileHeld(FeederEject);
     //GAMEPAD.getButton(ButtonCode.Y).whenPressed(FeederSafetyReverse);
-    GAMEPAD.getButton(ButtonCode.Y).whenPressed(FEEDER_SHOOT_ONE_BALL);
+    // GAMEPAD.getButton(ButtonCode.Y).whenPressed(FEEDER_SHOOT_ONE_BALL);
     OP_PAD.getButton(ButtonCode.SHOOTER_LAUNCH_PAD_SHOT).whenPressed(SHOOTER_LAUNCH_PAD_PID_COMMAND);
     OP_PAD.getButton(ButtonCode.SHOOTER_TARMAC_SHOT).whenPressed(SHOOTER_TARMAC_PID_COMMAND);
     OP_PAD.getButton(ButtonCode.SHOOTER_LOW_GOAL_SHOT).whenPressed(SHOOTER_LOW_GOAL_PID_COMMAND);

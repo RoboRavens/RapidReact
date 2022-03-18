@@ -126,8 +126,7 @@ public class Gamepad {
 			buttonNumber = 2;
 			break;
 		case CLIMBER_OVERRIDE:
-			// TODO: THIS NEEDS TO BE CHANGED
-			buttonNumber = -1;
+			buttonNumber = 3;
 			break;
 		default:
 			throw new IllegalArgumentException("Invalid Button Code");
