@@ -69,6 +69,8 @@ public final class Constants {
     public static final double LOW_GOAL_BACKSPIN_KP = 0;//0.17;
     public static final double LOW_GOAL_BACKSPIN_KI = 0;
     public static final double LOW_GOAL_BACKSPIN_KD = 0;
+    
+    public static final double LOW_GOAL_BACKSPIN_VOLTAGE_CONTROL_SETPOINT = LOW_GOAL_BACKSPIN_KF * 12; 
 
     public static final int LOW_GOAL_TOPSPIN_RPM = 1000;
     public static final double LOW_GOAL_TOPSPIN_KF = 0.106;
@@ -77,12 +79,16 @@ public final class Constants {
     public static final double LOW_GOAL_TOPSPIN_KI = 0;
     public static final double LOW_GOAL_TOPSPIN_KD = 0;
 
+    public static final double LOW_GOAL_TOPSPIN_VOLTAGE_CONTROL_SETPOINT = LOW_GOAL_TOPSPIN_KF * 12;
+
     public static final int TARMAC_BACKSPIN_RPM = 2460;
     public static final double TARMAC_BACKSPIN_KF = 0.1033;
 //    public static final double TARMAC_BACKSPIN_KF = 0.0;
     public static final double TARMAC_BACKSPIN_KP = 0;//0.21;
     public static final double TARMAC_BACKSPIN_KI = 0;
     public static final double TARMAC_BACKSPIN_KD = 0;
+
+    public static final double TARMAC_BACKSPIN_VOLTAGE_CONTROL_SETPOINT = TARMAC_BACKSPIN_KF * 12;
 
     public static final int TARMAC_TOPSPIN_RPM = 2460;
     public static final double TARMAC_TOPSPIN_KF = 0.1065;
@@ -91,12 +97,17 @@ public final class Constants {
     public static final double TARMAC_TOPSPIN_KI = 0;
     public static final double TARMAC_TOPSPIN_KD = 0;
 
+    public static final double TARMAC_TOPSPIN_VOLTAGE_CONTROL_SETPOINT = TARMAC_TOPSPIN_KF * 12;
+
     public static final int AUTO_RADIUS_BACKSPIN_RPM = 1925;
 //    public static final double AUTO_RADIUS_BACKSPIN_KF = 0.0;
     public static final double AUTO_RADIUS_BACKSPIN_KF = 0.1038;
     public static final double AUTO_RADIUS_BACKSPIN_KP = 0;//0.21;
     public static final double AUTO_RADIUS_BACKSPIN_KI = 0;
     public static final double AUTO_RADIUS_BACKSPIN_KD = 0;
+
+    
+    public static final double AUTO_RADIUS_BACKSPIN_VOLTAGE_CONTROL_SETPOINT = AUTO_RADIUS_BACKSPIN_KF * 12;
 
     public static final int AUTO_RADIUS_TOPSPIN_RPM = 1925;
     public static final double AUTO_RADIUS_TOPSPIN_KF = 0.1068;
@@ -105,12 +116,19 @@ public final class Constants {
     public static final double AUTO_RADIUS_TOPSPIN_KI = 0;
     public static final double AUTO_RADIUS_TOPSPIN_KD = 0;
 
+    public static final double AUTO_RADIUS_TOPSPIN_VOLTAGE_CONTROL_SETPOINT = AUTO_RADIUS_TOPSPIN_KF * 12;
+
+
     public static final int LAUNCHPAD_BACKSPIN_RPM = 3000;
    // public static final double LAUNCHPAD_BACKSPIN_KF = 0.0;
     public static final double LAUNCHPAD_BACKSPIN_KF = 0.1039;
     public static final double LAUNCHPAD_BACKSPIN_KP = 0;//0.22;
     public static final double LAUNCHPAD_BACKSPIN_KI = 0;
     public static final double LAUNCHPAD_BACKSPIN_KD = 0;
+
+    public static final double LAUNCHPAD_BACKSPIN_VOLTAGE_CONTROL_SETPOINT = LAUNCHPAD_BACKSPIN_KF * 12;
+
+
 
     public static final int LAUNCHPAD_TOPSPIN_RPM = 3000;
     public static final double LAUNCHPAD_TOPSPIN_KF = 0.1068;
@@ -119,21 +137,25 @@ public final class Constants {
     public static final double LAUNCHPAD_TOPSPIN_KI = 0;
     public static final double LAUNCHPAD_TOPSPIN_KD = 0;
 
+    public static final double LAUNCHPAD_TOPSPIN_VOLTAGE_CONTROL_SETPOINT = LAUNCHPAD_TOPSPIN_KF * 12;
+
+
+
     // 3k RPM was about a 17 foot shot (16.6666 to middle of hub, slightly less to outer ring.)
     // Shot was not super consistent as of March 16.
 
 
-    public static final ShooterCalibration LOW_GOAL_SHOT_BACKSPIN_CALIBRATION = new ShooterCalibration("Low Goal Shot", LOW_GOAL_BACKSPIN_RPM, LOW_GOAL_BACKSPIN_KF, LOW_GOAL_BACKSPIN_KP, LOW_GOAL_BACKSPIN_KI, LOW_GOAL_BACKSPIN_KD);
-    public static final ShooterCalibration LOW_GOAL_SHOT_TOPSPIN_CALIBRATION = new ShooterCalibration("Low Goal Alt Shot", LOW_GOAL_TOPSPIN_RPM, LOW_GOAL_TOPSPIN_KF, LOW_GOAL_TOPSPIN_KP, LOW_GOAL_TOPSPIN_KI, LOW_GOAL_TOPSPIN_KD);
+    public static final ShooterCalibration LOW_GOAL_SHOT_BACKSPIN_CALIBRATION = new ShooterCalibration("Low Goal Shot", LOW_GOAL_BACKSPIN_RPM, LOW_GOAL_BACKSPIN_KF, LOW_GOAL_BACKSPIN_KP, LOW_GOAL_BACKSPIN_KI, LOW_GOAL_BACKSPIN_KD, LOW_GOAL_BACKSPIN_VOLTAGE_CONTROL_SETPOINT);
+    public static final ShooterCalibration LOW_GOAL_SHOT_TOPSPIN_CALIBRATION = new ShooterCalibration("Low Goal Alt Shot", LOW_GOAL_TOPSPIN_RPM, LOW_GOAL_TOPSPIN_KF, LOW_GOAL_TOPSPIN_KP, LOW_GOAL_TOPSPIN_KI, LOW_GOAL_TOPSPIN_KD, LOW_GOAL_TOPSPIN_VOLTAGE_CONTROL_SETPOINT);
     
-    public static final ShooterCalibration TARMAC_SHOT_BACKSPIN_CALIBRATION = new ShooterCalibration("Tarmac Shot", TARMAC_BACKSPIN_RPM, TARMAC_BACKSPIN_KF, TARMAC_BACKSPIN_KP, TARMAC_BACKSPIN_KI, TARMAC_BACKSPIN_KD);
-    public static final ShooterCalibration TARMAC_SHOT_TOPSPIN_CALIBRATION = new ShooterCalibration("Tarmac Alt Shot", TARMAC_TOPSPIN_RPM, TARMAC_TOPSPIN_KF, TARMAC_TOPSPIN_KP, TARMAC_TOPSPIN_KI, TARMAC_TOPSPIN_KD);
+    public static final ShooterCalibration TARMAC_SHOT_BACKSPIN_CALIBRATION = new ShooterCalibration("Tarmac Shot", TARMAC_BACKSPIN_RPM, TARMAC_BACKSPIN_KF, TARMAC_BACKSPIN_KP, TARMAC_BACKSPIN_KI, TARMAC_BACKSPIN_KD, TARMAC_BACKSPIN_VOLTAGE_CONTROL_SETPOINT);
+    public static final ShooterCalibration TARMAC_SHOT_TOPSPIN_CALIBRATION = new ShooterCalibration("Tarmac Alt Shot", TARMAC_TOPSPIN_RPM, TARMAC_TOPSPIN_KF, TARMAC_TOPSPIN_KP, TARMAC_TOPSPIN_KI, TARMAC_TOPSPIN_KD, TARMAC_TOPSPIN_VOLTAGE_CONTROL_SETPOINT);
 
-    public static final ShooterCalibration AUTO_RADIUS_SHOT_BACKSPIN_CALIBRATION = new ShooterCalibration("Auto Radius Shot", AUTO_RADIUS_BACKSPIN_RPM, AUTO_RADIUS_BACKSPIN_KF, AUTO_RADIUS_BACKSPIN_KP, AUTO_RADIUS_BACKSPIN_KI, AUTO_RADIUS_BACKSPIN_KD);
-    public static final ShooterCalibration AUTO_RADIUS_SHOT_TOPSPIN_CALIBRATION = new ShooterCalibration("Auto Radius Alt Shot", AUTO_RADIUS_TOPSPIN_RPM, AUTO_RADIUS_TOPSPIN_KF, AUTO_RADIUS_TOPSPIN_KP, AUTO_RADIUS_TOPSPIN_KI, AUTO_RADIUS_TOPSPIN_KD);
+    public static final ShooterCalibration AUTO_RADIUS_SHOT_BACKSPIN_CALIBRATION = new ShooterCalibration("Auto Radius Shot", AUTO_RADIUS_BACKSPIN_RPM, AUTO_RADIUS_BACKSPIN_KF, AUTO_RADIUS_BACKSPIN_KP, AUTO_RADIUS_BACKSPIN_KI, AUTO_RADIUS_BACKSPIN_KD, AUTO_RADIUS_BACKSPIN_VOLTAGE_CONTROL_SETPOINT);
+    public static final ShooterCalibration AUTO_RADIUS_SHOT_TOPSPIN_CALIBRATION = new ShooterCalibration("Auto Radius Alt Shot", AUTO_RADIUS_TOPSPIN_RPM, AUTO_RADIUS_TOPSPIN_KF, AUTO_RADIUS_TOPSPIN_KP, AUTO_RADIUS_TOPSPIN_KI, AUTO_RADIUS_TOPSPIN_KD, AUTO_RADIUS_TOPSPIN_VOLTAGE_CONTROL_SETPOINT);
 
-    public static final ShooterCalibration LAUNCHPAD_SHOT_BACKSPIN_CALIBRATION = new ShooterCalibration("Launchpad Shot", LAUNCHPAD_BACKSPIN_RPM, LAUNCHPAD_BACKSPIN_KF, LAUNCHPAD_BACKSPIN_KP, LAUNCHPAD_BACKSPIN_KI, LAUNCHPAD_BACKSPIN_KD);
-    public static final ShooterCalibration LAUNCHPAD_SHOT_TOPSPIN_CALIBRATION = new ShooterCalibration("Launchpad Alt Shot", LAUNCHPAD_TOPSPIN_RPM, LAUNCHPAD_TOPSPIN_KF, LAUNCHPAD_TOPSPIN_KP, LAUNCHPAD_TOPSPIN_KI, LAUNCHPAD_TOPSPIN_KD);
+    public static final ShooterCalibration LAUNCHPAD_SHOT_BACKSPIN_CALIBRATION = new ShooterCalibration("Launchpad Shot", LAUNCHPAD_BACKSPIN_RPM, LAUNCHPAD_BACKSPIN_KF, LAUNCHPAD_BACKSPIN_KP, LAUNCHPAD_BACKSPIN_KI, LAUNCHPAD_BACKSPIN_KD, LAUNCHPAD_BACKSPIN_VOLTAGE_CONTROL_SETPOINT);
+    public static final ShooterCalibration LAUNCHPAD_SHOT_TOPSPIN_CALIBRATION = new ShooterCalibration("Launchpad Alt Shot", LAUNCHPAD_TOPSPIN_RPM, LAUNCHPAD_TOPSPIN_KF, LAUNCHPAD_TOPSPIN_KP, LAUNCHPAD_TOPSPIN_KI, LAUNCHPAD_TOPSPIN_KD, LAUNCHPAD_TOPSPIN_VOLTAGE_CONTROL_SETPOINT);
 
     public static final ShooterCalibrationPair LOW_GOAL_SHOT_CALIBRATION_PAIR = new ShooterCalibrationPair("Low Goal Shot", LOW_GOAL_SHOT_BACKSPIN_CALIBRATION, LOW_GOAL_SHOT_TOPSPIN_CALIBRATION);
     public static final ShooterCalibrationPair TARMAC_SHOT_CALIBRATION_PAIR = new ShooterCalibrationPair("Tarmac Shot", TARMAC_SHOT_BACKSPIN_CALIBRATION, TARMAC_SHOT_TOPSPIN_CALIBRATION);
