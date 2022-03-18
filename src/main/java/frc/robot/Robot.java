@@ -227,9 +227,16 @@ public class Robot extends TimedRobot {
   }
   
   public void configureButtonBindings() {
+    
     GAMEPAD.getButton(ButtonCode.LEFTBUMPER)
       .and(GAMEPAD.getButton(ButtonCode.RIGHTBUMPER))
+      .and(GAMEPAD.getButton(ButtonCode.Y))
       .whenActive(new InstantCommand(DRIVE_TRAIN_SUBSYSTEM::zeroGyroscope, DRIVE_TRAIN_SUBSYSTEM));
+    
+
+    OP_PAD2.getButton(ButtonCode.CLIMBER_OVERRIDE)
+      .whenActive(new InstantCommand(CLIMBER_SUBSYSTEM::turnOverrideOn))
+      .whenInactive(new InstantCommand(CLIMBER_SUBSYSTEM::turnOverrideOff));
 
     new Trigger(() -> GAMEPAD.getAxisIsPressed(AxisCode.RIGHTTRIGGER))
       .whenActive(DRIVE_TRAIN_SUBSYSTEM::cutPower)

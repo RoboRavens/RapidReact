@@ -157,6 +157,8 @@ public final class Constants {
     public static final double TURRET_FLIP_KI = 0;
     public static final double TURRET_FLIP_KD = 0;
 
+    public static final int DESIRED_TURRET_TARGET_BUFFER = 1;
+
     public static final TurretCalibration TURRET_DEFAULT_PID = new TurretCalibration("Default", TURRET_DEFAULT_KF, TURRET_DEFAULT_KP, TURRET_DEFAULT_KI, TURRET_DEFAULT_KD);
     public static final TurretCalibration TURRET_FLIP_PID = new TurretCalibration("Flipping", TURRET_FLIP_KF, TURRET_FLIP_KP, TURRET_FLIP_KI, TURRET_FLIP_KD);
 
@@ -213,6 +215,8 @@ public final class Constants {
 	public static final double CLIMBER_EXTEND_POWER_MAGNITUDE = 1;
 	public static final double CLIMBER_RETRACT_POWER_MAGNITUDE = -.4;
 	public static final double CLIMBER_RETRACT_TO_LATCH_POWER_MAGNITUDE = .2;
+    public static final double CLIMBER_EXTEND_ENCODER_TARGET = 5000;
+    public static final double CLIMBER_ENCODER_ACCURACY_RANGE = 2000;
 
     public static final double FEEDER_SAFETY_REVERSE_DURATION = .15;
     
@@ -223,6 +227,4 @@ public final class Constants {
     public static final double LIMELIGHT_LENS_TO_ROBOT_CENTER_OFFSET_INCHES = 0;
     public static final double MINIMUM_DISTANCE_FROM_LIMELIGHT = 46.0;
 	public static final double MAXIMUM_DISTANCE_FROM_LIMELIGHT = 240.0;
-    public static final int DESIRED_TURRET_TARGET_BUFFER = 1;
-    public static final double CLIMBER_EXTEND_ENCODER_TARGET = 5000;
 }

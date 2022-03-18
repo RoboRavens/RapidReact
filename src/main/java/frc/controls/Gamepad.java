@@ -125,6 +125,10 @@ public class Gamepad {
 		case CLIMBER_RETRACT:
 			buttonNumber = 2;
 			break;
+		case CLIMBER_OVERRIDE:
+			// TODO: THIS NEEDS TO BE CHANGED
+			buttonNumber = -1;
+			break;
 		default:
 			throw new IllegalArgumentException("Invalid Button Code");
 		}

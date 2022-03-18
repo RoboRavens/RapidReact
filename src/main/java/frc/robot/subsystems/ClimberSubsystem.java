@@ -15,18 +15,20 @@ public class ClimberSubsystem extends SubsystemBase {
     private TalonFX _climberMotor;
 
 	private double _extendedTarget = Constants.CLIMBER_EXTEND_ENCODER_TARGET;
-	private int retractedTarget = 0;
+	private double _retractedTarget = 0;
 
-	private double extendMagnitude = 1; // Constants file is 1.0
-	private double retractMagnitude = -.5; // Constants file is -.4
+	private double _extendMagnitude = 1; // Constants file is 1.0
+	private double _retractMagnitude = -.5; // Constants file is -.4
+
+	boolean _override = false;
 
 	// Set excessively generously for testing
 	//private int encoderAccuracyRange = 15000;
 
 	// A more reasonable value
-	private int encoderAccuracyRange = 2000;
+	private double _encoderAccuracyRange = Constants.CLIMBER_ENCODER_ACCURACY_RANGE;
 
-	private int defaultEncoderAccuracyRange = encoderAccuracyRange;
+	// private int defaultEncoderAccuracyRange = encoderAccuracyRange;
 
 	// private Solenoid _climberBrakeRight;
 	private Solenoid _climberBrakeLeftExtend;
@@ -44,6 +46,14 @@ public class ClimberSubsystem extends SubsystemBase {
 
     	_climberBrakeLeftExtend = new Solenoid(PneumaticsModuleType.CTREPCM, RobotMap.CLIMBER_EXTENSION_SOLENOID);
 		_climberBrakeLeftRetract = new Solenoid(PneumaticsModuleType.CTREPCM, RobotMap.CLIMBER_RETRACTION_SOLENOID);
+	}
+
+	public void turnOverrideOn() {
+		this._override = true;
+	}
+
+	public void turnOverrideOff() {
+		this._override = false;
 	}
 
 	public void brakeClimber() {
@@ -64,25 +74,12 @@ public class ClimberSubsystem extends SubsystemBase {
 		return _isClimbing;
 	}
 
-	public void setOverrideOn() {
-		this.encoderAccuracyRange = 0;
-	}
-
-	public void setOverrideOff() {
-		this.encoderAccuracyRange = this.defaultEncoderAccuracyRange;
-	}
-
-	private void extendLeftSide() {
-		_climberMotor.set(ControlMode.PercentOutput, extendMagnitude);
-	}
-
-	private void retractLeftSide() {
-		_climberMotor.set(ControlMode.PercentOutput, retractMagnitude);
-	}
-
 	public void extend() {
-		this.releaseClimberBrake();
-		this.extendLeftSide();
+		if (isAtEncoderExtensionLimit() == false || _override == true) {
+			this.releaseClimberBrake();
+			_climberMotor.set(ControlMode.PercentOutput, _extendMagnitude);
+		}
+		
 		/*
 		if (Robot.OPERATION_PANEL.getButtonValue(ButtonCode.CLIMB_ENABLE_1)
 				&& Robot.OPERATION_PANEL.getButtonValue(ButtonCode.CLIMB_ENABLE_2)) {
@@ -92,8 +89,11 @@ public class ClimberSubsystem extends SubsystemBase {
 	}
 
 	public void retract() {
-		this.releaseClimberBrake();
-		this.retractLeftSide();
+		if (isAtEncoderRetractionLimit() == false || _override == true) {
+			this.releaseClimberBrake();
+			_climberMotor.set(ControlMode.PercentOutput, _retractMagnitude);
+		}
+		
 		
 		/*
 		if (Robot.OPERATION_PANEL.getButtonValue(ButtonCode.CLIMB_ENABLE_1)
@@ -108,22 +108,23 @@ public class ClimberSubsystem extends SubsystemBase {
 		
 		double encoderPosition = _climberMotor.getSelectedSensorPosition();
 
-		if (encoderPosition >= _extendedTarget) {
+		if (encoderPosition >= _extendedTarget - _encoderAccuracyRange) {
 			isAtExtensionLimit = true;
 		}
 
 		return isAtExtensionLimit;
 	}
 
-	public boolean encodersShowRetracted() {
-		boolean bothSidesRetracted = leftEncoderShowsRetracted();
+	public boolean isAtEncoderRetractionLimit() {
+		boolean isAtRetractionLimit = false;
 		
-		return bothSidesRetracted;
-	}
+		double encoderPosition = _climberMotor.getSelectedSensorPosition();
 
-	public boolean leftEncoderShowsRetracted() {
-		boolean retracted = _climberMotor.getSelectedSensorPosition() < (retractedTarget + encoderAccuracyRange);
-		return retracted;
+		if (encoderPosition <= _retractedTarget + _encoderAccuracyRange) {
+			isAtRetractionLimit = true;
+		}
+
+		return isAtRetractionLimit;
 	}
 
 	public void periodic() {}
@@ -133,6 +134,10 @@ public class ClimberSubsystem extends SubsystemBase {
 	}
 
 	public void holdPosition() {
+		// The brake line should likely be uncommented but it's left commented for now
+		// in case there's an error elsewhere in the code that would
+		// result in a double-setting of the brake during operation.
+		// brakeClimber();
 		_climberMotor.set(ControlMode.PercentOutput, Constants.CLIMBER_HOLD_POSITION_POWER_MAGNITUDE);
 	}
 
