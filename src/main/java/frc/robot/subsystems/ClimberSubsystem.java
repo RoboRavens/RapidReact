@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotMap;
@@ -16,9 +17,6 @@ public class ClimberSubsystem extends SubsystemBase {
 
 	private double _extendedTarget = Constants.CLIMBER_EXTEND_ENCODER_TARGET;
 	private double _retractedTarget = 0;
-
-	private double _extendMagnitude = 1; // Constants file is 1.0
-	private double _retractMagnitude = -.5; // Constants file is -.4
 
 	boolean _override = false;
 
@@ -74,11 +72,19 @@ public class ClimberSubsystem extends SubsystemBase {
 		return _isClimbing;
 	}
 
+	public void extendSlowly() {
+		this.extend(Constants.CLIMBER_EXTEND_SOWLY_POWER_MAGNITUDE);
+	}
+
 	public void extend() {
-		// if (isAtEncoderExtensionLimit() == false || _override == true) {
+		this.extend(Constants.CLIMBER_EXTEND_POWER_MAGNITUDE);
+	}
+
+	private void extend(double power) {
+		if (isAtEncoderExtensionLimit() == false || _override == true) {
 			this.releaseClimberBrake();
-			_climberMotor.set(ControlMode.PercentOutput, _extendMagnitude);
-		//}
+			_climberMotor.set(ControlMode.PercentOutput, power);
+		}
 		
 		/*
 		if (Robot.OPERATION_PANEL.getButtonValue(ButtonCode.CLIMB_ENABLE_1)
@@ -88,11 +94,19 @@ public class ClimberSubsystem extends SubsystemBase {
 		*/
 	}
 
+	public void retractSlowly() {
+		this.retract(Constants.CLIMBER_RETRACT_SOWLY_POWER_MAGNITUDE);
+	}
+
 	public void retract() {
-		//if (isAtEncoderRetractionLimit() == false || _override == true) {
+		this.retract(Constants.CLIMBER_RETRACT_POWER_MAGNITUDE);
+	}
+
+	private void retract(double power) {
+		if (isAtEncoderRetractionLimit() == false || _override == true) {
 			this.releaseClimberBrake();
-			_climberMotor.set(ControlMode.PercentOutput, _retractMagnitude);
-		//}
+			_climberMotor.set(ControlMode.PercentOutput, power);
+		}
 		
 		
 		/*
@@ -127,7 +141,10 @@ public class ClimberSubsystem extends SubsystemBase {
 		return isAtRetractionLimit;
 	}
 
-	public void periodic() {}
+	public void periodic() {
+		SmartDashboard.putNumber("Climber Encoder", _climberMotor.getSelectedSensorPosition());
+		SmartDashboard.putBoolean("Climber Override", _override);
+	}
 
 	public void stop() {
 		_climberMotor.set(ControlMode.PercentOutput, 0);

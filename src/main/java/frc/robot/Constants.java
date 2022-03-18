@@ -80,8 +80,8 @@ public final class Constants {
     public static final double LOW_GOAL_TOPSPIN_KD = 0;
 
     public static final double LOW_GOAL_TOPSPIN_VOLTAGE_CONTROL_SETPOINT = LOW_GOAL_TOPSPIN_KF * 12;
-
-    public static final int TARMAC_BACKSPIN_RPM = 2460;
+// was 2460
+    public static final int TARMAC_BACKSPIN_RPM = 2520;
     public static final double TARMAC_BACKSPIN_KF = 0.1033;
 //    public static final double TARMAC_BACKSPIN_KF = 0.0;
     public static final double TARMAC_BACKSPIN_KP = 0;//0.21;
@@ -89,8 +89,8 @@ public final class Constants {
     public static final double TARMAC_BACKSPIN_KD = 0;
 
     public static final double TARMAC_BACKSPIN_VOLTAGE_CONTROL_SETPOINT = TARMAC_BACKSPIN_KF * 12;
-
-    public static final int TARMAC_TOPSPIN_RPM = 2460;
+// was 2460
+    public static final int TARMAC_TOPSPIN_RPM = 2520;
     public static final double TARMAC_TOPSPIN_KF = 0.1065;
 //    public static final double TARMAC_TOPSPIN_KF = 0.0;
     public static final double TARMAC_TOPSPIN_KP = 0;//0.21;
@@ -99,7 +99,7 @@ public final class Constants {
 
     public static final double TARMAC_TOPSPIN_VOLTAGE_CONTROL_SETPOINT = TARMAC_TOPSPIN_KF * 12;
 
-    public static final int AUTO_RADIUS_BACKSPIN_RPM = 2500;
+    public static final int AUTO_RADIUS_BACKSPIN_RPM = 2600;
 //    public static final double AUTO_RADIUS_BACKSPIN_KF = 0.0;
     public static final double AUTO_RADIUS_BACKSPIN_KF = 0.1038;
     public static final double AUTO_RADIUS_BACKSPIN_KP = 0;//0.21;
@@ -109,7 +109,7 @@ public final class Constants {
     
     public static final double AUTO_RADIUS_BACKSPIN_VOLTAGE_CONTROL_SETPOINT = AUTO_RADIUS_BACKSPIN_KF * 12;
 
-    public static final int AUTO_RADIUS_TOPSPIN_RPM = 2500;
+    public static final int AUTO_RADIUS_TOPSPIN_RPM = 2600;
     public static final double AUTO_RADIUS_TOPSPIN_KF = 0.1068;
     //public static final double AUTO_RADIUS_TOPSPIN_KF = 0.0;
     public static final double AUTO_RADIUS_TOPSPIN_KP = 0;//0.21;
@@ -120,7 +120,7 @@ public final class Constants {
 
     // LAUNCHPAD WAS 3000
 
-    public static final int LAUNCHPAD_BACKSPIN_RPM = 2700;
+    public static final int LAUNCHPAD_BACKSPIN_RPM = 2800;
    // public static final double LAUNCHPAD_BACKSPIN_KF = 0.0;
     public static final double LAUNCHPAD_BACKSPIN_KF = 0.1039;
     public static final double LAUNCHPAD_BACKSPIN_KP = 0;//0.22;
@@ -131,7 +131,7 @@ public final class Constants {
 
 
 
-    public static final int LAUNCHPAD_TOPSPIN_RPM = 2700;
+    public static final int LAUNCHPAD_TOPSPIN_RPM = 2800;
     public static final double LAUNCHPAD_TOPSPIN_KF = 0.1068;
     //public static final double LAUNCHPAD_TOPSPIN_KF = 0.0;
     public static final double LAUNCHPAD_TOPSPIN_KP = 0;//0.22;
@@ -235,10 +235,12 @@ public final class Constants {
     
     //CLIMBER
     public static final double CLIMBER_HOLD_POSITION_POWER_MAGNITUDE = 0; // .13
-	public static final double CLIMBER_EXTEND_POWER_MAGNITUDE = .7;
+	public static final double CLIMBER_EXTEND_POWER_MAGNITUDE = .5;
+    public static final double CLIMBER_EXTEND_SOWLY_POWER_MAGNITUDE = .2;
 	public static final double CLIMBER_RETRACT_POWER_MAGNITUDE = -.4;
+    public static final double CLIMBER_RETRACT_SOWLY_POWER_MAGNITUDE = -.2;
 	public static final double CLIMBER_RETRACT_TO_LATCH_POWER_MAGNITUDE = .2;
-    public static final double CLIMBER_EXTEND_ENCODER_TARGET = 5000;
+    public static final double CLIMBER_EXTEND_ENCODER_TARGET = 241251.000000;
     public static final double CLIMBER_ENCODER_ACCURACY_RANGE = 2000;
 
     public static final double FEEDER_SAFETY_REVERSE_DURATION = .15;
