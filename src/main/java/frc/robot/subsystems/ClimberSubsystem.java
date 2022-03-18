@@ -75,10 +75,10 @@ public class ClimberSubsystem extends SubsystemBase {
 	}
 
 	public void extend() {
-		if (isAtEncoderExtensionLimit() == false || _override == true) {
+		// if (isAtEncoderExtensionLimit() == false || _override == true) {
 			this.releaseClimberBrake();
 			_climberMotor.set(ControlMode.PercentOutput, _extendMagnitude);
-		}
+		//}
 		
 		/*
 		if (Robot.OPERATION_PANEL.getButtonValue(ButtonCode.CLIMB_ENABLE_1)
@@ -89,10 +89,10 @@ public class ClimberSubsystem extends SubsystemBase {
 	}
 
 	public void retract() {
-		if (isAtEncoderRetractionLimit() == false || _override == true) {
+		//if (isAtEncoderRetractionLimit() == false || _override == true) {
 			this.releaseClimberBrake();
 			_climberMotor.set(ControlMode.PercentOutput, _retractMagnitude);
-		}
+		//}
 		
 		
 		/*

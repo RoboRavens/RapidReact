@@ -54,6 +54,9 @@ public class ShooterSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Backspin Target Speed", _backspinMotor.getSupplyCurrent());
         SmartDashboard.putNumber("Backspin Target RPM", _shot._backspinMotorCalibration.targetRPM);
         SmartDashboard.putNumber("Topspin Target RPM", _shot._topspinMotorCalibration.targetRPM);
+        
+        SmartDashboard.putNumber("Backspin AMPS", _backspinMotor.getSupplyCurrent());
+        SmartDashboard.putNumber("Topspin AMPS", _topspinMotor.getStatorCurrent());
     }
 
     @Override
@@ -110,7 +113,11 @@ public class ShooterSubsystem extends SubsystemBase {
         _backspinMotor.set(ControlMode.Velocity, _shot._backspinMotorCalibration.targetRPM * Constants.TALON_RPM_TO_VELOCITY);
         _topspinMotor.set(ControlMode.Velocity, _shot._topspinMotorCalibration.targetRPM * Constants.TALON_RPM_TO_VELOCITY * Constants.TOPSPIN_GEAR_RATIO);
 
+        // _backspinMotor.set(ControlMode.Current, 10);
+        // _topspinMotor.set(ControlMode.Current, 10);
+
         
+
         // _backspinMotor.set(ControlMode.Velocity, _shot._backspinMotorCalibration.targetRPM * Constants.TALON_RPM_TO_VELOCITY / Constants.BACKSPIN_GEAR_RATIO);
         // _topspinMotor.set(ControlMode.Velocity, _shot._topspinMotorCalibration.targetRPM * Constants.TALON_RPM_TO_VELOCITY / Constants.TOPSPIN_GEAR_RATIO);
 

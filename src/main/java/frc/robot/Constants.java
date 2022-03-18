@@ -99,7 +99,7 @@ public final class Constants {
 
     public static final double TARMAC_TOPSPIN_VOLTAGE_CONTROL_SETPOINT = TARMAC_TOPSPIN_KF * 12;
 
-    public static final int AUTO_RADIUS_BACKSPIN_RPM = 1925;
+    public static final int AUTO_RADIUS_BACKSPIN_RPM = 2500;
 //    public static final double AUTO_RADIUS_BACKSPIN_KF = 0.0;
     public static final double AUTO_RADIUS_BACKSPIN_KF = 0.1038;
     public static final double AUTO_RADIUS_BACKSPIN_KP = 0;//0.21;
@@ -109,7 +109,7 @@ public final class Constants {
     
     public static final double AUTO_RADIUS_BACKSPIN_VOLTAGE_CONTROL_SETPOINT = AUTO_RADIUS_BACKSPIN_KF * 12;
 
-    public static final int AUTO_RADIUS_TOPSPIN_RPM = 1925;
+    public static final int AUTO_RADIUS_TOPSPIN_RPM = 2500;
     public static final double AUTO_RADIUS_TOPSPIN_KF = 0.1068;
     //public static final double AUTO_RADIUS_TOPSPIN_KF = 0.0;
     public static final double AUTO_RADIUS_TOPSPIN_KP = 0;//0.21;
@@ -118,8 +118,9 @@ public final class Constants {
 
     public static final double AUTO_RADIUS_TOPSPIN_VOLTAGE_CONTROL_SETPOINT = AUTO_RADIUS_TOPSPIN_KF * 12;
 
+    // LAUNCHPAD WAS 3000
 
-    public static final int LAUNCHPAD_BACKSPIN_RPM = 3000;
+    public static final int LAUNCHPAD_BACKSPIN_RPM = 2700;
    // public static final double LAUNCHPAD_BACKSPIN_KF = 0.0;
     public static final double LAUNCHPAD_BACKSPIN_KF = 0.1039;
     public static final double LAUNCHPAD_BACKSPIN_KP = 0;//0.22;
@@ -130,7 +131,7 @@ public final class Constants {
 
 
 
-    public static final int LAUNCHPAD_TOPSPIN_RPM = 3000;
+    public static final int LAUNCHPAD_TOPSPIN_RPM = 2700;
     public static final double LAUNCHPAD_TOPSPIN_KF = 0.1068;
     //public static final double LAUNCHPAD_TOPSPIN_KF = 0.0;
     public static final double LAUNCHPAD_TOPSPIN_KP = 0;//0.22;
@@ -234,7 +235,7 @@ public final class Constants {
     
     //CLIMBER
     public static final double CLIMBER_HOLD_POSITION_POWER_MAGNITUDE = 0; // .13
-	public static final double CLIMBER_EXTEND_POWER_MAGNITUDE = 1;
+	public static final double CLIMBER_EXTEND_POWER_MAGNITUDE = .7;
 	public static final double CLIMBER_RETRACT_POWER_MAGNITUDE = -.4;
 	public static final double CLIMBER_RETRACT_TO_LATCH_POWER_MAGNITUDE = .2;
     public static final double CLIMBER_EXTEND_ENCODER_TARGET = 5000;
