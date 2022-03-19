@@ -53,6 +53,7 @@ import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeExtenderSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.util.AutoMode;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -62,7 +63,7 @@ import frc.robot.subsystems.ShooterSubsystem;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-  private SendableChooser<Command> _autoChooser = new SendableChooser<>();
+  private SendableChooser<AutoMode> _autoChooser = new SendableChooser<>();
   
   public static final Joystick JOYSTICK = new Joystick(0);
   public static final Gamepad GAMEPAD = new Gamepad(JOYSTICK);
@@ -102,6 +103,7 @@ public class Robot extends TimedRobot {
   public static final DrivetrainDefaultCommand DRIVE_TRAIN_DEFAULT_COMMAND = new DrivetrainDefaultCommand();
   public static final FeederShootOneBallCommand FEEDER_SHOOT_ONE_BALL = new FeederShootOneBallCommand();
   public static final RavenBlinkin RAVEN_BLINKIN_3 = new RavenBlinkin(3);
+  public static final AutoMode TWO_BALL_HANGAR_AUTO = new AutoMode("Two Ball Hangar", TwoBallAutoCommand.getHangarCommand());
   
 
   /**
@@ -122,10 +124,19 @@ public class Robot extends TimedRobot {
     LIMELIGHT_SUBSYSTEM.turnLEDOff();
     CameraServer.startAutomaticCapture();
 
-    _autoChooser.setDefaultOption("Two Ball Hangar", TwoBallAutoCommand.getHangarCommand());
-    _autoChooser.addOption("Two Ball Wall", TwoBallAutoCommand.getWallCommand());
-    _autoChooser.addOption("Three Ball Tarmac", ThreeBallTarmacAutoCommand.get());
-    _autoChooser.addOption("Five Ball HPS", FiveBallHps.get());
+    _autoChooser.setDefaultOption(TWO_BALL_HANGAR_AUTO.getAutoName(), TWO_BALL_HANGAR_AUTO);
+    _autoChooser.addOption("Two Ball Wall", new AutoMode("Two Ball Wall", TwoBallAutoCommand.getWallCommand()));
+    _autoChooser.addOption("Three Ball Tarmac", new AutoMode("Three Ball Tarmac", ThreeBallTarmacAutoCommand.get()));
+    _autoChooser.addOption("Five Ball HPS", new AutoMode("Five Ball HPS", FiveBallHps.get()));
+  }
+
+  private AutoMode getAuto() {
+    var autoMode = _autoChooser.getSelected();
+    if (autoMode == null) {
+      return TWO_BALL_HANGAR_AUTO;
+    }
+
+    return autoMode;
   }
   
   /**
@@ -143,6 +154,8 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
     SmartDashboard.putData("Autonomous", _autoChooser);
+    SmartDashboard.putString("Chosen Auto", this.getAuto().getAutoName());
+    
 
     SmartDashboard.putBoolean("Target Sighted", Robot.LIMELIGHT_SUBSYSTEM.hasTargetSighted());
     SmartDashboard.putNumber("Limelight Offset", Robot.LIMELIGHT_SUBSYSTEM.getTargetOffsetAngle());
@@ -166,7 +179,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    m_autonomousCommand = _autoChooser.getSelected();
+    m_autonomousCommand = this.getAuto().getAutoCommand();
     
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
