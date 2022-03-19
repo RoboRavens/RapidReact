@@ -11,7 +11,7 @@ public class FeederShootCommand extends CommandBase {
   
   public FeederShootCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(Robot.FEEDER_SUBSYSTEM, Robot.CONVEYANCE_SUBSYSTEM);
+    addRequirements(Robot.FEEDER_SUBSYSTEM);
   }
  
   // Called when the command is initially scheduled.

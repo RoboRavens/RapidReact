@@ -25,7 +25,7 @@ public class ThreeBallTarmacAutoCommand {
         var pickUpThirdBall = new ParallelDeadlineGroup(driveThenWait, waitThenConveyance);
 
         var moveToTarmacShot = Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommandSwerveOptimized(trajectory2);
-        var shootBall = new FeederForceShootDurationCommand(Constants.AUTO_SHOOT_BALL_DURATION);
+        var shootThirdBall = new FeederForceShootDurationCommand(Constants.THIRD_BALL_SHOOTER_DURATION);
         
         /*new ShooterWaitUntilIsRecoveredCommand()
             .andThen(new FeederShootOneBallCommand());
@@ -36,9 +36,7 @@ public class ThreeBallTarmacAutoCommand {
             .andThen(new ShooterStartInstantCommand())
             .andThen(pickUpThirdBall)
             .andThen(moveToTarmacShot)
-            .andThen(shootBall)
-            .andThen(new WaitCommand(Constants.AUTO_WAIT_FOR_CONVEYANCE_DURATION))
-            .andThen(shootBall)
+            .andThen(shootThirdBall)
             .andThen(new WaitCommand(.25))
             .andThen(new ShooterStopCommand());
     }

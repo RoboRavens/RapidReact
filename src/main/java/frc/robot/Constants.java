@@ -21,8 +21,6 @@ public final class Constants {
     // LIVONIA AUTO CONSTANTS
     public static final double TWO_BALL_SHOOTER_DURATION = 3;
     public static final double THIRD_BALL_SHOOTER_DURATION = 4;
-    public static final double AUTO_SHOOT_BALL_DURATION = 1;
-    public static final double AUTO_WAIT_FOR_CONVEYANCE_DURATION = 1;
 
 
     // TALONFX

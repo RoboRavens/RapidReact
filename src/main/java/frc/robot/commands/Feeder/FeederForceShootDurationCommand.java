@@ -14,7 +14,7 @@ public class FeederForceShootDurationCommand extends CommandBase {
 
     public FeederForceShootDurationCommand(double durationSeconds) {
         // Use addRequirements() here to declare subsystem dependencies.
-        addRequirements(Robot.FEEDER_SUBSYSTEM, Robot.CONVEYANCE_SUBSYSTEM);
+        addRequirements(Robot.FEEDER_SUBSYSTEM);
         this.duration = durationSeconds;
     }
  
