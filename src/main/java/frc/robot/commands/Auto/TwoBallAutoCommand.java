@@ -36,8 +36,8 @@ public class TwoBallAutoCommand {
             .andThen(new WaitCommand(1));
 
         var runConveyanceAndDriveToFirstBall = new ParallelDeadlineGroup(driveCommand, new ConveyanceCollectCommand());
-
-        var shootBallsOneAndTwo = new FeederForceShootDurationCommand(Constants.TWO_BALL_SHOOTER_DURATION);
+        
+        var shootBall = new FeederForceShootDurationCommand(Constants.AUTO_SHOOT_BALL_DURATION);
         
         /* new ShooterWaitUntilIsRecoveredCommand()
             .andThen(new FeederShootOneBallCommand())
@@ -48,7 +48,9 @@ public class TwoBallAutoCommand {
         return new ShooterTarmacCommand()
             .andThen(new ShooterStartInstantCommand())
             .andThen(runConveyanceAndDriveToFirstBall)
-            .andThen(shootBallsOneAndTwo)
+            .andThen(shootBall)
+            .andThen(new WaitCommand(Constants.AUTO_WAIT_FOR_CONVEYANCE_DURATION))
+            .andThen(shootBall)
             .andThen(new WaitCommand(.25))
             .andThen(new ShooterStopCommand());
     }
