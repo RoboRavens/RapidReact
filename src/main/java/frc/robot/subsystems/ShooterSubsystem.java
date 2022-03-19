@@ -204,4 +204,16 @@ public class ShooterSubsystem extends SubsystemBase {
         return _isShooting;
     }
 
+
+    public boolean getReadyToShootTarmac() {
+        boolean readyToShoot = false;
+        
+        double rpm = (getBackspinShooterRPM() + getTopspinShooterRPM()) / 2;
+
+        if (rpm > 2375) {
+            readyToShoot = true;
+        }
+
+        return readyToShoot;
+    }
 }

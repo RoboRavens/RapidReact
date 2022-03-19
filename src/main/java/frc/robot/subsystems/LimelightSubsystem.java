@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -22,6 +23,16 @@ public class LimelightSubsystem extends SubsystemBase {
   // double s = ts.getDouble(0.0); // Skew or rotation (-90 degrees to 0 degrees)
   public int _ledState = 3;
   public int camMode = 0; 
+
+  public boolean isAligned() {
+    boolean isAligned = false;
+
+    if (hasTargetSighted() && Math.abs(getTargetOffsetAngle()) < Constants.LIMELIGHT_IS_ALIGNED_DEGREES) {
+      isAligned = true;
+    }
+
+    return isAligned;
+  }
 
   public boolean hasTargetSighted() {
     return _tv.getDouble(0.0) == 1;

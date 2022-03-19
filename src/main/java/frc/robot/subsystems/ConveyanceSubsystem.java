@@ -11,6 +11,7 @@ public class ConveyanceSubsystem extends SubsystemBase {
   
   private TalonSRX _conveyanceMotorOne;
   private DigitalInput _conveyanceSensorA;
+  private boolean _isIndexing;
 
   public ConveyanceSubsystem() {
     _conveyanceMotorOne = new TalonSRX(RobotMap.CONVEYANCE_MOTOR);
@@ -25,8 +26,13 @@ public class ConveyanceSubsystem extends SubsystemBase {
     this.runConveyanceAtPercentPower(Constants.CONVEYANCE_ONE_FULL_SPEED);
   }
 
-  public void setConveyanceNormalSpeedForward() {
-    this.runConveyanceAtPercentPower(Constants.CONVEYANCE_ONE_NORMAL_SPEED);
+  public boolean isIndexing() {
+    return _isIndexing;
+  }
+
+  public void setConveyanceIndexSpeedForward() {
+    _isIndexing = true;
+    this.runConveyanceAtPercentPower(Constants.CONVEYANCE_ONE_INDEX_SPEED);
   }
 
   public void setConveyanceNormalSpeedReverse() {
@@ -38,6 +44,7 @@ public class ConveyanceSubsystem extends SubsystemBase {
   }
 
   public void stopConveyanceOne() {
+    _isIndexing = false;
     this.runConveyanceAtPercentPower(Constants.CONVEYANCE_ONE_STOP);
   }
 

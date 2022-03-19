@@ -103,6 +103,7 @@ public class Robot extends TimedRobot {
   public static final DrivetrainDefaultCommand DRIVE_TRAIN_DEFAULT_COMMAND = new DrivetrainDefaultCommand();
   public static final FeederShootOneBallCommand FEEDER_SHOOT_ONE_BALL = new FeederShootOneBallCommand();
   public static final RavenBlinkin RAVEN_BLINKIN_3 = new RavenBlinkin(3);
+  public static final RavenBlinkin RAVEN_BLINKIN_4 = new RavenBlinkin(4);
   public static final AutoMode TWO_BALL_HANGAR_AUTO = new AutoMode("Two Ball Hangar", TwoBallAutoCommand.getHangarCommand());
   
 
@@ -219,6 +220,18 @@ public class Robot extends TimedRobot {
       // RAVEN_BLINKIN_3.blinkGreen();
     }
     */
+
+    if (Robot.LIMELIGHT_SUBSYSTEM.isAligned()) {
+      if (Robot.SHOOTER_SUBSYSTEM.getReadyToShootTarmac()) {
+        RAVEN_BLINKIN_4.blinkBlue();
+      }
+      else {
+        RAVEN_BLINKIN_4.solidBlue();
+      }
+    }
+    else {
+      RAVEN_BLINKIN_4.solidOff();
+    }
 
 
     if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() == false && Robot.FEEDER_SUBSYSTEM.getFeederHasBall() == false) {

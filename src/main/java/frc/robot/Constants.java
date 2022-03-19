@@ -81,7 +81,7 @@ public final class Constants {
 
     public static final double LOW_GOAL_TOPSPIN_VOLTAGE_CONTROL_SETPOINT = LOW_GOAL_TOPSPIN_KF * 12;
 // was 2460
-    public static final int TARMAC_BACKSPIN_RPM = 2520;
+    public static final int TARMAC_BACKSPIN_RPM = 2540;
     public static final double TARMAC_BACKSPIN_KF = 0.1033;
 //    public static final double TARMAC_BACKSPIN_KF = 0.0;
     public static final double TARMAC_BACKSPIN_KP = 0;//0.21;
@@ -90,7 +90,7 @@ public final class Constants {
 
     public static final double TARMAC_BACKSPIN_VOLTAGE_CONTROL_SETPOINT = TARMAC_BACKSPIN_KF * 12;
 // was 2460
-    public static final int TARMAC_TOPSPIN_RPM = 2520;
+    public static final int TARMAC_TOPSPIN_RPM = 2540;
     public static final double TARMAC_TOPSPIN_KF = 0.1065;
 //    public static final double TARMAC_TOPSPIN_KF = 0.0;
     public static final double TARMAC_TOPSPIN_KP = 0;//0.21;
@@ -204,13 +204,14 @@ public final class Constants {
 	public static final double CONVEYANCE_TWO_FEEDER_STOP = 0;
 	public static final double CONVEYANCE_TWO_REVERSE_FEEDER = -1.0;
     public static final double CONVEYANCE_TWO_FULL_SPEED = .25;
+    public static final double CONVEYANCE_TWO_SPEED_WHILE_INDEXING = .15;
 
 
 
     //CONVEYANCE ONE
     public static final double CONVEYANCE_ONE_FULL_SPEED_REVERSE = .75;
     public static final double CONVEYANCE_ONE_FULL_SPEED = -75;
-    public static final double CONVEYANCE_ONE_NORMAL_SPEED = -.25;
+    public static final double CONVEYANCE_ONE_INDEX_SPEED = -.25;
     public static final double CONVEYANCE_ONE_NORMAL_REVERSE_SPEED = -.25;
     public static final double CONVEYANCE_ONE_STOP = 0;
 
@@ -252,4 +253,5 @@ public final class Constants {
     public static final double LIMELIGHT_LENS_TO_ROBOT_CENTER_OFFSET_INCHES = 0;
     public static final double MINIMUM_DISTANCE_FROM_LIMELIGHT = 46.0;
 	public static final double MAXIMUM_DISTANCE_FROM_LIMELIGHT = 240.0;
+    public static final double LIMELIGHT_IS_ALIGNED_DEGREES = 3;
 }

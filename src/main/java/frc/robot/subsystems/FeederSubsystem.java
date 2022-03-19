@@ -47,7 +47,11 @@ public class FeederSubsystem extends SubsystemBase {
   }
 
   public void setConveyanceTwoMaxForward() {
-    this.runConveyanceAtPercentPower(Constants.CONVEYANCE_TWO_FULL_SPEED);
+    if (Robot.CONVEYANCE_SUBSYSTEM.isIndexing()) {
+      this.runConveyanceAtPercentPower(Constants.CONVEYANCE_TWO_SPEED_WHILE_INDEXING);
+    } else {
+      this.runConveyanceAtPercentPower(Constants.CONVEYANCE_TWO_FULL_SPEED);
+    }
   }
 
   public void setConveyanceNormalSpeedForward() {
