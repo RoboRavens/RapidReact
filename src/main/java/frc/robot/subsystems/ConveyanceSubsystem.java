@@ -11,7 +11,7 @@ public class ConveyanceSubsystem extends SubsystemBase {
   
   private TalonSRX _conveyanceMotorOne;
   private DigitalInput _conveyanceSensorA;
-  private boolean _isIndexing;
+  private boolean _isIndexing = false;
 
   public ConveyanceSubsystem() {
     _conveyanceMotorOne = new TalonSRX(RobotMap.CONVEYANCE_MOTOR);

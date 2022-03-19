@@ -49,7 +49,7 @@ public class TwoBallAutoCommand {
             .andThen(new ShooterStartInstantCommand())
             .andThen(runConveyanceAndDriveToFirstBall)
             .andThen(shootBallsOneAndTwo)
-            .andThen(new WaitCommand(.25))
+            //.andThen(new WaitCommand(.25))
             .andThen(new ShooterStopCommand());
     }
 }

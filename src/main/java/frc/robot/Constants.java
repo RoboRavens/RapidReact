@@ -19,8 +19,8 @@ import frc.util.TurretCalibration;
  */
 public final class Constants {
     // LIVONIA AUTO CONSTANTS
-    public static final double TWO_BALL_SHOOTER_DURATION = 3;
-    public static final double THIRD_BALL_SHOOTER_DURATION = 4;
+    public static final double TWO_BALL_SHOOTER_DURATION = 1.5;
+    public static final double THIRD_BALL_SHOOTER_DURATION = 1;
 
 
     // TALONFX
@@ -241,7 +241,7 @@ public final class Constants {
 	public static final double CLIMBER_RETRACT_POWER_MAGNITUDE = -.4;
     public static final double CLIMBER_RETRACT_SOWLY_POWER_MAGNITUDE = -.2;
 	public static final double CLIMBER_RETRACT_TO_LATCH_POWER_MAGNITUDE = .2;
-    public static final double CLIMBER_EXTEND_ENCODER_TARGET = 241251.000000;
+    public static final double CLIMBER_EXTEND_ENCODER_TARGET = 241251.000000 - 45320.000000;
     public static final double CLIMBER_ENCODER_ACCURACY_RANGE = 2000;
 
     public static final double FEEDER_SAFETY_REVERSE_DURATION = .15;

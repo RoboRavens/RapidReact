@@ -1,6 +1,6 @@
 [
 {
-"acceleration": 4.0,
+"acceleration": 16.0,
 "curvature": 0.0,
 "pose": {
 "rotation": {
@@ -26,8 +26,8 @@
 "y": 8.0
 }
 },
-"time": 0.25,
-"velocity": 1.0
+"time": 0.125,
+"velocity": 2.0
 },
 {
 "acceleration": 0.0,
@@ -41,8 +41,8 @@
 "y": 8.0
 }
 },
-"time": 0.375,
-"velocity": 1.0
+"time": 0.1875,
+"velocity": 2.0
 },
 {
 "acceleration": 0.0,
@@ -56,8 +56,8 @@
 "y": 8.0
 }
 },
-"time": 0.5,
-"velocity": 1.0
+"time": 0.25,
+"velocity": 2.0
 },
 {
 "acceleration": 0.0,
@@ -71,8 +71,8 @@
 "y": 8.0
 }
 },
-"time": 0.625,
-"velocity": 1.0
+"time": 0.3125,
+"velocity": 2.0
 },
 {
 "acceleration": 0.0,
@@ -86,8 +86,8 @@
 "y": 8.0
 }
 },
-"time": 0.75,
-"velocity": 1.0
+"time": 0.375,
+"velocity": 2.0
 },
 {
 "acceleration": 0.0,
@@ -101,11 +101,11 @@
 "y": 8.0
 }
 },
-"time": 0.875,
-"velocity": 1.0
+"time": 0.4375,
+"velocity": 2.0
 },
 {
-"acceleration": -4.0,
+"acceleration": -16.0,
 "curvature": 0.0,
 "pose": {
 "rotation": {
@@ -116,11 +116,11 @@
 "y": 8.0
 }
 },
-"time": 1.0,
-"velocity": 1.0
+"time": 0.5,
+"velocity": 2.0
 },
 {
-"acceleration": -4.0,
+"acceleration": -16.0,
 "curvature": 0.0,
 "pose": {
 "rotation": {
@@ -131,7 +131,7 @@
 "y": 8.0
 }
 },
-"time": 1.25,
+"time": 0.625,
 "velocity": 0.0
 }
 ]
