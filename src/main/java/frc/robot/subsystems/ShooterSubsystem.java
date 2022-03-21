@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.ParamEnum;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
@@ -55,6 +54,9 @@ public class ShooterSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Backspin Target Speed", _backspinMotor.getSupplyCurrent());
         SmartDashboard.putNumber("Backspin Target RPM", _shot._backspinMotorCalibration.targetRPM);
         SmartDashboard.putNumber("Topspin Target RPM", _shot._topspinMotorCalibration.targetRPM);
+        
+        SmartDashboard.putNumber("Backspin AMPS", _backspinMotor.getSupplyCurrent());
+        SmartDashboard.putNumber("Topspin AMPS", _topspinMotor.getStatorCurrent());
     }
 
     @Override
@@ -111,7 +113,11 @@ public class ShooterSubsystem extends SubsystemBase {
         _backspinMotor.set(ControlMode.Velocity, _shot._backspinMotorCalibration.targetRPM * Constants.TALON_RPM_TO_VELOCITY);
         _topspinMotor.set(ControlMode.Velocity, _shot._topspinMotorCalibration.targetRPM * Constants.TALON_RPM_TO_VELOCITY * Constants.TOPSPIN_GEAR_RATIO);
 
+        // _backspinMotor.set(ControlMode.Current, 10);
+        // _topspinMotor.set(ControlMode.Current, 10);
+
         
+
         // _backspinMotor.set(ControlMode.Velocity, _shot._backspinMotorCalibration.targetRPM * Constants.TALON_RPM_TO_VELOCITY / Constants.BACKSPIN_GEAR_RATIO);
         // _topspinMotor.set(ControlMode.Velocity, _shot._topspinMotorCalibration.targetRPM * Constants.TALON_RPM_TO_VELOCITY / Constants.TOPSPIN_GEAR_RATIO);
 
@@ -139,6 +145,16 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public boolean motorsAreRecovered() {
         return backspinMotorIsRecovered() && topspinMotorIsRecovered();
+    }
+
+    public boolean motorsAreSpinning() {
+        boolean motorsAreSpinning = false;
+
+        if ((getBackspinShooterRPM() + getTopspinShooterRPM()) / 2 > 200) {
+            motorsAreSpinning = true;
+        }
+
+        return motorsAreSpinning;
     }
 
     public boolean backspinMotorIsRecovered() {
@@ -188,4 +204,16 @@ public class ShooterSubsystem extends SubsystemBase {
         return _isShooting;
     }
 
+
+    public boolean getReadyToShootTarmac() {
+        boolean readyToShoot = false;
+        
+        double rpm = (getBackspinShooterRPM() + getTopspinShooterRPM()) / 2;
+
+        if (rpm > 2375) {
+            readyToShoot = true;
+        }
+
+        return readyToShoot;
+    }
 }
