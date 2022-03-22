@@ -11,11 +11,13 @@ public class ConveyanceSubsystem extends SubsystemBase {
   
   private TalonSRX _conveyanceMotorOne;
   private DigitalInput _conveyanceSensorA;
+  private DigitalInput _conveyanceNewFirstSensor;
   private boolean _isIndexing = false;
 
   public ConveyanceSubsystem() {
     _conveyanceMotorOne = new TalonSRX(RobotMap.CONVEYANCE_MOTOR);
     _conveyanceSensorA = new DigitalInput(RobotMap.SENSOR_A_CHANNEL);
+    _conveyanceNewFirstSensor = new DigitalInput(RobotMap.FIRST_SENSOR_CHANNEL);
   }
 
   public void setConveyanceMaxReverse() {
@@ -50,6 +52,10 @@ public class ConveyanceSubsystem extends SubsystemBase {
 
   public boolean getConveyanceHasBall() {
     return !_conveyanceSensorA.get();
+  }
+
+  public boolean getConveyanceHasBallNewFirstSensor() {
+    return !_conveyanceNewFirstSensor.get();
   }
 
    @Override

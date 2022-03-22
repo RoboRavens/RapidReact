@@ -3,6 +3,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
 public class ConveyanceIndexCommand extends CommandBase {
+
+    private boolean firstSensorHadBall = false;
+
     public ConveyanceIndexCommand() {
         addRequirements(Robot.CONVEYANCE_SUBSYSTEM);
     }
@@ -14,17 +17,30 @@ public class ConveyanceIndexCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+      boolean firstSensorHasBall = Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBallNewFirstSensor();
       boolean conveyanceHasBall = Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall();
       boolean feederHasBall = Robot.FEEDER_SUBSYSTEM.getFeederHasBall();
+      boolean atLeastOneBallInConveyanceOne = false;
+      boolean onlyOneBallInConveyance = false;
 
-      if (conveyanceHasBall && feederHasBall == false ) {
-        Robot.CONVEYANCE_SUBSYSTEM.setConveyanceIndexSpeedForward();   //when there is a ball in conveyance stage 1 and 2 conveyance wont run        
+      if (firstSensorHasBall || conveyanceHasBall) {
+        atLeastOneBallInConveyanceOne = true;
+      }
+      if (atLeastOneBallInConveyanceOne && feederHasBall == false) {
+        onlyOneBallInConveyance = true;
+      }
+
+      if (onlyOneBallInConveyance || firstSensorHadBall) {
+        Robot.CONVEYANCE_SUBSYSTEM.setConveyanceIndexSpeedForward();   //when there is a ball in conveyance stage 1 and 2 conveyance wont run      
+        firstSensorHadBall = true;
       } 
       else if (conveyanceHasBall && feederHasBall) {        
         Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne();  //if there is a ball in comveyance stage 1 but nothing at stage 2 conveyance will run at 1
+        firstSensorHadBall = false;
       } 
-      else if (conveyanceHasBall == false ) {
+      else if (atLeastOneBallInConveyanceOne == false) {
         Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne();
+        firstSensorHadBall = false;
       }
     }     
     

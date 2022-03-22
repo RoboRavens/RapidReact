@@ -1,4 +1,4 @@
-package frc.robot.commands.Drivetrain;
+package frc.robot.commands.DriveTrain;
 
 import java.util.List;
 

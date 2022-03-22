@@ -69,6 +69,7 @@ public final class RobotMap {
     //SENSORS
     public static final int SENSOR_A_CHANNEL = 0; 
     public static final int SENSOR_B_CHANNEL = 1; 
+    public static final int FIRST_SENSOR_CHANNEL = 2; // currently does not have correct channel number
 
     
     //LIMELIGHT
