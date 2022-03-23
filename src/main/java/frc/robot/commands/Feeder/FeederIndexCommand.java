@@ -6,6 +6,8 @@ import frc.robot.Robot;
 public class FeederIndexCommand extends CommandBase {
 
     private boolean conveyanceOneHadBall;
+    boolean conveyanceColorIsCorrect = false; // Should be replaced by a method call to get the sensor input
+    boolean feederColorIsCorrect = false; // Should be replaced by a method call to get the sensor input
     
     public FeederIndexCommand() {
         addRequirements(Robot.FEEDER_SUBSYSTEM);
