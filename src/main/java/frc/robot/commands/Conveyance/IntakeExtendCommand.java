@@ -1,3 +1,4 @@
+package frc.robot.commands.Conveyance;
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
@@ -5,17 +6,12 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
+/*
 package frc.robot.commands;
-
-
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-import frc.robot.Robot;
-
 public class IntakeExtendCommand extends CommandBase {
-
-  
 
   public IntakeExtendCommand() {
     //addRequirements(Robot.INTAKE_SUBSYSTEM);
@@ -44,3 +40,5 @@ public class IntakeExtendCommand extends CommandBase {
     return true;
   }
 }
+
+*/

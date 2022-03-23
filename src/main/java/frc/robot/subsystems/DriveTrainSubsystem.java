@@ -25,7 +25,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
-import frc.robot.commands.DriveTrain.RavenSwerveControllerCommand;
+import frc.robot.commands.Drivetrain.RavenSwerveControllerCommand;
+import frc.util.Deadband;
 import frc.util.DriftCorrection;
 import frc.util.DriveCharacteristics;
 import frc.util.SwerveModuleConverter;
@@ -268,7 +269,7 @@ public class DriveTrainSubsystem extends DriveTrainSubsystemBase {
     _backLeftHardware.setDouble(statesHardware[2].angle.getDegrees());
     _backRightHardware.setDouble(statesHardware[3].angle.getDegrees());
 
-    // Deadband.applySwerveRotationDeadband(states, statesHardware);
+    Deadband.adjustRotationWhenStopped(states, statesHardware);
     m_frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[0].angle.getRadians());
     m_frontRightModule.set(states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[1].angle.getRadians());
     m_backLeftModule.set(states[2].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[2].angle.getRadians());
@@ -278,7 +279,7 @@ public class DriveTrainSubsystem extends DriveTrainSubsystemBase {
   }
 
   private Pose2d getPose() {
-    return _odometryFromKinematics.getPoseMeters();
+    return _odometryFromHardware.getPoseMeters();
   }
 
   private void resetOdometry(Pose2d pose, Rotation2d rotation) {

@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -7,11 +8,11 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 public class LimelightSubsystem extends SubsystemBase {
   private NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
   private NetworkTableEntry _tx = table.getEntry("tx");
-  private NetworkTableEntry _ty = table.getEntry("ty");
+  // private NetworkTableEntry _ty = table.getEntry("ty");
   private NetworkTableEntry _ta = table.getEntry("ta"); // area
-  private NetworkTableEntry _tl = table.getEntry("Tl"); // The pipeline’s latency contribution (ms) Add at least 11ms for image capture
-  private NetworkTableEntry _tv = table.getEntry("Tv"); // Whether the limelight has any valid targets (0 or 1)
-  private NetworkTableEntry _ts = table.getEntry("ts"); // Skew or rotation (-90 degrees to 0 degrees)
+  // private NetworkTableEntry _tl = table.getEntry("Tl"); // The pipeline’s latency contribution (ms) Add at least 11ms for image capture
+  private NetworkTableEntry _tv = table.getEntry("tv"); // Whether the limelight has any valid targets (0 or 1)
+  // private NetworkTableEntry _ts = table.getEntry("ts"); // Skew or rotation (-90 degrees to 0 degrees)
 
   NetworkTableEntry ledMode = table.getEntry("ledMode");
   // double x = tx.getDouble(0.0);
@@ -23,12 +24,26 @@ public class LimelightSubsystem extends SubsystemBase {
   public int _ledState = 3;
   public int camMode = 0; 
 
+  public boolean isAligned() {
+    boolean isAligned = false;
+
+    if (hasTargetSighted() && Math.abs(getTargetOffsetAngle()) < Constants.LIMELIGHT_IS_ALIGNED_DEGREES) {
+      isAligned = true;
+    }
+
+    return isAligned;
+  }
+
   public boolean hasTargetSighted() {
     return _tv.getDouble(0.0) == 1;
   }
 
   public double getTargetOffsetAngle() {
     return _tx.getDouble(0.0);
+  }
+
+  public double getArea(){
+    return _ta.getDouble(0.0);
   }
 
   public void toggleLED() {
@@ -54,8 +69,5 @@ public class LimelightSubsystem extends SubsystemBase {
 	public void turnLEDOn() {
 		ledMode.setNumber(3);
 	}
-    
 }
-
-
  

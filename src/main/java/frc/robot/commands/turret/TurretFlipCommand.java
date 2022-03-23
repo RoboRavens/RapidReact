@@ -2,25 +2,30 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.turret;
+package frc.robot.commands.Turret;
 
-import frc.robot.Constants;
-import frc.robot.Robot;
+// Commented out for Livonia Mar 15.
+//import frc.robot.Constants;
+//import frc.robot.Robot;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
 public class TurretFlipCommand extends CommandBase {
 
   public TurretFlipCommand() {
-    addRequirements(Robot.TURRET_SWIVEL_SUBSYSTEM);
+    // Commented out for Livonia Mar 15.
+    //addRequirements(Robot.TURRET_SWIVEL_SUBSYSTEM);
   }
 
  
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    /*
+      Commented out for Livonia Mar 15
     Robot.TURRET_SWIVEL_SUBSYSTEM.setShot(Constants.TURRET_FLIP_PID);
     Robot.TURRET_SWIVEL_SUBSYSTEM.goToAngle(-1 * Robot.TURRET_SWIVEL_SUBSYSTEM.getAngle());
+    */
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -36,6 +41,8 @@ public class TurretFlipCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Robot.TURRET_SWIVEL_SUBSYSTEM.getIsAtTarget();
+    return true;
+    // Commented out for Livonia Mar 15, return true added
+//    return Robot.TURRET_SWIVEL_SUBSYSTEM.getIsAtTarget();
   }
 }

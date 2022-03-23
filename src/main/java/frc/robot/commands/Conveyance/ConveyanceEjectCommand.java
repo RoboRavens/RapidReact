@@ -2,34 +2,33 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.Conveyance;
 
-import frc.robot.Robot;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Robot;
 
-public class FeederCollectCommand extends CommandBase {
-  
-  public FeederCollectCommand() {
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(Robot.FEEDER_SUBSYSTEM);
+/** An example command that uses an example subsystem. */
+ public class ConveyanceEjectCommand extends CommandBase {
+  public ConveyanceEjectCommand() {
+    addRequirements(Robot.CONVEYANCE_SUBSYSTEM);
   }
- 
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {}
-
+  
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Robot.FEEDER_SUBSYSTEM.setConveyanceNormalSpeedForward();
+    Robot.CONVEYANCE_SUBSYSTEM.setConveyanceMaxReverse();
   }
-
+  
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Robot.FEEDER_SUBSYSTEM.conveyanceStop();
+    Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne();
   }
-
+  
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {

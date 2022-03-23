@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.Conveyance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
@@ -18,7 +18,7 @@ public class ConveyanceIndexCommand extends CommandBase {
       boolean feederHasBall = Robot.FEEDER_SUBSYSTEM.getFeederHasBall();
 
       if (conveyanceHasBall && feederHasBall == false ) {
-        Robot.CONVEYANCE_SUBSYSTEM.setConveyanceMaxForward();   //when there is a ball in conveyance stage 1 and 2 conveyance wont run        
+        Robot.CONVEYANCE_SUBSYSTEM.setConveyanceIndexSpeedForward();   //when there is a ball in conveyance stage 1 and 2 conveyance wont run        
       } 
       else if (conveyanceHasBall && feederHasBall) {        
         Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne();  //if there is a ball in comveyance stage 1 but nothing at stage 2 conveyance will run at 1
