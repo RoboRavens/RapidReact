@@ -211,22 +211,14 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    /*
-    if (Timer.getFPGATimestamp() <= 60) {
-      RAVEN_BLINKIN_3.blinkGreen();
-    } else if (Timer.getFPGATimestamp() <= 30) {
-      RAVEN_BLINKIN_3.blinkYellow();
-    } else if (Timer.getFPGATimestamp() <= 15) {
-      RAVEN_BLINKIN_3.blinkRed();
-    }
-    */
-/*
-    if (SHOOTER_SUBSYSTEM.motorsAreRecovered()) {
-      RAVEN_BLINKIN_3.solidGreen();
-      // RAVEN_BLINKIN_3.blinkGreen();
-    }
-    */
-
+    
+if (Robot.SHOOTER_SUBSYSTEM.getTopspinShooterRPM() <= 200) {
+  RAVEN_BLINKIN_3.blinkRed();
+} else if(Robot.SHOOTER_SUBSYSTEM.getTopspinShooterRPM() <= 1000) {
+  RAVEN_BLINKIN_3.blinkYellow();
+} else if (Robot.SHOOTER_SUBSYSTEM.getTopspinShooterRPM() <= 2000) {
+  RAVEN_BLINKIN_3.blinkGreen();
+}
     if (Robot.LIMELIGHT_SUBSYSTEM.isAligned()) {
       if (Robot.SHOOTER_SUBSYSTEM.getReadyToShootTarmac()) {
         RAVEN_BLINKIN_4.blinkBlue();
@@ -234,7 +226,7 @@ public class Robot extends TimedRobot {
       else {
         RAVEN_BLINKIN_4.solidBlue();
       }
-    }
+   }
     else {
       RAVEN_BLINKIN_4.solidOff();
     }
