@@ -204,7 +204,6 @@ public class ShooterSubsystem extends SubsystemBase {
         return _isShooting;
     }
 
-
     public boolean getReadyToShootTarmac() {
         boolean readyToShoot = false;
         
@@ -215,5 +214,9 @@ public class ShooterSubsystem extends SubsystemBase {
         }
 
         return readyToShoot;
+    }
+
+    public void shootWrongColorBall() {
+        
     }
 }

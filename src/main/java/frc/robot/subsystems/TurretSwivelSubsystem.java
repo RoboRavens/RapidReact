@@ -90,4 +90,8 @@ public class TurretSwivelSubsystem extends SubsystemBase {
     public boolean getIsAtTarget() {
         return (getAngle() > _shot.target - Constants.TURRET_AIM_ALLOWANCE && getAngle() < _shot.target + Constants.TURRET_AIM_ALLOWANCE);
     }
+
+    public void shootWrongColorBall() {
+        
+    }
 }

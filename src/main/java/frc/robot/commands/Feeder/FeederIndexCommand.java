@@ -6,6 +6,8 @@ import frc.robot.Robot;
 public class FeederIndexCommand extends CommandBase {
 
     private boolean conveyanceOneHadBall;
+    boolean conveyanceBallIsCorrect = false; // Should be replaced by a method call to get the sensor input
+    boolean feederBallIsCorrect = false; // Should be replaced by a method call to get the sensor input
     
     public FeederIndexCommand() {
         addRequirements(Robot.FEEDER_SUBSYSTEM);
@@ -18,13 +20,22 @@ public class FeederIndexCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        if (Robot.FEEDER_SUBSYSTEM.getFeederHasBall()) {
+        if (Robot.FEEDER_SUBSYSTEM.getFeederHasBall() && feederBallIsCorrect) {
             Robot.FEEDER_SUBSYSTEM.conveyanceStop();
+            conveyanceOneHadBall = false;
+        }
+        else if (Robot.FEEDER_SUBSYSTEM.getFeederHasBall() && feederBallIsCorrect == false) {
+            Robot.SHOOTER_SUBSYSTEM.shootWrongColorBall();
             conveyanceOneHadBall = false;
         }
         else if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() || conveyanceOneHadBall) {
             Robot.FEEDER_SUBSYSTEM.setConveyanceNormalSpeedForward();
             conveyanceOneHadBall = true;
+        }
+        else {
+            Robot.SHOOTER_SUBSYSTEM.stopMotor();
+            Robot.FEEDER_SUBSYSTEM.conveyanceStop();
+            Robot.FEEDER_SUBSYSTEM.feederWheelStop();
         }
     }
 

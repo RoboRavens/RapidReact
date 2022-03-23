@@ -20,8 +20,8 @@ public class ConveyanceIndexCommand extends CommandBase {
       boolean firstSensorHasBall = Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBallNewFirstSensor();
       boolean conveyanceHasBall = Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall();
       boolean feederHasBall = Robot.FEEDER_SUBSYSTEM.getFeederHasBall();
-      boolean conveyanceColorIsCorrect = false; // Should be replaced by a method call to get the sensor input
-      boolean feederColorIsCorrect = false; // Should be replaced by a method call to get the sensor input
+      boolean conveyanceBallIsCorrect = false; // Should be replaced by a method call to get the sensor input
+      boolean feederBallIsCorrect = false; // Should be replaced by a method call to get the sensor input
       boolean atLeastOneBallInConveyanceOne = false;
       boolean onlyOneBallInConveyance = false;
 
@@ -32,7 +32,7 @@ public class ConveyanceIndexCommand extends CommandBase {
         onlyOneBallInConveyance = true;
       }
 
-      if (conveyanceColorIsCorrect && feederColorIsCorrect) {
+      if (conveyanceBallIsCorrect && feederBallIsCorrect) {
         if (onlyOneBallInConveyance || firstSensorHadBall) {
           Robot.CONVEYANCE_SUBSYSTEM.setConveyanceIndexSpeedForward();   //when there is a ball in conveyance stage 1 and 2 conveyance wont run      
           firstSensorHadBall = true;
@@ -46,10 +46,10 @@ public class ConveyanceIndexCommand extends CommandBase {
           firstSensorHadBall = false;
         }
       }
-      else if (conveyanceColorIsCorrect == false && feederHasBall) {
+      else if (conveyanceBallIsCorrect == false && feederHasBall) {
         Robot.CONVEYANCE_SUBSYSTEM.setConveyanceNormalSpeedReverse();
       }
-      else if (conveyanceColorIsCorrect == false && feederHasBall == false) {
+      else if (conveyanceBallIsCorrect == false && feederHasBall == false) {
         Robot.CONVEYANCE_SUBSYSTEM.setConveyanceIndexSpeedForward();
       }
     }     
