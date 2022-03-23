@@ -57,7 +57,7 @@ public class ConveyanceSubsystem extends SubsystemBase {
     return _conveyanceSensorA.get();
   }
 
-  public boolean robotHas2Balls() {
+  public boolean GetRobotHas2Balls() {
     return (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() && Robot.FEEDER_SUBSYSTEM.getFeederHasBall());
   }
   
