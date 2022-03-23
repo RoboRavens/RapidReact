@@ -218,7 +218,7 @@ public class Robot extends TimedRobot {
   else if(Robot.SHOOTER_SUBSYSTEM.getTopspinShooterRPM() <= 1000) {
   RAVEN_BLINKIN_3.blinkYellow();
   } 
-  else if (Robot.SHOOTER_SUBSYSTEM.getTopspinShooterRPM() <= 2000) {
+  else if (Robot.SHOOTER_SUBSYSTEM.getTopspinShooterRPM() <= 2500) {
   RAVEN_BLINKIN_3.blinkGreen();
   }
     
