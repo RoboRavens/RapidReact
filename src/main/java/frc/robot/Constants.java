@@ -34,8 +34,8 @@ public final class Constants {
     public static final double DRIVE_MAX_TURN_RADIANS_PER_SECOND = 2;
 
     // COLOR SENSE
-    public static final double BALL_COLOR_THRESHOLD_0 = 50;
-    public static final double BALL_COLOR_THRESHOLD_1 = 50;
+    public static final double BALL_COLOR_THRESHOLD_ENTRY = 50;
+    public static final double BALL_COLOR_THRESHOLD_EXIT = 50;
   
     // SHOOTER RPM ALLOWANCE TESTED AT 50 for TELEOP BUT SHOULD NOT MATTER
     //SHOOTER
