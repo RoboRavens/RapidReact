@@ -212,14 +212,17 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     
-if (Robot.SHOOTER_SUBSYSTEM.getTopspinShooterRPM() <= 200) {
+  if (Robot.SHOOTER_SUBSYSTEM.getTopspinShooterRPM() <= 200) {
   RAVEN_BLINKIN_3.blinkRed();
-} else if(Robot.SHOOTER_SUBSYSTEM.getTopspinShooterRPM() <= 1000) {
+  } 
+  else if(Robot.SHOOTER_SUBSYSTEM.getTopspinShooterRPM() <= 1000) {
   RAVEN_BLINKIN_3.blinkYellow();
-} else if (Robot.SHOOTER_SUBSYSTEM.getTopspinShooterRPM() <= 2000) {
+  } 
+  else if (Robot.SHOOTER_SUBSYSTEM.getTopspinShooterRPM() <= 2000) {
   RAVEN_BLINKIN_3.blinkGreen();
-}
-    if (Robot.LIMELIGHT_SUBSYSTEM.isAligned()) {
+  }
+    
+  if (Robot.LIMELIGHT_SUBSYSTEM.isAligned()) {
       if (Robot.SHOOTER_SUBSYSTEM.getReadyToShootTarmac()) {
         RAVEN_BLINKIN_4.blinkBlue();
       }
