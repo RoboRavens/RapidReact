@@ -8,9 +8,9 @@ import frc.robot.Robot;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
-public class ShooterStartCommand extends CommandBase {
+public class ShooterStartInstantCommand extends CommandBase {
 
-  public ShooterStartCommand() {
+  public ShooterStartInstantCommand() {
     addRequirements(Robot.SHOOTER_SUBSYSTEM);
   }
 
@@ -34,6 +34,6 @@ public class ShooterStartCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

@@ -116,6 +116,24 @@ public class Gamepad {
 		case SHOOTER_AUTO_RADIUS_SHOT:
 			buttonNumber = 12;
 			break;
+		case FEEDER_WHEEL_REVERSE:
+			buttonNumber = 6;
+			break;
+		case CLIMBER_EXTEND:
+			buttonNumber = 1;
+			break;
+		case CLIMBER_RETRACT:
+			buttonNumber = 2;
+			break;
+		case CLIMBER_OVERRIDE:
+			buttonNumber = 3;
+			break;
+		case CLIMBER_EXTEND_SLOWLY:
+			buttonNumber = 4;
+			break;
+		case CLIMBER_RETRACT_SLOWLY:
+			buttonNumber = 5;
+			break;
 		default:
 			throw new IllegalArgumentException("Invalid Button Code");
 		}

@@ -47,7 +47,11 @@ public class FeederSubsystem extends SubsystemBase {
   }
 
   public void setConveyanceTwoMaxForward() {
-    this.runConveyanceAtPercentPower(Constants.CONVEYANCE_TWO_FULL_SPEED);
+    if (Robot.CONVEYANCE_SUBSYSTEM.isIndexing()) {
+      this.runConveyanceAtPercentPower(Constants.CONVEYANCE_TWO_SPEED_WHILE_INDEXING);
+    } else {
+      this.runConveyanceAtPercentPower(Constants.CONVEYANCE_TWO_FULL_SPEED);
+    }
   }
 
   public void setConveyanceNormalSpeedForward() {
@@ -94,6 +98,22 @@ public class FeederSubsystem extends SubsystemBase {
   // if the shooter is at an appropriate RPM.
   public void shoot() {
     if (Robot.SHOOTER_SUBSYSTEM.motorsAreRecovered()) {
+      feederWheelForward();
+      setConveyanceTwoMaxForward();
+    }
+    else {
+      feederWheelStop();
+      conveyanceStop();
+    }
+  }
+
+  public void forceShoot() {
+    feederWheelForward();
+    setConveyanceTwoMaxForward();
+  }
+
+  public void forceShootTeleop() {
+    if (Robot.SHOOTER_SUBSYSTEM.motorsAreSpinning()) {
       feederWheelForward();
       setConveyanceTwoMaxForward();
     }

@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.Drivetrain;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -12,7 +12,7 @@ import frc.util.Deadband;
 
 public class DrivetrainDefaultCommand extends CommandBase {
     private boolean _followLimelight = false;
-    private PIDController _followLimelightPID = new PIDController(5, 1, 1);
+    private PIDController _followLimelightPID = new PIDController(.05, 0, 0);
 
     public DrivetrainDefaultCommand() {
         addRequirements(Robot.DRIVE_TRAIN_SUBSYSTEM);
@@ -21,13 +21,20 @@ public class DrivetrainDefaultCommand extends CommandBase {
     @Override
     public void execute() {
         // You can use `new ChassisSpeeds(...)` for robot-oriented movement instead of field-oriented movement
-        double x = Robot.GAMEPAD.getAxis(AxisCode.LEFTSTICKY) * -1 * DriveTrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND; // Robot.JOYSTICK.getRawAxis(1); // Positive x is away from your alliance wall.
-        double y = Robot.GAMEPAD.getAxis(AxisCode.LEFTSTICKX) * -1 * DriveTrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND; // Robot.JOYSTICK.getRawAxis(0); // Positive y is to your left when standing behind the alliance wall.
+        double x = Robot.GAMEPAD.getAxis(AxisCode.LEFTSTICKY) * -1; // Robot.JOYSTICK.getRawAxis(1); // Positive x is away from your alliance wall.
+        double y = Robot.GAMEPAD.getAxis(AxisCode.LEFTSTICKX) * -1; // Robot.JOYSTICK.getRawAxis(0); // Positive y is to your left when standing behind the alliance wall.
         double r; // The angular rate of the robot.
         Rotation2d a = Robot.DRIVE_TRAIN_SUBSYSTEM.getOdometryRotation(); // The angle of the robot as measured by a gyroscope. The robot's angle is considered to be zero when it is facing directly away from your alliance station wall.
 
         x = Deadband.adjustValueToZero(x, Constants.JOYSTICK_DEADBAND);
         y = Deadband.adjustValueToZero(y, Constants.JOYSTICK_DEADBAND);
+
+        // SmartDashboard.putNumber("Drive Time", Timer.getFPGATimestamp());
+        // SmartDashboard.putNumber("Drive X", x);
+        // SmartDashboard.putNumber("Drive Y", y);
+
+        x = x * DriveTrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND;
+        y = y * DriveTrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND;
 
         var limelightAngle = this.getLimelightTargetOffset();
         if (limelightAngle != null) {
@@ -40,8 +47,11 @@ public class DrivetrainDefaultCommand extends CommandBase {
             r = r * Constants.DRIVE_MAX_TURN_RADIANS_PER_SECOND;
         }
 
+        // SmartDashboard.putNumber("Drive R", r);
+
         if (x == 0 && y == 0 && r == 0) {
-            Robot.DRIVE_TRAIN_SUBSYSTEM.holdPosition();
+            Robot.DRIVE_TRAIN_SUBSYSTEM.drive(new ChassisSpeeds(0.0, 0.0, 0.0));
+            // Robot.DRIVE_TRAIN_SUBSYSTEM.holdPosition();
         } else {
             Robot.DRIVE_TRAIN_SUBSYSTEM.drive(
                 ChassisSpeeds.fromFieldRelativeSpeeds(
@@ -72,10 +82,10 @@ public class DrivetrainDefaultCommand extends CommandBase {
             return null;
         }
 
-        if (Robot.LIMELIGHT_SUBSYSTEM.hasTargetSighted()) {
-            return Robot.LIMELIGHT_SUBSYSTEM.getTargetOffsetAngle();
+        if (Robot.LIMELIGHT_SUBSYSTEM.hasTargetSighted() == false) {
+            return null;
         }
-        
-        return 0.0;
+
+        return Robot.LIMELIGHT_SUBSYSTEM.getTargetOffsetAngle();
     }
 }
