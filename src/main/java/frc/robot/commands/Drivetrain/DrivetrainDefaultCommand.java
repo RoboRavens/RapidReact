@@ -1,4 +1,4 @@
-package frc.robot.commands.Drivetrain;
+package frc.robot.commands.DriveTrain;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
