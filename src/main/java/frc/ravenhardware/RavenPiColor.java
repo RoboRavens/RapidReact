@@ -1,7 +1,7 @@
 package frc.ravenhardware;
 
 import frc.robot.Constants;
-import frc.util.PicoColorSensor;
+import frc.robot.lib.PicoColorSensor;
 
 public class RavenPiColor extends PicoColorSensor{
     public RavenPiColor() {

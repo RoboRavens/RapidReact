@@ -1,4 +1,4 @@
-package frc.util;
+package frc.robot.lib;
 
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.atomic.AtomicBoolean;
