@@ -27,9 +27,9 @@ public class ConveyanceIndexCommand extends CommandBase {
         Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne();
       }
     
-      if (Robot.CONVEYANCE_SUBSYSTEM.getRobotHas2Balls() == true) {
-        Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne(); 
-        Robot.INTAKE_SUBSYSTEM.retract();
+      if (Robot.CONVEYANCE_SUBSYSTEM.robotHas2Balls() == true) {
+       Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne(); 
+       Robot.INTAKE_SUBSYSTEM.retract();
       }
 
     }     
