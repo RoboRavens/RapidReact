@@ -4,7 +4,11 @@
 
 package frc.robot;
 
+import java.util.Arrays;
+import java.util.List;
+
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -69,6 +73,8 @@ public class Robot extends TimedRobot {
   public static final Gamepad GAMEPAD = new Gamepad(JOYSTICK);
   private Gamepad OP_PAD = new Gamepad(1);
   private Gamepad OP_PAD2 = new Gamepad(2);
+  private DigitalInput _conveyanceSensorB;
+  private DigitalInput _conveyanceSensorA;
   
   public static final DriveTrainSubsystemBase DRIVE_TRAIN_SUBSYSTEM = new DriveTrainSubsystem();
   public static final ShooterSubsystem SHOOTER_SUBSYSTEM = new ShooterSubsystem();
@@ -254,7 +260,8 @@ public class Robot extends TimedRobot {
       }      
     }
   }
-  
+
+   
   public void configureButtonBindings() {
     
     GAMEPAD.getButton(ButtonCode.LEFTBUMPER)

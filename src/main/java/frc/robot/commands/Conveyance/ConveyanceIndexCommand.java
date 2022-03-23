@@ -1,8 +1,11 @@
 package frc.robot.commands.Conveyance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
+import frc.robot.subsystems.ConveyanceSubsystem;
 
 public class ConveyanceIndexCommand extends CommandBase {
+    
+
     public ConveyanceIndexCommand() {
         addRequirements(Robot.CONVEYANCE_SUBSYSTEM);
     }
@@ -26,6 +29,12 @@ public class ConveyanceIndexCommand extends CommandBase {
       else if (conveyanceHasBall == false ) {
         Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne();
       }
+    
+      if (Robot.CONVEYANCE_SUBSYSTEM.getRobotHas2Balls() == true) {
+        Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne(); 
+        Robot.INTAKE_SUBSYSTEM.retract();
+      }
+
     }     
     
     @Override

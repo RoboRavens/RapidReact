@@ -1,10 +1,14 @@
 package frc.robot.subsystems;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 public class ConveyanceSubsystem extends SubsystemBase {
@@ -12,6 +16,7 @@ public class ConveyanceSubsystem extends SubsystemBase {
   private TalonSRX _conveyanceMotorOne;
   private DigitalInput _conveyanceSensorA;
   private boolean _isIndexing = false;
+  
 
   public ConveyanceSubsystem() {
     _conveyanceMotorOne = new TalonSRX(RobotMap.CONVEYANCE_MOTOR);
@@ -49,9 +54,13 @@ public class ConveyanceSubsystem extends SubsystemBase {
   }
 
   public boolean getConveyanceHasBall() {
-    return !_conveyanceSensorA.get();
+    return _conveyanceSensorA.get();
   }
 
+  public boolean getRobotHas2Balls() {
+    return (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() && Robot.FEEDER_SUBSYSTEM.getFeederHasBall());
+  }
+  
    @Override
    public void periodic() {
     // This method will be called once per scheduler run
