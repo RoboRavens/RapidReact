@@ -31,12 +31,10 @@ public class ConveyanceIndexCommand extends CommandBase {
        Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne(); 
        Robot.INTAKE_SUBSYSTEM.retract();
       }
-
     }     
-    
     @Override
     public void end(boolean interrupted) {
-        Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne();
+      Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne();
     }
     
     // Returns true when the command should end.
