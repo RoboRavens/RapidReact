@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.controls.AxisCode;
 import frc.robot.Constants;
 import frc.robot.Robot;
-import frc.robot.subsystems.DriveTrainSubsystem;
+import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.util.Deadband;
 
 public class DrivetrainDefaultCommand extends CommandBase {
@@ -33,8 +33,8 @@ public class DrivetrainDefaultCommand extends CommandBase {
         // SmartDashboard.putNumber("Drive X", x);
         // SmartDashboard.putNumber("Drive Y", y);
 
-        x = x * DriveTrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND;
-        y = y * DriveTrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND;
+        x = x * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND;
+        y = y * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND;
 
         var limelightAngle = this.getLimelightTargetOffset();
         if (limelightAngle != null) {

@@ -37,7 +37,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import static frc.robot.RobotMap.*;
 
 // Template From: https://github.com/SwerveDriveSpecialties/swerve-template/blob/master/src/main/java/frc/robot/subsystems/DrivetrainSubsystem.java
-public class DriveTrainSubsystem extends DriveTrainSubsystemBase {
+public class DrivetrainSubsystem extends DriveTrainSubsystemBase {
   /**
    * The maximum voltage that will be delivered to the drive motors.
    * <p>
@@ -111,7 +111,7 @@ public class DriveTrainSubsystem extends DriveTrainSubsystemBase {
 
   private Boolean _cutPower = false;
 
-  public DriveTrainSubsystem() {
+  public DrivetrainSubsystem() {
     m_frontLeftModule = Mk4SwerveModuleHelper.createFalcon500(
             Mk4SwerveModuleHelper.GearRatio.L1,
             FRONT_LEFT_MODULE_DRIVE_MOTOR,
@@ -152,8 +152,8 @@ public class DriveTrainSubsystem extends DriveTrainSubsystemBase {
     _nteMaxVelocity  = tab.add("Max Velocity", 0.0).withPosition(0, 0).withSize(1, 1).getEntry();
     _nteMaxAngular  = tab.add("Max Angular Vel", 0.0).withPosition(0, 1).withSize(1, 1).getEntry();
 
-    _nteMaxVelocity.setDouble(DriveTrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND);
-    _nteMaxAngular.setDouble(DriveTrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND);
+    _nteMaxVelocity.setDouble(DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND);
+    _nteMaxAngular.setDouble(DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND);
 
     _odometryXKinematics = tab.add("X Kinematics", 0.0).withPosition(8, 0).withSize(1, 1).getEntry();
     _odometryYKinematics = tab.add("Y Kinematics", 0.0).withPosition(8, 1).withSize(1, 1).getEntry();
