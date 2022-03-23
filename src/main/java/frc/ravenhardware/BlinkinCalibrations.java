@@ -2,7 +2,7 @@ package frc.ravenhardware;
 
 public class BlinkinCalibrations {
     // TIMING VALUES
-    public static final double DELAY_TIME = 0.1;
+    public static final double DEFAULT_DELAY_TIME = 0.1;
 
     // PATTERN VALUES (selection of best)
     public static final double RAINBOW = -0.99;
