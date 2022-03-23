@@ -17,13 +17,9 @@ public class RavenPiColorSensor extends PicoColorSensor{
         RawColor colorval = pos == RavenPiPosition.ENTRY ? getRawColor0() : getRawColor1();
 
         if(Math.abs(colorval.red - colorval.blue) < Constants.BALL_COLOR_THRESHOLD_0) {
-            return(RavenPiColor.UNKNOWN); // Stop if difference in color is not trustworthy enough
+            return RavenPiColor.UNKNOWN; // Stop if difference in color is not trustworthy enough
         }
 
-        if(colorval.red > colorval.blue) {
-            return(RavenPiColor.RED);
-        } else {
-            return(RavenPiColor.BLUE);
-        }
+        return colorval.red > colorval.blue ? RavenPiColor.RED : RavenPiColor.BLUE;
     }
 }
