@@ -19,7 +19,7 @@ public class ConveyanceIndexCommand extends CommandBase {
     public void execute() {
       boolean conveyanceHasBall = Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall();
       boolean feederHasBall = Robot.FEEDER_SUBSYSTEM.getFeederHasBall();
-
+      boolean robotHas2Balls = Robot.CONVEYANCE_SUBSYSTEM.robotHas2Balls();
       if (conveyanceHasBall && feederHasBall == false ) {
         Robot.CONVEYANCE_SUBSYSTEM.setConveyanceIndexSpeedForward();   //when there is a ball in conveyance stage 1 and 2 conveyance wont run        
       } 
@@ -27,7 +27,7 @@ public class ConveyanceIndexCommand extends CommandBase {
         Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne();
       }
     
-      if (Robot.CONVEYANCE_SUBSYSTEM.robotHas2Balls() == true) {
+      if (robotHas2Balls == true) {
        Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne(); 
        Robot.INTAKE_SUBSYSTEM.retract();
       }
