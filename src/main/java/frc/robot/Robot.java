@@ -18,23 +18,24 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.controls.AxisCode;
 import frc.controls.ButtonCode;
 import frc.controls.Gamepad;
+import frc.ravenhardware.BlinkinCalibrations;
 import frc.ravenhardware.RavenBlinkin;
-import frc.robot.commands.Auto.FiveBallHps;
-import frc.robot.commands.Auto.ThreeBallTarmacAutoCommand;
-import frc.robot.commands.Auto.TwoBallAutoCommand;
-import frc.robot.commands.Climber.ClimberDefaultBrakeCommand;
-import frc.robot.commands.Conveyance.ConveyanceCollectCommand;
-import frc.robot.commands.Conveyance.ConveyanceEjectCommand;
-import frc.robot.commands.Conveyance.ConveyanceIndexCommand;
-import frc.robot.commands.Conveyance.IntakeRetractCommand;
-import frc.robot.commands.DriveTrain.DrivetrainDefaultCommand;
-import frc.robot.commands.Feeder.FeederCollectCommand;
-import frc.robot.commands.Feeder.FeederEjectCommand;
-import frc.robot.commands.Feeder.FeederIndexCommand;
-import frc.robot.commands.Feeder.FeederSafetyReverseCommand;
-import frc.robot.commands.Feeder.FeederShootCommand;
-import frc.robot.commands.Feeder.FeederShootOneBallCommand;
-import frc.robot.commands.Feeder.FeederWheelReverseCommand;
+import frc.robot.commands.auto.FiveBallHps;
+import frc.robot.commands.auto.ThreeBallTarmacAutoCommand;
+import frc.robot.commands.auto.TwoBallAutoCommand;
+import frc.robot.commands.climber.ClimberDefaultBrakeCommand;
+import frc.robot.commands.conveyance.ConveyanceCollectCommand;
+import frc.robot.commands.conveyance.ConveyanceEjectCommand;
+import frc.robot.commands.conveyance.ConveyanceIndexCommand;
+import frc.robot.commands.conveyance.IntakeRetractCommand;
+import frc.robot.commands.drivetrain.DrivetrainDefaultCommand;
+import frc.robot.commands.feeder.FeederCollectCommand;
+import frc.robot.commands.feeder.FeederEjectCommand;
+import frc.robot.commands.feeder.FeederIndexCommand;
+import frc.robot.commands.feeder.FeederSafetyReverseCommand;
+import frc.robot.commands.feeder.FeederShootCommand;
+import frc.robot.commands.feeder.FeederShootOneBallCommand;
+import frc.robot.commands.feeder.FeederWheelReverseCommand;
 import frc.robot.commands.shooter.ShooterAutoRadiusCommand;
 import frc.robot.commands.shooter.ShooterLaunchpadCommand;
 import frc.robot.commands.shooter.ShooterLowGoalCommand;
@@ -47,7 +48,7 @@ import frc.robot.commands.turret.TurretSeekCommand;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CompressorSubsystem;
 import frc.robot.subsystems.ConveyanceSubsystem;
-import frc.robot.subsystems.DriveTrainSubsystem;
+import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystemBase;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeExtenderSubsystem;
@@ -70,7 +71,7 @@ public class Robot extends TimedRobot {
   private Gamepad OP_PAD = new Gamepad(1);
   private Gamepad OP_PAD2 = new Gamepad(2);
   
-  public static final DriveTrainSubsystemBase DRIVE_TRAIN_SUBSYSTEM = new DriveTrainSubsystem();
+  public static final DriveTrainSubsystemBase DRIVE_TRAIN_SUBSYSTEM = new DrivetrainSubsystem();
   public static final ShooterSubsystem SHOOTER_SUBSYSTEM = new ShooterSubsystem();
   public static final IntakeExtenderSubsystem INTAKE_SUBSYSTEM = new IntakeExtenderSubsystem();
   public static final ConveyanceSubsystem CONVEYANCE_SUBSYSTEM = new ConveyanceSubsystem();
@@ -159,7 +160,7 @@ public class Robot extends TimedRobot {
     
 
     SmartDashboard.putBoolean("Target Sighted", Robot.LIMELIGHT_SUBSYSTEM.hasTargetSighted());
-    SmartDashboard.putNumber("Limelight Offset", Robot.LIMELIGHT_SUBSYSTEM.getTargetOffsetAngle());
+    SmartDashboard.putNumber("Limelight Offset", Robot.LIMELIGHT_SUBSYSTEM.getRawTargetOffsetAngle());
     SmartDashboard.putNumber("Limelight Area", Robot.LIMELIGHT_SUBSYSTEM.getArea());
     if (GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER)) {
       Robot.LIMELIGHT_SUBSYSTEM.turnLEDOn();
@@ -223,34 +224,37 @@ public class Robot extends TimedRobot {
 
     if (Robot.LIMELIGHT_SUBSYSTEM.isAligned()) {
       if (Robot.SHOOTER_SUBSYSTEM.getReadyToShootTarmac()) {
-        RAVEN_BLINKIN_4.blinkBlue();
+        RAVEN_BLINKIN_4.setBlink(BlinkinCalibrations.BLUE);
       }
       else {
-        RAVEN_BLINKIN_4.solidBlue();
+        RAVEN_BLINKIN_4.setSolid(BlinkinCalibrations.BLUE);
       }
     }
+    else if (Robot.LIMELIGHT_SUBSYSTEM.hasTargetSighted()) {
+      RAVEN_BLINKIN_4.solidYellow();
+    }
     else {
-      RAVEN_BLINKIN_4.solidOff();
+      RAVEN_BLINKIN_4.solidRed();
     }
 
 
     if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() == false && Robot.FEEDER_SUBSYSTEM.getFeederHasBall() == false) {
-      RAVEN_BLINKIN_3.solidRed();
+      RAVEN_BLINKIN_3.setSolid(BlinkinCalibrations.RED);
     }
     else if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() == true && Robot.FEEDER_SUBSYSTEM.getFeederHasBall() == true ){
       if (SHOOTER_SUBSYSTEM.motorsAreSpinning()) {
-        RAVEN_BLINKIN_3.blinkGreen();
+        RAVEN_BLINKIN_3.setBlink(BlinkinCalibrations.GREEN);
       }
       else {
-        RAVEN_BLINKIN_3.solidGreen();
+        RAVEN_BLINKIN_3.setSolid(BlinkinCalibrations.GREEN);
       }
     }
     else if(Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() == true || Robot.FEEDER_SUBSYSTEM.getFeederHasBall() == true) {
       if (SHOOTER_SUBSYSTEM.motorsAreSpinning()) {
-        RAVEN_BLINKIN_3.blinkYellow();
+        RAVEN_BLINKIN_3.setBlink(BlinkinCalibrations.YELLOW);
       }
       else {
-        RAVEN_BLINKIN_3.solidYellow();
+        RAVEN_BLINKIN_3.setSolid(BlinkinCalibrations.YELLOW);
       }      
     }
   }
