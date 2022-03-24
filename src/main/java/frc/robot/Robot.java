@@ -231,10 +231,10 @@ public class Robot extends TimedRobot {
       }
     }
     else if (Robot.LIMELIGHT_SUBSYSTEM.hasTargetSighted()) {
-      RAVEN_BLINKIN_4.solidYellow();
+      RAVEN_BLINKIN_4.setSolid(BlinkinCalibrations.YELLOW);
     }
     else {
-      RAVEN_BLINKIN_4.solidRed();
+      RAVEN_BLINKIN_4.setSolid(BlinkinCalibrations.RED);
     }
 
 
