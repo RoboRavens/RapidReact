@@ -11,6 +11,7 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Watchdog;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -18,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.controls.AxisCode;
 import frc.controls.ButtonCode;
@@ -197,7 +199,33 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    RAVEN_BLINKIN_3.setBlink(BlinkinCalibrations.FIRE);
+    new WaitCommand(1);
+    RAVEN_BLINKIN_3.setBlink(BlinkinCalibrations.LIME);
+    new WaitCommand(1);
+    RAVEN_BLINKIN_3.setBlink(BlinkinCalibrations.PURPLE);
+    new WaitCommand(1);
+    RAVEN_BLINKIN_3.setBlink(BlinkinCalibrations.HOT_PINK);
+    new WaitCommand(1);
+    RAVEN_BLINKIN_3.setBlink(BlinkinCalibrations.BLUE_GREEN);
+    new WaitCommand(1);
+    RAVEN_BLINKIN_3.setBlink(BlinkinCalibrations.GRAY);
+    new WaitCommand(1);
+    RAVEN_BLINKIN_3.setBlink(BlinkinCalibrations.AQUA);
+    new WaitCommand(1);
+    RAVEN_BLINKIN_3.setBlink(BlinkinCalibrations.LIME);
+    new WaitCommand(1);
+    RAVEN_BLINKIN_3.setBlink(BlinkinCalibrations.PURPLE);
+    new WaitCommand(1);
+    RAVEN_BLINKIN_3.setBlink(BlinkinCalibrations.HOT_PINK);
+    new WaitCommand(1);
+    RAVEN_BLINKIN_3.setBlink(BlinkinCalibrations.BLUE_GREEN);
+    new WaitCommand(1);
+    RAVEN_BLINKIN_3.setBlink(BlinkinCalibrations.GRAY);
+    new WaitCommand(1);
+    RAVEN_BLINKIN_3.setBlink(BlinkinCalibrations.AQUA);
+}
 
   @Override
   public void teleopInit() {
