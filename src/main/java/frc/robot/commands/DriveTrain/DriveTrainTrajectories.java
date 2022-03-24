@@ -1,4 +1,4 @@
-package frc.robot.commands.Drivetrain;
+package frc.robot.commands.drivetrain;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Robot;
 
-public class DriveTrainTrajectories {
+public class DrivetrainTrajectories {
     public static Command driveStraightInches(){
         return new InstantCommand();
     }

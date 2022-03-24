@@ -110,8 +110,47 @@ public class ShooterSubsystem extends SubsystemBase {
         // _backspinMotor.set(ControlMode.Velocity, _shot._backspinMotorCalibration.targetRPM * Constants.TALON_RPM_TO_VELOCITY);
         // _topspinMotor.set(ControlMode.Velocity, _shot._topspinMotorCalibration.targetRPM * Constants.TALON_RPM_TO_VELOCITY);
 
-        _backspinMotor.set(ControlMode.Velocity, _shot._backspinMotorCalibration.targetRPM * Constants.TALON_RPM_TO_VELOCITY);
-        _topspinMotor.set(ControlMode.Velocity, _shot._topspinMotorCalibration.targetRPM * Constants.TALON_RPM_TO_VELOCITY * Constants.TOPSPIN_GEAR_RATIO);
+        double backspinTargetMotorRPM =  (_shot._backspinMotorCalibration.targetRPM / Constants.BACKSPIN_GEAR_RATIO);
+        double backspinTargetVelocity = backspinTargetMotorRPM * Constants.TALON_RPM_TO_VELOCITY;
+
+        // backspinTargetVelocity *= Constants.BACKSPIN_GEAR_RATIO;
+
+        double topspinTargetMotorRPM =  (_shot._topspinMotorCalibration.targetRPM / Constants.TOPSPIN_GEAR_RATIO);
+        double topspinTargetVelocity = topspinTargetMotorRPM * Constants.TALON_RPM_TO_VELOCITY;
+
+
+        
+        // topspinTargetVelocity *= Constants.TOPSPIN_GEAR_RATIO;
+//        _backspinMotor.getSelectedSensorVelocity() * Constants.TALON_VELOCITY_TO_RPM * Constants.BACKSPIN_GEAR_RATIO;
+
+
+
+        SmartDashboard.putNumber("Backspin Target MOTOR RPM", backspinTargetMotorRPM);
+        SmartDashboard.putNumber("Topspin Target MOTOR RPM", topspinTargetMotorRPM);
+
+        SmartDashboard.putNumber("Backspin Target VEL", backspinTargetVelocity);
+        SmartDashboard.putNumber("Topspin Target VEL", topspinTargetVelocity);
+
+        SmartDashboard.putNumber("Backspin CURRENT VEL", _backspinMotor.getSelectedSensorVelocity());
+        SmartDashboard.putNumber("Topspin CURRENT VEL", _topspinMotor.getSelectedSensorVelocity());
+
+        
+
+
+        SmartDashboard.putNumber("Backspin VEL ERROR", _backspinMotor.getClosedLoopError());
+        SmartDashboard.putNumber("Topspin VEL ERROR", _topspinMotor.getClosedLoopError());
+
+
+
+        SmartDashboard.putNumber("Backspin WHEEL targ RPM", backspinTargetMotorRPM * Constants.BACKSPIN_GEAR_RATIO);
+        SmartDashboard.putNumber("Topspin WHEEL targ RPM", topspinTargetMotorRPM * Constants.TOPSPIN_GEAR_RATIO);
+
+        _backspinMotor.set(ControlMode.Velocity, backspinTargetVelocity);
+        _topspinMotor.set(ControlMode.Velocity, topspinTargetVelocity);
+
+
+//        _backspinMotor.set(ControlMode.Velocity, _shot._backspinMotorCalibration.targetRPM * Constants.TALON_RPM_TO_VELOCITY);
+//        _topspinMotor.set(ControlMode.Velocity, _shot._topspinMotorCalibration.targetRPM * Constants.TALON_RPM_TO_VELOCITY * Constants.TOPSPIN_GEAR_RATIO);
 
         // _backspinMotor.set(ControlMode.Current, 10);
         // _topspinMotor.set(ControlMode.Current, 10);

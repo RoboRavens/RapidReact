@@ -1,4 +1,4 @@
-package frc.robot.commands.Drivetrain;
+package frc.robot.commands.drivetrain;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -7,12 +7,12 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.controls.AxisCode;
 import frc.robot.Constants;
 import frc.robot.Robot;
-import frc.robot.subsystems.DriveTrainSubsystem;
+import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.util.Deadband;
 
 public class DrivetrainDefaultCommand extends CommandBase {
     private boolean _followLimelight = false;
-    private PIDController _followLimelightPID = new PIDController(.05, 0, 0);
+    private PIDController _followLimelightPID = new PIDController(.3, 0, 0);
 
     public DrivetrainDefaultCommand() {
         addRequirements(Robot.DRIVE_TRAIN_SUBSYSTEM);
@@ -33,8 +33,8 @@ public class DrivetrainDefaultCommand extends CommandBase {
         // SmartDashboard.putNumber("Drive X", x);
         // SmartDashboard.putNumber("Drive Y", y);
 
-        x = x * DriveTrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND;
-        y = y * DriveTrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND;
+        x = x * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND;
+        y = y * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND;
 
         var limelightAngle = this.getLimelightTargetOffset();
         if (limelightAngle != null) {
@@ -84,6 +84,10 @@ public class DrivetrainDefaultCommand extends CommandBase {
 
         if (Robot.LIMELIGHT_SUBSYSTEM.hasTargetSighted() == false) {
             return null;
+        }
+
+        if (Robot.LIMELIGHT_SUBSYSTEM.isAligned()) {
+            return 0.0;
         }
 
         return Robot.LIMELIGHT_SUBSYSTEM.getTargetOffsetAngle();
