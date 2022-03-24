@@ -200,57 +200,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    RAVEN_BLINKIN_3.setBlink(BlinkinCalibrations.FIRE);
-    new WaitCommand(1);
-    RAVEN_BLINKIN_3.setBlink(BlinkinCalibrations.LIME);
-    new WaitCommand(1);
-    RAVEN_BLINKIN_3.setBlink(BlinkinCalibrations.PURPLE);
-    new WaitCommand(1);
-    RAVEN_BLINKIN_3.setBlink(BlinkinCalibrations.HOT_PINK);
-    new WaitCommand(1);
-    RAVEN_BLINKIN_3.setBlink(BlinkinCalibrations.BLUE_GREEN);
-    new WaitCommand(1);
-    RAVEN_BLINKIN_3.setBlink(BlinkinCalibrations.GRAY);
-    new WaitCommand(1);
-    RAVEN_BLINKIN_3.setBlink(BlinkinCalibrations.AQUA);
-    new WaitCommand(1);
-    RAVEN_BLINKIN_3.setBlink(BlinkinCalibrations.LIME);
-    new WaitCommand(1);
-    RAVEN_BLINKIN_3.setBlink(BlinkinCalibrations.PURPLE);
-    new WaitCommand(1);
-    RAVEN_BLINKIN_3.setBlink(BlinkinCalibrations.HOT_PINK);
-    new WaitCommand(1);
-    RAVEN_BLINKIN_3.setBlink(BlinkinCalibrations.BLUE_GREEN);
-    new WaitCommand(1);
-    RAVEN_BLINKIN_3.setBlink(BlinkinCalibrations.GRAY);
-    new WaitCommand(1);
-    RAVEN_BLINKIN_3.setBlink(BlinkinCalibrations.AQUA);
-   
-    RAVEN_BLINKIN_4.setBlink(BlinkinCalibrations.FIRE);
-    new WaitCommand(1);
-    RAVEN_BLINKIN_4.setBlink(BlinkinCalibrations.LIME);
-    new WaitCommand(1);
-    RAVEN_BLINKIN_4.setBlink(BlinkinCalibrations.PURPLE);
-    new WaitCommand(1);
-    RAVEN_BLINKIN_4.setBlink(BlinkinCalibrations.HOT_PINK);
-    new WaitCommand(1);
-    RAVEN_BLINKIN_4.setBlink(BlinkinCalibrations.BLUE_GREEN);
-    new WaitCommand(1);
-    RAVEN_BLINKIN_4.setBlink(BlinkinCalibrations.GRAY);
-    new WaitCommand(1);
-    RAVEN_BLINKIN_4.setBlink(BlinkinCalibrations.AQUA);
-    new WaitCommand(1);
-    RAVEN_BLINKIN_4.setBlink(BlinkinCalibrations.LIME);
-    new WaitCommand(1);
-    RAVEN_BLINKIN_4.setBlink(BlinkinCalibrations.PURPLE);
-    new WaitCommand(1);
-    RAVEN_BLINKIN_4.setBlink(BlinkinCalibrations.HOT_PINK);
-    new WaitCommand(1);
-    RAVEN_BLINKIN_4.setBlink(BlinkinCalibrations.BLUE_GREEN);
-    new WaitCommand(1);
-    RAVEN_BLINKIN_4.setBlink(BlinkinCalibrations.GRAY);
-    new WaitCommand(1);
-    RAVEN_BLINKIN_4.setBlink(BlinkinCalibrations.AQUA);
+   //Guessing Game Goes Here
 }
 
   @Override
