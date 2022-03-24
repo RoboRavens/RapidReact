@@ -4,9 +4,13 @@
 
 package frc.robot;
 
+import java.sql.Driver;
+
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -20,10 +24,15 @@ import frc.controls.ButtonCode;
 import frc.controls.Gamepad;
 import frc.ravenhardware.BlinkinCalibrations;
 import frc.ravenhardware.RavenBlinkin;
+import frc.ravenhardware.RavenBlinkinPatternCodes;
+import frc.ravenhardware.RavenPiColor;
+import frc.ravenhardware.RavenPiColorSensor;
+import frc.ravenhardware.RavenPiPosition;
 import frc.robot.commands.Auto.FiveBallHps;
 import frc.robot.commands.Auto.ThreeBallTarmacAutoCommand;
 import frc.robot.commands.Auto.TwoBallAutoCommand;
 import frc.robot.commands.Climber.ClimberDefaultBrakeCommand;
+import frc.robot.commands.CommandGroup.JunkShotCommandGroup;
 import frc.robot.commands.Conveyance.ConveyanceCollectCommand;
 import frc.robot.commands.Conveyance.ConveyanceEjectCommand;
 import frc.robot.commands.Conveyance.ConveyanceIndexCommand;
@@ -54,6 +63,7 @@ import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeExtenderSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.TurretSwivelSubsystem;
 import frc.util.AutoMode;
 
 /**
@@ -70,6 +80,8 @@ public class Robot extends TimedRobot {
   public static final Gamepad GAMEPAD = new Gamepad(JOYSTICK);
   private Gamepad OP_PAD = new Gamepad(1);
   private Gamepad OP_PAD2 = new Gamepad(2);
+
+  private RavenPiColorSensor _colorSensor = new RavenPiColorSensor();
   
   public static final DriveTrainSubsystemBase DRIVE_TRAIN_SUBSYSTEM = new DriveTrainSubsystem();
   public static final ShooterSubsystem SHOOTER_SUBSYSTEM = new ShooterSubsystem();
@@ -81,7 +93,7 @@ public class Robot extends TimedRobot {
   public static final IntakeRetractCommand IntakeRetract = new IntakeRetractCommand();
   public static final ClimberSubsystem CLIMBER_SUBSYSTEM = new ClimberSubsystem();
   public static final FeederSubsystem FEEDER_SUBSYSTEM = new FeederSubsystem();
-  // public static final TurretSwivelSubsystem TURRET_SWIVEL_SUBSYSTEM = new TurretSwivelSubsystem();
+  public static final TurretSwivelSubsystem TURRET_SWIVEL_SUBSYSTEM = new TurretSwivelSubsystem();
   public static final ConveyanceCollectCommand CONVEYANCE_COLLECT_COMMAND = new ConveyanceCollectCommand();
   public static final ConveyanceEjectCommand CONVEYANCE_EJECT_COMMAND = new ConveyanceEjectCommand();
   public static final FeederEjectCommand FeederEject = new FeederEjectCommand();
@@ -166,9 +178,7 @@ public class Robot extends TimedRobot {
       Robot.LIMELIGHT_SUBSYSTEM.turnLEDOn();
     } else {
       Robot.LIMELIGHT_SUBSYSTEM.turnLEDOff();
-    }  
-
-    
+    }
   }
    /** This function is called once each time the robot enters Disabled mode. */
   @Override
@@ -195,6 +205,17 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    var shootGarbarge = new Trigger(() -> {
+      boolean ballIsRed = _colorSensor.getBallType(RavenPiPosition.EXIT) == RavenPiColor.RED;
+      boolean blueAlliance = DriverStation.getAlliance() == Alliance.Blue;
+      boolean ballIsBlue = _colorSensor.getBallType(RavenPiPosition.EXIT) == RavenPiColor.BLUE;
+      boolean redAlliance = DriverStation.getAlliance() == Alliance.Red;
+
+      return ballIsRed && blueAlliance || ballIsBlue && redAlliance;
+    });
+
+    shootGarbarge.whenActive(new JunkShotCommandGroup(), false);
+
     SHOOTER_SUBSYSTEM.resetShotCount();
 
     // Stop any autonomous command that might still be running.
@@ -206,21 +227,6 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    /*
-    if (Timer.getFPGATimestamp() <= 60) {
-      RAVEN_BLINKIN_3.blinkGreen();
-    } else if (Timer.getFPGATimestamp() <= 30) {
-      RAVEN_BLINKIN_3.blinkYellow();
-    } else if (Timer.getFPGATimestamp() <= 15) {
-      RAVEN_BLINKIN_3.blinkRed();
-    }
-    */
-/*
-    if (SHOOTER_SUBSYSTEM.motorsAreRecovered()) {
-      RAVEN_BLINKIN_3.solidGreen();
-      // RAVEN_BLINKIN_3.blinkGreen();
-    }
-    */
 
     if (Robot.LIMELIGHT_SUBSYSTEM.isAligned()) {
       if (Robot.SHOOTER_SUBSYSTEM.getReadyToShootTarmac()) {
