@@ -9,10 +9,7 @@ import frc.robot.commands.conveyance.ConveyanceCollectCommand;
 import frc.robot.commands.feeder.FeederForceShootDurationCommand;
 import frc.robot.commands.shooter.ShooterStartInstantCommand;
 import frc.robot.commands.shooter.ShooterStopCommand;
-import frc.robot.commands.shooter.ShooterStartInstantCommand;
-import frc.robot.commands.shooter.ShooterStopCommand;
 import frc.robot.commands.shooter.ShooterTarmacCommand;
-import frc.robot.commands.shooter.ShooterWaitUntilIsRecoveredCommand;
 import frc.util.PathWeaver;
 
 public class FiveBallHps {
