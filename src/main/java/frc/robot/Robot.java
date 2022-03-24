@@ -211,17 +211,6 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    
-  if (Robot.SHOOTER_SUBSYSTEM.getTopspinShooterRPM() <= 200) {
-  RAVEN_BLINKIN_3.blinkRed();
-  } 
-  else if(Robot.SHOOTER_SUBSYSTEM.getTopspinShooterRPM() <= 1000) {
-  RAVEN_BLINKIN_3.blinkYellow();
-  } 
-  else if (Robot.SHOOTER_SUBSYSTEM.getTopspinShooterRPM() <= 2500) {
-  RAVEN_BLINKIN_3.blinkGreen();
-  }
-    
   if (Robot.LIMELIGHT_SUBSYSTEM.isAligned()) {
       if (Robot.SHOOTER_SUBSYSTEM.getReadyToShootTarmac()) {
         RAVEN_BLINKIN_4.blinkBlue();
