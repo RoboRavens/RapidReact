@@ -333,4 +333,15 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {}
 
+  public boolean giveLimelightDriveControl() {
+    boolean giveControl = false;
+
+    boolean leftTrigger = GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER);
+
+    boolean ammoFull;
+
+
+    return giveControl;
+  }
+
 }
