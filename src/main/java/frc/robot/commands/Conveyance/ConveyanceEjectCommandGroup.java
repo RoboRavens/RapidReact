@@ -1,7 +1,7 @@
-package frc.robot.commands.Conveyance;
+package frc.robot.commands.conveyance;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import frc.robot.commands.Feeder.FeederEjectCommand;
+import frc.robot.commands.feeder.FeederEjectCommand;
 import frc.robot.subsystems.ConveyanceSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 

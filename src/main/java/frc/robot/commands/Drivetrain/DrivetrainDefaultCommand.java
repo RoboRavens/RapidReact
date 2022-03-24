@@ -1,4 +1,4 @@
-package frc.robot.commands.Drivetrain;
+package frc.robot.commands.drivetrain;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -12,7 +12,7 @@ import frc.util.Deadband;
 
 public class DrivetrainDefaultCommand extends CommandBase {
     private boolean _followLimelight = false;
-    private PIDController _followLimelightPID = new PIDController(.05, 0, 0);
+    private PIDController _followLimelightPID = new PIDController(.3, 0, 0);
 
     public DrivetrainDefaultCommand() {
         addRequirements(Robot.DRIVE_TRAIN_SUBSYSTEM);
@@ -84,6 +84,10 @@ public class DrivetrainDefaultCommand extends CommandBase {
 
         if (Robot.LIMELIGHT_SUBSYSTEM.hasTargetSighted() == false) {
             return null;
+        }
+
+        if (Robot.LIMELIGHT_SUBSYSTEM.isAligned()) {
+            return 0.0;
         }
 
         return Robot.LIMELIGHT_SUBSYSTEM.getTargetOffsetAngle();

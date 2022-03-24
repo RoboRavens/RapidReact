@@ -19,31 +19,31 @@ import frc.controls.AxisCode;
 import frc.controls.ButtonCode;
 import frc.controls.Gamepad;
 import frc.ravenhardware.RavenBlinkin;
-import frc.robot.commands.Auto.FiveBallHps;
-import frc.robot.commands.Auto.ThreeBallTarmacAutoCommand;
-import frc.robot.commands.Auto.TwoBallAutoCommand;
-import frc.robot.commands.Climber.ClimberDefaultBrakeCommand;
-import frc.robot.commands.Conveyance.ConveyanceCollectCommand;
-import frc.robot.commands.Conveyance.ConveyanceEjectCommand;
-import frc.robot.commands.Conveyance.ConveyanceIndexCommand;
-import frc.robot.commands.Conveyance.IntakeRetractCommand;
-import frc.robot.commands.Drivetrain.DrivetrainDefaultCommand;
-import frc.robot.commands.Feeder.FeederCollectCommand;
-import frc.robot.commands.Feeder.FeederEjectCommand;
-import frc.robot.commands.Feeder.FeederIndexCommand;
-import frc.robot.commands.Feeder.FeederSafetyReverseCommand;
-import frc.robot.commands.Feeder.FeederShootCommand;
-import frc.robot.commands.Feeder.FeederShootOneBallCommand;
-import frc.robot.commands.Feeder.FeederWheelReverseCommand;
-import frc.robot.commands.Shooter.ShooterAutoRadiusCommand;
-import frc.robot.commands.Shooter.ShooterLaunchpadCommand;
-import frc.robot.commands.Shooter.ShooterLowGoalCommand;
-import frc.robot.commands.Shooter.ShooterStartCommand;
-import frc.robot.commands.Shooter.ShooterStopCommand;
-import frc.robot.commands.Shooter.ShooterTarmacCommand;
-import frc.robot.commands.Turret.TurretAimAtTargetCommand;
-import frc.robot.commands.Turret.TurretFlipCommand;
-import frc.robot.commands.Turret.TurretSeekCommand;
+import frc.robot.commands.auto.FiveBallHps;
+import frc.robot.commands.auto.ThreeBallTarmacAutoCommand;
+import frc.robot.commands.auto.TwoBallAutoCommand;
+import frc.robot.commands.climber.ClimberDefaultBrakeCommand;
+import frc.robot.commands.conveyance.ConveyanceCollectCommand;
+import frc.robot.commands.conveyance.ConveyanceEjectCommand;
+import frc.robot.commands.conveyance.ConveyanceIndexCommand;
+import frc.robot.commands.conveyance.IntakeRetractCommand;
+import frc.robot.commands.drivetrain.DrivetrainDefaultCommand;
+import frc.robot.commands.feeder.FeederCollectCommand;
+import frc.robot.commands.feeder.FeederEjectCommand;
+import frc.robot.commands.feeder.FeederIndexCommand;
+import frc.robot.commands.feeder.FeederSafetyReverseCommand;
+import frc.robot.commands.feeder.FeederShootCommand;
+import frc.robot.commands.feeder.FeederShootOneBallCommand;
+import frc.robot.commands.feeder.FeederWheelReverseCommand;
+import frc.robot.commands.shooter.ShooterAutoRadiusCommand;
+import frc.robot.commands.shooter.ShooterLaunchpadCommand;
+import frc.robot.commands.shooter.ShooterLowGoalCommand;
+import frc.robot.commands.shooter.ShooterStartCommand;
+import frc.robot.commands.shooter.ShooterStopCommand;
+import frc.robot.commands.shooter.ShooterTarmacCommand;
+import frc.robot.commands.turret.TurretAimAtTargetCommand;
+import frc.robot.commands.turret.TurretFlipCommand;
+import frc.robot.commands.turret.TurretSeekCommand;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CompressorSubsystem;
 import frc.robot.subsystems.ConveyanceSubsystem;
@@ -159,7 +159,7 @@ public class Robot extends TimedRobot {
     
 
     SmartDashboard.putBoolean("Target Sighted", Robot.LIMELIGHT_SUBSYSTEM.hasTargetSighted());
-    SmartDashboard.putNumber("Limelight Offset", Robot.LIMELIGHT_SUBSYSTEM.getTargetOffsetAngle());
+    SmartDashboard.putNumber("Limelight Offset", Robot.LIMELIGHT_SUBSYSTEM.getRawTargetOffsetAngle());
     SmartDashboard.putNumber("Limelight Area", Robot.LIMELIGHT_SUBSYSTEM.getArea());
     if (GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER)) {
       Robot.LIMELIGHT_SUBSYSTEM.turnLEDOn();
@@ -229,8 +229,11 @@ public class Robot extends TimedRobot {
         RAVEN_BLINKIN_4.solidBlue();
       }
     }
+    else if (Robot.LIMELIGHT_SUBSYSTEM.hasTargetSighted()) {
+      RAVEN_BLINKIN_4.solidYellow();
+    }
     else {
-      RAVEN_BLINKIN_4.solidOff();
+      RAVEN_BLINKIN_4.solidRed();
     }
 
 

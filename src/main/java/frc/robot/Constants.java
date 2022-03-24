@@ -84,7 +84,7 @@ public final class Constants {
 
     public static final double LOW_GOAL_TOPSPIN_VOLTAGE_CONTROL_SETPOINT = LOW_GOAL_TOPSPIN_KF * 12;
 // was 2460
-    public static final int TARMAC_BACKSPIN_RPM = 2400;
+    public static final int TARMAC_BACKSPIN_RPM = 2225;
     public static final double TARMAC_BACKSPIN_KF = 0.0449;
 //    public static final double TARMAC_BACKSPIN_KF = 0.0;
     public static final double TARMAC_BACKSPIN_KP = .350;//0.21;
@@ -93,7 +93,7 @@ public final class Constants {
 
     public static final double TARMAC_BACKSPIN_VOLTAGE_CONTROL_SETPOINT = TARMAC_BACKSPIN_KF * 12;
 // was 2460
-    public static final int TARMAC_TOPSPIN_RPM = 2400;
+    public static final int TARMAC_TOPSPIN_RPM = 2225;
     public static final double TARMAC_TOPSPIN_KF = 0.046;
 //    public static final double TARMAC_TOPSPIN_KF = 0.0;
     public static final double TARMAC_TOPSPIN_KP = .35;//0.21;
@@ -102,44 +102,55 @@ public final class Constants {
 
     public static final double TARMAC_TOPSPIN_VOLTAGE_CONTROL_SETPOINT = TARMAC_TOPSPIN_KF * 12;
 
-    public static final int AUTO_RADIUS_BACKSPIN_RPM = 2600;
+    public static final int AUTO_RADIUS_BACKSPIN_RPM = 2425;
 //    public static final double AUTO_RADIUS_BACKSPIN_KF = 0.0;
-    public static final double AUTO_RADIUS_BACKSPIN_KF = 0.1038;
-    public static final double AUTO_RADIUS_BACKSPIN_KP = 0;//0.21;
+    public static final double AUTO_RADIUS_BACKSPIN_KF = 0.0449;
+    public static final double AUTO_RADIUS_BACKSPIN_KP = 0.35;//0.21;
     public static final double AUTO_RADIUS_BACKSPIN_KI = 0;
-    public static final double AUTO_RADIUS_BACKSPIN_KD = 0;
+    public static final double AUTO_RADIUS_BACKSPIN_KD = 4.0;
 
     
     public static final double AUTO_RADIUS_BACKSPIN_VOLTAGE_CONTROL_SETPOINT = AUTO_RADIUS_BACKSPIN_KF * 12;
 
-    public static final int AUTO_RADIUS_TOPSPIN_RPM = 2600;
-    public static final double AUTO_RADIUS_TOPSPIN_KF = 0.1068;
+    public static final int AUTO_RADIUS_TOPSPIN_RPM = 2425;
+    public static final double AUTO_RADIUS_TOPSPIN_KF = 0.046;
     //public static final double AUTO_RADIUS_TOPSPIN_KF = 0.0;
-    public static final double AUTO_RADIUS_TOPSPIN_KP = 0;//0.21;
+    public static final double AUTO_RADIUS_TOPSPIN_KP = .35;//0.21;
     public static final double AUTO_RADIUS_TOPSPIN_KI = 0;
-    public static final double AUTO_RADIUS_TOPSPIN_KD = 0;
+    public static final double AUTO_RADIUS_TOPSPIN_KD = 4.0;
 
     public static final double AUTO_RADIUS_TOPSPIN_VOLTAGE_CONTROL_SETPOINT = AUTO_RADIUS_TOPSPIN_KF * 12;
 
     // LAUNCHPAD WAS 3000
 
-    public static final int LAUNCHPAD_BACKSPIN_RPM = 2800;
+    public static final int LAUNCHPAD_BACKSPIN_RPM = 2675;
    // public static final double LAUNCHPAD_BACKSPIN_KF = 0.0;
-    public static final double LAUNCHPAD_BACKSPIN_KF = 0.1039;
-    public static final double LAUNCHPAD_BACKSPIN_KP = 0;//0.22;
+    public static final double LAUNCHPAD_BACKSPIN_KF = 0.0449;
+    public static final double LAUNCHPAD_BACKSPIN_KP = 0.35;//0.22;
     public static final double LAUNCHPAD_BACKSPIN_KI = 0;
-    public static final double LAUNCHPAD_BACKSPIN_KD = 0;
+    public static final double LAUNCHPAD_BACKSPIN_KD = 4.0;
 
     public static final double LAUNCHPAD_BACKSPIN_VOLTAGE_CONTROL_SETPOINT = LAUNCHPAD_BACKSPIN_KF * 12;
 
+/*
 
+Y-offset constants in order:
+	Minimum range (close to hub): .29
+	Tarmac shots
+	Cutoff between tarmac and cargo shots: -6
+	Cargo shots
+	Cutoff between cargo and launchpad shots: -9.2
+	Launchpad shots
+	Maximum range launchpad shot: -11.6
 
-    public static final int LAUNCHPAD_TOPSPIN_RPM = 2800;
-    public static final double LAUNCHPAD_TOPSPIN_KF = 0.1068;
+*/
+
+    public static final int LAUNCHPAD_TOPSPIN_RPM = 2675;
+    public static final double LAUNCHPAD_TOPSPIN_KF = 0.046;
     //public static final double LAUNCHPAD_TOPSPIN_KF = 0.0;
-    public static final double LAUNCHPAD_TOPSPIN_KP = 0;//0.22;
+    public static final double LAUNCHPAD_TOPSPIN_KP = .35;//0.22;
     public static final double LAUNCHPAD_TOPSPIN_KI = 0;
-    public static final double LAUNCHPAD_TOPSPIN_KD = 0;
+    public static final double LAUNCHPAD_TOPSPIN_KD = 4.0;
 
     public static final double LAUNCHPAD_TOPSPIN_VOLTAGE_CONTROL_SETPOINT = LAUNCHPAD_TOPSPIN_KF * 12;
 
@@ -256,5 +267,6 @@ public final class Constants {
     public static final double LIMELIGHT_LENS_TO_ROBOT_CENTER_OFFSET_INCHES = 0;
     public static final double MINIMUM_DISTANCE_FROM_LIMELIGHT = 46.0;
 	public static final double MAXIMUM_DISTANCE_FROM_LIMELIGHT = 240.0;
+    public static final double LIMELIGHT_CENTERED_OFFSET = 5;
     public static final double LIMELIGHT_IS_ALIGNED_DEGREES = 3;
 }
