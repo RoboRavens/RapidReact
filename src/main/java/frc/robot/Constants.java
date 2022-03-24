@@ -33,8 +33,11 @@ public final class Constants {
     public static final double JOYSTICK_DEADBAND = .05;
     public static final double DRIVE_MAX_TURN_RADIANS_PER_SECOND = 2;
 
+    // COLOR SENSE
+    public static final double BALL_COLOR_THRESHOLD_ENTRY = 50;
+    public static final double BALL_COLOR_THRESHOLD_EXIT = 50;
+  
     // SHOOTER RPM ALLOWANCE TESTED AT 50 for TELEOP BUT SHOULD NOT MATTER
-
     //SHOOTER
     public static final int SHOOTER_IDX = 0;
     public static final int SHOOTER_TIMEOUT_MS = 100;

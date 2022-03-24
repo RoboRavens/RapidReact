@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.controls.AxisCode;
 import frc.controls.ButtonCode;
 import frc.controls.Gamepad;
+import frc.ravenhardware.BlinkinCalibrations;
 import frc.ravenhardware.RavenBlinkin;
 import frc.robot.commands.Auto.FiveBallHps;
 import frc.robot.commands.Auto.ThreeBallTarmacAutoCommand;
@@ -213,34 +214,34 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
   if (Robot.LIMELIGHT_SUBSYSTEM.isAligned()) {
       if (Robot.SHOOTER_SUBSYSTEM.getReadyToShootTarmac()) {
-        RAVEN_BLINKIN_4.blinkBlue();
+        RAVEN_BLINKIN_4.setBlink(BlinkinCalibrations.BLUE);
       }
       else {
-        RAVEN_BLINKIN_4.solidBlue();
+        RAVEN_BLINKIN_4.setSolid(BlinkinCalibrations.BLUE);
       }
    }
     else {
-      RAVEN_BLINKIN_4.solidOff();
+      RAVEN_BLINKIN_4.setSolid(BlinkinCalibrations.OFF);
     }
 
 
     if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() == false && Robot.FEEDER_SUBSYSTEM.getFeederHasBall() == false) {
-      RAVEN_BLINKIN_3.solidRed();
+      RAVEN_BLINKIN_3.setSolid(BlinkinCalibrations.RED);
     }
     else if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() == true && Robot.FEEDER_SUBSYSTEM.getFeederHasBall() == true ){
       if (SHOOTER_SUBSYSTEM.motorsAreSpinning()) {
-        RAVEN_BLINKIN_3.blinkGreen();
+        RAVEN_BLINKIN_3.setBlink(BlinkinCalibrations.GREEN);
       }
       else {
-        RAVEN_BLINKIN_3.solidGreen();
+        RAVEN_BLINKIN_3.setSolid(BlinkinCalibrations.GREEN);
       }
     }
     else if(Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() == true || Robot.FEEDER_SUBSYSTEM.getFeederHasBall() == true) {
       if (SHOOTER_SUBSYSTEM.motorsAreSpinning()) {
-        RAVEN_BLINKIN_3.blinkYellow();
+        RAVEN_BLINKIN_3.setBlink(BlinkinCalibrations.YELLOW);
       }
       else {
-        RAVEN_BLINKIN_3.solidYellow();
+        RAVEN_BLINKIN_3.setSolid(BlinkinCalibrations.YELLOW);
       }      
     }
   }
