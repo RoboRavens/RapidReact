@@ -11,14 +11,14 @@ import frc.robot.RobotMap;
 public class ConveyanceSubsystem extends SubsystemBase {
   
   private TalonSRX _conveyanceMotorOne;
-  private DigitalInput _conveyanceSensorA;
-  private DigitalInput _conveyanceNewFirstSensor;
+  private DigitalInput _conveyanceTransitionBeamBreak;
+  private DigitalInput _conveyanceIntakeBeamBreak;
   private boolean _isIndexing = false;
 
   public ConveyanceSubsystem() {
     _conveyanceMotorOne = new TalonSRX(RobotMap.CONVEYANCE_MOTOR);
-    _conveyanceSensorA = new DigitalInput(RobotMap.SENSOR_A_CHANNEL);
-    _conveyanceNewFirstSensor = new DigitalInput(RobotMap.FIRST_SENSOR_CHANNEL);
+    _conveyanceTransitionBeamBreak = new DigitalInput(RobotMap.CONVEYANCE_TRANSITION_BEAM_BREAK_CHANNEL);
+    _conveyanceIntakeBeamBreak = new DigitalInput(RobotMap.CONVEYANCE_INTAKE_BREAM_BREAK_CHANNEL);
   }
 
   public void setConveyanceMaxReverse() {
@@ -52,11 +52,11 @@ public class ConveyanceSubsystem extends SubsystemBase {
   }
 
   public boolean getConveyanceHasBall() {
-    return !_conveyanceSensorA.get();
+    return !_conveyanceTransitionBeamBreak.get();
   }
 
   public boolean getConveyanceHasBallNewFirstSensor() {
-    return !_conveyanceNewFirstSensor.get();
+    return !_conveyanceIntakeBeamBreak.get();
   }
 
    @Override
@@ -71,5 +71,28 @@ public class ConveyanceSubsystem extends SubsystemBase {
 
   public boolean getRobotHas2Balls() {
     return (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() && Robot.FEEDER_SUBSYSTEM.getFeederHasBall());
+  }
+
+  public int getRobotCargoInventory() {
+    int inventory = 0;
+
+    if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall()) {
+      inventory++;
+    }
+
+    if (Robot.FEEDER_SUBSYSTEM.getFeederHasBall()) {
+      inventory++;
+    }
+
+    return inventory;
+  }
+
+  public int getRobotProperColorInventory() {
+    int inventory = 0;
+
+    
+
+
+    return inventory;
   }
 } 
