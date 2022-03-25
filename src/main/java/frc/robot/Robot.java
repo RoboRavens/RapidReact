@@ -5,8 +5,10 @@
 package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -20,10 +22,14 @@ import frc.controls.ButtonCode;
 import frc.controls.Gamepad;
 import frc.ravenhardware.BlinkinCalibrations;
 import frc.ravenhardware.RavenBlinkin;
+import frc.ravenhardware.RavenPiColor;
+import frc.ravenhardware.RavenPiColorSensor;
+import frc.ravenhardware.RavenPiPosition;
 import frc.robot.commands.auto.FiveBallHps;
 import frc.robot.commands.auto.ThreeBallTarmacAutoCommand;
 import frc.robot.commands.auto.TwoBallAutoCommand;
 import frc.robot.commands.climber.ClimberDefaultBrakeCommand;
+import frc.robot.commands.commandgroups.JunkShotCommandGroup;
 import frc.robot.commands.conveyance.ConveyanceCollectCommand;
 import frc.robot.commands.conveyance.ConveyanceEjectCommand;
 import frc.robot.commands.conveyance.ConveyanceIndexCommand;
@@ -54,6 +60,7 @@ import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeExtenderSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.TurretSwivelSubsystem;
 import frc.util.AutoMode;
 
 /**
@@ -81,7 +88,7 @@ public class Robot extends TimedRobot {
   public static final IntakeRetractCommand IntakeRetract = new IntakeRetractCommand();
   public static final ClimberSubsystem CLIMBER_SUBSYSTEM = new ClimberSubsystem();
   public static final FeederSubsystem FEEDER_SUBSYSTEM = new FeederSubsystem();
-  // public static final TurretSwivelSubsystem TURRET_SWIVEL_SUBSYSTEM = new TurretSwivelSubsystem();
+  public static final TurretSwivelSubsystem TURRET_SWIVEL_SUBSYSTEM = new TurretSwivelSubsystem();
   public static final ConveyanceCollectCommand CONVEYANCE_COLLECT_COMMAND = new ConveyanceCollectCommand();
   public static final ConveyanceEjectCommand CONVEYANCE_EJECT_COMMAND = new ConveyanceEjectCommand();
   public static final FeederEjectCommand FeederEject = new FeederEjectCommand();
@@ -107,6 +114,7 @@ public class Robot extends TimedRobot {
   public static final RavenBlinkin RAVEN_BLINKIN_4 = new RavenBlinkin(4);
   public static final AutoMode TWO_BALL_HANGAR_AUTO = new AutoMode("Two Ball Hangar", TwoBallAutoCommand.getHangarCommand());
   
+  private RavenPiColorSensor _colorSensor = new RavenPiColorSensor();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -118,7 +126,7 @@ public class Robot extends TimedRobot {
     //SHOOTER_SUBSYSTEM.setDefaultCommand(new RunCommand(() -> SHOOTER_SUBSYSTEM.defaultCommand(), SHOOTER_SUBSYSTEM));
 
     SHOOTER_SUBSYSTEM.setDefaultCommand(new RunCommand(() -> SHOOTER_SUBSYSTEM.defaultCommand(), SHOOTER_SUBSYSTEM));
-    // TURRET_SWIVEL_SUBSYSTEM.setDefaultCommand(TURRET_AIM_AT_TARGET);
+    TURRET_SWIVEL_SUBSYSTEM.setDefaultCommand(TURRET_AIM_AT_TARGET);
     FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     CLIMBER_SUBSYSTEM.setDefaultCommand(climberDefaultBrake);
     CONVEYANCE_SUBSYSTEM.setDefaultCommand(CONVEYANCE_INDEX_COMMAND);
@@ -270,6 +278,17 @@ public class Robot extends TimedRobot {
     OP_PAD.getButton(ButtonCode.CLIMBER_OVERRIDE)
       .whenActive(new InstantCommand(CLIMBER_SUBSYSTEM::turnOverrideOn))
       .whenInactive(new InstantCommand(CLIMBER_SUBSYSTEM::turnOverrideOff));
+
+      var shootGarbarge = new Trigger(() -> {
+        boolean ballIsRed = _colorSensor.getBallType(RavenPiPosition.EXIT) == RavenPiColor.RED;
+        boolean blueAlliance = DriverStation.getAlliance() == Alliance.Blue;
+        boolean ballIsBlue = _colorSensor.getBallType(RavenPiPosition.EXIT) == RavenPiColor.BLUE;
+        boolean redAlliance = DriverStation.getAlliance() == Alliance.Red;
+  
+        return ballIsRed && blueAlliance || ballIsBlue && redAlliance;
+      });
+  
+      shootGarbarge.whenActive(new JunkShotCommandGroup(), false);
 
     new Trigger(() -> GAMEPAD.getAxisIsPressed(AxisCode.RIGHTTRIGGER))
       .whenActive(DRIVE_TRAIN_SUBSYSTEM::cutPower)

@@ -183,7 +183,8 @@ Y-offset constants in order:
     public static final int TURRET_RANGE = 50; //Degrees of motion in both ways (180 means full movement both ways)
     public static final double TURRET_ENCODER_RATIO = 500; //Divide encoder ticks by this, multiply angles by this (encoder ticks are much less than angles)
     public static final double TURRET_AIM_ALLOWANCE = 2; //Degrees of allowance to say that the turret has "reached" its target
-    
+    public static final double TURRET_MISS_OFFSET = 35;
+
     public static final double TURRET_DEFAULT_KF = 0;
     public static final double TURRET_DEFAULT_KP = 0.075;
     public static final double TURRET_DEFAULT_KI = 0;
