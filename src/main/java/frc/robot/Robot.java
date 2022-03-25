@@ -6,9 +6,9 @@ package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -22,9 +22,7 @@ import frc.controls.ButtonCode;
 import frc.controls.Gamepad;
 import frc.ravenhardware.BlinkinCalibrations;
 import frc.ravenhardware.RavenBlinkin;
-import frc.ravenhardware.RavenPiColor;
 import frc.ravenhardware.RavenPiColorSensor;
-import frc.ravenhardware.RavenPiPosition;
 import frc.robot.commands.auto.FiveBallHps;
 import frc.robot.commands.auto.ThreeBallTarmacAutoCommand;
 import frc.robot.commands.auto.TwoBallAutoCommand;
@@ -249,10 +247,10 @@ public class Robot extends TimedRobot {
     }
 
 
-    if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() == false && Robot.FEEDER_SUBSYSTEM.getFeederHasBall() == false) {
+    if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceStagingBeamBreakHasBall() == false && Robot.FEEDER_SUBSYSTEM.getFeederHasBall() == false) {
       RAVEN_BLINKIN_3.setSolid(BlinkinCalibrations.RED);
     }
-    else if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() == true && Robot.FEEDER_SUBSYSTEM.getFeederHasBall() == true ){
+    else if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceStagingBeamBreakHasBall() == true && Robot.FEEDER_SUBSYSTEM.getFeederHasBall() == true ){
       if (SHOOTER_SUBSYSTEM.motorsAreSpinning()) {
         RAVEN_BLINKIN_3.setBlink(BlinkinCalibrations.GREEN);
       }
@@ -260,7 +258,7 @@ public class Robot extends TimedRobot {
         RAVEN_BLINKIN_3.setSolid(BlinkinCalibrations.GREEN);
       }
     }
-    else if(Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() == true || Robot.FEEDER_SUBSYSTEM.getFeederHasBall() == true) {
+    else if(Robot.CONVEYANCE_SUBSYSTEM.getConveyanceStagingBeamBreakHasBall() == true || Robot.FEEDER_SUBSYSTEM.getFeederHasBall() == true) {
       if (SHOOTER_SUBSYSTEM.motorsAreSpinning()) {
         RAVEN_BLINKIN_3.setBlink(BlinkinCalibrations.YELLOW);
       }
@@ -282,16 +280,11 @@ public class Robot extends TimedRobot {
       .whenActive(new InstantCommand(CLIMBER_SUBSYSTEM::turnOverrideOn))
       .whenInactive(new InstantCommand(CLIMBER_SUBSYSTEM::turnOverrideOff));
 
-      var shootGarbarge = new Trigger(() -> {
-        boolean ballIsRed = COLOR_SENSOR.getBallType(RavenPiPosition.FEEDER) == Alliance.Red;
-        boolean blueAlliance = ALLIANCE_COLOR == Alliance.Blue;
-        boolean ballIsBlue = COLOR_SENSOR.getBallType(RavenPiPosition.FEEDER) == Alliance.Blue;
-        boolean redAlliance = ALLIANCE_COLOR == Alliance.Red;
-  
-        return ballIsRed && blueAlliance || ballIsBlue && redAlliance;
-      });
-  
-      shootGarbarge.whenActive(new JunkShotCommandGroup(), false);
+    var shootGarbarge = new Trigger(() -> {
+      return FEEDER_SUBSYSTEM.feederHasWrongColorCargo();
+    });
+
+    shootGarbarge.whenActive(new JunkShotCommandGroup(), false);
 
     new Trigger(() -> GAMEPAD.getAxisIsPressed(AxisCode.RIGHTTRIGGER))
       .whenActive(DRIVE_TRAIN_SUBSYSTEM::cutPower)
@@ -301,7 +294,9 @@ public class Robot extends TimedRobot {
       .whenActive(() -> DRIVE_TRAIN_DEFAULT_COMMAND.followLimelight())
       .whenInactive(() -> DRIVE_TRAIN_DEFAULT_COMMAND.stopFollowingLimelight());
 
-    
+    new Trigger(() -> (GAMEPAD.getButtonValue(ButtonCode.RIGHTBUMPER) && Robot.getRobotHas2Balls() == false))
+      .whenActive(CONVEYANCE_COLLECT_COMMAND);
+
     OP_PAD2.getButton(ButtonCode.CLIMBER_RETRACT).whileHeld(new StartEndCommand(
       () -> Robot.CLIMBER_SUBSYSTEM.retract(),
       () -> Robot.CLIMBER_SUBSYSTEM.stop(),
@@ -327,7 +322,7 @@ public class Robot extends TimedRobot {
       .whileHeld(SHOOTER_START_COMMAND)
       .whenInactive(SHOOTER_STOP_COMMAND);
 
-    GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(CONVEYANCE_COLLECT_COMMAND);
+    // GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(CONVEYANCE_COLLECT_COMMAND);
     //GAMEPAD.getButton(ButtonCode.B).whileHeld(new SequentialCommandGroup(new WaitCommand(.15), SHOOTER_START_COMMAND));
     GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(CONVEYANCE_EJECT_COMMAND);
     //GAMEPAD.getButton(ButtonCode.B).whenPressed(FeederSafetyReverse);
@@ -355,6 +350,7 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {}
 
+  /*
   public boolean giveLimelightDriveControl() {
     boolean giveControl = false;
 
@@ -365,15 +361,16 @@ public class Robot extends TimedRobot {
 
     return giveControl;
   }
+  */
 
-  public boolean getRobotHas2Balls() {
-    return (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() && Robot.FEEDER_SUBSYSTEM.getFeederHasBall());
+  public static boolean getRobotHas2Balls() {
+    return (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceStagingBeamBreakHasBall() && Robot.FEEDER_SUBSYSTEM.getFeederHasBall());
   }
 
   public int getRobotCargoInventory() {
     int inventory = 0;
 
-    if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall()) {
+    if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceStagingBeamBreakHasBall()) {
       inventory++;
     }
 

@@ -18,13 +18,13 @@ public class FeederSubsystem extends SubsystemBase {
    
   private TalonFX _conveyanceMotorTwo;
   private TalonFX _feederWheelMotor;
-  private DigitalInput _conveyanceSensorB;
+  private DigitalInput _feederBeamBreak;
 
 
   public FeederSubsystem() {
       _conveyanceMotorTwo = new TalonFX(RobotMap.FEEDER_CONVEYANCE_MOTOR);
       _feederWheelMotor = new TalonFX(RobotMap.FEEDER_MOTOR);
-      _conveyanceSensorB = new DigitalInput(RobotMap.SENSOR_B_CHANNEL);
+      _feederBeamBreak = new DigitalInput(RobotMap.FEEDER_BEAM_BREAK_CHANNEL);
   }
 
   @Override
@@ -92,7 +92,7 @@ public class FeederSubsystem extends SubsystemBase {
   }
 
   public boolean getFeederHasBall() {
-    return !_conveyanceSensorB.get();
+    return !_feederBeamBreak.get();
   }
 
   // This method runs the feeder wheel and the conveyance, but only

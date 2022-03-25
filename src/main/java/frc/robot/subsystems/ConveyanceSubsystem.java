@@ -2,9 +2,9 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.ravenhardware.RavenPiColor;
 import frc.ravenhardware.RavenPiPosition;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -13,13 +13,13 @@ import frc.robot.RobotMap;
 public class ConveyanceSubsystem extends SubsystemBase {
   
   private TalonSRX _conveyanceMotorOne;
-  private DigitalInput _conveyanceTransitionBeamBreak;
+  private DigitalInput _conveyanceStagingBeamBreak;
   private DigitalInput _conveyanceIntakeBeamBreak;
   private boolean _isIndexing = false;
 
   public ConveyanceSubsystem() {
     _conveyanceMotorOne = new TalonSRX(RobotMap.CONVEYANCE_MOTOR);
-    _conveyanceTransitionBeamBreak = new DigitalInput(RobotMap.CONVEYANCE_TRANSITION_BEAM_BREAK_CHANNEL);
+    _conveyanceStagingBeamBreak = new DigitalInput(RobotMap.CONVEYANCE_TRANSITION_BEAM_BREAK_CHANNEL);
     _conveyanceIntakeBeamBreak = new DigitalInput(RobotMap.CONVEYANCE_INTAKE_BREAM_BREAK_CHANNEL);
   }
 
@@ -53,11 +53,11 @@ public class ConveyanceSubsystem extends SubsystemBase {
     this.runConveyanceAtPercentPower(Constants.CONVEYANCE_ONE_STOP);
   }
 
-  public boolean getConveyanceHasBall() {
-    return !_conveyanceTransitionBeamBreak.get();
+  public boolean getConveyanceStagingBeamBreakHasBall() {
+    return !_conveyanceStagingBeamBreak.get();
   }
 
-  public boolean getConveyanceHasBallNewFirstSensor() {
+  public boolean getConveyanceIntakeBeamBreakHasBall() {
     return !_conveyanceIntakeBeamBreak.get();
   }
 
@@ -71,11 +71,10 @@ public class ConveyanceSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run during simulation 
   }
 
-
   public boolean conveyanceHasProperColorCargo() {
     boolean conveyanceHasProperColorCargo = false;
     
-    if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall()) {
+    if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceStagingBeamBreakHasBall()) {
       if (Robot.COLOR_SENSOR.getSensorIsCorrectBallColorLenient(RavenPiPosition.CONVEYANCE)) {
         conveyanceHasProperColorCargo = true;
       }
@@ -87,7 +86,7 @@ public class ConveyanceSubsystem extends SubsystemBase {
   public boolean conveyanceHasWrongColorCargo() {
     boolean conveyanceHasWrongColorCargo = false;
     
-    if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall()) {
+    if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceStagingBeamBreakHasBall()) {
       if (Robot.COLOR_SENSOR.getSensorIsCorrectBallColorLenient(RavenPiPosition.CONVEYANCE)) {
         conveyanceHasWrongColorCargo = true;
       }
@@ -95,5 +94,4 @@ public class ConveyanceSubsystem extends SubsystemBase {
 
     return conveyanceHasWrongColorCargo;
   }
-
 } 
