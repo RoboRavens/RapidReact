@@ -114,7 +114,8 @@ public class Robot extends TimedRobot {
   public static final RavenBlinkin RAVEN_BLINKIN_4 = new RavenBlinkin(4);
   public static final AutoMode TWO_BALL_HANGAR_AUTO = new AutoMode("Two Ball Hangar", TwoBallAutoCommand.getHangarCommand());
   
-  private RavenPiColorSensor _colorSensor = new RavenPiColorSensor();
+  public static final RavenPiColorSensor COLOR_SENSOR = new RavenPiColorSensor();
+  public static Alliance ALLIANCE_COLOR;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -122,6 +123,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    ALLIANCE_COLOR = DriverStation.getAlliance();
+
     DRIVE_TRAIN_SUBSYSTEM.setDefaultCommand(DRIVE_TRAIN_DEFAULT_COMMAND);
     //SHOOTER_SUBSYSTEM.setDefaultCommand(new RunCommand(() -> SHOOTER_SUBSYSTEM.defaultCommand(), SHOOTER_SUBSYSTEM));
 
@@ -280,10 +283,10 @@ public class Robot extends TimedRobot {
       .whenInactive(new InstantCommand(CLIMBER_SUBSYSTEM::turnOverrideOff));
 
       var shootGarbarge = new Trigger(() -> {
-        boolean ballIsRed = _colorSensor.getBallType(RavenPiPosition.EXIT) == RavenPiColor.RED;
-        boolean blueAlliance = DriverStation.getAlliance() == Alliance.Blue;
-        boolean ballIsBlue = _colorSensor.getBallType(RavenPiPosition.EXIT) == RavenPiColor.BLUE;
-        boolean redAlliance = DriverStation.getAlliance() == Alliance.Red;
+        boolean ballIsRed = COLOR_SENSOR.getBallType(RavenPiPosition.FEEDER) == Alliance.Red;
+        boolean blueAlliance = ALLIANCE_COLOR == Alliance.Blue;
+        boolean ballIsBlue = COLOR_SENSOR.getBallType(RavenPiPosition.FEEDER) == Alliance.Blue;
+        boolean redAlliance = ALLIANCE_COLOR == Alliance.Red;
   
         return ballIsRed && blueAlliance || ballIsBlue && redAlliance;
       });
@@ -361,6 +364,38 @@ public class Robot extends TimedRobot {
 
 
     return giveControl;
+  }
+
+  public boolean getRobotHas2Balls() {
+    return (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() && Robot.FEEDER_SUBSYSTEM.getFeederHasBall());
+  }
+
+  public int getRobotCargoInventory() {
+    int inventory = 0;
+
+    if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall()) {
+      inventory++;
+    }
+
+    if (Robot.FEEDER_SUBSYSTEM.getFeederHasBall()) {
+      inventory++;
+    }
+
+    return inventory;
+  }
+
+  public int getRobotProperColorInventory() {
+    int inventory = 0;
+
+    if (Robot.CONVEYANCE_SUBSYSTEM.conveyanceHasProperColorCargo()) {
+      inventory++;
+    }
+
+    if (Robot.FEEDER_SUBSYSTEM.feederHasProperColorCargo()) {
+      inventory++;
+    }
+    
+    return inventory;
   }
 
 }

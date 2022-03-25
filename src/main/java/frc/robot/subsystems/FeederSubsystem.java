@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.ravenhardware.RavenPiPosition;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
@@ -122,4 +123,30 @@ public class FeederSubsystem extends SubsystemBase {
       conveyanceStop();
     }
   }
+
+  public boolean feederHasProperColorCargo() {
+    boolean feederHasProperColorCargo = false;
+    
+    if (Robot.FEEDER_SUBSYSTEM.getFeederHasBall()) {
+      if (Robot.COLOR_SENSOR.getSensorIsCorrectBallColorLenient(RavenPiPosition.FEEDER)) {
+        feederHasProperColorCargo = true;
+      }
+    }
+
+    return feederHasProperColorCargo;
+  }
+
+  public boolean feederHasWrongColorCargo() {
+    boolean feederHasWrongColorCargo = false;
+    
+    if (Robot.FEEDER_SUBSYSTEM.getFeederHasBall()) {
+      if (Robot.COLOR_SENSOR.getSensorIsCorrectBallColorLenient(RavenPiPosition.FEEDER)) {
+        feederHasWrongColorCargo = true;
+      }
+    }
+
+    return feederHasWrongColorCargo;
+  }
+
+
 }

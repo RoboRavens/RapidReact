@@ -4,6 +4,8 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.ravenhardware.RavenPiColor;
+import frc.ravenhardware.RavenPiPosition;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
@@ -21,11 +23,11 @@ public class ConveyanceSubsystem extends SubsystemBase {
     _conveyanceIntakeBeamBreak = new DigitalInput(RobotMap.CONVEYANCE_INTAKE_BREAM_BREAK_CHANNEL);
   }
 
-  public void setConveyanceMaxReverse() {
+  public void setConveyanceEjectCargo() {
     this.runConveyanceAtPercentPower(Constants.CONVEYANCE_ONE_FULL_SPEED_REVERSE);
   }
 
-  public void setConveyanceMaxForward() {
+  public void setConveyanceCollectCargo() {
     this.runConveyanceAtPercentPower(Constants.CONVEYANCE_ONE_FULL_SPEED);
   }
 
@@ -69,30 +71,29 @@ public class ConveyanceSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run during simulation 
   }
 
-  public boolean getRobotHas2Balls() {
-    return (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall() && Robot.FEEDER_SUBSYSTEM.getFeederHasBall());
-  }
 
-  public int getRobotCargoInventory() {
-    int inventory = 0;
-
-    if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall()) {
-      inventory++;
-    }
-
-    if (Robot.FEEDER_SUBSYSTEM.getFeederHasBall()) {
-      inventory++;
-    }
-
-    return inventory;
-  }
-
-  public int getRobotProperColorInventory() {
-    int inventory = 0;
-
+  public boolean conveyanceHasProperColorCargo() {
+    boolean conveyanceHasProperColorCargo = false;
     
+    if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall()) {
+      if (Robot.COLOR_SENSOR.getSensorIsCorrectBallColorLenient(RavenPiPosition.CONVEYANCE)) {
+        conveyanceHasProperColorCargo = true;
+      }
+    }
 
-
-    return inventory;
+    return conveyanceHasProperColorCargo;
   }
+
+  public boolean conveyanceHasWrongColorCargo() {
+    boolean conveyanceHasWrongColorCargo = false;
+    
+    if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceHasBall()) {
+      if (Robot.COLOR_SENSOR.getSensorIsCorrectBallColorLenient(RavenPiPosition.CONVEYANCE)) {
+        conveyanceHasWrongColorCargo = true;
+      }
+    }
+
+    return conveyanceHasWrongColorCargo;
+  }
+
 } 
