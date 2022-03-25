@@ -7,7 +7,7 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public abstract class DriveTrainSubsystemBase extends SubsystemBase {
+public abstract class DrivetrainSubsystemBase extends SubsystemBase {
     public abstract void drive(ChassisSpeeds chassisSpeeds);
     public abstract Rotation2d getOdometryRotation();
     public abstract void holdPosition();

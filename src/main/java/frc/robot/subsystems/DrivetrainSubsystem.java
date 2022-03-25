@@ -37,7 +37,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import static frc.robot.RobotMap.*;
 
 // Template From: https://github.com/SwerveDriveSpecialties/swerve-template/blob/master/src/main/java/frc/robot/subsystems/DrivetrainSubsystem.java
-public class DrivetrainSubsystem extends DriveTrainSubsystemBase {
+public class DrivetrainSubsystem extends DrivetrainSubsystemBase {
   /**
    * The maximum voltage that will be delivered to the drive motors.
    * <p>

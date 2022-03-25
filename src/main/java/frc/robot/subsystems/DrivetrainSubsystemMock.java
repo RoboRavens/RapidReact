@@ -7,7 +7,7 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
-public class DriveTrainSubsystemMock extends DriveTrainSubsystemBase {
+public class DrivetrainSubsystemMock extends DrivetrainSubsystemBase {
 
     @Override
     public void drive(ChassisSpeeds chassisSpeeds) {}
