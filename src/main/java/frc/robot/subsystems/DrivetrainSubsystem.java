@@ -374,4 +374,22 @@ public class DrivetrainSubsystem extends DrivetrainSubsystemBase {
   private void calculateDriveCharacteristics() {
     _driveCharacteristics.update(_odometryFromHardware.getPoseMeters(), 360 - m_navx.getAngle());
   }
+
+  public double getFieldOrientedRobotMovementDirection(double x, double y) {
+    // Use trigonometry to determine the angle at which the robot will be told to move by the controller.
+    // Math.atan returns a result in radians.
+    double radians = Math.atan(y / x);
+    double degrees = Math.toDegrees(radians);
+
+    return degrees;
+  }
+
+  // Return the difference between the robot's drive direction and its orientation,
+  // in degrees. Needs checking to ensure that the offset is in the correct direction.
+  public double getRobotDirectionRelativeToOrientation(double directionDegrees) {
+      Rotation2d orientationObject = getGyroscopeRotation();
+      double orientationDegrees = orientationObject.getDegrees();
+
+      return directionDegrees - orientationDegrees;
+  }
 }

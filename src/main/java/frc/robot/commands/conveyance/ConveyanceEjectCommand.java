@@ -20,7 +20,7 @@ import frc.robot.Robot;
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Robot.CONVEYANCE_SUBSYSTEM.setConveyanceMaxReverse();
+    Robot.CONVEYANCE_SUBSYSTEM.setConveyanceEjectCargo();
   }
   
   // Called once the command ends or is interrupted.

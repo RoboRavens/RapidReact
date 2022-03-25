@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.ravenhardware.RavenPiPosition;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
@@ -17,13 +18,13 @@ public class FeederSubsystem extends SubsystemBase {
    
   private TalonFX _conveyanceMotorTwo;
   private TalonFX _feederWheelMotor;
-  private DigitalInput _conveyanceSensorB;
+  private DigitalInput _feederBeamBreak;
 
 
   public FeederSubsystem() {
       _conveyanceMotorTwo = new TalonFX(RobotMap.FEEDER_CONVEYANCE_MOTOR);
       _feederWheelMotor = new TalonFX(RobotMap.FEEDER_MOTOR);
-      _conveyanceSensorB = new DigitalInput(RobotMap.SENSOR_B_CHANNEL);
+      _feederBeamBreak = new DigitalInput(RobotMap.FEEDER_BEAM_BREAK_CHANNEL);
   }
 
   @Override
@@ -91,7 +92,7 @@ public class FeederSubsystem extends SubsystemBase {
   }
 
   public boolean getFeederHasBall() {
-    return !_conveyanceSensorB.get();
+    return !_feederBeamBreak.get();
   }
 
   // This method runs the feeder wheel and the conveyance, but only
@@ -122,4 +123,30 @@ public class FeederSubsystem extends SubsystemBase {
       conveyanceStop();
     }
   }
+
+  public boolean feederHasProperColorCargo() {
+    boolean feederHasProperColorCargo = false;
+    
+    if (Robot.FEEDER_SUBSYSTEM.getFeederHasBall()) {
+      if (Robot.COLOR_SENSOR.getSensorIsCorrectBallColorLenient(RavenPiPosition.FEEDER)) {
+        feederHasProperColorCargo = true;
+      }
+    }
+
+    return feederHasProperColorCargo;
+  }
+
+  public boolean feederHasWrongColorCargo() {
+    boolean feederHasWrongColorCargo = false;
+    
+    if (Robot.FEEDER_SUBSYSTEM.getFeederHasBall()) {
+      if (Robot.COLOR_SENSOR.getSensorIsCorrectBallColorLenient(RavenPiPosition.FEEDER)) {
+        feederHasWrongColorCargo = true;
+      }
+    }
+
+    return feederHasWrongColorCargo;
+  }
+
+
 }

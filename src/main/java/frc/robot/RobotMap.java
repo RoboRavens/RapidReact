@@ -68,7 +68,7 @@ public final class RobotMap {
 
     //SENSORS
     public static final int CONVEYANCE_TRANSITION_BEAM_BREAK_CHANNEL = 0; 
-    public static final int SENSOR_B_CHANNEL = 1; 
+    public static final int FEEDER_BEAM_BREAK_CHANNEL = 1; 
     public static final int CONVEYANCE_INTAKE_BREAM_BREAK_CHANNEL = 2; // currently does not have correct channel number
 
     
