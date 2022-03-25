@@ -186,12 +186,12 @@ Y-offset constants in order:
     public static final double TURRET_MISS_OFFSET = 35;
 
     public static final double TURRET_DEFAULT_KF = 0;
-    public static final double TURRET_DEFAULT_KP = 0.075;
+    public static final double TURRET_DEFAULT_KP = 0.0001; //0.075;
     public static final double TURRET_DEFAULT_KI = 0;
     public static final double TURRET_DEFAULT_KD = 0;
 
     public static final double TURRET_FLIP_KF = 0;
-    public static final double TURRET_FLIP_KP = 0.1;
+    public static final double TURRET_FLIP_KP = 0.0001; //0.1;
     public static final double TURRET_FLIP_KI = 0;
     public static final double TURRET_FLIP_KD = 0;
 
