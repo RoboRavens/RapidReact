@@ -24,6 +24,8 @@ public class ConveyanceIndexCommand extends CommandBase {
       boolean onlyOneBallInConveyance = false;
       boolean entranceBeamBreakHadBall = false;
       boolean ballIsEjecting = false;
+      boolean conveyanceEjectingWrongColorCargo = false;
+      boolean conveyanceEjectingThirdBall = false;
 
       // if (entranceBeamBreakHasBall || stagingBeamBreakHasBall) {
       //   atLeastOneBallInConveyanceOne = true;
@@ -33,11 +35,11 @@ public class ConveyanceIndexCommand extends CommandBase {
       // }
 
       // if (onlyOneBallInConveyance || firstSensorHadBall) {
-      //   Robot.CONVEYANCE_SUBSYSTEM.setConveyanceIndexSpeedForward();   //when there is a ball in conveyance stage 1 and 2 conveyance wont run      
+      //   Robot.CONVEYANCE_SUBSYSTEM.setConveyanceIndexCargoForward();
       //   firstSensorHadBall = true;
       // } 
-      // else if (stagingBeamBreakHasBall && feederHasBall) {        
-      //   Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne();  //if there is a ball in comveyance stage 1 but nothing at stage 2 conveyance will run at 1
+      // else if (stagingBeamBreakHasBall && feederHasBall) {
+      //   Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne(); 
       //   firstSensorHadBall = false;
       // } 
       // else if (atLeastOneBallInConveyanceOne == false) {
@@ -52,14 +54,16 @@ public class ConveyanceIndexCommand extends CommandBase {
             if (entranceBeamBreakHasBall == false) {
               Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne();
             }
-            else if (entranceBeamBreakHasBall) { // If there are three balls in the robot
+            else if (entranceBeamBreakHasBall) { 
               Robot.CONVEYANCE_SUBSYSTEM.setConveyanceEjectCargo();
               ballIsEjecting = true;
+              conveyanceEjectingThirdBall = true;
             }
           }
           else if (Robot.CONVEYANCE_SUBSYSTEM.conveyanceHasWrongColorCargo()) {
             Robot.CONVEYANCE_SUBSYSTEM.setConveyanceEjectCargo();
             ballIsEjecting = true;
+            conveyanceEjectingWrongColorCargo = true;
           }
         }
         else if (stagingBeamBreakHasBall == false && ballIsEjecting == false) {
@@ -71,15 +75,40 @@ public class ConveyanceIndexCommand extends CommandBase {
             Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne();
           }
         }
-        else if (ballIsEjecting == true) {
-          Robot.CONVEYANCE_SUBSYSTEM.setConveyanceEjectCargo();
-          if (entranceBeamBreakHasBall == false) {
-            ballIsEjecting = false;
+        else if (ballIsEjecting) {
+          if (conveyanceEjectingWrongColorCargo) { // If a ball is ejecting because it's the wrong color
+            Robot.CONVEYANCE_SUBSYSTEM.setConveyanceEjectCargo();
+            if (entranceBeamBreakHasBall || entranceBeamBreakHadBall) { // If the entrance beam break has the ball or the ball was recently ejected
+              Robot.CONVEYANCE_SUBSYSTEM.setConveyanceEjectCargo();
+              if (entranceBeamBreakHasBall == false) { // If the entrance beam break no longer shows true because the ball was recently ejected
+                Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne();
+                ballIsEjecting = false;
+                conveyanceEjectingWrongColorCargo = false;
+                entranceBeamBreakHadBall = false;
+              }
+            }
+          }
+          else if (conveyanceEjectingThirdBall) { // If a ball is ejecting because there is a third ball in the robot
+            if (entranceBeamBreakHasBall == false) {
+              Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne();
+              ballIsEjecting = false;
+              conveyanceEjectingThirdBall = false;
+            }
           }
         }
       }
       else if (feederHasBall == false) {
-        Robot.CONVEYANCE_SUBSYSTEM.setConveyanceIndexCargoForward();
+        if (entranceBeamBreakHadBall == false && entranceBeamBreakHasBall == false && stagingBeamBreakHasBall == false) {
+          Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne();
+        }
+        else if (stagingBeamBreakHasBall) {
+          Robot.CONVEYANCE_SUBSYSTEM.setConveyanceIndexCargoForward();
+          entranceBeamBreakHadBall = false;
+        }
+        else if (entranceBeamBreakHadBall || entranceBeamBreakHasBall) {
+          Robot.CONVEYANCE_SUBSYSTEM.setConveyanceIndexCargoForward();
+          entranceBeamBreakHadBall = true;
+        }
       }
 
     }     
