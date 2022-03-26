@@ -46,7 +46,7 @@ public class ConveyanceIndexCommand extends CommandBase {
       // }
 
       if (feederHasBall) {
-        if (stagingBeamBreakHasBall && !ballIsEjecting) {
+        if (stagingBeamBreakHasBall && ballIsEjecting == false) {
           entranceBeamBreakHadBall = false;
           if (Robot.CONVEYANCE_SUBSYSTEM.conveyanceHasProperColorCargo()) {
             if (entranceBeamBreakHasBall == false) {
@@ -62,12 +62,12 @@ public class ConveyanceIndexCommand extends CommandBase {
             ballIsEjecting = true;
           }
         }
-        else if (stagingBeamBreakHasBall == false && !ballIsEjecting) {
-          if(entranceBeamBreakHasBall || entranceBeamBreakHadBall) {
-            Robot.CONVEYANCE_SUBSYSTEM.setConveyanceIndexSpeedForward();
+        else if (stagingBeamBreakHasBall == false && ballIsEjecting == false) {
+          if (entranceBeamBreakHasBall || entranceBeamBreakHadBall) {
+            Robot.CONVEYANCE_SUBSYSTEM.setConveyanceIndexCargoForward();
             entranceBeamBreakHadBall = true;
           }
-          else if(entranceBeamBreakHasBall == false) {
+          else if (entranceBeamBreakHasBall == false) {
             Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne();
           }
         }
@@ -79,7 +79,7 @@ public class ConveyanceIndexCommand extends CommandBase {
         }
       }
       else if (feederHasBall == false) {
-        Robot.CONVEYANCE_SUBSYSTEM.setConveyanceIndexSpeedForward();
+        Robot.CONVEYANCE_SUBSYSTEM.setConveyanceIndexCargoForward();
       }
 
     }     

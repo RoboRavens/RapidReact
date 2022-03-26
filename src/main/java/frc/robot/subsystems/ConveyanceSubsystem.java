@@ -35,7 +35,7 @@ public class ConveyanceSubsystem extends SubsystemBase {
     return _isIndexing;
   }
 
-  public void setConveyanceIndexSpeedForward() {
+  public void setConveyanceIndexCargoForward() {
     _isIndexing = true;
     this.runConveyanceAtPercentPower(Constants.CONVEYANCE_ONE_INDEX_SPEED);
   }
