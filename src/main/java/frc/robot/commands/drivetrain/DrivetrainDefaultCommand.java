@@ -12,7 +12,9 @@ import frc.util.Deadband;
 
 public class DrivetrainDefaultCommand extends CommandBase {
     private boolean _followLimelight = false;
+    private boolean _autoSteer = true;
     private PIDController _followLimelightPID = new PIDController(.3, 0, 0);
+    private PIDController _autoSteerPID = new PIDController(.04, 0, 0);
 
     public DrivetrainDefaultCommand() {
         addRequirements(Robot.DRIVE_TRAIN_SUBSYSTEM);
@@ -29,6 +31,9 @@ public class DrivetrainDefaultCommand extends CommandBase {
         x = Deadband.adjustValueToZero(x, Constants.JOYSTICK_DEADBAND);
         y = Deadband.adjustValueToZero(y, Constants.JOYSTICK_DEADBAND);
 
+        double rightJoystickInput = Robot.GAMEPAD.getAxis(AxisCode.RIGHTSTICKX) * -1 * Constants.DRIVE_MAX_TURN_RADIANS_PER_SECOND; // Robot.JOYSTICK.getRawAxis(2);
+        rightJoystickInput = Deadband.adjustValueToZero(rightJoystickInput, Constants.JOYSTICK_DEADBAND);
+
         // SmartDashboard.putNumber("Drive Time", Timer.getFPGATimestamp());
         // SmartDashboard.putNumber("Drive X", x);
         // SmartDashboard.putNumber("Drive Y", y);
@@ -40,11 +45,15 @@ public class DrivetrainDefaultCommand extends CommandBase {
         if (limelightAngle != null) {
             r = _followLimelightPID.calculate(limelightAngle.doubleValue());
             // SmartDashboard.putNumber("", r);
-        } else {
+        } else if (Math.abs(rightJoystickInput) > 0.0){
             // _followLimelightPID.reset();
-            r = Robot.GAMEPAD.getAxis(AxisCode.RIGHTSTICKX) * -1 * Constants.DRIVE_MAX_TURN_RADIANS_PER_SECOND; // Robot.JOYSTICK.getRawAxis(2);
-            r = Deadband.adjustValueToZero(r, Constants.JOYSTICK_DEADBAND);
-            r = r * Constants.DRIVE_MAX_TURN_RADIANS_PER_SECOND;
+            r = rightJoystickInput * Constants.DRIVE_MAX_TURN_RADIANS_PER_SECOND;
+        } else if (_autoSteer && Robot.DRIVE_TRAIN_SUBSYSTEM.powerIsCut() == false && (x != 0 || y != 0)) {
+            var angularDiff = this.getDegreesToMovementDirection(x, y, a.getDegrees());
+            double autoSteerRotationalVelocity = _autoSteerPID.calculate(angularDiff);
+            r = autoSteerRotationalVelocity;
+        } else {
+            r = 0.0;
         }
 
         // SmartDashboard.putNumber("Drive R", r);
@@ -77,6 +86,14 @@ public class DrivetrainDefaultCommand extends CommandBase {
         _followLimelight = false;
     }
 
+    public void enableAutoSteer() {
+        _autoSteer = true;
+    }
+
+    public void disableAutoSteer() {
+        _autoSteer = false;
+    }
+
     private Double getLimelightTargetOffset() {
         if (_followLimelight == false) {
             return null;
@@ -91,5 +108,29 @@ public class DrivetrainDefaultCommand extends CommandBase {
         }
 
         return Robot.LIMELIGHT_SUBSYSTEM.getTargetOffsetAngle();
+    }
+
+    private double getDegreesToMovementDirection(double x, double y, double robotAngleDegrees) {
+        double desiredAngleRadians = Math.atan2(y, x);
+        return this.getShortestAngularDifference(robotAngleDegrees, Math.toDegrees(desiredAngleRadians));
+    }
+
+    /**
+     * Gets the shortest angular difference between two points.
+     * @param current current angle in degrees
+     * @param target target angle in degrees
+     * @return the shortest angle to get from current to target
+     */
+    private double getShortestAngularDifference(double current, double target) {
+		current = current % 360.0;
+		target = target % 360.0;
+		double d = Math.abs(current - target) % 360.0; 
+		double r = d > 180 ? 360 - d : d;
+		
+		//calculate sign 
+		int sign = (current - target >= 0 && current - target <= 180) || (current - target <= -180 && current - target >= -360) ? 1 : -1; 
+		r *= sign;
+
+		return r;
     }
 }

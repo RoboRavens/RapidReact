@@ -228,6 +228,11 @@ public class DrivetrainSubsystem extends DrivetrainSubsystemBase {
   }
 
   @Override
+  public boolean powerIsCut() {
+    return _cutPower;
+  }
+
+  @Override
   public void drive(ChassisSpeeds chassisSpeeds) {
     if (_cutPower) {
       chassisSpeeds.omegaRadiansPerSecond =  chassisSpeeds.omegaRadiansPerSecond * 0.5;

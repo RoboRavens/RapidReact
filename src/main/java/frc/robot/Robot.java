@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -34,7 +35,7 @@ import frc.robot.commands.conveyance.ConveyanceIndexCommand;
 import frc.robot.commands.conveyance.IntakeRetractCommand;
 import frc.robot.commands.drivetrain.DrivetrainDefaultCommand;
 import frc.robot.commands.feeder.FeederCollectCommand;
-import frc.robot.commands.feeder.FeederEjectCommand;
+import frc.robot.commands.feeder.FeederEjectAllCommand;
 import frc.robot.commands.feeder.FeederIndexCommand;
 import frc.robot.commands.feeder.FeederSafetyReverseCommand;
 import frc.robot.commands.feeder.FeederShootCommand;
@@ -89,7 +90,6 @@ public class Robot extends TimedRobot {
   public static final TurretSwivelSubsystem TURRET_SWIVEL_SUBSYSTEM = new TurretSwivelSubsystem();
   public static final ConveyanceCollectCommand CONVEYANCE_COLLECT_COMMAND = new ConveyanceCollectCommand();
   public static final ConveyanceEjectCommand CONVEYANCE_EJECT_COMMAND = new ConveyanceEjectCommand();
-  public static final FeederEjectCommand FeederEject = new FeederEjectCommand();
   public static final FeederSafetyReverseCommand FeederSafetyReverse = new FeederSafetyReverseCommand(Constants.FEEDER_SAFETY_REVERSE_DURATION);
   public static final ConveyanceIndexCommand CONVEYANCE_INDEX_COMMAND = new ConveyanceIndexCommand();
   public static final FeederShootCommand FeederShoot = new FeederShootCommand();
@@ -273,7 +273,7 @@ public class Robot extends TimedRobot {
     GAMEPAD.getButton(ButtonCode.LEFTBUMPER)
       .and(GAMEPAD.getButton(ButtonCode.RIGHTBUMPER))
       .and(GAMEPAD.getButton(ButtonCode.Y))
-      .whenActive(new InstantCommand(DRIVE_TRAIN_SUBSYSTEM::zeroGyroscope, DRIVE_TRAIN_SUBSYSTEM));
+      .whenActive(DRIVE_TRAIN_SUBSYSTEM::zeroGyroscope);
     
 
     OP_PAD.getButton(ButtonCode.CLIMBER_OVERRIDE)
@@ -290,12 +290,12 @@ public class Robot extends TimedRobot {
       .whenActive(DRIVE_TRAIN_SUBSYSTEM::cutPower)
       .whenInactive(DRIVE_TRAIN_SUBSYSTEM::stopCutPower);
 
-    new Trigger(() -> GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER))
+    new Trigger(() -> GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER)).or(CommonTriggers.RobotHas2Balls)
       .whenActive(() -> DRIVE_TRAIN_DEFAULT_COMMAND.followLimelight())
       .whenInactive(() -> DRIVE_TRAIN_DEFAULT_COMMAND.stopFollowingLimelight());
 
-    new Trigger(() -> (GAMEPAD.getButtonValue(ButtonCode.RIGHTBUMPER) && Robot.getRobotHas2Balls() == false))
-      .whenActive(CONVEYANCE_COLLECT_COMMAND);
+    CommonTriggers.RobotHas2Balls.negate().and(GAMEPAD.getButton(ButtonCode.RIGHTBUMPER))
+      .whileActiveOnce(CONVEYANCE_COLLECT_COMMAND);
 
     OP_PAD2.getButton(ButtonCode.CLIMBER_RETRACT).whileHeld(new StartEndCommand(
       () -> Robot.CLIMBER_SUBSYSTEM.retract(),
@@ -325,17 +325,19 @@ public class Robot extends TimedRobot {
     OP_PAD.getButton(ButtonCode.SHOOTER_REV)
       .whileHeld(SHOOTER_START_COMMAND)
       .whenInactive(SHOOTER_STOP_COMMAND);
-
-    // GAMEPAD.getButton(ButtonCode.RIGHTBUMPER).whileHeld(CONVEYANCE_COLLECT_COMMAND);
+      
     //GAMEPAD.getButton(ButtonCode.B).whileHeld(new SequentialCommandGroup(new WaitCommand(.15), SHOOTER_START_COMMAND));
-    GAMEPAD.getButton(ButtonCode.LEFTBUMPER).whileHeld(CONVEYANCE_EJECT_COMMAND);
+    GAMEPAD.getButton(ButtonCode.LEFTBUMPER).or(CommonTriggers.RobotHas2Balls)
+      .whenActive(DRIVE_TRAIN_DEFAULT_COMMAND::disableAutoSteer)
+      .whenInactive(DRIVE_TRAIN_DEFAULT_COMMAND::enableAutoSteer);
+
     //GAMEPAD.getButton(ButtonCode.B).whenPressed(FeederSafetyReverse);
     GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederShoot);
     OP_PAD2.getButton(ButtonCode.FEEDER_WHEEL_REVERSE).whileHeld(FeederWheelReverse);
     //GAMEPAD.getButton(ButtonCode.BACK).whenHeld(TURRET_FLIP);
     //GAMEPAD.getButton(ButtonCode.START).whenHeld(TURRET_SEEK);
     // GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederCollect);
-    GAMEPAD.getButton(ButtonCode.B).whileHeld(FeederEject);
+    GAMEPAD.getButton(ButtonCode.B).whileActiveOnce(new ParallelCommandGroup(new FeederEjectAllCommand(), CONVEYANCE_EJECT_COMMAND));
     //GAMEPAD.getButton(ButtonCode.Y).whenPressed(FeederSafetyReverse);
     // GAMEPAD.getButton(ButtonCode.Y).whenPressed(FEEDER_SHOOT_ONE_BALL);
     OP_PAD.getButton(ButtonCode.SHOOTER_LAUNCH_PAD_SHOT).whenPressed(SHOOTER_LAUNCH_PAD_PID_COMMAND);
@@ -366,10 +368,6 @@ public class Robot extends TimedRobot {
     return giveControl;
   }
   */
-
-  public static boolean getRobotHas2Balls() {
-    return (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceStagingBeamBreakHasBall() && Robot.FEEDER_SUBSYSTEM.getFeederHasBall());
-  }
 
   public int getRobotCargoInventory() {
     int inventory = 0;
