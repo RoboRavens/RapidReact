@@ -317,6 +317,10 @@ public class Robot extends TimedRobot {
       () -> Robot.CLIMBER_SUBSYSTEM.stop(),
       Robot.CLIMBER_SUBSYSTEM
     ));
+
+    OP_PAD.getButton(ButtonCode.SHOOTER_PROFILE_MANUAL_OVERRIDE)
+      .whileHeld(() -> Robot.SHOOTER_START_COMMAND.disableManual())
+      .whenInactive(() -> Robot.SHOOTER_START_COMMAND.enableManual());
     
     OP_PAD.getButton(ButtonCode.SHOOTER_REV)
       .whileHeld(SHOOTER_START_COMMAND)

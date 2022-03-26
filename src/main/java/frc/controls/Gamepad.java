@@ -98,6 +98,9 @@ public class Gamepad {
 		case RIGHTSTICK:
 			buttonNumber = 10;
 			break;
+		case SHOOTER_PROFILE_MANUAL_OVERRIDE:
+			buttonNumber = 1;
+			break;
 		case SHOOTER_REV:
 			buttonNumber = 2;
 			break;

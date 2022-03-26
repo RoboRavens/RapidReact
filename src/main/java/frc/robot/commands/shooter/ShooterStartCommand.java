@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 /** An example command that uses an example subsystem. */
 public class ShooterStartCommand extends CommandBase {
 
+  private boolean _manualOverride = false;
+
   public ShooterStartCommand() {
     addRequirements(Robot.SHOOTER_SUBSYSTEM);
   }
@@ -26,6 +28,24 @@ public class ShooterStartCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if(!_manualOverride) {
+      limelightSetsProfile();
+    }
+    
+    Robot.SHOOTER_SUBSYSTEM.startMotor();
+  }
+
+  // Called once the command ends or is interrupted.
+  @Override
+  public void end(boolean interrupted) {}
+
+  // Returns true when the command should end.
+  @Override
+  public boolean isFinished() {
+    return false;
+  }
+
+  private void limelightSetsProfile() {
     ShooterCalibrationPair shotToSet = Constants.DISABLED_SHOT_CALIBRATION_PAIR;
 
     if(Robot.LIMELIGHT_SUBSYSTEM.getRawYOffset() > Constants.MAX_LOW_GOAL_SHOT) { // Close to hub
@@ -41,17 +61,13 @@ public class ShooterStartCommand extends CommandBase {
     if(shotToSet._name != Robot.SHOOTER_SUBSYSTEM.getShot()._name) {
       Robot.SHOOTER_SUBSYSTEM.setShot(shotToSet);
     }
-    
-    Robot.SHOOTER_SUBSYSTEM.startMotor();
+  }
+  
+  public void enableManual() {
+    _manualOverride = true;
   }
 
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {}
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
+  public void disableManual() {
+    _manualOverride = false;
   }
 }
