@@ -28,7 +28,7 @@ public class ShooterStartCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(!_manualOverride) {
+    if (_manualOverride == false) {
       limelightSetsProfile();
     }
     
