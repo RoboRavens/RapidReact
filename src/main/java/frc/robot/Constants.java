@@ -240,8 +240,8 @@ Y-offset constants in order:
     public static final double TRAJECTORY_CONFIG_MAX_ANGULAR_SPEED_RADIANS_PER_SECOND = Math.PI;
     public static final double TRAJECTORY_CONFIG_MAX_ANGULAR_ACCELERATION_RADIANS_PER_SECOND = Math.PI * .75;
 
-    public static final double SWERVE_CONTROLLER_X_KP = 1;
-    public static final double SWERVE_CONTROLLER_Y_KP = 1;
+    public static final double SWERVE_CONTROLLER_X_KP = 2;
+    public static final double SWERVE_CONTROLLER_Y_KP = 2;
     public static final double SWERVE_CONTROLLER_ANGLE_KP = 4;
 
     // Constraint for the motion profilied robot angle controller

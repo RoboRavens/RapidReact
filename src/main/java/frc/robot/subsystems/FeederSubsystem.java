@@ -108,6 +108,11 @@ public class FeederSubsystem extends SubsystemBase {
     }
   }
 
+  public void stopFeederAndConveyance() {
+    this.feederWheelStop();
+    this.conveyanceStop();
+  }
+
   public void forceShoot() {
     feederWheelForward();
     setConveyanceTwoMaxForward();
