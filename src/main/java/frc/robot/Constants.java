@@ -262,7 +262,7 @@ Y-offset constants in order:
     public static final double FEEDER_SAFETY_REVERSE_DURATION = .15;
     
     //LimeLight
-    public static final int FLOOR_TO_LIMELIGHT_LENS_HEIGHT = 0;
+    public static final int FLOOR_TO_LIMELIGHT_LENS_HEIGHT = 37;  //Inches
     public static final int FLOOR_TO_TARGET_CENTER_HEIGHT = 0;
     public static final double CAMERA_ANGLE_OFFSET_FROM_HORIZONTAL = 0;
     public static final double LIMELIGHT_LENS_TO_ROBOT_CENTER_OFFSET_INCHES = 0;
@@ -270,4 +270,8 @@ Y-offset constants in order:
 	public static final double MAXIMUM_DISTANCE_FROM_LIMELIGHT = 240.0;
     public static final double LIMELIGHT_CENTERED_OFFSET = 5;
     public static final double LIMELIGHT_IS_ALIGNED_DEGREES = 3;
+   
+    public static final double LIMELIGHT_MAX_LOWER_HUB_DISTANCE = .29;
+	public static final double MAX_TARMAC_SHOT = -6;
+	public static final double MAX_AUTO_RADIUS_SHOT = -9.2;
 }

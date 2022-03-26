@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
+import frc.util.ShooterCalibrationPair;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -23,11 +25,26 @@ public class LimelightSubsystem extends SubsystemBase {
   // double v = tv.getDouble(0.0); // Whether the limelight has any valid targets (0 or 1)
   // double s = ts.getDouble(0.0); // Skew or rotation (-90 degrees to 0 degrees)
   public int _ledState = 3;
-  public int camMode = 0; 
+  public int camMode = 0;
 
+  @Override
   public void periodic() {
-    SmartDashboard.putNumber("LIMELIGHT X OFFSET", _tx.getDouble(0));
-    SmartDashboard.putNumber("LIMELIGHT Y OFFSET", _ty.getDouble(0));
+    SmartDashboard.putNumber("LIMELIGHT X OFFSET", _tx.getDouble(0.0));
+    SmartDashboard.putNumber("LIMELIGHT Y OFFSET", _ty.getDouble(0.0));
+
+    ShooterCalibrationPair shotToSet = Constants.LAUNCHPAD_SHOT_CALIBRATION_PAIR;
+
+    if(_ty.getDouble(256) < Constants.LIMELIGHT_MAX_LOWER_HUB_DISTANCE) { // Close to hub
+      shotToSet = Constants.LOW_GOAL_SHOT_CALIBRATION_PAIR;
+    } else if(_ty.getDouble(256) < Constants.MAX_TARMAC_SHOT) {
+      shotToSet = Constants.TARMAC_SHOT_CALIBRATION_PAIR;
+    } else if(_ty.getDouble(256) < Constants.MAX_AUTO_RADIUS_SHOT) {
+      shotToSet = Constants.AUTO_RADIUS_SHOT_CALIBRATION_PAIR;
+    }
+
+    if(shotToSet._name != Robot.SHOOTER_SUBSYSTEM.getShot()._name) {
+      Robot.SHOOTER_SUBSYSTEM.setShot(shotToSet);
+    }
   }
 
   public boolean isAligned() {
