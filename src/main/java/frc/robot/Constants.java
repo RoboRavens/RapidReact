@@ -172,10 +172,14 @@ Y-offset constants in order:
     public static final ShooterCalibration LAUNCHPAD_SHOT_BACKSPIN_CALIBRATION = new ShooterCalibration("Launchpad Shot", LAUNCHPAD_BACKSPIN_RPM, LAUNCHPAD_BACKSPIN_KF, LAUNCHPAD_BACKSPIN_KP, LAUNCHPAD_BACKSPIN_KI, LAUNCHPAD_BACKSPIN_KD, LAUNCHPAD_BACKSPIN_VOLTAGE_CONTROL_SETPOINT);
     public static final ShooterCalibration LAUNCHPAD_SHOT_TOPSPIN_CALIBRATION = new ShooterCalibration("Launchpad Alt Shot", LAUNCHPAD_TOPSPIN_RPM, LAUNCHPAD_TOPSPIN_KF, LAUNCHPAD_TOPSPIN_KP, LAUNCHPAD_TOPSPIN_KI, LAUNCHPAD_TOPSPIN_KD, LAUNCHPAD_TOPSPIN_VOLTAGE_CONTROL_SETPOINT);
 
+    public static final ShooterCalibration DISABLED_SHOT_BACKSPIN_CALIBRATION = new ShooterCalibration("Disabled Shot", 0, 0, 0, 0, 0, 0);
+    public static final ShooterCalibration DISABLED_SHOT_TOPSPIN_CALIBRATION = new ShooterCalibration("Disabled Alt Shot", 0, 0, 0, 0, 0, 0);
+
     public static final ShooterCalibrationPair LOW_GOAL_SHOT_CALIBRATION_PAIR = new ShooterCalibrationPair("Low Goal Shot", LOW_GOAL_SHOT_BACKSPIN_CALIBRATION, LOW_GOAL_SHOT_TOPSPIN_CALIBRATION);
     public static final ShooterCalibrationPair TARMAC_SHOT_CALIBRATION_PAIR = new ShooterCalibrationPair("Tarmac Shot", TARMAC_SHOT_BACKSPIN_CALIBRATION, TARMAC_SHOT_TOPSPIN_CALIBRATION);
     public static final ShooterCalibrationPair AUTO_RADIUS_SHOT_CALIBRATION_PAIR = new ShooterCalibrationPair("Auto Radius Shot", AUTO_RADIUS_SHOT_BACKSPIN_CALIBRATION, AUTO_RADIUS_SHOT_TOPSPIN_CALIBRATION);
     public static final ShooterCalibrationPair LAUNCHPAD_SHOT_CALIBRATION_PAIR = new ShooterCalibrationPair("Launchpad Shot", LAUNCHPAD_SHOT_BACKSPIN_CALIBRATION, LAUNCHPAD_SHOT_TOPSPIN_CALIBRATION);
+    public static final ShooterCalibrationPair DISABLED_SHOT_CALIBRATION_PAIR = new ShooterCalibrationPair("Disabled shot", DISABLED_SHOT_BACKSPIN_CALIBRATION, DISABLED_SHOT_TOPSPIN_CALIBRATION);
 
     //TURRET SWIVEL
     public static final int TURRET_IDX = 0;
@@ -271,7 +275,8 @@ Y-offset constants in order:
     public static final double LIMELIGHT_CENTERED_OFFSET = 5;
     public static final double LIMELIGHT_IS_ALIGNED_DEGREES = 3;
    
-    public static final double LIMELIGHT_MAX_LOWER_HUB_DISTANCE = .29;
+    public static final double MAX_LOW_GOAL_SHOT = .29;
 	public static final double MAX_TARMAC_SHOT = -6;
 	public static final double MAX_AUTO_RADIUS_SHOT = -9.2;
+	public static final double MAX_LAUNCHPAD_SHOT = -11.6;
 }

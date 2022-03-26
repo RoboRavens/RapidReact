@@ -31,20 +31,6 @@ public class LimelightSubsystem extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putNumber("LIMELIGHT X OFFSET", _tx.getDouble(0.0));
     SmartDashboard.putNumber("LIMELIGHT Y OFFSET", _ty.getDouble(0.0));
-
-    ShooterCalibrationPair shotToSet = Constants.LAUNCHPAD_SHOT_CALIBRATION_PAIR;
-
-    if(_ty.getDouble(256) < Constants.LIMELIGHT_MAX_LOWER_HUB_DISTANCE) { // Close to hub
-      shotToSet = Constants.LOW_GOAL_SHOT_CALIBRATION_PAIR;
-    } else if(_ty.getDouble(256) < Constants.MAX_TARMAC_SHOT) {
-      shotToSet = Constants.TARMAC_SHOT_CALIBRATION_PAIR;
-    } else if(_ty.getDouble(256) < Constants.MAX_AUTO_RADIUS_SHOT) {
-      shotToSet = Constants.AUTO_RADIUS_SHOT_CALIBRATION_PAIR;
-    }
-
-    if(shotToSet._name != Robot.SHOOTER_SUBSYSTEM.getShot()._name) {
-      Robot.SHOOTER_SUBSYSTEM.setShot(shotToSet);
-    }
   }
 
   public boolean isAligned() {
@@ -75,6 +61,10 @@ public class LimelightSubsystem extends SubsystemBase {
    */
   public double getRawTargetOffsetAngle() {
     return _tx.getDouble(0.0);
+  }
+
+  public double getRawYOffset() {
+    return _ty.getDouble(0.0);
   }
 
   public double getArea(){
