@@ -8,13 +8,13 @@ package frc.robot.commands.turret;
 //import frc.robot.Constants;
 //import frc.robot.Robot;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Robot;
 
 /** Aims the turret at the target */
 public class TurretAimAtTargetCommand extends CommandBase {
 
   public TurretAimAtTargetCommand() {
-    // Commented out for Livonia Mar 15
-    // addRequirements(Robot.TURRET_SWIVEL_SUBSYSTEM);
+    addRequirements(Robot.TURRET_SWIVEL_SUBSYSTEM);
   }
 
  
