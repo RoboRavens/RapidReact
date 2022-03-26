@@ -22,26 +22,66 @@ public class ConveyanceIndexCommand extends CommandBase {
       boolean feederHasBall = Robot.FEEDER_SUBSYSTEM.getFeederHasBall();
       boolean atLeastOneBallInConveyanceOne = false;
       boolean onlyOneBallInConveyance = false;
+      boolean entranceBeamBreakHadBall = false;
+      boolean ballIsEjecting = false;
 
-      if (entranceBeamBreakHasBall || stagingBeamBreakHasBall) {
-        atLeastOneBallInConveyanceOne = true;
+      // if (entranceBeamBreakHasBall || stagingBeamBreakHasBall) {
+      //   atLeastOneBallInConveyanceOne = true;
+      // }
+      // if (atLeastOneBallInConveyanceOne && feederHasBall == false) {
+      //   onlyOneBallInConveyance = true;
+      // }
+
+      // if (onlyOneBallInConveyance || firstSensorHadBall) {
+      //   Robot.CONVEYANCE_SUBSYSTEM.setConveyanceIndexSpeedForward();   //when there is a ball in conveyance stage 1 and 2 conveyance wont run      
+      //   firstSensorHadBall = true;
+      // } 
+      // else if (stagingBeamBreakHasBall && feederHasBall) {        
+      //   Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne();  //if there is a ball in comveyance stage 1 but nothing at stage 2 conveyance will run at 1
+      //   firstSensorHadBall = false;
+      // } 
+      // else if (atLeastOneBallInConveyanceOne == false) {
+      //   Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne();
+      //   firstSensorHadBall = false;
+      // }
+
+      if (feederHasBall) {
+        if (stagingBeamBreakHasBall && !ballIsEjecting) {
+          entranceBeamBreakHadBall = false;
+          if (Robot.CONVEYANCE_SUBSYSTEM.conveyanceHasProperColorCargo()) {
+            if (entranceBeamBreakHasBall == false) {
+              Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne();
+            }
+            else if (entranceBeamBreakHasBall) { // If there are three balls in the robot
+              Robot.CONVEYANCE_SUBSYSTEM.setConveyanceEjectCargo();
+              ballIsEjecting = true;
+            }
+          }
+          else if (Robot.CONVEYANCE_SUBSYSTEM.conveyanceHasWrongColorCargo()) {
+            Robot.CONVEYANCE_SUBSYSTEM.setConveyanceEjectCargo();
+            ballIsEjecting = true;
+          }
+        }
+        else if (stagingBeamBreakHasBall == false && !ballIsEjecting) {
+          if(entranceBeamBreakHasBall || entranceBeamBreakHadBall) {
+            Robot.CONVEYANCE_SUBSYSTEM.setConveyanceIndexSpeedForward();
+            entranceBeamBreakHadBall = true;
+          }
+          else if(entranceBeamBreakHasBall == false) {
+            Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne();
+          }
+        }
+        else if (ballIsEjecting == true) {
+          Robot.CONVEYANCE_SUBSYSTEM.setConveyanceEjectCargo();
+          if (entranceBeamBreakHasBall == false) {
+            ballIsEjecting = false;
+          }
+        }
       }
-      if (atLeastOneBallInConveyanceOne && feederHasBall == false) {
-        onlyOneBallInConveyance = true;
+      else if (feederHasBall == false) {
+        Robot.CONVEYANCE_SUBSYSTEM.setConveyanceIndexSpeedForward();
       }
 
-      if (onlyOneBallInConveyance || firstSensorHadBall) {
-        Robot.CONVEYANCE_SUBSYSTEM.setConveyanceIndexSpeedForward();   //when there is a ball in conveyance stage 1 and 2 conveyance wont run      
-        firstSensorHadBall = true;
-      } 
-      else if (stagingBeamBreakHasBall && feederHasBall) {        
-        Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne();  //if there is a ball in comveyance stage 1 but nothing at stage 2 conveyance will run at 1
-        firstSensorHadBall = false;
-      } 
-      else if (atLeastOneBallInConveyanceOne == false) {
-        Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne();
-        firstSensorHadBall = false;
-      }
     }     
     
     @Override
