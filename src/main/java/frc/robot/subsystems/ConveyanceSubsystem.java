@@ -15,12 +15,21 @@ public class ConveyanceSubsystem extends SubsystemBase {
   private TalonSRX _conveyanceMotorOne;
   private DigitalInput _conveyanceStagingBeamBreak;
   private DigitalInput _conveyanceIntakeBeamBreak;
-  private boolean _isIndexing = false;
+  private boolean _isIndexingFromStagingToFeeder = false;
+  private boolean _isIndexingFromEntranceToStaging = false;
 
   public ConveyanceSubsystem() {
     _conveyanceMotorOne = new TalonSRX(RobotMap.CONVEYANCE_MOTOR);
     _conveyanceStagingBeamBreak = new DigitalInput(RobotMap.CONVEYANCE_TRANSITION_BEAM_BREAK_CHANNEL);
     _conveyanceIntakeBeamBreak = new DigitalInput(RobotMap.CONVEYANCE_INTAKE_BREAM_BREAK_CHANNEL);
+  }
+
+  public void setIsIndexingFromEntranceToStaging(boolean isIndexing) {
+    _isIndexingFromEntranceToStaging = isIndexing;
+  }
+
+  public boolean getIsIndexingFromEntranceToStaging() {
+    return _isIndexingFromEntranceToStaging;
   }
 
   public void setConveyanceEjectCargo() {
@@ -31,12 +40,12 @@ public class ConveyanceSubsystem extends SubsystemBase {
     this.runConveyanceAtPercentPower(Constants.CONVEYANCE_ONE_FULL_SPEED);
   }
 
-  public boolean isIndexing() {
-    return _isIndexing;
+  public boolean getIsIndexingFromStagingToFeeder() {
+    return _isIndexingFromStagingToFeeder;
   }
 
   public void setConveyanceIndexCargoForward() {
-    _isIndexing = true;
+    _isIndexingFromStagingToFeeder = true;
     this.runConveyanceAtPercentPower(Constants.CONVEYANCE_ONE_INDEX_SPEED);
   }
 
@@ -49,7 +58,7 @@ public class ConveyanceSubsystem extends SubsystemBase {
   }
 
   public void stopConveyanceOne() {
-    _isIndexing = false;
+    _isIndexingFromStagingToFeeder = false;
     this.runConveyanceAtPercentPower(Constants.CONVEYANCE_ONE_STOP);
   }
 

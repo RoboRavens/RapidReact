@@ -381,11 +381,11 @@ public class Robot extends TimedRobot {
   public static int getRobotCargoInventory() {
     int inventory = 0;
 
-    if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceEntryBeamBreakHasBall()) {
+    if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceEntryBeamBreakHasBall() || Robot.CONVEYANCE_SUBSYSTEM.getIsIndexingFromEntranceToStaging()) {
       inventory++;
     }
     
-    if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceStagingBeamBreakHasBall()) {
+    if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceStagingBeamBreakHasBall() || Robot.CONVEYANCE_SUBSYSTEM.getIsIndexingFromStagingToFeeder()) {
       inventory++;
     }
 
@@ -396,6 +396,7 @@ public class Robot extends TimedRobot {
     return inventory;
   }
 
+  // Unlike the general get inventory method, this method does not keep track of indexing balls.
   public static int getRobotProperColorInventory() {
     int inventory = 0;
 
