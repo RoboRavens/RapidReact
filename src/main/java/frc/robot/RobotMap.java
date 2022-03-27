@@ -35,8 +35,8 @@ public final class RobotMap {
     //INTAKE 
     public static final int INTAKE_EXTEND_SOLENOID = 0;
     public static final int INTAKE_RETRACT_SOLENOID = 1;
-    public static final int INTAKE_EXTEND_RIGHT_SOLENOID = 2;
-    public static final int INTAKE_RETRACT_RIGHT_SOLENOID = 3; 
+    // public static final int INTAKE_EXTEND_RIGHT_SOLENOID = 2;
+    // public static final int INTAKE_RETRACT_RIGHT_SOLENOID = 3; 
     
     // DRIVETRAIN
     public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0.5715; // The left-to-right distance between the drivetrain wheels

@@ -17,7 +17,7 @@ public class ConveyanceIndexCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-      boolean entranceBeamBreakHasBall = Robot.CONVEYANCE_SUBSYSTEM.getConveyanceIntakeBeamBreakHasBall();
+      boolean entranceBeamBreakHasBall = Robot.CONVEYANCE_SUBSYSTEM.getConveyanceEntryBeamBreakHasBall();
       boolean stagingBeamBreakHasBall = Robot.CONVEYANCE_SUBSYSTEM.getConveyanceStagingBeamBreakHasBall();
       boolean feederHasBall = Robot.FEEDER_SUBSYSTEM.getFeederHasBall();
       boolean atLeastOneBallInConveyanceOne = false;

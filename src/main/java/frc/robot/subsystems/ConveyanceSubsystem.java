@@ -57,7 +57,7 @@ public class ConveyanceSubsystem extends SubsystemBase {
     return !_conveyanceStagingBeamBreak.get();
   }
 
-  public boolean getConveyanceIntakeBeamBreakHasBall() {
+  public boolean getConveyanceEntryBeamBreakHasBall() {
     return !_conveyanceIntakeBeamBreak.get();
   }
 

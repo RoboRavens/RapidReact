@@ -209,12 +209,8 @@ Y-offset constants in order:
     public static final double INTAKE_COLLECT_POWER_MAGNITUDE = 0.1;
     public static final double INTAKE_SPIT_POWER_MAGNITUDE = 0.1;
 
-
-     
-
-
-    //CONVEYANCE TWO
-    //Not sure if these are the correct speeds for the conveyance motor (needs to be calibrated)
+    // CONVEYANCE TWO & FEEDER
+    // Not sure if these are the correct speeds for the conveyance motor (needs to be calibrated)
     public static final double CONVEYANCE_TWO_FULL_SPEED_REVERSE = .25;
     public static final double CONVEYANCE_TWO_NORMAL_SPEED = 0.25;
     public static final double CONVEYANCE_TWO_NORMAL_REVERSE_SPEED = -0.25;
@@ -224,8 +220,7 @@ Y-offset constants in order:
 	public static final double CONVEYANCE_TWO_REVERSE_FEEDER = -1.0;
     public static final double CONVEYANCE_TWO_FULL_SPEED = .25;
     public static final double CONVEYANCE_TWO_SPEED_WHILE_INDEXING = .15;
-
-
+    public static final double FEEDER_SAFETY_REVERSE_DURATION = .15;
 
     //CONVEYANCE ONE
     public static final double CONVEYANCE_ONE_FULL_SPEED_REVERSE = .75;
@@ -261,9 +256,9 @@ Y-offset constants in order:
     public static final double CLIMBER_RETRACT_SOWLY_POWER_MAGNITUDE = -.2;
 	public static final double CLIMBER_RETRACT_TO_LATCH_POWER_MAGNITUDE = .2;
     public static final double CLIMBER_EXTEND_ENCODER_TARGET = 241251.000000 - 45320.000000;
-    public static final double CLIMBER_ENCODER_ACCURACY_RANGE = 2000;
+    public static final double CLIMBER_ENCODER_ACCURACY_RANGE = 4000;
+    public static final double CLIMBER_IS_EXTENDED_ENCODER_THRESHOLD = CLIMBER_EXTEND_ENCODER_TARGET / 5;
 
-    public static final double FEEDER_SAFETY_REVERSE_DURATION = .15;
     
     //LimeLight
     public static final int FLOOR_TO_LIMELIGHT_LENS_HEIGHT = 37;  //Inches
