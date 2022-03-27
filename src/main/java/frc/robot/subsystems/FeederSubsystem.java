@@ -48,7 +48,7 @@ public class FeederSubsystem extends SubsystemBase {
   }
 
   public void setConveyanceTwoMaxForward() {
-    if (Robot.CONVEYANCE_SUBSYSTEM.isIndexing()) {
+    if (Robot.CONVEYANCE_SUBSYSTEM.getIsIndexingFromStagingToFeeder()) {
       this.runConveyanceAtPercentPower(Constants.CONVEYANCE_TWO_SPEED_WHILE_INDEXING);
     } else {
       this.runConveyanceAtPercentPower(Constants.CONVEYANCE_TWO_FULL_SPEED);
