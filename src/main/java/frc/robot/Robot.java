@@ -74,8 +74,8 @@ public class Robot extends TimedRobot {
   
   public static final Joystick JOYSTICK = new Joystick(0);
   public static final Gamepad GAMEPAD = new Gamepad(JOYSTICK);
-  private Gamepad OP_PAD = new Gamepad(1);
-  private Gamepad OP_PAD2 = new Gamepad(2);
+  public static final Gamepad OP_PAD = new Gamepad(1);
+  public static final Gamepad OP_PAD2 = new Gamepad(2);
   
   public static final DrivetrainSubsystemBase DRIVE_TRAIN_SUBSYSTEM = new DrivetrainSubsystem();
   public static final ShooterSubsystem SHOOTER_SUBSYSTEM = new ShooterSubsystem();
@@ -280,19 +280,30 @@ public class Robot extends TimedRobot {
       .whenActive(new InstantCommand(CLIMBER_SUBSYSTEM::turnOverrideOn))
       .whenInactive(new InstantCommand(CLIMBER_SUBSYSTEM::turnOverrideOff));
 
-    var shootGarbarge = new Trigger(() -> {
+    Trigger shootGarbarge = new Trigger(() -> {
       return FEEDER_SUBSYSTEM.feederHasWrongColorCargo();
     });
 
     shootGarbarge.whenActive(new JunkShotCommandGroup(), false);
 
-    new Trigger(() -> GAMEPAD.getAxisIsPressed(AxisCode.RIGHTTRIGGER))
+    new Trigger(() -> GAMEPAD.getAxisIsPressed(AxisCode.RIGHTTRIGGER) || Robot.CLIMBER_SUBSYSTEM.climberIsExtended())
       .whenActive(DRIVE_TRAIN_SUBSYSTEM::cutPower)
       .whenInactive(DRIVE_TRAIN_SUBSYSTEM::stopCutPower);
 
     new Trigger(() -> GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER)).or(CommonTriggers.RobotHas2Balls)
       .whenActive(() -> DRIVE_TRAIN_DEFAULT_COMMAND.followLimelight())
       .whenInactive(() -> DRIVE_TRAIN_DEFAULT_COMMAND.stopFollowingLimelight());
+
+    CommonTriggers.RunShooterTrigger
+      .whenActive(SHOOTER_START_COMMAND)
+      .whenInactive(SHOOTER_STOP_COMMAND);
+
+      /*
+      Old shooter activation code, pending deletion if new triggers work
+    OP_PAD.getButton(ButtonCode.SHOOTER_REV)
+      .whileHeld(SHOOTER_START_COMMAND)
+      .whenInactive(SHOOTER_STOP_COMMAND);
+*/
 
     CommonTriggers.RobotHas2Balls.negate().and(GAMEPAD.getButton(ButtonCode.RIGHTBUMPER))
       .whileActiveOnce(CONVEYANCE_COLLECT_COMMAND);
@@ -319,31 +330,29 @@ public class Robot extends TimedRobot {
     ));
 
     OP_PAD.getButton(ButtonCode.SHOOTER_PROFILE_MANUAL_OVERRIDE)
-      .whileHeld(() -> Robot.SHOOTER_START_COMMAND.disableManual())
-      .whenInactive(() -> Robot.SHOOTER_START_COMMAND.enableManual());
-    
-    OP_PAD.getButton(ButtonCode.SHOOTER_REV)
-      .whileHeld(SHOOTER_START_COMMAND)
-      .whenInactive(SHOOTER_STOP_COMMAND);
+      .whileHeld(() -> Robot.SHOOTER_SUBSYSTEM.enableAutoShotSelect())
+      .whenInactive(() -> Robot.SHOOTER_SUBSYSTEM.disableAutoShotSelect());
       
-    //GAMEPAD.getButton(ButtonCode.B).whileHeld(new SequentialCommandGroup(new WaitCommand(.15), SHOOTER_START_COMMAND));
     GAMEPAD.getButton(ButtonCode.LEFTBUMPER).or(CommonTriggers.RobotHas2Balls)
       .whenActive(DRIVE_TRAIN_DEFAULT_COMMAND::disableAutoSteer)
       .whenInactive(DRIVE_TRAIN_DEFAULT_COMMAND::enableAutoSteer);
 
-    //GAMEPAD.getButton(ButtonCode.B).whenPressed(FeederSafetyReverse);
     GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederShoot);
     OP_PAD2.getButton(ButtonCode.FEEDER_WHEEL_REVERSE).whileHeld(FeederWheelReverse);
-    //GAMEPAD.getButton(ButtonCode.BACK).whenHeld(TURRET_FLIP);
-    //GAMEPAD.getButton(ButtonCode.START).whenHeld(TURRET_SEEK);
-    // GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederCollect);
     GAMEPAD.getButton(ButtonCode.B).whileActiveOnce(new ParallelCommandGroup(new FeederEjectAllCommand(), CONVEYANCE_EJECT_COMMAND));
-    //GAMEPAD.getButton(ButtonCode.Y).whenPressed(FeederSafetyReverse);
-    // GAMEPAD.getButton(ButtonCode.Y).whenPressed(FEEDER_SHOOT_ONE_BALL);
     OP_PAD.getButton(ButtonCode.SHOOTER_LAUNCH_PAD_SHOT).whenPressed(SHOOTER_LAUNCH_PAD_PID_COMMAND);
     OP_PAD.getButton(ButtonCode.SHOOTER_TARMAC_SHOT).whenPressed(SHOOTER_TARMAC_PID_COMMAND);
     OP_PAD.getButton(ButtonCode.SHOOTER_LOW_GOAL_SHOT).whenPressed(SHOOTER_LOW_GOAL_PID_COMMAND);
     OP_PAD.getButton(ButtonCode.SHOOTER_AUTO_RADIUS_SHOT).whenPressed(SHOOTER_AUTO_RADIUS_PID_COMMAND);
+
+    // Old assignments, pending deletion
+    //GAMEPAD.getButton(ButtonCode.B).whileHeld(new SequentialCommandGroup(new WaitCommand(.15), SHOOTER_START_COMMAND));
+    //GAMEPAD.getButton(ButtonCode.B).whenPressed(FeederSafetyReverse);
+    //GAMEPAD.getButton(ButtonCode.BACK).whenHeld(TURRET_FLIP);
+    //GAMEPAD.getButton(ButtonCode.START).whenHeld(TURRET_SEEK);
+    // GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederCollect);
+    //GAMEPAD.getButton(ButtonCode.Y).whenPressed(FeederSafetyReverse);
+    // GAMEPAD.getButton(ButtonCode.Y).whenPressed(FEEDER_SHOOT_ONE_BALL);
   }
 
   @Override
@@ -369,9 +378,13 @@ public class Robot extends TimedRobot {
   }
   */
 
-  public int getRobotCargoInventory() {
+  public static int getRobotCargoInventory() {
     int inventory = 0;
 
+    if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceEntryBeamBreakHasBall()) {
+      inventory++;
+    }
+    
     if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceStagingBeamBreakHasBall()) {
       inventory++;
     }
@@ -383,7 +396,7 @@ public class Robot extends TimedRobot {
     return inventory;
   }
 
-  public int getRobotProperColorInventory() {
+  public static int getRobotProperColorInventory() {
     int inventory = 0;
 
     if (Robot.CONVEYANCE_SUBSYSTEM.conveyanceHasProperColorCargo()) {

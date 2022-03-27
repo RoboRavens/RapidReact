@@ -152,6 +152,4 @@ public class FeederSubsystem extends SubsystemBase {
 
     return feederHasWrongColorCargo;
   }
-
-
 }
