@@ -53,4 +53,14 @@ public class DrivetrainSubsystemMock extends DrivetrainSubsystemBase {
     public Command CreateFollowTrajectoryCommandSwerveOptimized(Trajectory trajectory) {
         return new InstantCommand();
     }
+
+    @Override
+    public Command getMarkPositionCommand() {
+        return new InstantCommand();
+    }
+
+    @Override
+    public Command getReturnToMarkedPositionCommand() {
+        return new InstantCommand();
+    }
 }

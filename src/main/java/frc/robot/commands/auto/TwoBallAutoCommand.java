@@ -4,10 +4,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.commands.conveyance.ConveyanceCollectCommand;
-import frc.robot.commands.feeder.FeederForceShootDurationCommand;
 import frc.robot.commands.shooter.ShooterStartInstantCommand;
 import frc.robot.commands.shooter.ShooterStopCommand;
 import frc.robot.commands.shooter.ShooterTarmacCommand;
@@ -32,24 +30,18 @@ public class TwoBallAutoCommand {
         var trajectory1 = PathWeaver.getTrajectoryFromFile("output/2 ball " + type + "-1.wpilib.json");
 
         var driveCommand = Robot.DRIVE_TRAIN_SUBSYSTEM.CreateSetOdometryToTrajectoryInitialPositionCommand(trajectory1)
+            .andThen(Robot.DRIVE_TRAIN_SUBSYSTEM.getMarkPositionCommand())
             .andThen(Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommandSwerveOptimized(trajectory1))
             .andThen(new WaitCommand(1));
 
         var runConveyanceAndDriveToFirstBall = new ParallelDeadlineGroup(driveCommand, new ConveyanceCollectCommand());
 
-        var shootBallsOneAndTwo = new FeederForceShootDurationCommand(Constants.TWO_BALL_SHOOTER_DURATION);
-        
-        /* new ShooterWaitUntilIsRecoveredCommand()
-            .andThen(new FeederShootOneBallCommand())
-            .andThen(new ShooterWaitUntilIsRecoveredCommand())
-            .andThen(new FeederShootOneBallCommand());
-            */
+        var shootBallsOneAndTwo = FeederShootBallsAutoCommand.get(2);
 
         return new ShooterTarmacCommand()
             .andThen(new ShooterStartInstantCommand())
             .andThen(runConveyanceAndDriveToFirstBall)
             .andThen(shootBallsOneAndTwo)
-            //.andThen(new WaitCommand(.25))
             .andThen(new ShooterStopCommand());
     }
 }

@@ -19,4 +19,6 @@ public abstract class DrivetrainSubsystemBase extends SubsystemBase {
     public abstract Command CreateSetOdometryToTrajectoryInitialPositionCommand(Trajectory trajectory);
     public abstract Command CreateFollowTrajectoryCommand(Trajectory trajectory);
     public abstract Command CreateFollowTrajectoryCommandSwerveOptimized(Trajectory trajectory);
+    public abstract Command getMarkPositionCommand();
+    public abstract Command getReturnToMarkedPositionCommand();
 }
