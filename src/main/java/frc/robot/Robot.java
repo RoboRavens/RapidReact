@@ -110,7 +110,7 @@ public class Robot extends TimedRobot {
   public static final FeederShootOneBallCommand FEEDER_SHOOT_ONE_BALL = new FeederShootOneBallCommand();
   public static final RavenBlinkin RAVEN_BLINKIN_3 = new RavenBlinkin(3);
   public static final RavenBlinkin RAVEN_BLINKIN_4 = new RavenBlinkin(4);
-  public static final AutoMode TWO_BALL_HANGAR_AUTO = new AutoMode("Two Ball Hangar", TwoBallAutoCommand.getHangarCommand());
+  public static final AutoMode TWO_BALL_HANGAR_AUTO = TwoBallAutoCommand.getHangarAutoMode();
   
   public static final RavenPiColorSensor COLOR_SENSOR = new RavenPiColorSensor();
   public static Alliance ALLIANCE_COLOR;
@@ -135,10 +135,18 @@ public class Robot extends TimedRobot {
     LIMELIGHT_SUBSYSTEM.turnLEDOff();
     CameraServer.startAutomaticCapture();
 
-    _autoChooser.setDefaultOption(TWO_BALL_HANGAR_AUTO.getAutoName(), TWO_BALL_HANGAR_AUTO);
-    _autoChooser.addOption("Two Ball Wall", new AutoMode("Two Ball Wall", TwoBallAutoCommand.getWallCommand()));
-    _autoChooser.addOption("Three Ball Tarmac", new AutoMode("Three Ball Tarmac", ThreeBallTarmacAutoCommand.get()));
-    _autoChooser.addOption("Five Ball HPS", new AutoMode("Five Ball HPS", FiveBallHps.get()));
+    AutoMode twoBallWall = TwoBallAutoCommand.getWallAutoMode();
+    AutoMode threeBallTarmac = ThreeBallTarmacAutoCommand.getAutoMode(twoBallWall.getAutoCommand());
+    AutoMode fiveBallHps = FiveBallHps.getAutoMode(threeBallTarmac.getAutoCommand());
+    AutoMode twoBallHangarPlusHangar = TwoBallAutoCommand.getHangarPlusOtherBallsHangarAutoMode(TWO_BALL_HANGAR_AUTO.getAutoCommand());
+    AutoMode twoBallHangarPlusGoal = TwoBallAutoCommand.getHangarPlusOtherBallsByGoalAutoMode(TWO_BALL_HANGAR_AUTO.getAutoCommand());
+
+    TWO_BALL_HANGAR_AUTO.setDefaultOption(_autoChooser);
+    twoBallWall.addOption(_autoChooser);
+    threeBallTarmac.addOption(_autoChooser);
+    fiveBallHps.addOption(_autoChooser);
+    twoBallHangarPlusHangar.addOption(_autoChooser);
+    twoBallHangarPlusGoal.addOption(_autoChooser);
   }
 
   private AutoMode getAuto() {
@@ -205,6 +213,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     SHOOTER_SUBSYSTEM.resetShotCount();
+    COLOR_SENSOR.setColorSensorFeatureEnabled(true);
 
     // Stop any autonomous command that might still be running.
     if (m_autonomousCommand != null) {

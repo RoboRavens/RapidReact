@@ -6,6 +6,8 @@ import frc.robot.Robot;
 import frc.robot.lib.PicoColorSensor;
 
 public class RavenPiColorSensor extends PicoColorSensor{
+    private boolean _colorSensorFeatureEnabled = true;
+
     public RavenPiColorSensor() {
         super();
     }
@@ -15,7 +17,7 @@ public class RavenPiColorSensor extends PicoColorSensor{
      * @param sensorPosition The enum position of the sensor of choice: either CONVEYANCE or FEEDER
      * @return Returns an enum of the detected color, either Invalid, Red, or Blue
      */
-    public Alliance getSensorBallColor(RavenPiPosition sensorPosition) {
+    private Alliance getSensorBallColor(RavenPiPosition sensorPosition) {
         RawColor colorval = sensorPosition == RavenPiPosition.CONVEYANCE ? getRawColor0() : getRawColor1();
         double threshold = sensorPosition == RavenPiPosition.CONVEYANCE ? Constants.BALL_COLOR_THRESHOLD_ENTRY : Constants.BALL_COLOR_THRESHOLD_EXIT;
 
@@ -41,6 +43,10 @@ public class RavenPiColorSensor extends PicoColorSensor{
             getIsCorrectBallType = true;
         }
 
+        if (_colorSensorFeatureEnabled == false) {
+            getIsCorrectBallType = true;
+        }
+
         return getIsCorrectBallType;
     }
 
@@ -59,6 +65,14 @@ public class RavenPiColorSensor extends PicoColorSensor{
             getIsCorrectBallType = true;
         }
 
+        if (_colorSensorFeatureEnabled == false) {
+            getIsCorrectBallType = true;
+        }
+
         return getIsCorrectBallType;
+    }
+
+    public void setColorSensorFeatureEnabled(boolean value) {
+        _colorSensorFeatureEnabled = value;
     }
 }
