@@ -46,6 +46,11 @@ public final class Constants {
     public static final double BACKSPIN_GEAR_RATIO = 16.0 / 36.0;
     public static final double TOPSPIN_GEAR_RATIO = 16.0 / 24.0;
 
+
+    public static final double SHOOTER_CONVEYANCE_EJECTING_ARBITRARY_FEED_FORWARD = 0.01;
+    public static final double SHOOTER_CONVEYANCE_INDEXING_ARBITRARY_FEED_FORWARD = 0.01;
+    public static final double SHOOTER_CONVEYANCE_INTAKING_ARBITRARY_FEED_FORWARD = 0.01;
+
     //public static final int SHOOTER_BACKSPIN_VEL_TO_RPM = 8192 / 600;
     //public static final int SHOOTER_TOPSPIN_VEL_TO_RPM = SHOOTER_BACKSPIN_VEL_TO_RPM * 2/1; // Big Wheel:Small Wheel
 
@@ -224,7 +229,7 @@ Y-offset constants in order:
 
     //CONVEYANCE ONE
     public static final double CONVEYANCE_ONE_FULL_SPEED_REVERSE = .75;
-    public static final double CONVEYANCE_ONE_FULL_SPEED = -75;
+    public static final double CONVEYANCE_ONE_FULL_SPEED = -1; // Was -75, meant to be .75, but not changing functionality without testing.
     public static final double CONVEYANCE_ONE_INDEX_SPEED = -.25;
     public static final double CONVEYANCE_ONE_NORMAL_REVERSE_SPEED = -.25;
     public static final double CONVEYANCE_ONE_STOP = 0;

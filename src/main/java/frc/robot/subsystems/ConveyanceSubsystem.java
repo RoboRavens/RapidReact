@@ -7,6 +7,7 @@ import frc.ravenhardware.RavenPiPosition;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
+import frc.util.ConveyanceState;
 
 public class ConveyanceSubsystem extends SubsystemBase {
   
@@ -15,6 +16,7 @@ public class ConveyanceSubsystem extends SubsystemBase {
   private DigitalInput _conveyanceIntakeBeamBreak;
   private boolean _isIndexingFromStagingToFeeder = false;
   private boolean _isIndexingFromEntranceToStaging = false;
+  private ConveyanceState _conveyanceState = ConveyanceState.OFF;
 
   public ConveyanceSubsystem() {
     _conveyanceMotorOne = new WPI_TalonSRX(RobotMap.CONVEYANCE_MOTOR);
@@ -32,10 +34,12 @@ public class ConveyanceSubsystem extends SubsystemBase {
 
   public void setConveyanceEjectCargo() {
     this.runConveyanceAtVoltage(Constants.CONVEYANCE_ONE_FULL_SPEED_REVERSE);
+    _conveyanceState = ConveyanceState.EJECTING;
   }
 
-  public void setConveyanceCollectCargo() {
+  public void setConveyanceIntakeCargo() {
     this.runConveyanceAtVoltage(Constants.CONVEYANCE_ONE_FULL_SPEED);
+    _conveyanceState = ConveyanceState.INTAKING;
   }
 
   public boolean getIsIndexingFromStagingToFeeder() {
@@ -45,11 +49,19 @@ public class ConveyanceSubsystem extends SubsystemBase {
   public void setConveyanceIndexCargoForward() {
     _isIndexingFromStagingToFeeder = true;
     this.runConveyanceAtVoltage(Constants.CONVEYANCE_ONE_INDEX_SPEED);
+    _conveyanceState = ConveyanceState.INDEXING;
   }
 
+  public ConveyanceState getConveyanceState() {
+    return _conveyanceState;
+  }
+
+  /*
+  Method is not being used as of Mar 28 2022
   public void setConveyanceNormalSpeedReverse() {
     this.runConveyanceAtVoltage(Constants.CONVEYANCE_ONE_NORMAL_REVERSE_SPEED);
   }
+  */
 
   private void runConveyanceAtVoltage(double magnitude) {
     // this._conveyanceMotorOne.set(ControlMode.PercentOutput, magnitude);
