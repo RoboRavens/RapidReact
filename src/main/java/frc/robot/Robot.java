@@ -300,8 +300,7 @@ public class Robot extends TimedRobot {
       .whenInactive(SHOOTER_STOP_COMMAND);
 
     CommonTriggers.ReleaseBallTrigger
-      .whenActive(FeederShoot)
-      .whenInactive(() -> Robot.FEEDER_SUBSYSTEM.feederWheelStop());
+      .whenActive(FeederShoot);
 
       /*
       Old shooter activation code, pending deletion if new triggers work

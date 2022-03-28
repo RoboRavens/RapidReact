@@ -52,17 +52,17 @@ public class CommonTriggers {
     });
 
     public static Trigger ReleaseBallTrigger = new Trigger(() -> {
-        boolean limelightIsALigned = false;
-        boolean RPMIsCorrect = false;
+        boolean limelightIsAligned = false;
+        boolean rpmIsCorrect = false;
         boolean inAutoshootingMode = false;
-        boolean haveAmmo = false;
+        boolean hasAmmo = false;
 
         if (Robot.LIMELIGHT_SUBSYSTEM.isAligned()) {
-            limelightIsALigned = true;
+            limelightIsAligned = true;
         }
 
         if (Robot.SHOOTER_SUBSYSTEM.motorsAreRecovered()) {
-            RPMIsCorrect = true;
+            rpmIsCorrect = true;
         }
 
         if (Robot.SHOOTER_SUBSYSTEM.getAutoShotSelect()) {
@@ -70,10 +70,10 @@ public class CommonTriggers {
         }
 
         if (Robot.getRobotProperColorInventory() >= 2 || Robot.GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER)) {
-            haveAmmo = true;
+            hasAmmo = true;
         }
 
-        return limelightIsALigned && RPMIsCorrect && inAutoshootingMode && haveAmmo;
+        return limelightIsAligned && rpmIsCorrect && inAutoshootingMode && hasAmmo;
     });
 
     /*
