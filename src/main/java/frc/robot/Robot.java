@@ -290,7 +290,8 @@ public class Robot extends TimedRobot {
       .whenActive(DRIVE_TRAIN_SUBSYSTEM::cutPower)
       .whenInactive(DRIVE_TRAIN_SUBSYSTEM::stopCutPower);
 
-    new Trigger(() -> GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER)).or(CommonTriggers.RobotHas2Balls)
+    // new Trigger(() -> GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER)).or(CommonTriggers.RobotHas2Balls)
+    CommonTriggers.RunAutoshootingTrigger
       .whenActive(() -> DRIVE_TRAIN_DEFAULT_COMMAND.followLimelight())
       .whenInactive(() -> DRIVE_TRAIN_DEFAULT_COMMAND.stopFollowingLimelight());
 
@@ -330,8 +331,8 @@ public class Robot extends TimedRobot {
     ));
 
     OP_PAD.getButton(ButtonCode.SHOOTER_PROFILE_MANUAL_OVERRIDE)
-      .whileHeld(() -> Robot.SHOOTER_SUBSYSTEM.enableAutoShotSelect())
-      .whenInactive(() -> Robot.SHOOTER_SUBSYSTEM.disableAutoShotSelect());
+      .whileHeld(() -> Robot.SHOOTER_SUBSYSTEM.disableAutoShotSelect())
+      .whenInactive(() -> Robot.SHOOTER_SUBSYSTEM.enableAutoShotSelect());
       
     GAMEPAD.getButton(ButtonCode.LEFTBUMPER).or(CommonTriggers.RobotHas2Balls)
       .whenActive(DRIVE_TRAIN_DEFAULT_COMMAND::disableAutoSteer)
