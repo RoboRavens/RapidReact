@@ -59,14 +59,17 @@ public class TurretSwivelSubsystem extends SubsystemBase {
     /**
      * Aims to the input angle. Will stop at edges of deadzone and flip if target is past deadzone.
      * @param angle - the angle in degrees.
+     * @apiNote Can handle -870 to 870.
      */
     public void goToAngle(double angle) {
         if (Math.abs(angle) > 360 - Constants.TURRET_RANGE) { //If angle is overshooting bounds farther than the deadzone...
             angle += (Math.abs(angle) / angle) * -360; //Flips angle; adds 360 with an inverted sign to whatever angle is (if angle is +, add - and vice versa)
-        } else { //If angle is over bounds but IN deadzone...
-            angle = Math.max(angle, -1 * Constants.TURRET_RANGE); //Limit to turret range pos/neg
-            angle = Math.min(angle, Constants.TURRET_RANGE);
         }
+        if (Math.abs(angle) - 180 > 0) {
+            angle += (Math.abs(angle) / angle) * -360;
+        }
+        angle = Math.max(angle, -1 * Constants.TURRET_RANGE); //Limit to turret range pos/neg
+        angle = Math.min(angle, Constants.TURRET_RANGE);
         _turretMotor.set(ControlMode.Position, angle * Constants.TURRET_ENCODER_RATIO);
         _shot.target = angle;
     }
