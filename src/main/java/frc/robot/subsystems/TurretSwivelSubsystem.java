@@ -53,7 +53,7 @@ public class TurretSwivelSubsystem extends SubsystemBase {
     }
 
     public double getAngle() {
-        return _turretMotor.getSelectedSensorPosition() / Constants.TURRET_ENCODER_RATIO;
+        return _turretMotor.getSelectedSensorPosition() * Constants.ENCODER_TO_TURRET_RATIO;
     }
 
     /**
@@ -70,7 +70,7 @@ public class TurretSwivelSubsystem extends SubsystemBase {
         }
         angle = Math.max(angle, -1 * Constants.TURRET_RANGE); //Limit to turret range pos/neg
         angle = Math.min(angle, Constants.TURRET_RANGE);
-        _turretMotor.set(ControlMode.Position, angle * Constants.TURRET_ENCODER_RATIO);
+        _turretMotor.set(ControlMode.Position, angle * Constants.ENCODER_TO_TURRET_RATIO); //Mult by ratio
         _shot.target = angle;
     }
 
