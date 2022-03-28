@@ -8,13 +8,15 @@ package frc.robot.commands.turret;
 //import frc.robot.Constants;
 //import frc.robot.Robot;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
+import frc.robot.Robot;
 
 /** Aims the turret at the target */
 public class TurretAimAtTargetCommand extends CommandBase {
 
   public TurretAimAtTargetCommand() {
     // Commented out for Livonia Mar 15
-    // addRequirements(Robot.TURRET_SWIVEL_SUBSYSTEM);
+    addRequirements(Robot.TURRET_SWIVEL_SUBSYSTEM);
   }
 
  
@@ -22,20 +24,15 @@ public class TurretAimAtTargetCommand extends CommandBase {
   @Override
   public void initialize() {
     // Commented out for Livonia Mar 15
-    // Robot.TURRET_SWIVEL_SUBSYSTEM.setShot(Constants.TURRET_DEFAULT_PID);
+    Robot.TURRET_SWIVEL_SUBSYSTEM.setShot(Constants.TURRET_DEFAULT_PID);
     
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Commented out for Livonia Mar 15. Line with // comment was
-    // already commented out.
-    /*
-    //double angle = Robot.GAMEPAD.getAxis(AxisCode.RIGHTSTICKX);
     double changedAngle = Robot.TURRET_SWIVEL_SUBSYSTEM.getAngle() + Robot.LIMELIGHT_SUBSYSTEM.getTargetOffsetAngle();
     Robot.TURRET_SWIVEL_SUBSYSTEM.goToAngle(changedAngle);
-    */
   }
 
   // Called once the command ends or is interrupted.
