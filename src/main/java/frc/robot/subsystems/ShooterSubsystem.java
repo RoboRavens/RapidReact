@@ -22,13 +22,12 @@ public class ShooterSubsystem extends SubsystemBase {
     private TalonFX _backspinMotor;
     private TalonFX _topspinMotor;
     private ShooterCalibrationPair _shot;
-    private boolean _isShooting;
     private int _shotTally = 0;
+    private boolean _isShooting;
     private boolean _recovered;
+    private boolean _autoShotSelect = true;
     private double _lastShotTime = 0;
     private double _arbitraryFeedForward = 0;
-
-    private boolean _autoShotSelect = true;
 
     public ShooterSubsystem() {
         _backspinMotor = new TalonFX(RobotMap.SHOOTER_BACKSPIN_MOTOR);

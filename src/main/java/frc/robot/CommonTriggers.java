@@ -35,4 +35,19 @@ public class CommonTriggers {
         
         return runShooter;
     });
+
+    public static Trigger RunAutoshootingTrigger = new Trigger(() -> {
+        boolean robotHasTwoAmmo = false;
+        boolean userOverride = false;
+
+        if (Robot.getRobotProperColorInventory() >= 2) {
+            robotHasTwoAmmo = true;
+        }
+
+        if (Robot.GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER)) {
+            userOverride = true;
+        }
+
+        return robotHasTwoAmmo || userOverride;
+    });
 }
