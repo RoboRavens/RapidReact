@@ -1,8 +1,6 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.ravenhardware.RavenPiPosition;
@@ -12,14 +10,14 @@ import frc.robot.RobotMap;
 
 public class ConveyanceSubsystem extends SubsystemBase {
   
-  private TalonSRX _conveyanceMotorOne;
+  private WPI_TalonSRX _conveyanceMotorOne;
   private DigitalInput _conveyanceStagingBeamBreak;
   private DigitalInput _conveyanceIntakeBeamBreak;
   private boolean _isIndexingFromStagingToFeeder = false;
   private boolean _isIndexingFromEntranceToStaging = false;
 
   public ConveyanceSubsystem() {
-    _conveyanceMotorOne = new TalonSRX(RobotMap.CONVEYANCE_MOTOR);
+    _conveyanceMotorOne = new WPI_TalonSRX(RobotMap.CONVEYANCE_MOTOR);
     _conveyanceStagingBeamBreak = new DigitalInput(RobotMap.CONVEYANCE_TRANSITION_BEAM_BREAK_CHANNEL);
     _conveyanceIntakeBeamBreak = new DigitalInput(RobotMap.CONVEYANCE_INTAKE_BREAM_BREAK_CHANNEL);
   }
@@ -33,11 +31,11 @@ public class ConveyanceSubsystem extends SubsystemBase {
   }
 
   public void setConveyanceEjectCargo() {
-    this.runConveyanceAtPercentPower(Constants.CONVEYANCE_ONE_FULL_SPEED_REVERSE);
+    this.runConveyanceAtVoltage(Constants.CONVEYANCE_ONE_FULL_SPEED_REVERSE);
   }
 
   public void setConveyanceCollectCargo() {
-    this.runConveyanceAtPercentPower(Constants.CONVEYANCE_ONE_FULL_SPEED);
+    this.runConveyanceAtVoltage(Constants.CONVEYANCE_ONE_FULL_SPEED);
   }
 
   public boolean getIsIndexingFromStagingToFeeder() {
@@ -46,20 +44,26 @@ public class ConveyanceSubsystem extends SubsystemBase {
 
   public void setConveyanceIndexCargoForward() {
     _isIndexingFromStagingToFeeder = true;
-    this.runConveyanceAtPercentPower(Constants.CONVEYANCE_ONE_INDEX_SPEED);
+    this.runConveyanceAtVoltage(Constants.CONVEYANCE_ONE_INDEX_SPEED);
   }
 
   public void setConveyanceNormalSpeedReverse() {
-    this.runConveyanceAtPercentPower(Constants.CONVEYANCE_ONE_NORMAL_REVERSE_SPEED);
+    this.runConveyanceAtVoltage(Constants.CONVEYANCE_ONE_NORMAL_REVERSE_SPEED);
   }
 
-  private void runConveyanceAtPercentPower(double magnitude) {
-    this._conveyanceMotorOne.set(ControlMode.PercentOutput, magnitude);
+  private void runConveyanceAtVoltage(double magnitude) {
+    // this._conveyanceMotorOne.set(ControlMode.PercentOutput, magnitude);
+    
+    // The better way to do this would be to update the constant values on
+    // the methods that call this, but until we know it works I don't want
+    // to change all the code to do that so we'll just do the conversion here.
+    double voltage = magnitude * 12.0;
+    this._conveyanceMotorOne.setVoltage(voltage);
   }
 
   public void stopConveyanceOne() {
     _isIndexingFromStagingToFeeder = false;
-    this.runConveyanceAtPercentPower(Constants.CONVEYANCE_ONE_STOP);
+    this.runConveyanceAtVoltage(Constants.CONVEYANCE_ONE_STOP);
   }
 
   public boolean getConveyanceStagingBeamBreakHasBall() {
