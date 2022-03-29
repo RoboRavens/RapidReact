@@ -235,10 +235,11 @@ public class ShooterSubsystem extends SubsystemBase {
 
         boolean output = false;
         
-        if (_backspinMotor.getClosedLoopTarget() == 0) { //If we should be stopped anyway then end because we don't want to misfire
+        if (_shot._backspinMotorCalibration.targetRPM == 0) { //If we should be stopped anyway then end because we don't want to misfire
             return false;
         }
-        if (_recovered && motorsAreRecovered() == false) { //If we WERE be at the target yet now we aren't (Ball JUST fired)
+
+        if (_recovered && !motorsAreRecovered()) { //If we WERE be at the target yet now we aren't (Ball JUST fired)
             output = true;
         }
 
