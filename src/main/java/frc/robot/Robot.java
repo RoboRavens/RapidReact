@@ -23,6 +23,7 @@ import frc.controls.Gamepad;
 import frc.ravenhardware.BlinkinCalibrations;
 import frc.ravenhardware.RavenBlinkin;
 import frc.ravenhardware.RavenPiColorSensor;
+import frc.ravenhardware.RavenPiPosition;
 import frc.robot.commands.auto.FiveBallHps;
 import frc.robot.commands.auto.ThreeBallTarmacAutoCommand;
 import frc.robot.commands.auto.TwoBallAutoCommand;
@@ -191,8 +192,8 @@ public class Robot extends TimedRobot {
       Robot.LIMELIGHT_SUBSYSTEM.turnLEDOff();
     }  
 
-    // SmartDashboard.putString("CONVEYANCE COLOR", Robot.COLOR_SENSOR.getSensorBallColor(RavenPiPosition.CONVEYANCE).toString());
-    // SmartDashboard.putString("FEEDER COLOR", Robot.COLOR_SENSOR.getSensorBallColor(RavenPiPosition.FEEDER).toString());
+    SmartDashboard.putString("CONVEYANCE COLOR", Robot.COLOR_SENSOR.getSensorBallColor(RavenPiPosition.CONVEYANCE).toString());
+    SmartDashboard.putString("FEEDER COLOR", Robot.COLOR_SENSOR.getSensorBallColor(RavenPiPosition.FEEDER).toString());
     // SmartDashboard.putBoolean("FEEDER HAS CORRECT BALL", Robot.COLOR_SENSOR.getSensorIsCorrectBallColorStrict(RavenPiPosition.FEEDER))
   }
    /** This function is called once each time the robot enters Disabled mode. */

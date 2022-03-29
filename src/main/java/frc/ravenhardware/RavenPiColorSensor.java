@@ -17,7 +17,7 @@ public class RavenPiColorSensor extends PicoColorSensor{
      * @param sensorPosition The enum position of the sensor of choice: either CONVEYANCE or FEEDER
      * @return Returns an enum of the detected color, either Invalid, Red, or Blue
      */
-    private Alliance getSensorBallColor(RavenPiPosition sensorPosition) {
+    public Alliance getSensorBallColor(RavenPiPosition sensorPosition) {
         RawColor colorval = sensorPosition == RavenPiPosition.CONVEYANCE ? getRawColor0() : getRawColor1();
         double threshold = sensorPosition == RavenPiPosition.CONVEYANCE ? Constants.BALL_COLOR_THRESHOLD_ENTRY : Constants.BALL_COLOR_THRESHOLD_EXIT;
 
