@@ -6,6 +6,8 @@ import frc.robot.Robot;
 import frc.robot.lib.PicoColorSensor;
 
 public class RavenPiColorSensor extends PicoColorSensor{
+    private boolean _colorSensorFeatureEnabled = true;
+
     public RavenPiColorSensor() {
         super();
     }
@@ -41,6 +43,10 @@ public class RavenPiColorSensor extends PicoColorSensor{
             getIsCorrectBallType = true;
         }
 
+        if (_colorSensorFeatureEnabled == false) {
+            getIsCorrectBallType = true;
+        }
+
         return getIsCorrectBallType;
     }
 
@@ -59,6 +65,14 @@ public class RavenPiColorSensor extends PicoColorSensor{
             getIsCorrectBallType = true;
         }
 
+        if (_colorSensorFeatureEnabled == false) {
+            getIsCorrectBallType = true;
+        }
+
         return getIsCorrectBallType;
+    }
+
+    public void setColorSensorFeatureEnabled(boolean value) {
+        _colorSensorFeatureEnabled = value;
     }
 }
