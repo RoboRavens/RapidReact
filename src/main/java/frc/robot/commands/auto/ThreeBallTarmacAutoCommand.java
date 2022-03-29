@@ -16,7 +16,7 @@ public class ThreeBallTarmacAutoCommand {
 
         var twoBall = TwoBallAutoCommand.getWallCommand();
 
-        var driveThenWait = Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommandSwerveOptimized(trajectory1).andThen(new WaitCommand(.5));
+        var driveThenWait = Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommand(trajectory1).andThen(new WaitCommand(.5));
         var pickUpThirdBallWhileMovingToLaunchpadShot = new ParallelDeadlineGroup(driveThenWait, new ConveyanceCollectCommand());
         var shootThirdBall = FeederShootBallsAutoCommand.get(1);
 

@@ -4,28 +4,23 @@
 
 package frc.robot.commands.turret;
 
-// Commented out for Livonia Mar 15.
-//import frc.robot.Constants;
-//import frc.robot.Robot;
+import frc.robot.Constants;
+import frc.robot.Robot;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
 public class TurretFlipCommand extends CommandBase {
 
   public TurretFlipCommand() {
-    // Commented out for Livonia Mar 15.
-    //addRequirements(Robot.TURRET_SWIVEL_SUBSYSTEM);
+    addRequirements(Robot.TURRET_SWIVEL_SUBSYSTEM);
   }
 
  
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    /*
-      Commented out for Livonia Mar 15
-    Robot.TURRET_SWIVEL_SUBSYSTEM.setShot(Constants.TURRET_FLIP_PID);
+    Robot.TURRET_SWIVEL_SUBSYSTEM.setPidProfile(Constants.TURRET_FLIP_PID);
     Robot.TURRET_SWIVEL_SUBSYSTEM.goToAngle(-1 * Robot.TURRET_SWIVEL_SUBSYSTEM.getAngle());
-    */
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -41,8 +36,6 @@ public class TurretFlipCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
-    // Commented out for Livonia Mar 15, return true added
-//    return Robot.TURRET_SWIVEL_SUBSYSTEM.getIsAtTarget();
+    return Robot.TURRET_SWIVEL_SUBSYSTEM.getIsAtTarget();
   }
 }
