@@ -50,4 +50,42 @@ public class CommonTriggers {
 
         return robotHasTwoAmmo || userOverride;
     });
+
+    public static Trigger ReleaseBallTrigger = new Trigger(() -> {
+        boolean limelightIsAligned = false;
+        boolean rpmIsCorrect = false;
+        boolean inAutoshootingMode = false;
+        boolean hasAmmo = false;
+
+        if (Robot.LIMELIGHT_SUBSYSTEM.isAligned()) {
+            limelightIsAligned = true;
+        }
+
+        if (Robot.SHOOTER_SUBSYSTEM.motorsAreRecovered()) {
+            rpmIsCorrect = true;
+        }
+
+        if (Robot.SHOOTER_SUBSYSTEM.getAutoShotSelect()) {
+            inAutoshootingMode = true;
+        }
+
+        if (Robot.getRobotProperColorInventory() >= 2 || Robot.GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER)) {
+            hasAmmo = true;
+        }
+
+        return limelightIsAligned && rpmIsCorrect && inAutoshootingMode && hasAmmo;
+    });
+
+    /*
+    Release ball when:
+        limelight is aligned (method in limelight subsystem)
+        RPM is correct (read RPM for both shooter flywheels relative to target; there may be a method for this in the shooter subsystem already, but maybe not)
+        we're in autoshooting mode (manual override isn't flipped)
+            somwhere in robot.java you'll find a manual override for shooting mode
+        we have ammo
+
+        trigger checks all these conditions
+        when condition is met (trigger is true) run the feeder wheel's shoot sequence
+
+    */
 }
