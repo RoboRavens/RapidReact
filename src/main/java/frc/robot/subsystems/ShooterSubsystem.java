@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
@@ -21,12 +22,12 @@ public class ShooterSubsystem extends SubsystemBase {
     private TalonFX _backspinMotor;
     private TalonFX _topspinMotor;
     private ShooterCalibrationPair _shot;
-    private boolean _isShooting;
     private int _shotTally = 0;
+    private boolean _isShooting;
     private boolean _recovered;
-    private double _lastShotTime = 0;
-
     private boolean _autoShotSelect = true;
+    private double _lastShotTime = 0;
+    private double _arbitraryFeedForward = 0;
 
     public ShooterSubsystem() {
         _backspinMotor = new TalonFX(RobotMap.SHOOTER_BACKSPIN_MOTOR);
@@ -50,6 +51,7 @@ public class ShooterSubsystem extends SubsystemBase {
         updateSmartDashboard();
 
         updateShotProfile();
+        updateArbitraryFeedForward();
 
     }
 
@@ -64,8 +66,8 @@ public class ShooterSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Backspin Target RPM", _shot._backspinMotorCalibration.targetRPM);
         SmartDashboard.putNumber("Topspin Target RPM", _shot._topspinMotorCalibration.targetRPM);
         
-        SmartDashboard.putNumber("Backspin AMPS", _backspinMotor.getSupplyCurrent());
-        SmartDashboard.putNumber("Topspin AMPS", _topspinMotor.getStatorCurrent());
+        // SmartDashboard.putNumber("Backspin AMPS", _backspinMotor.getSupplyCurrent());
+        // SmartDashboard.putNumber("Topspin AMPS", _topspinMotor.getStatorCurrent());
     }
 
     @Override
@@ -111,6 +113,27 @@ public class ShooterSubsystem extends SubsystemBase {
         return _shot;
     }
 
+    public void updateArbitraryFeedForward() {
+        double aff = 0;
+        
+        switch (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceState()) {
+            case OFF:
+                aff += 0;
+                break;
+            case EJECTING:
+                aff += Constants.SHOOTER_CONVEYANCE_EJECTING_ARBITRARY_FEED_FORWARD;
+                break;
+            case INDEXING:
+                aff += Constants.SHOOTER_CONVEYANCE_INDEXING_ARBITRARY_FEED_FORWARD;
+                break;
+            case INTAKING:
+                aff += Constants.SHOOTER_CONVEYANCE_INTAKING_ARBITRARY_FEED_FORWARD;
+                break;
+        }
+
+        _arbitraryFeedForward = aff;
+    }
+
     /**
     * Starts the motor with the set shot type
     */
@@ -127,6 +150,9 @@ public class ShooterSubsystem extends SubsystemBase {
 
         _backspinMotor.set(ControlMode.Velocity, backspinTargetVelocity);
         _topspinMotor.set(ControlMode.Velocity, topspinTargetVelocity);
+
+        _backspinMotor.set(ControlMode.Velocity, backspinTargetVelocity, DemandType.ArbitraryFeedForward, _arbitraryFeedForward);
+        _topspinMotor.set(ControlMode.Velocity, topspinTargetVelocity, DemandType.ArbitraryFeedForward, _arbitraryFeedForward);
 
         _isShooting = true;
     }
@@ -146,8 +172,10 @@ public class ShooterSubsystem extends SubsystemBase {
 
         SmartDashboard.putNumber("Backspin WHEEL targ RPM", backspinTargetMotorRPM * Constants.BACKSPIN_GEAR_RATIO);
         SmartDashboard.putNumber("Topspin WHEEL targ RPM", topspinTargetMotorRPM * Constants.TOPSPIN_GEAR_RATIO);
-    }
 
+        SmartDashboard.putString("Conveyance State", Robot.CONVEYANCE_SUBSYSTEM.getConveyanceState().name());
+        SmartDashboard.putNumber("AFF Value", _arbitraryFeedForward);
+    }
 
     /**
     * Stops the motor (sets it to 0% power)
@@ -156,6 +184,8 @@ public class ShooterSubsystem extends SubsystemBase {
         _backspinMotor.set(ControlMode.Current, 0);
         _topspinMotor.set(ControlMode.Current, 0);
         _isShooting = false;
+
+        //setShot(Constants.DISABLED_SHOT_CALIBRATION_PAIR); add this if you're ready to test it too!!
     }
 
     public void resetShotCount() {
@@ -274,13 +304,16 @@ public class ShooterSubsystem extends SubsystemBase {
             Robot.SHOOTER_SUBSYSTEM.setShot(shotToSet);
         }
     }
-
       
-  public void disableAutoShotSelect() {
-    _autoShotSelect = false;
-  }
+    public void disableAutoShotSelect() {
+        _autoShotSelect = false;
+    }
 
-  public void enableAutoShotSelect() {
-    _autoShotSelect = true;
-  }
+    public void enableAutoShotSelect() {
+        _autoShotSelect = true;
+    }
+
+    public boolean getAutoShotSelect() {
+        return _autoShotSelect;
+    }
 }

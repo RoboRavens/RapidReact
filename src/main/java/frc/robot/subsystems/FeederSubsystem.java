@@ -4,9 +4,7 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.ravenhardware.RavenPiPosition;
@@ -16,14 +14,14 @@ import frc.robot.RobotMap;
 
 public class FeederSubsystem extends SubsystemBase {
    
-  private TalonFX _conveyanceMotorTwo;
-  private TalonFX _feederWheelMotor;
+  private WPI_TalonFX _conveyanceMotorTwo;
+  private WPI_TalonFX _feederWheelMotor;
   private DigitalInput _feederBeamBreak;
 
 
   public FeederSubsystem() {
-      _conveyanceMotorTwo = new TalonFX(RobotMap.FEEDER_CONVEYANCE_MOTOR);
-      _feederWheelMotor = new TalonFX(RobotMap.FEEDER_MOTOR);
+      _conveyanceMotorTwo = new WPI_TalonFX(RobotMap.FEEDER_CONVEYANCE_MOTOR);
+      _feederWheelMotor = new WPI_TalonFX(RobotMap.FEEDER_MOTOR);
       _feederBeamBreak = new DigitalInput(RobotMap.FEEDER_BEAM_BREAK_CHANNEL);
   }
 
@@ -44,51 +42,63 @@ public class FeederSubsystem extends SubsystemBase {
   }
 
   public void setConveyanceMaxReverse() {
-    this.runConveyanceAtPercentPower(Constants.CONVEYANCE_TWO_FULL_SPEED_REVERSE);
+    this.runConveyanceAtVoltage(Constants.CONVEYANCE_TWO_FULL_SPEED_REVERSE);
   }
 
   public void setConveyanceTwoMaxForward() {
     if (Robot.CONVEYANCE_SUBSYSTEM.getIsIndexingFromStagingToFeeder()) {
-      this.runConveyanceAtPercentPower(Constants.CONVEYANCE_TWO_SPEED_WHILE_INDEXING);
+      this.runConveyanceAtVoltage(Constants.CONVEYANCE_TWO_SPEED_WHILE_INDEXING);
     } else {
-      this.runConveyanceAtPercentPower(Constants.CONVEYANCE_TWO_FULL_SPEED);
+      this.runConveyanceAtVoltage(Constants.CONVEYANCE_TWO_FULL_SPEED);
     }
   }
 
   public void setConveyanceNormalSpeedForward() {
-    this.runConveyanceAtPercentPower(Constants.CONVEYANCE_TWO_NORMAL_SPEED);
+    this.runConveyanceAtVoltage(Constants.CONVEYANCE_TWO_NORMAL_SPEED);
   }
 
-  public void setConveyanceNormalSpeedReverse() {
-    this.runConveyanceAtPercentPower(Constants.CONVEYANCE_TWO_NORMAL_REVERSE_SPEED);
+  public void setFeederConveyanceEject() {
+    this.runConveyanceAtVoltage(Constants.CONVEYANCE_TWO_NORMAL_REVERSE_SPEED);
   }
 
-  private void runConveyanceAtPercentPower(double magnitude) {
-    _conveyanceMotorTwo.set(ControlMode.PercentOutput, magnitude);
+  private void runConveyanceAtVoltage(double magnitude) {
+    // _conveyanceMotorTwo.set(ControlMode.PercentOutput, magnitude);
+    
+    // The better way to do this would be to update the constant values on
+    // the methods that call this, but until we know it works I don't want
+    // to change all the code to do that so we'll just do the conversion here.
+    double voltage = magnitude * 12.0;
+    this._conveyanceMotorTwo.setVoltage(voltage);
   }
 
   public void conveyanceStop() {
-    this.runConveyanceAtPercentPower(Constants.CONVEYANCE_TWO_STOP);
+    this.runConveyanceAtVoltage(Constants.CONVEYANCE_TWO_STOP);
   }
 
   public void defaultCommand() {
     this.conveyanceStop();
   }
 
-  private void runWheelAtPercentPower(double magnitude) {
-    _feederWheelMotor.set(ControlMode.PercentOutput, magnitude);
+  private void runFeederAtVoltage(double magnitude) {
+    // _feederWheelMotor.set(ControlMode.PercentOutput, magnitude);
+    
+    // The better way to do this would be to update the constant values on
+    // the methods that call this, but until we know it works I don't want
+    // to change all the code to do that so we'll just do the conversion here.
+    double voltage = magnitude * 12.0;
+    this._feederWheelMotor.setVoltage(voltage);
   }
 
   public void feederWheelForward() {
-    this.runWheelAtPercentPower(Constants.CONVEYANCE_TWO_FEEDER_SPEED);
+    this.runFeederAtVoltage(Constants.CONVEYANCE_TWO_FEEDER_SPEED);
   }
 
   public void feederWheelStop() {
-    this.runWheelAtPercentPower(Constants.CONVEYANCE_TWO_FEEDER_STOP);
+    this.runFeederAtVoltage(Constants.CONVEYANCE_TWO_FEEDER_STOP);
   }
 
   public void feederWheelReverse() {
-    this.runWheelAtPercentPower(Constants.CONVEYANCE_TWO_REVERSE_FEEDER);
+    this.runFeederAtVoltage(Constants.CONVEYANCE_TWO_REVERSE_FEEDER);
   }
 
   public boolean getFeederHasBall() {
@@ -145,7 +155,7 @@ public class FeederSubsystem extends SubsystemBase {
     boolean feederHasWrongColorCargo = false;
     
     if (Robot.FEEDER_SUBSYSTEM.getFeederHasBall()) {
-      if (Robot.COLOR_SENSOR.getSensorIsCorrectBallColorLenient(RavenPiPosition.FEEDER)) {
+      if (Robot.COLOR_SENSOR.getSensorIsCorrectBallColorStrict(RavenPiPosition.FEEDER)) {
         feederHasWrongColorCargo = true;
       }
     }

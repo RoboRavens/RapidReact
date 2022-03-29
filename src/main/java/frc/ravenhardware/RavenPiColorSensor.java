@@ -61,7 +61,7 @@ public class RavenPiColorSensor extends PicoColorSensor{
 
         Alliance ballColor = getSensorBallColor(sensorPosition);
 
-        if (ballColor == Robot.ALLIANCE_COLOR || ballColor == Alliance.Invalid) {
+        if (ballColor == Robot.ALLIANCE_COLOR) {
             getIsCorrectBallType = true;
         }
 
