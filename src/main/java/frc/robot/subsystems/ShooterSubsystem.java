@@ -66,8 +66,8 @@ public class ShooterSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Backspin Target RPM", _shot._backspinMotorCalibration.targetRPM);
         SmartDashboard.putNumber("Topspin Target RPM", _shot._topspinMotorCalibration.targetRPM);
         
-        SmartDashboard.putNumber("Backspin AMPS", _backspinMotor.getSupplyCurrent());
-        SmartDashboard.putNumber("Topspin AMPS", _topspinMotor.getStatorCurrent());
+        // SmartDashboard.putNumber("Backspin AMPS", _backspinMotor.getSupplyCurrent());
+        // SmartDashboard.putNumber("Topspin AMPS", _topspinMotor.getStatorCurrent());
     }
 
     @Override

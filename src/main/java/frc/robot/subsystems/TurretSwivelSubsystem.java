@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
@@ -24,7 +25,9 @@ public class TurretSwivelSubsystem extends SubsystemBase {
     public TurretSwivelSubsystem() {
         _turretMotor = new WPI_TalonSRX(RobotMap.TURRET_MOTOR);
 
-        _turretMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+//        _turretMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+
+        ErrorCode sensorError = _turretMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
 
         _turretMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
         _turretMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
@@ -40,6 +43,9 @@ public class TurretSwivelSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Turret RAW Encoder", _turretMotor.getSelectedSensorPosition());
         SmartDashboard.putNumber("Turret Target", _shot.target);
         SmartDashboard.putBoolean("Turret Target Sighted", Robot.LIMELIGHT_SUBSYSTEM.hasTargetSighted());
+
+
+        SmartDashboard.putNumber("RAW TURRET SENSOR", _turretMotor.getSelectedSensorPosition());
     }
 
     @Override
@@ -56,7 +62,7 @@ public class TurretSwivelSubsystem extends SubsystemBase {
         // return _turretMotor.getSelectedSensorPosition() / Constants.TURRET_ENCODER_RATIO;
         
         // New?
-        return _turretMotor.getSelectedSensorPosition() * Constants.ENCODER_TO_TURRET_RATIO;
+        return _turretMotor.getSelectedSensorPosition() / Constants.ENCODER_TO_TURRET_RATIO;
     }
 
     /**

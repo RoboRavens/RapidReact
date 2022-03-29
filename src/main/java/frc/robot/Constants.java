@@ -189,7 +189,7 @@ Y-offset constants in order:
     //TURRET SWIVEL
     public static final int TURRET_IDX = 0;
     public static final int TURRET_TIMEOUT_MS = 100;
-    public static final int TURRET_RANGE = 50; //Degrees of motion in both ways (180 means full movement both ways)
+    public static final int TURRET_RANGE = 100; //Degrees of motion in both ways (180 means full movement both ways)
     public static final double TURRET_ENCODER_RATIO = 500; //Divide encoder ticks by this, multiply angles by this (encoder ticks are much less than angles)
     public static final double TURRET_AIM_ALLOWANCE = 2; //Degrees of allowance to say that the turret has "reached" its target
     public static final double TURRET_MISS_OFFSET = 35;
@@ -197,12 +197,14 @@ Y-offset constants in order:
     public static final double ENCODER_TO_TURRET_RATIO = TALONFX_TICKS_PER_REVOLUTION / 360.0 / TURRET_GEAR_RATIO; // Multiply encoder by this to find angle of turret
 
     public static final double TURRET_DEFAULT_KF = 0;
-    public static final double TURRET_DEFAULT_KP = 0.0001; //0.075;
+    public static final double TURRET_DEFAULT_KP = 0.2;
+    //public static final double TURRET_DEFAULT_KP = 0.120; //0.075;
     public static final double TURRET_DEFAULT_KI = 0;
     public static final double TURRET_DEFAULT_KD = 0;
 
     public static final double TURRET_FLIP_KF = 0;
-    public static final double TURRET_FLIP_KP = 0.0001; //0.1;
+    public static final double TURRET_FLIP_KP = 0.00015;
+    //public static final double TURRET_FLIP_KP = 0.120; //0.1;
     public static final double TURRET_FLIP_KI = 0;
     public static final double TURRET_FLIP_KD = 0;
 
@@ -230,7 +232,7 @@ Y-offset constants in order:
     public static final double FEEDER_SAFETY_REVERSE_DURATION = .15;
 
     //CONVEYANCE ONE
-    public static final double CONVEYANCE_ONE_FULL_SPEED_REVERSE = .75;
+    public static final double CONVEYANCE_ONE_FULL_SPEED_REVERSE = 1.0;
     public static final double CONVEYANCE_ONE_FULL_SPEED = -1; // Was -75, meant to be .75, but not changing functionality without testing.
     public static final double CONVEYANCE_ONE_INDEX_SPEED = -.25;
     public static final double CONVEYANCE_ONE_NORMAL_REVERSE_SPEED = -.25;
@@ -257,12 +259,14 @@ Y-offset constants in order:
     
     //CLIMBER
     public static final double CLIMBER_HOLD_POSITION_POWER_MAGNITUDE = 0; // .13
-	public static final double CLIMBER_EXTEND_POWER_MAGNITUDE = .5;
+	public static final double CLIMBER_EXTEND_SLOW_POWER_MAGNITUDE = .5;
+    public static final double CLIMBER_EXTEND_FAST_POWER_MAGNITUDE = 1;
     public static final double CLIMBER_EXTEND_SOWLY_POWER_MAGNITUDE = .2;
 	public static final double CLIMBER_RETRACT_POWER_MAGNITUDE = -.4;
     public static final double CLIMBER_RETRACT_SOWLY_POWER_MAGNITUDE = -.2;
 	public static final double CLIMBER_RETRACT_TO_LATCH_POWER_MAGNITUDE = .2;
-    public static final double CLIMBER_EXTEND_ENCODER_TARGET = 241251.000000 - 45320.000000;
+    // public static final double CLIMBER_EXTEND_ENCODER_TARGET = 241251.000000 - 45320.000000;
+    public static final double CLIMBER_EXTEND_ENCODER_TARGET = 260000.0;
     public static final double CLIMBER_ENCODER_ACCURACY_RANGE = 4000;
     public static final double CLIMBER_IS_EXTENDED_ENCODER_THRESHOLD = CLIMBER_EXTEND_ENCODER_TARGET / 5;
 

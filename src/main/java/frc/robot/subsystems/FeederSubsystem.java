@@ -57,7 +57,7 @@ public class FeederSubsystem extends SubsystemBase {
     this.runConveyanceAtVoltage(Constants.CONVEYANCE_TWO_NORMAL_SPEED);
   }
 
-  public void setConveyanceNormalSpeedReverse() {
+  public void setFeederConveyanceEject() {
     this.runConveyanceAtVoltage(Constants.CONVEYANCE_TWO_NORMAL_REVERSE_SPEED);
   }
 

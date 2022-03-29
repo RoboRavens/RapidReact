@@ -32,7 +32,7 @@ public class CommonTriggers {
                 runShooter = true;
             }
         }
-        
+
         return runShooter;
     });
 
@@ -48,7 +48,8 @@ public class CommonTriggers {
             userOverride = true;
         }
 
-        return robotHasTwoAmmo || userOverride;
+        // return robotHasTwoAmmo || userOverride;
+        return false;
     });
 
     public static Trigger ReleaseBallTrigger = new Trigger(() -> {
