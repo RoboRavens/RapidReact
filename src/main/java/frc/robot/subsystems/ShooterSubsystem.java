@@ -48,6 +48,7 @@ public class ShooterSubsystem extends SubsystemBase {
             _shotTally++;
         }
 
+        updatePidValuesOnSmartDashboard();
         updateSmartDashboard();
 
         updateShotProfile();
@@ -68,6 +69,35 @@ public class ShooterSubsystem extends SubsystemBase {
         
         SmartDashboard.putNumber("Backspin AMPS", _backspinMotor.getSupplyCurrent());
         SmartDashboard.putNumber("Topspin AMPS", _topspinMotor.getStatorCurrent());
+    }
+
+    public void updatePidValuesOnSmartDashboard() {
+        // Show the backspin and topspin PID values on smart dashboard
+        SmartDashboard.putNumber("Tarmac Target RPM", Constants.TARMAC_BACKSPIN_RPM * 2);
+        SmartDashboard.putNumber("Tarmac KP", Constants.TARMAC_BACKSPIN_KP * 2);
+        SmartDashboard.putNumber("Tarmac KI", Constants.TARMAC_BACKSPIN_KI * 2);
+        SmartDashboard.putNumber("Tarmac KD", Constants.TARMAC_BACKSPIN_KD * 2);
+        SmartDashboard.putNumber("Tarmac KF", Constants.TARMAC_BACKSPIN_KF * 2);
+
+        // SmartDashboard.putNumber("Target RPM", Constants.TARMAC_TOPSPIN_RPM);
+        // SmartDashboard.putNumber("Target RPM", Constants.TARMAC_TOPSPIN_KP);
+        // SmartDashboard.putNumber("Target RPM", Constants.TARMAC_TOPSPIN_KI);
+        // SmartDashboard.putNumber("Target RPM", Constants.TARMAC_TOPSPIN_KD);
+        // SmartDashboard.putNumber("Target RPM", Constants.TARMAC_TOPSPIN_KF);
+
+        // Set the backspin PID values to the changed values on smart dashboard, divided by two because the values are for a single motor
+        Constants.TARMAC_BACKSPIN_RPM = (int) SmartDashboard.getNumber("Tarmac Target RPM", Constants.TARMAC_BACKSPIN_RPM / 2);
+        Constants.TARMAC_BACKSPIN_KP = (int) SmartDashboard.getNumber("Tarmac KP", Constants.TARMAC_BACKSPIN_KP / 2);
+        Constants.TARMAC_BACKSPIN_KI = (int) SmartDashboard.getNumber("Tarmac KI", Constants.TARMAC_BACKSPIN_KI / 2);
+        Constants.TARMAC_BACKSPIN_KD = (int) SmartDashboard.getNumber("Tarmac KD", Constants.TARMAC_BACKSPIN_KD / 2);
+        Constants.TARMAC_BACKSPIN_KF = (int) SmartDashboard.getNumber("Tarmac KF", Constants.TARMAC_BACKSPIN_KF / 2);
+
+        // Set the topspin PID values to the changed values on smart dashboard, divided by two because the values are for a single motor
+        Constants.TARMAC_TOPSPIN_RPM = (int) SmartDashboard.getNumber("Tarmac Target RPM", Constants.TARMAC_BACKSPIN_RPM / 2);
+        Constants.TARMAC_TOPSPIN_KP = (int) SmartDashboard.getNumber("Tarmac KP", Constants.TARMAC_BACKSPIN_KP / 2);
+        Constants.TARMAC_TOPSPIN_KI = (int) SmartDashboard.getNumber("Tarmac KI", Constants.TARMAC_BACKSPIN_KI / 2);
+        Constants.TARMAC_TOPSPIN_KD = (int) SmartDashboard.getNumber("Tarmac KD", Constants.TARMAC_BACKSPIN_KD / 2);
+        Constants.TARMAC_TOPSPIN_KF = (int) SmartDashboard.getNumber("Tarmac KF", Constants.TARMAC_BACKSPIN_KF / 2);
     }
 
     @Override

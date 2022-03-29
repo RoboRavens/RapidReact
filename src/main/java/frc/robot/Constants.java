@@ -89,21 +89,21 @@ public final class Constants {
 
     public static final double LOW_GOAL_TOPSPIN_VOLTAGE_CONTROL_SETPOINT = LOW_GOAL_TOPSPIN_KF * 12;
 // was 2460
-    public static final int TARMAC_BACKSPIN_RPM = 2225;
-    public static final double TARMAC_BACKSPIN_KF = 0.0449;
+    public static int TARMAC_BACKSPIN_RPM = 2225;
+    public static double TARMAC_BACKSPIN_KF = 0.0449;
 //    public static final double TARMAC_BACKSPIN_KF = 0.0;
-    public static final double TARMAC_BACKSPIN_KP = .350;//0.21;
-    public static final double TARMAC_BACKSPIN_KI = 0;
-    public static final double TARMAC_BACKSPIN_KD = 4.0;
+    public static double TARMAC_BACKSPIN_KP = .350;//0.21;
+    public static double TARMAC_BACKSPIN_KI = 0;
+    public static double TARMAC_BACKSPIN_KD = 4.0;
 
     public static final double TARMAC_BACKSPIN_VOLTAGE_CONTROL_SETPOINT = TARMAC_BACKSPIN_KF * 12;
 // was 2460
-    public static final int TARMAC_TOPSPIN_RPM = 2225;
-    public static final double TARMAC_TOPSPIN_KF = 0.046;
+    public static int TARMAC_TOPSPIN_RPM = 2225;
+    public static double TARMAC_TOPSPIN_KF = 0.046;
 //    public static final double TARMAC_TOPSPIN_KF = 0.0;
-    public static final double TARMAC_TOPSPIN_KP = .35;//0.21;
-    public static final double TARMAC_TOPSPIN_KI = 0;
-    public static final double TARMAC_TOPSPIN_KD = 4.0;
+    public static double TARMAC_TOPSPIN_KP = .35;//0.21;
+    public static double TARMAC_TOPSPIN_KI = 0;
+    public static double TARMAC_TOPSPIN_KD = 4.0;
 
     public static final double TARMAC_TOPSPIN_VOLTAGE_CONTROL_SETPOINT = TARMAC_TOPSPIN_KF * 12;
 
