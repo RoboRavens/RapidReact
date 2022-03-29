@@ -32,7 +32,7 @@ public class CommonTriggers {
                 runShooter = true;
             }
         }
-        
+
         return runShooter;
     });
 
