@@ -19,18 +19,19 @@ public class TurretSeekCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Robot.TURRET_SWIVEL_SUBSYSTEM.setShot(Constants.TURRET_DEFAULT_PID);
+    Robot.TURRET_SWIVEL_SUBSYSTEM.setPidProfile(Constants.TURRET_DEFAULT_PID);
     Robot.LIMELIGHT_SUBSYSTEM.turnLEDOn();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(Robot.TURRET_SWIVEL_SUBSYSTEM.getShot().target == Constants.TURRET_RANGE && Robot.TURRET_SWIVEL_SUBSYSTEM.getIsAtTarget()) {
+    if (Robot.TURRET_SWIVEL_SUBSYSTEM.getPidProfile().target == Constants.TURRET_RANGE && Robot.TURRET_SWIVEL_SUBSYSTEM.getIsAtTarget()) {
       Robot.TURRET_SWIVEL_SUBSYSTEM.goToAngle(-1 * Constants.TURRET_RANGE);
-  } else if(Robot.TURRET_SWIVEL_SUBSYSTEM.getIsAtTarget()) {
+    } else if(Robot.TURRET_SWIVEL_SUBSYSTEM.getIsAtTarget()) {
       Robot.TURRET_SWIVEL_SUBSYSTEM.goToAngle(Constants.TURRET_RANGE);
-  }
+    }
+
   }
 
   // Called once the command ends or is interrupted.

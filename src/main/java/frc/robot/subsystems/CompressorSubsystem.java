@@ -41,7 +41,7 @@ public class CompressorSubsystem extends SubsystemBase {
     return compressor.getCurrent();
   }
 
-  private Boolean isOn() {
+  public Boolean isOn() {
     return compressor.getPressureSwitchValue();
   }
 

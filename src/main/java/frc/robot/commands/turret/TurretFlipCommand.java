@@ -19,7 +19,7 @@ public class TurretFlipCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Robot.TURRET_SWIVEL_SUBSYSTEM.setShot(Constants.TURRET_FLIP_PID);
+    Robot.TURRET_SWIVEL_SUBSYSTEM.setPidProfile(Constants.TURRET_FLIP_PID);
     Robot.TURRET_SWIVEL_SUBSYSTEM.goToAngle(-1 * Robot.TURRET_SWIVEL_SUBSYSTEM.getAngle());
   }
 
