@@ -68,7 +68,78 @@ public final class Constants {
     */
 
 
+// NEW CONSTANTS WITH kF based on feeder running and AFF added
 
+    // All shots need to be tuned.
+    public static final int LOW_GOAL_BACKSPIN_RPM = 1000;
+    public static final double LOW_GOAL_BACKSPIN_KF = 0.0452 * 1.1;  
+ //   public static final double LOW_GOAL_BACKSPIN_KF = 0.0;
+    public static final double LOW_GOAL_BACKSPIN_KP = 0.0;//0.17;
+    public static final double LOW_GOAL_BACKSPIN_KI = 0;
+    public static final double LOW_GOAL_BACKSPIN_KD = 0.0;
+    
+    public static final double LOW_GOAL_BACKSPIN_VOLTAGE_CONTROL_SETPOINT = LOW_GOAL_BACKSPIN_KF * 12; 
+
+    public static final int LOW_GOAL_TOPSPIN_RPM = 1000;
+    public static final double LOW_GOAL_TOPSPIN_KF = 0.047 * 1.1;
+//    public static final double LOW_GOAL_TOPSPIN_KF = 0.0;
+    public static final double LOW_GOAL_TOPSPIN_KP = 0.0;//0.17;
+    public static final double LOW_GOAL_TOPSPIN_KI = 0;
+    public static final double LOW_GOAL_TOPSPIN_KD = 0.0;
+
+    public static final double LOW_GOAL_TOPSPIN_VOLTAGE_CONTROL_SETPOINT = LOW_GOAL_TOPSPIN_KF * 12;
+// was 2460
+    public static final int TARMAC_BACKSPIN_RPM = 2225;
+    public static final double TARMAC_BACKSPIN_KF = 0.0449 * 1.1;
+//    public static final double TARMAC_BACKSPIN_KF = 0.0;
+    public static final double TARMAC_BACKSPIN_KP = .0;//0.21;
+    public static final double TARMAC_BACKSPIN_KI = 0.0;
+    public static final double TARMAC_BACKSPIN_KD = 0.0;
+
+    public static final double TARMAC_BACKSPIN_VOLTAGE_CONTROL_SETPOINT = TARMAC_BACKSPIN_KF * 12;
+// was 2460
+    public static final int TARMAC_TOPSPIN_RPM = 2225;
+    public static final double TARMAC_TOPSPIN_KF = 0.046 * 1.1;
+//    public static final double TARMAC_TOPSPIN_KF = 0.0;
+    public static final double TARMAC_TOPSPIN_KP = 0.0;//0.21;
+    public static final double TARMAC_TOPSPIN_KI = 0.0;
+    public static final double TARMAC_TOPSPIN_KD = 0.0;
+
+    public static final double TARMAC_TOPSPIN_VOLTAGE_CONTROL_SETPOINT = TARMAC_TOPSPIN_KF * 12;
+
+    public static final int AUTO_RADIUS_BACKSPIN_RPM = 2425;
+//    public static final double AUTO_RADIUS_BACKSPIN_KF = 0.0;
+    public static final double AUTO_RADIUS_BACKSPIN_KF = 0.0449 * 1.1;
+    public static final double AUTO_RADIUS_BACKSPIN_KP = 0.0;//0.21;
+    public static final double AUTO_RADIUS_BACKSPIN_KI = 0.0;
+    public static final double AUTO_RADIUS_BACKSPIN_KD = 0.0;
+
+    
+    public static final double AUTO_RADIUS_BACKSPIN_VOLTAGE_CONTROL_SETPOINT = AUTO_RADIUS_BACKSPIN_KF * 12;
+
+    public static final int AUTO_RADIUS_TOPSPIN_RPM = 2425;
+    public static final double AUTO_RADIUS_TOPSPIN_KF = 0.046 * 1.1;
+    //public static final double AUTO_RADIUS_TOPSPIN_KF = 0.0;
+    public static final double AUTO_RADIUS_TOPSPIN_KP = 0.0;//0.21;
+    public static final double AUTO_RADIUS_TOPSPIN_KI = 0.0;
+    public static final double AUTO_RADIUS_TOPSPIN_KD = 0.0;
+
+    public static final double AUTO_RADIUS_TOPSPIN_VOLTAGE_CONTROL_SETPOINT = AUTO_RADIUS_TOPSPIN_KF * 12;
+
+    // LAUNCHPAD WAS 3000
+
+    public static final int LAUNCHPAD_BACKSPIN_RPM = 2675;
+   // public static final double LAUNCHPAD_BACKSPIN_KF = 0.0;
+    public static final double LAUNCHPAD_BACKSPIN_KF = 0.0449 * 1.1;
+    public static final double LAUNCHPAD_BACKSPIN_KP = 0.0;//0.22;
+    public static final double LAUNCHPAD_BACKSPIN_KI = 0.0;
+    public static final double LAUNCHPAD_BACKSPIN_KD = 0.0;
+
+    public static final double LAUNCHPAD_BACKSPIN_VOLTAGE_CONTROL_SETPOINT = LAUNCHPAD_BACKSPIN_KF * 12;
+
+
+
+/* OLD CONSTANTS - AS OF Tuesday, March 29, 4 PM
 
     // All shots need to be tuned.
     public static final int LOW_GOAL_BACKSPIN_RPM = 1000;
@@ -136,6 +207,10 @@ public final class Constants {
     public static final double LAUNCHPAD_BACKSPIN_KD = 4.0;
 
     public static final double LAUNCHPAD_BACKSPIN_VOLTAGE_CONTROL_SETPOINT = LAUNCHPAD_BACKSPIN_KF * 12;
+*/
+
+
+
 
 /*
 

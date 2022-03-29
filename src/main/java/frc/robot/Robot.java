@@ -364,8 +364,8 @@ public class Robot extends TimedRobot {
     // GAMEPAD.getButton(ButtonCode.B).whileHeld(new ParallelCommandGroup(new FeederEjectAllCommand(), CONVEYANCE_EJECT_COMMAND));
     //GAMEPAD.getButton(ButtonCode.B).whileHeld(new FeederEjectAllCommand());
     
-    GAMEPAD.getButton(ButtonCode.B).whileHeld(CONVEYANCE_FEEDER_EJECT_ALL_COMMAND);
-    //GAMEPAD.getButton(ButtonCode.B).whileHeld(CONVEYANCE_EJECT_COMMAND);
+    // GAMEPAD.getButton(ButtonCode.B).whileHeld(CONVEYANCE_FEEDER_EJECT_ALL_COMMAND);
+    GAMEPAD.getButton(ButtonCode.B).whileHeld(CONVEYANCE_EJECT_COMMAND);
     OP_PAD.getButton(ButtonCode.SHOOTER_LAUNCH_PAD_SHOT).whenPressed(SHOOTER_LAUNCH_PAD_PID_COMMAND);
     OP_PAD.getButton(ButtonCode.SHOOTER_TARMAC_SHOT).whenPressed(SHOOTER_TARMAC_PID_COMMAND);
     OP_PAD.getButton(ButtonCode.SHOOTER_LOW_GOAL_SHOT).whenPressed(SHOOTER_LOW_GOAL_PID_COMMAND);
