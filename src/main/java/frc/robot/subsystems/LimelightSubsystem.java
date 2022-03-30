@@ -27,8 +27,8 @@ public class LimelightSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("LIMELIGHT X OFFSET", _tx.getDouble(0.0));
-    SmartDashboard.putNumber("LIMELIGHT Y OFFSET", _ty.getDouble(0.0));
+    // SmartDashboard.putNumber("LIMELIGHT X OFFSET", _tx.getDouble(0.0));
+    // SmartDashboard.putNumber("LIMELIGHT Y OFFSET", _ty.getDouble(0.0));
   }
 
   public boolean isAligned() {

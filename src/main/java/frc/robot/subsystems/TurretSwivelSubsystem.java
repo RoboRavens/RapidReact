@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.ravenhardware.BufferedDigitalInput;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
@@ -21,10 +22,17 @@ public class TurretSwivelSubsystem extends SubsystemBase {
 
     private WPI_TalonSRX _turretMotor;
     private TurretCalibration _shot;
+    private BufferedDigitalInput zeroLimit;
+    private BufferedDigitalInput clockwiseLimit;
+    private BufferedDigitalInput counterClockwiseLimit;
 
     public TurretSwivelSubsystem() {
         _turretMotor = new WPI_TalonSRX(RobotMap.TURRET_MOTOR);
 
+        zeroLimit = new BufferedDigitalInput(RobotMap.TURRET_ZERO_LIMIT_DIO_CHANNEL);
+        clockwiseLimit = new BufferedDigitalInput(RobotMap.TURRET_CLOCKWISE_LIMIT_DIO_CHANNEL);
+        counterClockwiseLimit = new BufferedDigitalInput(RobotMap.TURRET_COUNTER_CLOCKWISE_LIMIT_DIO_CHANNEL);
+        
 //        _turretMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
 
         ErrorCode sensorError = _turretMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
@@ -38,6 +46,10 @@ public class TurretSwivelSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+        zeroLimit.maintainState();
+        counterClockwiseLimit.maintainState();
+        clockwiseLimit.maintainState();
+
         SmartDashboard.putNumber("Turret Angle", getAngle());
         SmartDashboard.putNumber("Turret RAW Encoder", _turretMotor.getSelectedSensorPosition());
         SmartDashboard.putNumber("Turret Target", _shot.target);
@@ -45,6 +57,15 @@ public class TurretSwivelSubsystem extends SubsystemBase {
 
 
         SmartDashboard.putNumber("RAW TURRET SENSOR", _turretMotor.getSelectedSensorPosition());
+    
+        SmartDashboard.putBoolean("Counterclock limit", counterClockwiseLimit.get());
+        SmartDashboard.putBoolean("Zero limit", zeroLimit.get());
+        SmartDashboard.putBoolean("Clockwise limit", clockwiseLimit.get());
+
+
+        if (zeroLimit.get() == true) {
+            this.setEncoder(0);
+        }
     }
 
     @Override
@@ -57,7 +78,7 @@ public class TurretSwivelSubsystem extends SubsystemBase {
     }
 
     public double getAngle() {
-        return _turretMotor.getSelectedSensorPosition() * Constants.ENCODER_TO_TURRET_RATIO;
+        return _turretMotor.getSelectedSensorPosition() / Constants.ENCODER_TO_TURRET_RATIO;
     }
 
     /**

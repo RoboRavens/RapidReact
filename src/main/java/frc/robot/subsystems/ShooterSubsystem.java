@@ -56,6 +56,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void updateSmartDashboard() {
+        /*
         SmartDashboard.putNumber("Backspin Shooter Speed", getBackspinShooterRPM());
         SmartDashboard.putNumber("Topspin Shooter Speed", getTopspinShooterRPM());
         SmartDashboard.putString("Shooter PID", _shot._name);
@@ -65,7 +66,7 @@ public class ShooterSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Backspin Target Speed", _backspinMotor.getSupplyCurrent());
         SmartDashboard.putNumber("Backspin Target RPM", _shot._backspinMotorCalibration.targetRPM);
         SmartDashboard.putNumber("Topspin Target RPM", _shot._topspinMotorCalibration.targetRPM);
-        
+        */
         // SmartDashboard.putNumber("Backspin AMPS", _backspinMotor.getSupplyCurrent());
         // SmartDashboard.putNumber("Topspin AMPS", _topspinMotor.getStatorCurrent());
     }
@@ -158,6 +159,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     private void updateShooterTuningSmartDashboard(double backspinTargetMotorRPM, double topspinTargetMotorRPM, double backspinTargetVelocity, double topspinTargetVelocity) {
+       /*
         SmartDashboard.putNumber("Backspin Target MOTOR RPM", backspinTargetMotorRPM);
         SmartDashboard.putNumber("Topspin Target MOTOR RPM", topspinTargetMotorRPM);
 
@@ -175,6 +177,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
         SmartDashboard.putString("Conveyance State", Robot.CONVEYANCE_SUBSYSTEM.getConveyanceState().name());
         SmartDashboard.putNumber("AFF Value", _arbitraryFeedForward);
+        */
     }
 
     /**

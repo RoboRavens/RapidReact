@@ -35,6 +35,6 @@ public class BufferedDigitalInput {
 		}
 
 		// If trues is greater than half the list size, return true. Otherwise, false.
-		return (trues * 2 > listSize);
+		return !(trues * 2 > listSize);
 	}
 }

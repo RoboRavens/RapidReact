@@ -184,10 +184,11 @@ public class Robot extends TimedRobot {
     SmartDashboard.putString("Chosen Auto", this.getAuto().getAutoName());
     
 
-    SmartDashboard.putBoolean("Target Sighted", Robot.LIMELIGHT_SUBSYSTEM.hasTargetSighted());
-    SmartDashboard.putNumber("Limelight Offset", Robot.LIMELIGHT_SUBSYSTEM.getRawTargetOffsetAngle());
-    SmartDashboard.putNumber("Limelight Area", Robot.LIMELIGHT_SUBSYSTEM.getArea());
-    if (GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER)) {
+    // SmartDashboard.putBoolean("Target Sighted", Robot.LIMELIGHT_SUBSYSTEM.hasTargetSighted());
+    // SmartDashboard.putNumber("Limelight Offset", Robot.LIMELIGHT_SUBSYSTEM.getRawTargetOffsetAngle());
+    // SmartDashboard.putNumber("Limelight Area", Robot.LIMELIGHT_SUBSYSTEM.getArea());
+    
+    if (Constants.TURRET_ENABLED || GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER)) {
       Robot.LIMELIGHT_SUBSYSTEM.turnLEDOn();
     } else {
       Robot.LIMELIGHT_SUBSYSTEM.turnLEDOff();
