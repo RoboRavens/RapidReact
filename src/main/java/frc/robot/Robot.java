@@ -380,14 +380,6 @@ public class Robot extends TimedRobot {
     ));
 
     OP_PAD.getButton(ButtonCode.SHOOTER_PROFILE_MANUAL_OVERRIDE)
-      .whileHeld(() -> Robot.SHOOTER_START_COMMAND.disableManual())
-      .whenInactive(() -> Robot.SHOOTER_START_COMMAND.enableManual());
-    
-    OP_PAD.getButton(ButtonCode.SHOOTER_REV)
-      .whileHeld(SHOOTER_START_COMMAND)
-      .whenInactive(SHOOTER_STOP_COMMAND);
-
-    OP_PAD.getButton(ButtonCode.SHOOTER_PROFILE_MANUAL_OVERRIDE)
       .whileHeld(() -> Robot.SHOOTER_SUBSYSTEM.disableAutoShotSelect())
       .whenInactive(() -> Robot.SHOOTER_SUBSYSTEM.enableAutoShotSelect());
       
