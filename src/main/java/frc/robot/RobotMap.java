@@ -28,9 +28,9 @@ public final class RobotMap {
 
     //TURRET
     public static final int TURRET_MOTOR = 11;
-    //public static final int TURRET_RESET_SENSOR = ;
-    //public static final int TURRET_CLOCKWISE_SENSOR = ;
-    //public static final int TURRET_COUNTERCLOCKWISE_SENSOR = ;
+    public static final int TURRET_ZERO_LIMIT_DIO_CHANNEL = 3;
+    public static final int TURRET_CLOCKWISE_LIMIT_DIO_CHANNEL = 5;
+    public static final int TURRET_COUNTER_CLOCKWISE_LIMIT_DIO_CHANNEL = 4;
 
     //INTAKE 
     public static final int INTAKE_EXTEND_SOLENOID = 0;

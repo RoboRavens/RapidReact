@@ -119,8 +119,8 @@ public class ClimberSubsystem extends SubsystemBase {
 	}
 
 	public void periodic() {
-		SmartDashboard.putNumber("Climber Encoder", _climberMotor.getSelectedSensorPosition());
-		SmartDashboard.putBoolean("Climber Override", _override);
+		// SmartDashboard.putNumber("Climber Encoder", _climberMotor.getSelectedSensorPosition());
+		// SmartDashboard.putBoolean("Climber Override", _override);
 	}
 
 	public void stop() {
