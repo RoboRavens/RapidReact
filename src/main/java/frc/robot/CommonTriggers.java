@@ -48,8 +48,7 @@ public class CommonTriggers {
             userOverride = true;
         }
 
-        // return robotHasTwoAmmo || userOverride;
-        return false;
+        return robotHasTwoAmmo || userOverride;
     });
 
     public static Trigger ReleaseBallTrigger = new Trigger(() -> {
