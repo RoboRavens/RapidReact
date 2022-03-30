@@ -97,7 +97,7 @@ public class TurretSwivelSubsystem extends SubsystemBase {
         }
 
         if (checkLimits(angle)) {
-            return; // End if trying to continue past limit switch
+            angle = getAngle(); // Set angle to current angle if turret is about to go past limit switch
         }
 
         angle = Math.max(angle, -1 * Constants.TURRET_RANGE); //Limit to turret range pos/neg
@@ -111,15 +111,15 @@ public class TurretSwivelSubsystem extends SubsystemBase {
     /**
      * Returns true if the input breaches the limit switch
      * @param targetAngle Target angle to check
-     * @return If target continues outside of limits
+     * @return Returns true if a limit is pressed and the targetAngle direction from the current angle is towards/past the limit switch.
      */
     private boolean checkLimits(double targetAngle) {
         if(clockwiseLimit.get()) {
-            if(targetAngle - getAngle() < 0) { // If change in angle is negative,
+            if(targetAngle - this.getAngle() < 0) { // If change in angle is clockwise:
                 return true;
             }
         } else if(counterClockwiseLimit.get()) {
-            if(targetAngle - getAngle() > 0) { // If change in angle is positive,
+            if(targetAngle - this.getAngle() > 0) { // If change in angle is counterclockwise:
                 return true;
             }
         }
