@@ -40,6 +40,15 @@ public class RavenPiColorSensor extends PicoColorSensor{
         return colorval.red > colorval.blue ? Alliance.Red : Alliance.Blue;
     }
 
+    public RawColor getFirstSensorRawColor() {
+        return getRawColor0();
+    }
+
+    public RawColor getSecondSensorRawColor() {
+        return getRawColor1();
+    }
+
+
     /**
      * Determines whether the ball in the given sensor location matches the correct color.
      * Lenient mode - returns TRUE if the sensor can't determine the color.

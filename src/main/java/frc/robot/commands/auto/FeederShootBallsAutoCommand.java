@@ -14,11 +14,11 @@ public class FeederShootBallsAutoCommand {
 
         for (int i = 0; i < ballsToShoot; i++) {
             commandChain = commandChain
-                .andThen(new WaitUntilCommand(() -> FS.getFeederHasBall()).withTimeout(.25))
-                .andThen(new WaitUntilCommand(() -> Robot.SHOOTER_SUBSYSTEM.motorsAreRecovered()).withTimeout(.25))
-                .andThen(new StartEndCommand(FS::forceShoot, FS::stopFeederAndConveyance, FS)
+                .andThen(new WaitUntilCommand(() -> FS.getFeederHasBall()).withTimeout(.5))
+                .andThen(new WaitUntilCommand(() -> Robot.SHOOTER_SUBSYSTEM.motorsAreRecovered()).withTimeout(.5))
+                .andThen(new StartEndCommand(FS::forceShoot, FS::stopFeederAndConveyanceTwo, FS)
                     .until(() -> FS.getFeederHasBall() == false)
-                    .withTimeout(.25)
+                    .withTimeout(1)
                 );
         }
 

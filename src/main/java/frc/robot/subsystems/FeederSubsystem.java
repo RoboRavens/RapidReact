@@ -118,7 +118,7 @@ public class FeederSubsystem extends SubsystemBase {
     }
   }
 
-  public void stopFeederAndConveyance() {
+  public void stopFeederAndConveyanceTwo() {
     this.feederWheelStop();
     this.conveyanceStop();
   }
