@@ -185,8 +185,9 @@ Y-offset constants in order:
     public static final int TURRET_IDX = 0;
     public static final int TURRET_TIMEOUT_MS = 100;
     public static final int TURRET_RANGE = 150; //Degrees of motion in either way (180 means full movement both ways)
-    public static final double TURRET_GEAR_RATIO = 1.0 / 10.0; // Motor is one-tenth speed due to gearbox
-    public static final double ENCODER_TO_TURRET_RATIO = TALONFX_TICKS_PER_REVOLUTION / 360.0 / TURRET_GEAR_RATIO; // Multiply encoder by this to find angle of turret
+    public static final double TURRET_GEARBOX_RATIO = 1.0 / 10.0; // Motor is one-tenth speed due to gearbox
+    public static final double TURRET_LARGE_GEAR_RATIO = 10.0 / 128.0;
+    public static final double ENCODER_TO_TURRET_RATIO = (TALONFX_TICKS_PER_REVOLUTION / 360.0) / TURRET_GEARBOX_RATIO / TURRET_LARGE_GEAR_RATIO; // Multiply encoder by this to find angle of turret
     public static final double TURRET_AIM_ALLOWANCE = 2; //Degrees of allowance to say that the turret has "reached" its target
     public static final double TURRET_MISS_OFFSET = 35;
 
