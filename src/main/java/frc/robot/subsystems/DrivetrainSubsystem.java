@@ -20,6 +20,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -35,6 +36,8 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 import static frc.robot.RobotMap.*;
+
+import java.util.List;
 
 // Template From: https://github.com/SwerveDriveSpecialties/swerve-template/blob/master/src/main/java/frc/robot/subsystems/DrivetrainSubsystem.java
 public class DrivetrainSubsystem extends DrivetrainSubsystemBase {
@@ -110,6 +113,7 @@ public class DrivetrainSubsystem extends DrivetrainSubsystemBase {
   private final DriveCharacteristics _driveCharacteristics;
 
   private Boolean _cutPower = false;
+  private Pose2d _markedPosition = null;
 
   public DrivetrainSubsystem() {
     m_frontLeftModule = Mk4SwerveModuleHelper.createFalcon500(
@@ -225,6 +229,11 @@ public class DrivetrainSubsystem extends DrivetrainSubsystemBase {
   @Override
   public void stopCutPower() {
     _cutPower = false;
+  }
+
+  @Override
+  public boolean powerIsCut() {
+    return _cutPower;
   }
 
   @Override
@@ -369,6 +378,29 @@ public class DrivetrainSubsystem extends DrivetrainSubsystemBase {
       robotAngleController,
       this::setModuleStates,
       this);
+  }
+
+  @Override
+  public Command getMarkPositionCommand() {
+    return new InstantCommand(() -> {
+      var pos = this.getPose();
+      _markedPosition = new Pose2d(pos.getTranslation(), pos.getRotation());
+    });
+  }
+
+  @Override
+  public Command getReturnToMarkedPositionCommand() {
+    return new InstantCommand(() -> {
+      var trajectoryConfig = this.GetTrajectoryConfig();
+      var trajectory = TrajectoryGenerator.generateTrajectory(
+        this.getPose(),
+        List.of(),
+        _markedPosition,
+        trajectoryConfig);
+  
+      var cmd = this.CreateFollowTrajectoryCommandSwerveOptimized(trajectory);
+      cmd.schedule();
+    });
   }
   
   private void calculateDriveCharacteristics() {

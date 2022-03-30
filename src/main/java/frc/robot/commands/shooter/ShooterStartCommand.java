@@ -8,6 +8,7 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.util.ShooterCalibrationPair;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Robot;
 
 /** An example command that uses an example subsystem. */
 public class ShooterStartCommand extends CommandBase {
