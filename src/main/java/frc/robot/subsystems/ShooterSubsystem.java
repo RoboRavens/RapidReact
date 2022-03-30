@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -30,6 +31,7 @@ public class ShooterSubsystem extends SubsystemBase {
     private boolean _autoShotSelect = true;
     private double _lastShotTime = 0;
     private double _arbitraryFeedForward = 0;
+    private TalonFX TestingFalconMotor;
 
     int customBackSpinRpm = 0;
     int customBackSpinKp = 0;
@@ -62,6 +64,8 @@ public class ShooterSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Custom Shooter KF", customBackSpinKf);
 
         SmartDashboard.putBoolean("update shooter pid button", false);
+
+        //TestingFalconMotor = new TalonFX(RobotMap.TESTING_FALCON_MOTOR);
     }
 
     @Override
@@ -123,6 +127,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
             SmartDashboard.putBoolean("update shooter pid button", false);
         }
+        
     }
 
     public void updateSmartDashboard() {

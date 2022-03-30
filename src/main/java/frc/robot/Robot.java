@@ -6,7 +6,8 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.robot.subsystems.ShooterSubsystem;
-
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -60,6 +61,7 @@ import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CompressorSubsystem;
 import frc.robot.subsystems.ConveyanceSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.DrivetrainSubsystemBase;
 import frc.robot.subsystems.DrivetrainSubsystemMock;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeExtenderSubsystem;
@@ -82,7 +84,6 @@ public class Robot extends TimedRobot {
   public static final Gamepad GAMEPAD = new Gamepad(JOYSTICK);
   public static final Gamepad OP_PAD = new Gamepad(1);
   public static final Gamepad OP_PAD2 = new Gamepad(2);
-
   public static final DrivetrainSubsystemMock DRIVE_TRAIN_SUBSYSTEM = new DrivetrainSubsystemMock();
   public static final ShooterSubsystem SHOOTER_SUBSYSTEM = new ShooterSubsystem();
   public static final IntakeExtenderSubsystem INTAKE_SUBSYSTEM = new IntakeExtenderSubsystem();
@@ -124,6 +125,7 @@ public class Robot extends TimedRobot {
 
   public static final RavenPiColorSensor COLOR_SENSOR = new RavenPiColorSensor();
   public static Alliance ALLIANCE_COLOR;
+
 
   /**
    * This function is run when the robot is first started up and should be used for any

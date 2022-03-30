@@ -5,6 +5,7 @@
 package frc.robot;
 
 public final class RobotMap {
+    //public static final int TESTING_FALCON_MOTOR = 4;
 
     //FEEDER
     public static final int FEEDER_MOTOR = 43;
@@ -23,7 +24,7 @@ public final class RobotMap {
     // public static final int RIGHT_CLIMBER_SOLENOID = 3;
 
     //SHOOTER
-    public static final int SHOOTER_BACKSPIN_MOTOR = 61;
+    public static final int SHOOTER_BACKSPIN_MOTOR = 4; // Was 61
     public static final int SHOOTER_TOPSPIN_MOTOR = 62;
 
     //TURRET
