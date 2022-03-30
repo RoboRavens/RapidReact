@@ -134,7 +134,7 @@ public class Robot extends TimedRobot {
     //SHOOTER_SUBSYSTEM.setDefaultCommand(new RunCommand(() -> SHOOTER_SUBSYSTEM.defaultCommand(), SHOOTER_SUBSYSTEM));
 
     SHOOTER_SUBSYSTEM.setDefaultCommand(new RunCommand(() -> SHOOTER_SUBSYSTEM.defaultCommand(), SHOOTER_SUBSYSTEM));
-    TURRET_SWIVEL_SUBSYSTEM.setDefaultCommand(TURRET_AIM_AT_TARGET);
+    TURRET_SWIVEL_SUBSYSTEM.setDefaultCommand(Constants.TURRET_ENABLED ? TURRET_AIM_AT_TARGET : new InstantCommand());
     FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     CLIMBER_SUBSYSTEM.setDefaultCommand(climberDefaultBrake);
     CONVEYANCE_SUBSYSTEM.setDefaultCommand(CONVEYANCE_INDEX_COMMAND);
@@ -190,7 +190,7 @@ public class Robot extends TimedRobot {
       Robot.LIMELIGHT_SUBSYSTEM.turnLEDOn();
     } else {
       Robot.LIMELIGHT_SUBSYSTEM.turnLEDOff();
-    }  
+    }
 
     SmartDashboard.putString("CONVEYANCE COLOR", Robot.COLOR_SENSOR.getSensorBallColor(RavenPiPosition.CONVEYANCE).toString());
     SmartDashboard.putString("FEEDER COLOR", Robot.COLOR_SENSOR.getSensorBallColor(RavenPiPosition.FEEDER).toString());
@@ -309,9 +309,11 @@ public class Robot extends TimedRobot {
       .whenInactive(DRIVE_TRAIN_SUBSYSTEM::stopCutPower);
 
     // new Trigger(() -> GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER)).or(CommonTriggers.RobotHas2Balls)
-    CommonTriggers.RunAutoshootingTrigger
-      .whileActiveContinuous(() -> DRIVE_TRAIN_DEFAULT_COMMAND.followLimelight())
-      .whenInactive(() -> DRIVE_TRAIN_DEFAULT_COMMAND.stopFollowingLimelight());
+    if (Constants.TURRET_ENABLED == false) {
+      CommonTriggers.RunAutoshootingTrigger
+        .whileActiveContinuous(() -> DRIVE_TRAIN_DEFAULT_COMMAND.followLimelight())
+        .whenInactive(() -> DRIVE_TRAIN_DEFAULT_COMMAND.stopFollowingLimelight());
+    }
 
     CommonTriggers.RunShooterTrigger
       .whileActiveContinuous(SHOOTER_START_COMMAND)
