@@ -16,6 +16,8 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.util.ShooterCalibration;
+import frc.util.ShooterCalibration;
+import frc.util.ShooterCalibrationPair;
 import frc.util.ShooterCalibrationPair;
 
 public class ShooterSubsystem extends SubsystemBase {
@@ -29,6 +31,18 @@ public class ShooterSubsystem extends SubsystemBase {
     private double _lastShotTime = 0;
     private double _arbitraryFeedForward = 0;
 
+    int customBackSpinRpm = 0;
+    int customBackSpinKp = 0;
+    int customBackSpinKi = 0;
+    int customBackSpinKd = 0;
+    int customBackSpinKf = 0;
+
+    int customTopSpinRpm = 0;
+    int customTopSpinKp = 0;
+    int customTopSpinKi = 0;
+    int customTopSpinKd = 0;
+    int customTopSpinKf = 0;
+
     public ShooterSubsystem() {
         _backspinMotor = new TalonFX(RobotMap.SHOOTER_BACKSPIN_MOTOR);
         _topspinMotor = new TalonFX(RobotMap.SHOOTER_TOPSPIN_MOTOR);
@@ -39,6 +53,15 @@ public class ShooterSubsystem extends SubsystemBase {
         this.setShot(Constants.TARMAC_SHOT_CALIBRATION_PAIR);
         _backspinMotor.setSelectedSensorPosition(0);
         _topspinMotor.setSelectedSensorPosition(0);
+
+        // Show the backspin and topspin PID values on smart dashboard
+        SmartDashboard.putNumber("Custom Shooter Target RPM", customBackSpinRpm);
+        SmartDashboard.putNumber("Custom Shooter KP", customBackSpinKp);
+        SmartDashboard.putNumber("Custom Shooter KI", customBackSpinKi);
+        SmartDashboard.putNumber("Custom Shooter KD", customBackSpinKd);
+        SmartDashboard.putNumber("Custom Shooter KF", customBackSpinKf);
+
+        SmartDashboard.putBoolean("update shooter pid button", false);
     }
 
     @Override
@@ -53,6 +76,53 @@ public class ShooterSubsystem extends SubsystemBase {
         updateShotProfile();
         updateArbitraryFeedForward();
 
+        readAndUpdatePidValuesFromSmartDashboard();
+    }
+
+    public void readAndUpdatePidValuesFromSmartDashboard() {
+
+        boolean buttonBooleanValue = SmartDashboard.getBoolean("update shooter pid button", false);
+
+        // Set the backspin PID values to the changed values on smart dashboard.
+        customBackSpinRpm = (int) SmartDashboard.getNumber("Custom Shooter Target RPM", customBackSpinRpm);
+        customBackSpinKp = (int) SmartDashboard.getNumber("Custom Shooter KP", customBackSpinKp);
+        customBackSpinKi = (int) SmartDashboard.getNumber("Custom Shooter KI", customBackSpinKi);
+        customBackSpinKd = (int) SmartDashboard.getNumber("Custom Shooter KD", customBackSpinKd);
+        customBackSpinKf = (int) SmartDashboard.getNumber("Custom Shooter KF", customBackSpinKf);
+
+        // Set the topspin PID values to the changed values on smart dashboard.
+        customTopSpinRpm = (int) SmartDashboard.getNumber("Custom Shooter Target RPM", customTopSpinRpm);
+        customTopSpinKp = (int) SmartDashboard.getNumber("Custom Shooter KP", customTopSpinKp);
+        customTopSpinKi = (int) SmartDashboard.getNumber("Custom Shooter KI", customTopSpinKi);
+        customTopSpinKd = (int) SmartDashboard.getNumber("Custom Shooter KD", customTopSpinKd);
+        customTopSpinKf = (int) SmartDashboard.getNumber("Custom Shooter KF", customTopSpinKf);
+
+        // If the boolean check box is checked (set to true), a new shooter calibration pair will be created with the pid values on smart dashboard.
+        // The setShot() and startMotor() methods will then be called, and the boolean check box will uncheck (set to false) at the end of the execution.
+        if (buttonBooleanValue) {
+            ShooterCalibration newBackSpinShooterCalibration = new ShooterCalibration("updated backspin shooter calibration", 
+                customBackSpinRpm, 
+                customBackSpinKf, 
+                customBackSpinKp,
+                customBackSpinKi,
+                customBackSpinKd,
+                Constants.TARMAC_BACKSPIN_VOLTAGE_CONTROL_SETPOINT);
+
+            ShooterCalibration newTopSpinShooterCalibration = new ShooterCalibration("updated topspin shooter calibration", 
+                customTopSpinRpm, 
+                customTopSpinKf, 
+                customTopSpinKp,
+                customTopSpinKi,
+                customTopSpinKd,
+                Constants.TARMAC_TOPSPIN_VOLTAGE_CONTROL_SETPOINT);
+            
+                ShooterCalibrationPair newShooterCalibrationPair = new ShooterCalibrationPair("updated shooter calibration pair", newBackSpinShooterCalibration, newTopSpinShooterCalibration);
+            
+            setShot(newShooterCalibrationPair);
+            startMotor();
+
+            SmartDashboard.putBoolean("update shooter pid button", false);
+        }
     }
 
     public void updateSmartDashboard() {

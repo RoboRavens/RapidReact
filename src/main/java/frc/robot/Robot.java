@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.TimedRobot;
+import frc.robot.subsystems.ShooterSubsystem;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -57,7 +60,7 @@ import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CompressorSubsystem;
 import frc.robot.subsystems.ConveyanceSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.subsystems.DrivetrainSubsystemBase;
+import frc.robot.subsystems.DrivetrainSubsystemMock;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeExtenderSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
@@ -79,8 +82,8 @@ public class Robot extends TimedRobot {
   public static final Gamepad GAMEPAD = new Gamepad(JOYSTICK);
   public static final Gamepad OP_PAD = new Gamepad(1);
   public static final Gamepad OP_PAD2 = new Gamepad(2);
-  
-  public static final DrivetrainSubsystemBase DRIVE_TRAIN_SUBSYSTEM = new DrivetrainSubsystem();
+
+  public static final DrivetrainSubsystemMock DRIVE_TRAIN_SUBSYSTEM = new DrivetrainSubsystemMock();
   public static final ShooterSubsystem SHOOTER_SUBSYSTEM = new ShooterSubsystem();
   public static final IntakeExtenderSubsystem INTAKE_SUBSYSTEM = new IntakeExtenderSubsystem();
   public static final ConveyanceSubsystem CONVEYANCE_SUBSYSTEM = new ConveyanceSubsystem();
@@ -173,14 +176,13 @@ public class Robot extends TimedRobot {
    * SmartDashboard integrated updating.
    */
   @Override
-  public void robotPeriodic() {
+   public void robotPeriodic() {
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
     SmartDashboard.putData("Autonomous", _autoChooser);
-    SmartDashboard.putString("Chosen Auto", this.getAuto().getAutoName());
     
 
     SmartDashboard.putBoolean("Target Sighted", Robot.LIMELIGHT_SUBSYSTEM.hasTargetSighted());
@@ -225,7 +227,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     m_autonomousCommand = this.getAuto().getAutoCommand();
-    
+
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
@@ -308,7 +310,7 @@ public class Robot extends TimedRobot {
     GAMEPAD.getButton(ButtonCode.LEFTBUMPER)
       .and(GAMEPAD.getButton(ButtonCode.RIGHTBUMPER))
       .and(GAMEPAD.getButton(ButtonCode.Y))
-      .whenActive(DRIVE_TRAIN_SUBSYSTEM::zeroGyroscope);
+      .whenActive(DRIVE_TRAIN_SUBSYSTEM::zeroGyroscope);;
     
 
     OP_PAD.getButton(ButtonCode.CLIMBER_OVERRIDE)
@@ -382,7 +384,7 @@ public class Robot extends TimedRobot {
     OP_PAD.getButton(ButtonCode.SHOOTER_PROFILE_MANUAL_OVERRIDE)
       .whileHeld(() -> Robot.SHOOTER_SUBSYSTEM.disableAutoShotSelect())
       .whenInactive(() -> Robot.SHOOTER_SUBSYSTEM.enableAutoShotSelect());
-      
+
     GAMEPAD.getButton(ButtonCode.LEFTBUMPER).or(CommonTriggers.RobotHas2Balls)
       .whileActiveContinuous(DRIVE_TRAIN_DEFAULT_COMMAND::disableAutoSteer)
       .whenInactive(DRIVE_TRAIN_DEFAULT_COMMAND::enableAutoSteer);
