@@ -109,7 +109,7 @@ public class DrivetrainSubsystem extends DrivetrainSubsystemBase {
   private final NetworkTableEntry _backRightHardware;
   private final NetworkTableEntry _frontLeftHardwareVel;
 
-  private final DriveCharacteristics _driveCharacteristics;
+  // private final DriveCharacteristics _driveCharacteristics;
 
   private Boolean _cutPower = false;
   private Pose2d _markedPosition = null;
@@ -176,7 +176,7 @@ public class DrivetrainSubsystem extends DrivetrainSubsystemBase {
     _backRightHardware  = tab.add("BR Hardware A", 0.0).withPosition(5, 3).withSize(1, 1).getEntry();
     _frontLeftHardwareVel = tab.add("FL Hardware V", 0.0).withPosition(6, 0).withSize(1, 1).getEntry();
 
-    _driveCharacteristics = new DriveCharacteristics();
+    // _driveCharacteristics = new DriveCharacteristics();
   }
 
   /**
@@ -188,7 +188,7 @@ public class DrivetrainSubsystem extends DrivetrainSubsystemBase {
     m_navx.zeroYaw();
     _odometryFromKinematics.resetPosition(new Pose2d(0, 0, new Rotation2d()), this.getGyroscopeRotation());
     _odometryFromHardware.resetPosition(new Pose2d(0, 0, new Rotation2d()), this.getGyroscopeRotation());
-    _driveCharacteristics.reset();
+    // _driveCharacteristics.reset();
   }
 
   @Override
@@ -399,7 +399,7 @@ public class DrivetrainSubsystem extends DrivetrainSubsystemBase {
   }
   
   private void calculateDriveCharacteristics() {
-    _driveCharacteristics.update(_odometryFromHardware.getPoseMeters(), 360 - m_navx.getAngle());
+    // _driveCharacteristics.update(_odometryFromHardware.getPoseMeters(), 360 - m_navx.getAngle());
   }
 
   public double getFieldOrientedRobotMovementDirection(double x, double y) {
