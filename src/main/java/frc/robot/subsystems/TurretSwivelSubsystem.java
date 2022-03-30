@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
@@ -24,7 +25,9 @@ public class TurretSwivelSubsystem extends SubsystemBase {
     public TurretSwivelSubsystem() {
         _turretMotor = new WPI_TalonSRX(RobotMap.TURRET_MOTOR);
 
-        _turretMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+//        _turretMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+
+        ErrorCode sensorError = _turretMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
 
         _turretMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
         _turretMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
@@ -40,6 +43,9 @@ public class TurretSwivelSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Turret RAW Encoder", _turretMotor.getSelectedSensorPosition());
         SmartDashboard.putNumber("Turret Target", _shot.target);
         SmartDashboard.putBoolean("Turret Target Sighted", Robot.LIMELIGHT_SUBSYSTEM.hasTargetSighted());
+
+
+        SmartDashboard.putNumber("RAW TURRET SENSOR", _turretMotor.getSelectedSensorPosition());
     }
 
     @Override
@@ -52,23 +58,32 @@ public class TurretSwivelSubsystem extends SubsystemBase {
     }
 
     public double getAngle() {
-        return _turretMotor.getSelectedSensorPosition() / Constants.TURRET_ENCODER_RATIO;
+        // Old?
+        // return _turretMotor.getSelectedSensorPosition() / Constants.TURRET_ENCODER_RATIO;
+        
+        // New?
+        return _turretMotor.getSelectedSensorPosition() / Constants.ENCODER_TO_TURRET_RATIO;
     }
 
     /**
      * Aims to the input angle. Will stop at edges of deadzone and flip if target is past deadzone.
      * @param angle - the angle in degrees.
+     * @apiNote Can handle -870 to 870.
      */
     public void goToAngle(double angle) {
-        if (Math.abs(angle) > (360 - Constants.TURRET_RANGE)) { //If angle is overshooting bounds farther than the deadzone...
+        if (Math.abs(angle) > 360 - Constants.TURRET_RANGE) { //If angle is overshooting bounds farther than the deadzone...
             angle += (Math.abs(angle) / angle) * -360; //Flips angle; adds 360 with an inverted sign to whatever angle is (if angle is +, add - and vice versa)
         }
-        else { //If angle is over bounds but IN deadzone...
-            angle = Math.max(angle, -1 * Constants.TURRET_RANGE); //Limit to turret range pos/neg
-            angle = Math.min(angle, Constants.TURRET_RANGE);
+
+        if (Math.abs(angle) - 180 > 0) {
+            angle += (Math.abs(angle) / angle) * -360;
+        }
+        angle = Math.max(angle, -1 * Constants.TURRET_RANGE); //Limit to turret range pos/neg
+        angle = Math.min(angle, Constants.TURRET_RANGE);
+        if (Constants.TURRET_ENABLED) {
+            _turretMotor.set(ControlMode.Position, angle * Constants.ENCODER_TO_TURRET_RATIO); //Mult by ratio
         }
         
-        _turretMotor.set(ControlMode.Position, angle * Constants.TURRET_ENCODER_RATIO);
         _shot.target = angle;
     }
 

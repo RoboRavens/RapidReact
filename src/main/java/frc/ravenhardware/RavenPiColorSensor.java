@@ -6,6 +6,8 @@ import frc.robot.Robot;
 import frc.robot.lib.PicoColorSensor;
 
 public class RavenPiColorSensor extends PicoColorSensor{
+    private boolean _colorSensorFeatureEnabled = true;
+
     public RavenPiColorSensor() {
         super();
     }
@@ -16,7 +18,7 @@ public class RavenPiColorSensor extends PicoColorSensor{
      * @return Returns an enum of the detected color, either Invalid, Red, or Blue
      */
     public Alliance getSensorBallColor(RavenPiPosition sensorPosition) {
-        RawColor colorval = sensorPosition == RavenPiPosition.CONVEYANCE ? getRawColor0() : getRawColor1();
+        RawColor colorval = sensorPosition == RavenPiPosition.CONVEYANCE ? getRawColor1() : getRawColor0();
         double threshold = sensorPosition == RavenPiPosition.CONVEYANCE ? Constants.BALL_COLOR_THRESHOLD_ENTRY : Constants.BALL_COLOR_THRESHOLD_EXIT;
 
         if (Math.abs(colorval.red - colorval.blue) < threshold) {
@@ -25,6 +27,15 @@ public class RavenPiColorSensor extends PicoColorSensor{
 
         return colorval.red > colorval.blue ? Alliance.Red : Alliance.Blue;
     }
+
+    public RawColor getFirstSensorRawColor() {
+        return getRawColor0();
+    }
+
+    public RawColor getSecondSensorRawColor() {
+        return getRawColor1();
+    }
+
 
     /**
      * Determines whether the ball in the given sensor location matches the correct color.
@@ -38,6 +49,10 @@ public class RavenPiColorSensor extends PicoColorSensor{
         Alliance ballColor = getSensorBallColor(sensorPosition);
 
         if (ballColor == Robot.ALLIANCE_COLOR || ballColor == Alliance.Invalid) {
+            getIsCorrectBallType = true;
+        }
+
+        if (_colorSensorFeatureEnabled == false) {
             getIsCorrectBallType = true;
         }
 
@@ -55,10 +70,18 @@ public class RavenPiColorSensor extends PicoColorSensor{
 
         Alliance ballColor = getSensorBallColor(sensorPosition);
 
-        if (ballColor == Robot.ALLIANCE_COLOR || ballColor == Alliance.Invalid) {
+        if (ballColor == Robot.ALLIANCE_COLOR) {
+            getIsCorrectBallType = true;
+        }
+
+        if (_colorSensorFeatureEnabled == false) {
             getIsCorrectBallType = true;
         }
 
         return getIsCorrectBallType;
+    }
+
+    public void setColorSensorFeatureEnabled(boolean value) {
+        _colorSensorFeatureEnabled = value;
     }
 }

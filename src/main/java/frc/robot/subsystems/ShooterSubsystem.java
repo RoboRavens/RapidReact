@@ -136,8 +136,8 @@ public class ShooterSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Backspin Target RPM", _shot._backspinMotorCalibration.targetRPM);
         SmartDashboard.putNumber("Topspin Target RPM", _shot._topspinMotorCalibration.targetRPM);
         
-        SmartDashboard.putNumber("Backspin AMPS", _backspinMotor.getSupplyCurrent());
-        SmartDashboard.putNumber("Topspin AMPS", _topspinMotor.getStatorCurrent());
+        // SmartDashboard.putNumber("Backspin AMPS", _backspinMotor.getSupplyCurrent());
+        // SmartDashboard.putNumber("Topspin AMPS", _topspinMotor.getStatorCurrent());
     }
 
     @Override
@@ -254,6 +254,8 @@ public class ShooterSubsystem extends SubsystemBase {
         _backspinMotor.set(ControlMode.Current, 0);
         _topspinMotor.set(ControlMode.Current, 0);
         _isShooting = false;
+
+        //setShot(Constants.DISABLED_SHOT_CALIBRATION_PAIR); add this if you're ready to test it too!!
     }
 
     public void resetShotCount() {

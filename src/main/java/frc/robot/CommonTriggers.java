@@ -6,7 +6,8 @@ import frc.controls.ButtonCode;
 
 public class CommonTriggers {
     public static Trigger RobotHas2Balls = new Trigger(() -> {
-        return Robot.CONVEYANCE_SUBSYSTEM.getConveyanceStagingBeamBreakHasBall() && Robot.FEEDER_SUBSYSTEM.getFeederHasBall();
+        // return Robot.CONVEYANCE_SUBSYSTEM.getConveyanceStagingBeamBreakHasBall() && Robot.FEEDER_SUBSYSTEM.getFeederHasBall();
+        return false;
     });
 
     public static Trigger RunShooterTrigger = new Trigger(() -> {
@@ -32,8 +33,9 @@ public class CommonTriggers {
                 runShooter = true;
             }
         }
-        
-        return runShooter;
+
+        // return runShooter;
+        return false;
     });
 
     public static Trigger RunAutoshootingTrigger = new Trigger(() -> {
@@ -48,7 +50,8 @@ public class CommonTriggers {
             userOverride = true;
         }
 
-        return robotHasTwoAmmo || userOverride;
+        // return robotHasTwoAmmo || userOverride;
+        return false;
     });
 
     public static Trigger ReleaseBallTrigger = new Trigger(() -> {
@@ -73,7 +76,8 @@ public class CommonTriggers {
             hasAmmo = true;
         }
 
-        return limelightIsAligned && rpmIsCorrect && inAutoshootingMode && hasAmmo;
+        //return limelightIsAligned && rpmIsCorrect && inAutoshootingMode && hasAmmo;
+        return false;
     });
 
     /*

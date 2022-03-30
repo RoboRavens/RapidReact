@@ -58,10 +58,10 @@ public class ClimberSubsystem extends SubsystemBase {
 	}
 
 	public void extend() {
-		this.extend(Constants.CLIMBER_EXTEND_POWER_MAGNITUDE);
+		this.extend(Constants.CLIMBER_EXTEND_SLOW_POWER_MAGNITUDE);
 	}
 
-	private void extend(double power) {
+	public void extend(double power) {
 		if (isAtEncoderExtensionLimit() == false || _override == true) {
 			this.releaseClimberBrake();
 			// _climberMotor.set(ControlMode.PercentOutput, power);
@@ -77,7 +77,7 @@ public class ClimberSubsystem extends SubsystemBase {
 		this.retract(Constants.CLIMBER_RETRACT_POWER_MAGNITUDE);
 	}
 
-	private void retract(double power) {
+	public void retract(double power) {
 		if (isAtEncoderRetractionLimit() == false || _override == true) {
 			this.releaseClimberBrake();
 			// _climberMotor.set(ControlMode.PercentOutput, power);
@@ -146,5 +146,9 @@ public class ClimberSubsystem extends SubsystemBase {
 		}
 		
 		return climberIsExtended;
+	}
+
+	public double getEncoderPosition() {
+		return _climberMotor.getSelectedSensorPosition();
 	}
 }

@@ -58,7 +58,7 @@ public final class RobotMap {
     public static final int BACK_LEFT_MODULE_STEER_MOTOR = 2;
     public static final int BACK_LEFT_MODULE_STEER_ENCODER = 21;
     // public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(191.338); // practice
-    public static final double BACK_LEFT_MODULE_STEER_OFFSET = Math.toRadians(57); // competition
+    public static final double BACK_LEFT_MODULE_STEER_OFFSET = Math.toRadians(237); // competition
 
     public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 7;
     public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 4;
