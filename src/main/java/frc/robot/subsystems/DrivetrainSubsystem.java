@@ -28,7 +28,6 @@ import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
 import frc.robot.commands.drivetrain.RavenSwerveControllerCommand;
 import frc.util.Deadband;
-import frc.util.DriftCorrection;
 import frc.util.DriveCharacteristics;
 import frc.util.SwerveModuleConverter;
 import edu.wpi.first.wpilibj.SPI;
@@ -187,7 +186,6 @@ public class DrivetrainSubsystem extends DrivetrainSubsystemBase {
   @Override
   public void zeroGyroscope() {
     m_navx.zeroYaw();
-    DriftCorrection.clearDesiredHeading();
     _odometryFromKinematics.resetPosition(new Pose2d(0, 0, new Rotation2d()), this.getGyroscopeRotation());
     _odometryFromHardware.resetPosition(new Pose2d(0, 0, new Rotation2d()), this.getGyroscopeRotation());
     _driveCharacteristics.reset();
@@ -244,7 +242,6 @@ public class DrivetrainSubsystem extends DrivetrainSubsystemBase {
       chassisSpeeds.vyMetersPerSecond =  chassisSpeeds.vyMetersPerSecond * 0.5;
     }
 
-    chassisSpeeds.omegaRadiansPerSecond = DriftCorrection.maintainGyroAngle(chassisSpeeds.vxMetersPerSecond, chassisSpeeds.vyMetersPerSecond, chassisSpeeds.omegaRadiansPerSecond);
     _moduleStates = m_kinematics.toSwerveModuleStates(chassisSpeeds);
   }
 
@@ -346,9 +343,7 @@ public class DrivetrainSubsystem extends DrivetrainSubsystemBase {
       followTrajectory = CreateSwerveCommandWhichRespectsTheRotationOfEachPoint(trajectory, robotAngleController);
     }
 
-    return new InstantCommand(() -> DriftCorrection.clearDesiredHeading())
-      // .andThen(new InstantCommand(() -> System.out.println("starting trajectory")))
-      .andThen(followTrajectory)
+    return followTrajectory
       .andThen(this::stop);
   }
 

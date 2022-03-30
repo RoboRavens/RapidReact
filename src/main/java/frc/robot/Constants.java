@@ -329,10 +329,6 @@ Y-offset constants in order:
     public static final TrapezoidProfile.Constraints SWERVE_CONTROLLER_ANGULAR_CONSTRAINTS =
         new TrapezoidProfile.Constraints(
             TRAJECTORY_CONFIG_MAX_ANGULAR_SPEED_RADIANS_PER_SECOND, TRAJECTORY_CONFIG_MAX_ANGULAR_ACCELERATION_RADIANS_PER_SECOND);
-
-    public static final double DRIVE_ANGLE_DRIFT_CORRECTION_KP = 1;
-    public static final double DRIVE_ANGLE_DRIFT_CORRECTION_KI = .01;
-    public static final double DRIVE_ANGLE_DRIFT_CORRECTION_KD = 0;
     
     //CLIMBER
     public static final double CLIMBER_HOLD_POSITION_POWER_MAGNITUDE = 0; // .13
