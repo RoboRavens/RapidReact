@@ -34,8 +34,8 @@ public final class Constants {
     public static final double DRIVE_MAX_TURN_RADIANS_PER_SECOND = 2;
 
     // COLOR SENSE
-    public static final double BALL_COLOR_THRESHOLD_ENTRY = 50;
-    public static final double BALL_COLOR_THRESHOLD_EXIT = 50;
+    public static final double BALL_COLOR_THRESHOLD_ENTRY = 400;
+    public static final double BALL_COLOR_THRESHOLD_EXIT = 400;
   
     // SHOOTER RPM ALLOWANCE TESTED AT 50 for TELEOP BUT SHOULD NOT MATTER
     //SHOOTER
@@ -265,12 +265,13 @@ Y-offset constants in order:
     public static boolean TURRET_ENABLED = true; // when false the turret will not move and the drivetrain will align shooter with the goal
     public static final int TURRET_IDX = 0;
     public static final int TURRET_TIMEOUT_MS = 100;
-    public static final int TURRET_RANGE = 100; //Degrees of motion in both ways (180 means full movement both ways)
-    public static final double TURRET_ENCODER_RATIO = 500; //Divide encoder ticks by this, multiply angles by this (encoder ticks are much less than angles)
+    public static final int TURRET_RANGE = 150; //Degrees of motion in either way (180 means full movement both ways)
+    public static final double TURRET_GEARBOX_RATIO = 1.0 / 10.0; // Motor is one-tenth speed due to gearbox
+    public static final double TURRET_LARGE_GEAR_RATIO = 10.0 / 128.0;
+    public static final double ENCODER_TO_TURRET_RATIO = (TALONFX_TICKS_PER_REVOLUTION / 360.0) / TURRET_GEARBOX_RATIO * 3; // Multiply encoder by this to find angle of turret
     public static final double TURRET_AIM_ALLOWANCE = 2; //Degrees of allowance to say that the turret has "reached" its target
     public static final double TURRET_MISS_OFFSET = 35;
     public static final double TURRET_GEAR_RATIO = 1.0 / 10.0; // Motor is one-tenth speed due to gearbox
-    public static final double ENCODER_TO_TURRET_RATIO = TALONFX_TICKS_PER_REVOLUTION / 360.0 / TURRET_GEAR_RATIO; // Multiply encoder by this to find angle of turret
 
     public static final double TURRET_DEFAULT_KF = 0;
     public static final double TURRET_DEFAULT_KP = 0.2;

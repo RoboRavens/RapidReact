@@ -31,7 +31,6 @@ public class TurretSwivelSubsystem extends SubsystemBase {
 
         _turretMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
         _turretMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
-
         setPidProfile(Constants.TURRET_DEFAULT_PID);
 
         setEncoder(0);
@@ -58,11 +57,7 @@ public class TurretSwivelSubsystem extends SubsystemBase {
     }
 
     public double getAngle() {
-        // Old?
-        // return _turretMotor.getSelectedSensorPosition() / Constants.TURRET_ENCODER_RATIO;
-        
-        // New?
-        return _turretMotor.getSelectedSensorPosition() / Constants.ENCODER_TO_TURRET_RATIO;
+        return _turretMotor.getSelectedSensorPosition() * Constants.ENCODER_TO_TURRET_RATIO;
     }
 
     /**
@@ -74,7 +69,6 @@ public class TurretSwivelSubsystem extends SubsystemBase {
         if (Math.abs(angle) > 360 - Constants.TURRET_RANGE) { //If angle is overshooting bounds farther than the deadzone...
             angle += (Math.abs(angle) / angle) * -360; //Flips angle; adds 360 with an inverted sign to whatever angle is (if angle is +, add - and vice versa)
         }
-
         if (Math.abs(angle) - 180 > 0) {
             angle += (Math.abs(angle) / angle) * -360;
         }
@@ -83,7 +77,6 @@ public class TurretSwivelSubsystem extends SubsystemBase {
         if (Constants.TURRET_ENABLED) {
             _turretMotor.set(ControlMode.Position, angle * Constants.ENCODER_TO_TURRET_RATIO); //Mult by ratio
         }
-        
         _shot.target = angle;
     }
 
