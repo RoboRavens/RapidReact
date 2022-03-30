@@ -235,7 +235,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
         boolean output = false;
         
-        if (_shot._backspinMotorCalibration.targetRPM == 0) { //If we should be stopped anyway then end because we don't want to misfire
+        if (!_isShooting) { //If we should be stopped anyway then end because we don't want to misfire
             return false;
         }
 
