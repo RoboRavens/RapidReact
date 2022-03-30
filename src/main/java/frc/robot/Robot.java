@@ -187,6 +187,23 @@ public class Robot extends TimedRobot {
     SmartDashboard.putString("CONVEYANCE COLOR", Robot.COLOR_SENSOR.getSensorBallColor(RavenPiPosition.CONVEYANCE).toString());
     SmartDashboard.putString("FEEDER COLOR", Robot.COLOR_SENSOR.getSensorBallColor(RavenPiPosition.FEEDER).toString());
     // SmartDashboard.putBoolean("FEEDER HAS CORRECT BALL", Robot.COLOR_SENSOR.getSensorIsCorrectBallColorStrict(RavenPiPosition.FEEDER))
+  
+    int sensor0Green = Robot.COLOR_SENSOR.getRawColor0().green;
+    int sensor0Red = Robot.COLOR_SENSOR.getRawColor0().red;
+    int sensor0Blue = Robot.COLOR_SENSOR.getRawColor0().blue;
+
+    int sensor1Green = Robot.COLOR_SENSOR.getRawColor1().green;
+    int sensor1Red = Robot.COLOR_SENSOR.getRawColor1().red;
+    int sensor1Blue = Robot.COLOR_SENSOR.getRawColor1().blue;
+
+    SmartDashboard.putNumber("CSENSOR 0 red", sensor0Red);
+    SmartDashboard.putNumber("CSENSOR 0 Green", sensor0Green);
+    SmartDashboard.putNumber("CSENSOR 0 blue", sensor0Blue);
+    
+    SmartDashboard.putNumber("CSENSOR 1 red", sensor1Red);
+    SmartDashboard.putNumber("CSENSOR 1 Green", sensor1Green);
+    SmartDashboard.putNumber("CSENSOR 1 blue", sensor1Blue);
+
   }
    /** This function is called once each time the robot enters Disabled mode. */
   @Override
@@ -364,8 +381,8 @@ public class Robot extends TimedRobot {
     // GAMEPAD.getButton(ButtonCode.B).whileHeld(new ParallelCommandGroup(new FeederEjectAllCommand(), CONVEYANCE_EJECT_COMMAND));
     //GAMEPAD.getButton(ButtonCode.B).whileHeld(new FeederEjectAllCommand());
     
-    // GAMEPAD.getButton(ButtonCode.B).whileHeld(CONVEYANCE_FEEDER_EJECT_ALL_COMMAND);
-    GAMEPAD.getButton(ButtonCode.B).whileHeld(CONVEYANCE_EJECT_COMMAND);
+    GAMEPAD.getButton(ButtonCode.B).whileHeld(CONVEYANCE_FEEDER_EJECT_ALL_COMMAND);
+    // GAMEPAD.getButton(ButtonCode.B).whileHeld(CONVEYANCE_EJECT_COMMAND);
     OP_PAD.getButton(ButtonCode.SHOOTER_LAUNCH_PAD_SHOT).whenPressed(SHOOTER_LAUNCH_PAD_PID_COMMAND);
     OP_PAD.getButton(ButtonCode.SHOOTER_TARMAC_SHOT).whenPressed(SHOOTER_TARMAC_PID_COMMAND);
     OP_PAD.getButton(ButtonCode.SHOOTER_LOW_GOAL_SHOT).whenPressed(SHOOTER_LOW_GOAL_PID_COMMAND);

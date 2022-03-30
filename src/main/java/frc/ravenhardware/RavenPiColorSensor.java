@@ -16,7 +16,7 @@ public class RavenPiColorSensor extends PicoColorSensor{
      * @return Returns an enum of the detected color, either Invalid, Red, or Blue
      */
     public Alliance getSensorBallColor(RavenPiPosition sensorPosition) {
-        RawColor colorval = sensorPosition == RavenPiPosition.CONVEYANCE ? getRawColor0() : getRawColor1();
+        RawColor colorval = sensorPosition == RavenPiPosition.CONVEYANCE ? getRawColor1() : getRawColor0();
         double threshold = sensorPosition == RavenPiPosition.CONVEYANCE ? Constants.BALL_COLOR_THRESHOLD_ENTRY : Constants.BALL_COLOR_THRESHOLD_EXIT;
 
         if (Math.abs(colorval.red - colorval.blue) < threshold) {
@@ -25,6 +25,15 @@ public class RavenPiColorSensor extends PicoColorSensor{
 
         return colorval.red > colorval.blue ? Alliance.Red : Alliance.Blue;
     }
+
+    public RawColor getFirstSensorRawColor() {
+        return getRawColor0();
+    }
+
+    public RawColor getSecondSensorRawColor() {
+        return getRawColor1();
+    }
+
 
     /**
      * Determines whether the ball in the given sensor location matches the correct color.
