@@ -272,7 +272,6 @@ Y-offset constants in order:
     public static final double TURRET_AIM_ALLOWANCE = 2; //Degrees of allowance to say that the turret has "reached" its target
     public static final double TURRET_MISS_OFFSET = 35;
     public static final double TURRET_GEAR_RATIO = 1.0 / 10.0; // Motor is one-tenth speed due to gearbox
-    public static final double ENCODER_TO_TURRET_RATIO = TALONFX_TICKS_PER_REVOLUTION / 360.0 / TURRET_GEAR_RATIO; // Multiply encoder by this to find angle of turret
 
     public static final double TURRET_DEFAULT_KF = 0;
     public static final double TURRET_DEFAULT_KP = 0.2;
