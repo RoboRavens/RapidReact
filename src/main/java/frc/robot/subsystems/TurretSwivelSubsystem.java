@@ -118,7 +118,9 @@ public class TurretSwivelSubsystem extends SubsystemBase {
             if(targetAngle - this.getAngle() < 0) { // If change in angle is clockwise:
                 return true;
             }
-        } else if(counterClockwiseLimit.get()) {
+        }
+        
+        if(counterClockwiseLimit.get()) {
             if(targetAngle - this.getAngle() > 0) { // If change in angle is counterclockwise:
                 return true;
             }
