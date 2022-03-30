@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.TimedRobot;
+import frc.robot.subsystems.ShooterSubsystem;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -24,16 +27,12 @@ import frc.controls.Gamepad;
 import frc.ravenhardware.BlinkinCalibrations;
 import frc.ravenhardware.RavenBlinkin;
 import frc.ravenhardware.RavenPiColorSensor;
-import frc.robot.commands.auto.FiveBallHps;
-import frc.robot.commands.auto.ThreeBallTarmacAutoCommand;
-import frc.robot.commands.auto.TwoBallAutoCommand;
 import frc.robot.commands.climber.ClimberDefaultBrakeCommand;
 import frc.robot.commands.commandgroups.JunkShotCommandGroup;
 import frc.robot.commands.conveyance.ConveyanceCollectCommand;
 import frc.robot.commands.conveyance.ConveyanceEjectCommand;
 import frc.robot.commands.conveyance.ConveyanceIndexCommand;
 import frc.robot.commands.conveyance.IntakeRetractCommand;
-import frc.robot.commands.drivetrain.DrivetrainDefaultCommand;
 import frc.robot.commands.feeder.FeederCollectCommand;
 import frc.robot.commands.feeder.FeederEjectAllCommand;
 import frc.robot.commands.feeder.FeederIndexCommand;
@@ -54,7 +53,7 @@ import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CompressorSubsystem;
 import frc.robot.subsystems.ConveyanceSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.subsystems.DrivetrainSubsystemBase;
+import frc.robot.subsystems.DrivetrainSubsystemMock;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeExtenderSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
@@ -76,8 +75,8 @@ public class Robot extends TimedRobot {
   public static final Gamepad GAMEPAD = new Gamepad(JOYSTICK);
   public static final Gamepad OP_PAD = new Gamepad(1);
   public static final Gamepad OP_PAD2 = new Gamepad(2);
-  
-  public static final DrivetrainSubsystemBase DRIVE_TRAIN_SUBSYSTEM = new DrivetrainSubsystem();
+
+  public static final DrivetrainSubsystemMock DRIVE_TRAIN_SUBSYSTEM = new DrivetrainSubsystemMock();
   public static final ShooterSubsystem SHOOTER_SUBSYSTEM = new ShooterSubsystem();
   public static final IntakeExtenderSubsystem INTAKE_SUBSYSTEM = new IntakeExtenderSubsystem();
   public static final ConveyanceSubsystem CONVEYANCE_SUBSYSTEM = new ConveyanceSubsystem();
@@ -106,11 +105,9 @@ public class Robot extends TimedRobot {
   public static final TurretAimAtTargetCommand TURRET_AIM_AT_TARGET = new TurretAimAtTargetCommand();
   public static final TurretFlipCommand TURRET_FLIP = new TurretFlipCommand();
   public static final TurretSeekCommand TURRET_SEEK = new TurretSeekCommand();
-  public static final DrivetrainDefaultCommand DRIVE_TRAIN_DEFAULT_COMMAND = new DrivetrainDefaultCommand();
   public static final FeederShootOneBallCommand FEEDER_SHOOT_ONE_BALL = new FeederShootOneBallCommand();
   public static final RavenBlinkin RAVEN_BLINKIN_3 = new RavenBlinkin(3);
   public static final RavenBlinkin RAVEN_BLINKIN_4 = new RavenBlinkin(4);
-  public static final AutoMode TWO_BALL_HANGAR_AUTO = new AutoMode("Two Ball Hangar", TwoBallAutoCommand.getHangarCommand());
   
   public static final RavenPiColorSensor COLOR_SENSOR = new RavenPiColorSensor();
   public static Alliance ALLIANCE_COLOR;
@@ -123,7 +120,6 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     ALLIANCE_COLOR = DriverStation.getAlliance();
 
-    DRIVE_TRAIN_SUBSYSTEM.setDefaultCommand(DRIVE_TRAIN_DEFAULT_COMMAND);
     //SHOOTER_SUBSYSTEM.setDefaultCommand(new RunCommand(() -> SHOOTER_SUBSYSTEM.defaultCommand(), SHOOTER_SUBSYSTEM));
 
     SHOOTER_SUBSYSTEM.setDefaultCommand(new RunCommand(() -> SHOOTER_SUBSYSTEM.defaultCommand(), SHOOTER_SUBSYSTEM));
@@ -135,19 +131,6 @@ public class Robot extends TimedRobot {
     LIMELIGHT_SUBSYSTEM.turnLEDOff();
     CameraServer.startAutomaticCapture();
 
-    _autoChooser.setDefaultOption(TWO_BALL_HANGAR_AUTO.getAutoName(), TWO_BALL_HANGAR_AUTO);
-    _autoChooser.addOption("Two Ball Wall", new AutoMode("Two Ball Wall", TwoBallAutoCommand.getWallCommand()));
-    _autoChooser.addOption("Three Ball Tarmac", new AutoMode("Three Ball Tarmac", ThreeBallTarmacAutoCommand.get()));
-    _autoChooser.addOption("Five Ball HPS", new AutoMode("Five Ball HPS", FiveBallHps.get()));
-  }
-
-  private AutoMode getAuto() {
-    var autoMode = _autoChooser.getSelected();
-    if (autoMode == null) {
-      return TWO_BALL_HANGAR_AUTO;
-    }
-
-    return autoMode;
   }
   
   /**
@@ -158,14 +141,13 @@ public class Robot extends TimedRobot {
    * SmartDashboard integrated updating.
    */
   @Override
-  public void robotPeriodic() {
+   public void robotPeriodic() {
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
-    CommandScheduler.getInstance().run();
+     CommandScheduler.getInstance().run();
     SmartDashboard.putData("Autonomous", _autoChooser);
-    SmartDashboard.putString("Chosen Auto", this.getAuto().getAutoName());
     
 
     SmartDashboard.putBoolean("Target Sighted", Robot.LIMELIGHT_SUBSYSTEM.hasTargetSighted());
@@ -175,7 +157,7 @@ public class Robot extends TimedRobot {
       Robot.LIMELIGHT_SUBSYSTEM.turnLEDOn();
     } else {
       Robot.LIMELIGHT_SUBSYSTEM.turnLEDOff();
-    }  
+     }  
 
     
   }
@@ -190,7 +172,6 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    m_autonomousCommand = this.getAuto().getAutoCommand();
     
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
@@ -272,8 +253,7 @@ public class Robot extends TimedRobot {
     
     GAMEPAD.getButton(ButtonCode.LEFTBUMPER)
       .and(GAMEPAD.getButton(ButtonCode.RIGHTBUMPER))
-      .and(GAMEPAD.getButton(ButtonCode.Y))
-      .whenActive(DRIVE_TRAIN_SUBSYSTEM::zeroGyroscope);
+      .and(GAMEPAD.getButton(ButtonCode.Y));
     
 
     OP_PAD.getButton(ButtonCode.CLIMBER_OVERRIDE)
@@ -285,15 +265,6 @@ public class Robot extends TimedRobot {
     });
 
     shootGarbarge.whenActive(new JunkShotCommandGroup(), false);
-
-    new Trigger(() -> GAMEPAD.getAxisIsPressed(AxisCode.RIGHTTRIGGER) || Robot.CLIMBER_SUBSYSTEM.climberIsExtended())
-      .whenActive(DRIVE_TRAIN_SUBSYSTEM::cutPower)
-      .whenInactive(DRIVE_TRAIN_SUBSYSTEM::stopCutPower);
-
-    // new Trigger(() -> GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER)).or(CommonTriggers.RobotHas2Balls)
-    CommonTriggers.RunAutoshootingTrigger
-      .whenActive(() -> DRIVE_TRAIN_DEFAULT_COMMAND.followLimelight())
-      .whenInactive(() -> DRIVE_TRAIN_DEFAULT_COMMAND.stopFollowingLimelight());
 
     CommonTriggers.RunShooterTrigger
       .whenActive(SHOOTER_START_COMMAND)
@@ -336,10 +307,6 @@ public class Robot extends TimedRobot {
     OP_PAD.getButton(ButtonCode.SHOOTER_PROFILE_MANUAL_OVERRIDE)
       .whileHeld(() -> Robot.SHOOTER_SUBSYSTEM.disableAutoShotSelect())
       .whenInactive(() -> Robot.SHOOTER_SUBSYSTEM.enableAutoShotSelect());
-      
-    GAMEPAD.getButton(ButtonCode.LEFTBUMPER).or(CommonTriggers.RobotHas2Balls)
-      .whenActive(DRIVE_TRAIN_DEFAULT_COMMAND::disableAutoSteer)
-      .whenInactive(DRIVE_TRAIN_DEFAULT_COMMAND::enableAutoSteer);
 
     GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederShoot);
     OP_PAD2.getButton(ButtonCode.FEEDER_WHEEL_REVERSE).whileHeld(FeederWheelReverse);

@@ -16,6 +16,8 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.util.ShooterCalibration;
+import frc.util.ShooterCalibration;
+import frc.util.ShooterCalibrationPair;
 import frc.util.ShooterCalibrationPair;
 
 public class ShooterSubsystem extends SubsystemBase {
@@ -29,6 +31,18 @@ public class ShooterSubsystem extends SubsystemBase {
     private double _lastShotTime = 0;
     private double _arbitraryFeedForward = 0;
 
+    int tarmacBackSpinRpm = 0;
+    int tarmacBackSpinKp = 0;
+    int tarmacBackSpinKi = 0;
+    int tarmacBackSpinKd = 0;
+    int tarmacBackSpinKf = 0;
+
+    int tarmacTopSpinRpm = 0;
+    int tarmacTopSpinKp = 0;
+    int tarmacTopSpinKi = 0;
+    int tarmacTopSpinKd = 0;
+    int tarmacTopSpinKf = 0;
+
     public ShooterSubsystem() {
         _backspinMotor = new TalonFX(RobotMap.SHOOTER_BACKSPIN_MOTOR);
         _topspinMotor = new TalonFX(RobotMap.SHOOTER_TOPSPIN_MOTOR);
@@ -39,6 +53,17 @@ public class ShooterSubsystem extends SubsystemBase {
         this.setShot(Constants.TARMAC_SHOT_CALIBRATION_PAIR);
         _backspinMotor.setSelectedSensorPosition(0);
         _topspinMotor.setSelectedSensorPosition(0);
+
+        //SmartDashboard.putNumber("Set", Constants.TARMAC_BACKSPIN_RPM);
+
+        // Show the backspin and topspin PID values on smart dashboard
+        SmartDashboard.putNumber("CustomShooter Target RPM", tarmacBackSpinRpm);
+        SmartDashboard.putNumber("CustomShooter KP", tarmacBackSpinKp);
+        SmartDashboard.putNumber("CustomShooter KI", tarmacBackSpinKi);
+        SmartDashboard.putNumber("CustomShooter KD", tarmacBackSpinKd);
+        SmartDashboard.putNumber("CustomShooter KF", tarmacBackSpinKd);
+
+        SmartDashboard.putBoolean("update shooter pid button", false);
     }
 
     @Override
@@ -54,6 +79,64 @@ public class ShooterSubsystem extends SubsystemBase {
         updateShotProfile();
         updateArbitraryFeedForward();
 
+        readAndUpdateValueFromSmartDashboard();
+
+    }
+
+    public void readAndUpdateValueFromSmartDashboard() {
+        // System.out.println("test");
+        //var value = SmartDashboard.getNumber("Set", Constants.TARMAC_BACKSPIN_RPM);
+        //SmartDashboard.putNumber("View", value);
+
+        //Constants.TARMAC_BACKSPIN_RPM = (int)SmartDashboard.getNumber("Tarmac Test", Constants.TARMAC_BACKSPIN_RPM);
+        // SmartDashboard.putNumber("Tarmac Test", Constants.TARMAC_BACKSPIN_RPM);
+
+        boolean buttonBooleanValue = SmartDashboard.getBoolean("update shooter pid button", false);
+        //SmartDashboard.putBoolean("button view", booleanValue);
+
+        // Set the backspin PID values to the changed values on smart dashboard, divided by two because the values are for a single motor
+        tarmacBackSpinRpm = (int) SmartDashboard.getNumber("CustomShooter Target RPM", tarmacBackSpinRpm);
+        tarmacBackSpinKp = (int) SmartDashboard.getNumber("CustomShooter KP", tarmacBackSpinKp);
+        tarmacBackSpinKi = (int) SmartDashboard.getNumber("CustomShooter KI", tarmacBackSpinKi);
+        tarmacBackSpinKd = (int) SmartDashboard.getNumber("CustomShooter KD", tarmacBackSpinKd);
+        tarmacBackSpinKf = (int) SmartDashboard.getNumber("CustomShooter KF", tarmacBackSpinKf);
+
+        // Set the topspin PID values to the changed values on smart dashboard, divided by two because the values are for a single motor
+        tarmacTopSpinRpm = (int) SmartDashboard.getNumber("CustomShooter Target RPM", tarmacTopSpinRpm);
+        tarmacTopSpinKp = (int) SmartDashboard.getNumber("CustomShooter KP", tarmacTopSpinKp);
+        tarmacTopSpinKi = (int) SmartDashboard.getNumber("CustomShooter KI", tarmacTopSpinKi);
+        tarmacTopSpinKd = (int) SmartDashboard.getNumber("CustomShooter KD", tarmacTopSpinKd);
+        tarmacTopSpinKf = (int) SmartDashboard.getNumber("CustomShooter KF", tarmacTopSpinKf);
+
+        if(buttonBooleanValue) {
+            ShooterCalibration newBackSpinShooterCalibration = new ShooterCalibration("updated backspin shooter calibration", 
+                tarmacBackSpinRpm, 
+                tarmacBackSpinKf, 
+                tarmacBackSpinKp,
+                tarmacBackSpinKi,
+                tarmacBackSpinKd,
+                Constants.TARMAC_BACKSPIN_VOLTAGE_CONTROL_SETPOINT);
+
+            ShooterCalibration newTopSpinShooterCalibration = new ShooterCalibration("updated topspin shooter calibration", 
+                tarmacTopSpinRpm, 
+                tarmacTopSpinKf, 
+                tarmacTopSpinKp,
+                tarmacTopSpinKi,
+                tarmacTopSpinKd,
+                Constants.TARMAC_TOPSPIN_VOLTAGE_CONTROL_SETPOINT);
+            
+                ShooterCalibrationPair newShooterCalibrationPair = new ShooterCalibrationPair("updated shooter calibration pair", newBackSpinShooterCalibration, newTopSpinShooterCalibration);
+            
+            setShot(newShooterCalibrationPair);
+            startMotor();
+
+            SmartDashboard.putBoolean("update shooter pid button", false);
+        }
+
+        // When box is checked
+        //  Create the shooter calibration pair
+        //  Call setShot and startMotor
+        //  Uncheck the box to show that the execution has finished
     }
 
     public void updateSmartDashboard() {
@@ -72,32 +155,20 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void updatePidValuesOnSmartDashboard() {
-        // Show the backspin and topspin PID values on smart dashboard
-        SmartDashboard.putNumber("Tarmac Target RPM", Constants.TARMAC_BACKSPIN_RPM * 2);
-        SmartDashboard.putNumber("Tarmac KP", Constants.TARMAC_BACKSPIN_KP * 2);
-        SmartDashboard.putNumber("Tarmac KI", Constants.TARMAC_BACKSPIN_KI * 2);
-        SmartDashboard.putNumber("Tarmac KD", Constants.TARMAC_BACKSPIN_KD * 2);
-        SmartDashboard.putNumber("Tarmac KF", Constants.TARMAC_BACKSPIN_KF * 2);
-
-        // SmartDashboard.putNumber("Target RPM", Constants.TARMAC_TOPSPIN_RPM);
-        // SmartDashboard.putNumber("Target RPM", Constants.TARMAC_TOPSPIN_KP);
-        // SmartDashboard.putNumber("Target RPM", Constants.TARMAC_TOPSPIN_KI);
-        // SmartDashboard.putNumber("Target RPM", Constants.TARMAC_TOPSPIN_KD);
-        // SmartDashboard.putNumber("Target RPM", Constants.TARMAC_TOPSPIN_KF);
 
         // Set the backspin PID values to the changed values on smart dashboard, divided by two because the values are for a single motor
-        Constants.TARMAC_BACKSPIN_RPM = (int) SmartDashboard.getNumber("Tarmac Target RPM", Constants.TARMAC_BACKSPIN_RPM / 2);
-        Constants.TARMAC_BACKSPIN_KP = (int) SmartDashboard.getNumber("Tarmac KP", Constants.TARMAC_BACKSPIN_KP / 2);
-        Constants.TARMAC_BACKSPIN_KI = (int) SmartDashboard.getNumber("Tarmac KI", Constants.TARMAC_BACKSPIN_KI / 2);
-        Constants.TARMAC_BACKSPIN_KD = (int) SmartDashboard.getNumber("Tarmac KD", Constants.TARMAC_BACKSPIN_KD / 2);
-        Constants.TARMAC_BACKSPIN_KF = (int) SmartDashboard.getNumber("Tarmac KF", Constants.TARMAC_BACKSPIN_KF / 2);
+        Constants.TARMAC_BACKSPIN_RPM = (int) SmartDashboard.getNumber("Tarmac Target RPM", Constants.TARMAC_BACKSPIN_RPM);
+        Constants.TARMAC_BACKSPIN_KP = (int) SmartDashboard.getNumber("Tarmac KP", Constants.TARMAC_BACKSPIN_KP);
+        Constants.TARMAC_BACKSPIN_KI = (int) SmartDashboard.getNumber("Tarmac KI", Constants.TARMAC_BACKSPIN_KI);
+        Constants.TARMAC_BACKSPIN_KD = (int) SmartDashboard.getNumber("Tarmac KD", Constants.TARMAC_BACKSPIN_KD);
+        Constants.TARMAC_BACKSPIN_KF = (int) SmartDashboard.getNumber("Tarmac KF", Constants.TARMAC_BACKSPIN_KF);
 
         // Set the topspin PID values to the changed values on smart dashboard, divided by two because the values are for a single motor
-        Constants.TARMAC_TOPSPIN_RPM = (int) SmartDashboard.getNumber("Tarmac Target RPM", Constants.TARMAC_BACKSPIN_RPM / 2);
-        Constants.TARMAC_TOPSPIN_KP = (int) SmartDashboard.getNumber("Tarmac KP", Constants.TARMAC_BACKSPIN_KP / 2);
-        Constants.TARMAC_TOPSPIN_KI = (int) SmartDashboard.getNumber("Tarmac KI", Constants.TARMAC_BACKSPIN_KI / 2);
-        Constants.TARMAC_TOPSPIN_KD = (int) SmartDashboard.getNumber("Tarmac KD", Constants.TARMAC_BACKSPIN_KD / 2);
-        Constants.TARMAC_TOPSPIN_KF = (int) SmartDashboard.getNumber("Tarmac KF", Constants.TARMAC_BACKSPIN_KF / 2);
+        Constants.TARMAC_TOPSPIN_RPM = (int) SmartDashboard.getNumber("Tarmac Target RPM", Constants.TARMAC_BACKSPIN_RPM);
+        Constants.TARMAC_TOPSPIN_KP = (int) SmartDashboard.getNumber("Tarmac KP", Constants.TARMAC_BACKSPIN_KP);
+        Constants.TARMAC_TOPSPIN_KI = (int) SmartDashboard.getNumber("Tarmac KI", Constants.TARMAC_BACKSPIN_KI);
+        Constants.TARMAC_TOPSPIN_KD = (int) SmartDashboard.getNumber("Tarmac KD", Constants.TARMAC_BACKSPIN_KD);
+        Constants.TARMAC_TOPSPIN_KF = (int) SmartDashboard.getNumber("Tarmac KF", Constants.TARMAC_BACKSPIN_KF);
     }
 
     @Override
