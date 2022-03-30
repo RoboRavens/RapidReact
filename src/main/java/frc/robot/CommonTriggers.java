@@ -6,11 +6,18 @@ import frc.controls.ButtonCode;
 
 public class CommonTriggers {
     public static Trigger RobotHas2Balls = new Trigger(() -> {
-        // return Robot.CONVEYANCE_SUBSYSTEM.getConveyanceStagingBeamBreakHasBall() && Robot.FEEDER_SUBSYSTEM.getFeederHasBall();
-        return false;
+        if (Robot.autonomousTriggerOverride == true) {
+            return false;
+        }
+
+        return Robot.CONVEYANCE_SUBSYSTEM.getConveyanceStagingBeamBreakHasBall() && Robot.FEEDER_SUBSYSTEM.getFeederHasBall();
     });
 
     public static Trigger RunShooterTrigger = new Trigger(() -> {
+        if (Robot.autonomousTriggerOverride == true) {
+            return false;
+        }
+
         boolean runShooter = false;
 
         // In either manual or automatic mode, run the shooter if the switch is on.
@@ -34,11 +41,15 @@ public class CommonTriggers {
             }
         }
 
-        // return runShooter;
-        return false;
+        return runShooter;
+        // return false;
     });
 
     public static Trigger RunAutoshootingTrigger = new Trigger(() -> {
+        if (Robot.autonomousTriggerOverride == true) {
+            return false;
+        }
+
         boolean robotHasTwoAmmo = false;
         boolean userOverride = false;
 
@@ -50,11 +61,15 @@ public class CommonTriggers {
             userOverride = true;
         }
 
-        // return robotHasTwoAmmo || userOverride;
-        return false;
+        return robotHasTwoAmmo || userOverride;
+        // return false;
     });
 
     public static Trigger ReleaseBallTrigger = new Trigger(() -> {
+        if (Robot.autonomousTriggerOverride == true) {
+            return false;
+        }
+
         boolean limelightIsAligned = false;
         boolean rpmIsCorrect = false;
         boolean inAutoshootingMode = false;
@@ -76,8 +91,8 @@ public class CommonTriggers {
             hasAmmo = true;
         }
 
-        //return limelightIsAligned && rpmIsCorrect && inAutoshootingMode && hasAmmo;
-        return false;
+        return limelightIsAligned && rpmIsCorrect && inAutoshootingMode && hasAmmo;
+        // return false;
     });
 
     /*
