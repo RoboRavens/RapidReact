@@ -28,7 +28,7 @@ public class TurretAimAtTargetCommand extends CommandBase {
   @Override
   public void execute() {
     //double angle = Robot.GAMEPAD.getAxis(AxisCode.RIGHTSTICKX);
-    double changedAngle = Robot.TURRET_SWIVEL_SUBSYSTEM.getAngle() - Robot.LIMELIGHT_SUBSYSTEM.getRawTargetOffsetAngle();
+    double changedAngle = Robot.TURRET_SWIVEL_SUBSYSTEM.getAngle() - Robot.LIMELIGHT_SUBSYSTEM.getTargetOffsetAngle();
     Robot.TURRET_SWIVEL_SUBSYSTEM.goToAngle(changedAngle);
 
     
