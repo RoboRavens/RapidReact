@@ -1,12 +1,11 @@
-package frc.robot.commands.conveyance;
+package frc.robot.commands.feeder;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
-public class ConveyanceCollectCommand extends CommandBase {
-
-  public ConveyanceCollectCommand() {
-    addRequirements(Robot.CONVEYANCE_SUBSYSTEM, Robot.INTAKE_SUBSYSTEM);
+public class FeederEjectAllCommand extends CommandBase {
+  public FeederEjectAllCommand() {
+    addRequirements(Robot.FEEDER_SUBSYSTEM);
   }
 
   // Called when the command is initially scheduled.
@@ -16,15 +15,15 @@ public class ConveyanceCollectCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Robot.CONVEYANCE_SUBSYSTEM.setConveyanceIntakeCargo();
-    Robot.INTAKE_SUBSYSTEM.extend();
+    Robot.FEEDER_SUBSYSTEM.setFeederConveyanceEject();
+    Robot.FEEDER_SUBSYSTEM.feederWheelReverse();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne();
-    Robot.INTAKE_SUBSYSTEM.retract();
+    Robot.FEEDER_SUBSYSTEM.conveyanceStop();
+    Robot.FEEDER_SUBSYSTEM.feederWheelStop();
   }
 
   // Returns true when the command should end.
@@ -33,4 +32,3 @@ public class ConveyanceCollectCommand extends CommandBase {
     return false;
   }
 }
-

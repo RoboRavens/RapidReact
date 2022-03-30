@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
@@ -12,6 +13,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.util.ShooterCalibration;
 import frc.util.ShooterCalibrationPair;
@@ -20,10 +22,12 @@ public class ShooterSubsystem extends SubsystemBase {
     private TalonFX _backspinMotor;
     private TalonFX _topspinMotor;
     private ShooterCalibrationPair _shot;
-    private boolean _isShooting;
     private int _shotTally = 0;
+    private boolean _isShooting;
     private boolean _recovered;
+    private boolean _autoShotSelect = true;
     private double _lastShotTime = 0;
+    private double _arbitraryFeedForward = 0;
 
     public ShooterSubsystem() {
         _backspinMotor = new TalonFX(RobotMap.SHOOTER_BACKSPIN_MOTOR);
@@ -39,12 +43,19 @@ public class ShooterSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        // This method will be called once per scheduler run
-        if(detectShot()) {
+        if (detectShot()) {
             _lastShotTime = Timer.getFPGATimestamp();
             _shotTally++;
         }
 
+        updateSmartDashboard();
+
+        updateShotProfile();
+        updateArbitraryFeedForward();
+
+    }
+
+    public void updateSmartDashboard() {
         SmartDashboard.putNumber("Backspin Shooter Speed", getBackspinShooterRPM());
         SmartDashboard.putNumber("Topspin Shooter Speed", getTopspinShooterRPM());
         SmartDashboard.putString("Shooter PID", _shot._name);
@@ -55,8 +66,8 @@ public class ShooterSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Backspin Target RPM", _shot._backspinMotorCalibration.targetRPM);
         SmartDashboard.putNumber("Topspin Target RPM", _shot._topspinMotorCalibration.targetRPM);
         
-        SmartDashboard.putNumber("Backspin AMPS", _backspinMotor.getSupplyCurrent());
-        SmartDashboard.putNumber("Topspin AMPS", _topspinMotor.getStatorCurrent());
+        // SmartDashboard.putNumber("Backspin AMPS", _backspinMotor.getSupplyCurrent());
+        // SmartDashboard.putNumber("Topspin AMPS", _topspinMotor.getStatorCurrent());
     }
 
     @Override
@@ -102,29 +113,51 @@ public class ShooterSubsystem extends SubsystemBase {
         return _shot;
     }
 
+    public void updateArbitraryFeedForward() {
+        double aff = 0;
+        
+        switch (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceState()) {
+            case OFF:
+                aff += 0;
+                break;
+            case EJECTING:
+                aff += Constants.SHOOTER_CONVEYANCE_EJECTING_ARBITRARY_FEED_FORWARD;
+                break;
+            case INDEXING:
+                aff += Constants.SHOOTER_CONVEYANCE_INDEXING_ARBITRARY_FEED_FORWARD;
+                break;
+            case INTAKING:
+                aff += Constants.SHOOTER_CONVEYANCE_INTAKING_ARBITRARY_FEED_FORWARD;
+                break;
+        }
+
+        _arbitraryFeedForward = aff;
+    }
+
     /**
     * Starts the motor with the set shot type
     */
     public void startMotor() {
         _recovered = false;
-        // _backspinMotor.set(ControlMode.Velocity, _shot._backspinMotorCalibration.targetRPM * Constants.TALON_RPM_TO_VELOCITY);
-        // _topspinMotor.set(ControlMode.Velocity, _shot._topspinMotorCalibration.targetRPM * Constants.TALON_RPM_TO_VELOCITY);
 
         double backspinTargetMotorRPM =  (_shot._backspinMotorCalibration.targetRPM / Constants.BACKSPIN_GEAR_RATIO);
         double backspinTargetVelocity = backspinTargetMotorRPM * Constants.TALON_RPM_TO_VELOCITY;
 
-        // backspinTargetVelocity *= Constants.BACKSPIN_GEAR_RATIO;
-
         double topspinTargetMotorRPM =  (_shot._topspinMotorCalibration.targetRPM / Constants.TOPSPIN_GEAR_RATIO);
         double topspinTargetVelocity = topspinTargetMotorRPM * Constants.TALON_RPM_TO_VELOCITY;
 
+        updateShooterTuningSmartDashboard(backspinTargetMotorRPM, topspinTargetMotorRPM, backspinTargetVelocity, topspinTargetVelocity);
 
-        
-        // topspinTargetVelocity *= Constants.TOPSPIN_GEAR_RATIO;
-//        _backspinMotor.getSelectedSensorVelocity() * Constants.TALON_VELOCITY_TO_RPM * Constants.BACKSPIN_GEAR_RATIO;
+        _backspinMotor.set(ControlMode.Velocity, backspinTargetVelocity);
+        _topspinMotor.set(ControlMode.Velocity, topspinTargetVelocity);
 
+        _backspinMotor.set(ControlMode.Velocity, backspinTargetVelocity, DemandType.ArbitraryFeedForward, _arbitraryFeedForward);
+        _topspinMotor.set(ControlMode.Velocity, topspinTargetVelocity, DemandType.ArbitraryFeedForward, _arbitraryFeedForward);
 
+        _isShooting = true;
+    }
 
+    private void updateShooterTuningSmartDashboard(double backspinTargetMotorRPM, double topspinTargetMotorRPM, double backspinTargetVelocity, double topspinTargetVelocity) {
         SmartDashboard.putNumber("Backspin Target MOTOR RPM", backspinTargetMotorRPM);
         SmartDashboard.putNumber("Topspin Target MOTOR RPM", topspinTargetMotorRPM);
 
@@ -134,35 +167,14 @@ public class ShooterSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Backspin CURRENT VEL", _backspinMotor.getSelectedSensorVelocity());
         SmartDashboard.putNumber("Topspin CURRENT VEL", _topspinMotor.getSelectedSensorVelocity());
 
-        
-
-
         SmartDashboard.putNumber("Backspin VEL ERROR", _backspinMotor.getClosedLoopError());
         SmartDashboard.putNumber("Topspin VEL ERROR", _topspinMotor.getClosedLoopError());
-
-
 
         SmartDashboard.putNumber("Backspin WHEEL targ RPM", backspinTargetMotorRPM * Constants.BACKSPIN_GEAR_RATIO);
         SmartDashboard.putNumber("Topspin WHEEL targ RPM", topspinTargetMotorRPM * Constants.TOPSPIN_GEAR_RATIO);
 
-        _backspinMotor.set(ControlMode.Velocity, backspinTargetVelocity);
-        _topspinMotor.set(ControlMode.Velocity, topspinTargetVelocity);
-
-
-//        _backspinMotor.set(ControlMode.Velocity, _shot._backspinMotorCalibration.targetRPM * Constants.TALON_RPM_TO_VELOCITY);
-//        _topspinMotor.set(ControlMode.Velocity, _shot._topspinMotorCalibration.targetRPM * Constants.TALON_RPM_TO_VELOCITY * Constants.TOPSPIN_GEAR_RATIO);
-
-        // _backspinMotor.set(ControlMode.Current, 10);
-        // _topspinMotor.set(ControlMode.Current, 10);
-
-        
-
-        // _backspinMotor.set(ControlMode.Velocity, _shot._backspinMotorCalibration.targetRPM * Constants.TALON_RPM_TO_VELOCITY / Constants.BACKSPIN_GEAR_RATIO);
-        // _topspinMotor.set(ControlMode.Velocity, _shot._topspinMotorCalibration.targetRPM * Constants.TALON_RPM_TO_VELOCITY / Constants.TOPSPIN_GEAR_RATIO);
-
-
-
-        _isShooting = true;
+        SmartDashboard.putString("Conveyance State", Robot.CONVEYANCE_SUBSYSTEM.getConveyanceState().name());
+        SmartDashboard.putNumber("AFF Value", _arbitraryFeedForward);
     }
 
     /**
@@ -174,6 +186,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
         //setShot(Constants.DISABLED_SHOT_CALIBRATION_PAIR); add this if you're ready to test it too!!
         _isShooting = false;
+
+        //setShot(Constants.DISABLED_SHOT_CALIBRATION_PAIR); add this if you're ready to test it too!!
     }
 
     public void resetShotCount() {
@@ -256,5 +270,52 @@ public class ShooterSubsystem extends SubsystemBase {
         }
 
         return readyToShoot;
+    }
+
+    private void updateShotProfile() {
+        if (_autoShotSelect) {
+            setShotProfileAutomatically();
+        }
+
+    }
+
+    private void setShotProfileAutomatically() {
+        // The tarmac is always a good default shot.
+        ShooterCalibrationPair shotToSet = Constants.TARMAC_SHOT_CALIBRATION_PAIR;
+    
+        if (Robot.LIMELIGHT_SUBSYSTEM.getRawYOffset() > Constants.MAX_LOW_GOAL_SHOT) { // Close to hub
+          shotToSet = Constants.LOW_GOAL_SHOT_CALIBRATION_PAIR;
+        }
+        else if (Robot.LIMELIGHT_SUBSYSTEM.getRawYOffset() > Constants.MAX_TARMAC_SHOT) {
+          shotToSet = Constants.TARMAC_SHOT_CALIBRATION_PAIR;
+        }
+        else if (Robot.LIMELIGHT_SUBSYSTEM.getRawYOffset() > Constants.MAX_AUTO_RADIUS_SHOT) {
+          shotToSet = Constants.AUTO_RADIUS_SHOT_CALIBRATION_PAIR;
+        }
+        else if (Robot.LIMELIGHT_SUBSYSTEM.getRawYOffset() > Constants.MAX_LAUNCHPAD_SHOT) {
+          shotToSet = Constants.LAUNCHPAD_SHOT_CALIBRATION_PAIR;
+        }
+
+        // If the feeder has a ball of the wrong color, we use a low goal profile for ejection.
+        if (Robot.FEEDER_SUBSYSTEM.feederHasWrongColorCargo()) {
+            shotToSet = Constants.LOW_GOAL_SHOT_CALIBRATION_PAIR;
+        }
+
+        // ONLY set the profile if it's not already set, to avoid excess CAN traffic.
+        if (shotToSet._name.equals(Robot.SHOOTER_SUBSYSTEM.getShot()._name) == false) {
+            Robot.SHOOTER_SUBSYSTEM.setShot(shotToSet);
+        }
+    }
+      
+    public void disableAutoShotSelect() {
+        _autoShotSelect = false;
+    }
+
+    public void enableAutoShotSelect() {
+        _autoShotSelect = true;
+    }
+
+    public boolean getAutoShotSelect() {
+        return _autoShotSelect;
     }
 }

@@ -137,6 +137,9 @@ public class Gamepad {
 		case CLIMBER_RETRACT_SLOWLY:
 			buttonNumber = 5;
 			break;
+		case TURRET_HOME:
+			buttonNumber = 3;
+			break;
 		default:
 			throw new IllegalArgumentException("Invalid Button Code");
 		}

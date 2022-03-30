@@ -6,20 +6,19 @@ package frc.robot.commands.commandgroups;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.feeder.FeederShootOneBallCommand;
-import frc.robot.commands.shooter.ShooterLowGoalCommand;
-import frc.robot.commands.shooter.ShooterStartInstantCommand;
-import frc.robot.commands.shooter.ShooterStopCommand;
 import frc.robot.commands.turret.TurretMissCommand;
 
 public class JunkShotCommandGroup extends SequentialCommandGroup {
 
   public JunkShotCommandGroup() {
     addCommands(
-    new ShooterLowGoalCommand(), // Set the fail shot profile
-    new TurretMissCommand().withTimeout(1), // Set the miss shot angle
-    new ShooterStartInstantCommand(), // Rev
-    new FeederShootOneBallCommand(), // Shoot 1
-    new ShooterStopCommand()/*, // End
+    //new ShooterLowGoalCommand(), // Set the fail shot profile
+
+    // NEED TO RE-ADD THIS LINE BUT IT IS DANGEROUS FOR TURRET TESTING
+    // new TurretMissCommand().withTimeout(1), // Set the miss shot angle
+    // new ShooterStartInstantCommand(), // Rev
+    new FeederShootOneBallCommand()/*, // Shoot 1
+    new ShooterStopCommand(), // End
     new TurretAimAtTargetCommand() // End
     COMMENTING TURRET AIM COMMAND OUT AS IT WILL NEVER FINISH - WE PROBABLY JUST WANT TO RESUME DEFAULT COMMAND HERE
     This should be checked/confirmed.

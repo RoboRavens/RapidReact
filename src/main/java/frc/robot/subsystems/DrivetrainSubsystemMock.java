@@ -30,6 +30,11 @@ public class DrivetrainSubsystemMock extends DrivetrainSubsystemBase {
     public void stopCutPower() {}
 
     @Override
+    public boolean powerIsCut() {
+        return false;
+    }
+
+    @Override
     public TrajectoryConfig GetTrajectoryConfig() {
         return new TrajectoryConfig(0,0);
     }
@@ -46,6 +51,16 @@ public class DrivetrainSubsystemMock extends DrivetrainSubsystemBase {
 
     @Override
     public Command CreateFollowTrajectoryCommandSwerveOptimized(Trajectory trajectory) {
+        return new InstantCommand();
+    }
+
+    @Override
+    public Command getMarkPositionCommand() {
+        return new InstantCommand();
+    }
+
+    @Override
+    public Command getReturnToMarkedPositionCommand() {
         return new InstantCommand();
     }
 }

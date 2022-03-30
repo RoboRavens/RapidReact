@@ -1,49 +1,32 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotMap;
 
 public class ClimberSubsystem extends SubsystemBase {
-
-    private TalonFX _climberMotor;
+  private WPI_TalonFX _climberMotor;
+	private DoubleSolenoid _climberBrake;
 
 	private double _extendedTarget = Constants.CLIMBER_EXTEND_ENCODER_TARGET;
 	private double _retractedTarget = 0;
-
-	boolean _override = false;
-
-	// Set excessively generously for testing
-	//private int encoderAccuracyRange = 15000;
-
-	// A more reasonable value
 	private double _encoderAccuracyRange = Constants.CLIMBER_ENCODER_ACCURACY_RANGE;
-
-	// private int defaultEncoderAccuracyRange = encoderAccuracyRange;
-
-	// private Solenoid _climberBrakeRight;
-	private Solenoid _climberBrakeLeftExtend;
-	private Solenoid _climberBrakeLeftRetract;
-
+	private boolean _override = false;
 	private boolean _isClimbing;
 
     public ClimberSubsystem() {
-		_climberMotor = new TalonFX(RobotMap.LEFT_CLIMBER_MOTOR);
+		_climberMotor = new WPI_TalonFX(RobotMap.LEFT_CLIMBER_MOTOR);
 		_climberMotor.configFactoryDefault();
-		_climberMotor.setNeutralMode(NeutralMode.Brake);		
+		_climberMotor.setNeutralMode(NeutralMode.Brake);
 		_climberMotor.setSelectedSensorPosition(0);
 
-		// _climberMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder)
-
-    	_climberBrakeLeftExtend = new Solenoid(PneumaticsModuleType.CTREPCM, RobotMap.CLIMBER_EXTENSION_SOLENOID);
-		_climberBrakeLeftRetract = new Solenoid(PneumaticsModuleType.CTREPCM, RobotMap.CLIMBER_RETRACTION_SOLENOID);
+    _climberBrake = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, RobotMap.CLIMBER_EXTENSION_SOLENOID, RobotMap.CLIMBER_RETRACTION_SOLENOID);
 	}
 
 	public void turnOverrideOn() {
@@ -55,15 +38,13 @@ public class ClimberSubsystem extends SubsystemBase {
 	}
 
 	public void brakeClimber() {
-		_climberBrakeLeftExtend.set(true);
-		_climberBrakeLeftRetract.set(false);
+		_climberBrake.set(Value.kForward);
 
 		_isClimbing = false;
 	}
 
 	private void releaseClimberBrake() {
-		_climberBrakeLeftExtend.set(false);
-		_climberBrakeLeftRetract.set(true);
+		_climberBrake.set(Value.kReverse);
 		
 		_isClimbing = true;
 	}
@@ -77,21 +58,15 @@ public class ClimberSubsystem extends SubsystemBase {
 	}
 
 	public void extend() {
-		this.extend(Constants.CLIMBER_EXTEND_POWER_MAGNITUDE);
+		this.extend(Constants.CLIMBER_EXTEND_SLOW_POWER_MAGNITUDE);
 	}
 
-	private void extend(double power) {
+	public void extend(double power) {
 		if (isAtEncoderExtensionLimit() == false || _override == true) {
 			this.releaseClimberBrake();
-			_climberMotor.set(ControlMode.PercentOutput, power);
+			// _climberMotor.set(ControlMode.PercentOutput, power);
+			setVoltage(power);
 		}
-		
-		/*
-		if (Robot.OPERATION_PANEL.getButtonValue(ButtonCode.CLIMB_ENABLE_1)
-				&& Robot.OPERATION_PANEL.getButtonValue(ButtonCode.CLIMB_ENABLE_2)) {
-			this.set(Calibrations.CLIMBER_EXTEND_POWER_MAGNITUDE);
-		}
-		*/
 	}
 
 	public void retractSlowly() {
@@ -102,19 +77,21 @@ public class ClimberSubsystem extends SubsystemBase {
 		this.retract(Constants.CLIMBER_RETRACT_POWER_MAGNITUDE);
 	}
 
-	private void retract(double power) {
+	public void retract(double power) {
 		if (isAtEncoderRetractionLimit() == false || _override == true) {
 			this.releaseClimberBrake();
-			_climberMotor.set(ControlMode.PercentOutput, power);
+			// _climberMotor.set(ControlMode.PercentOutput, power);
+			setVoltage(power);
 		}
-		
-		
-		/*
-		if (Robot.OPERATION_PANEL.getButtonValue(ButtonCode.CLIMB_ENABLE_1)
-				&& Robot.OPERATION_PANEL.getButtonValue(ButtonCode.CLIMB_ENABLE_2)) {
-			this.set(Calibrations.CLIMBER_RETRACT_POWER_MAGNITUDE);
-		}
-		*/
+	}
+
+	// The better way to do this would be to update the constant values on
+  // the methods that call this, but until we know it works I don't want
+  // to change all the code to do that so we'll just do the conversion here.
+	public void setVoltage(double percentOutput) {
+		double voltage = percentOutput * 12.0;
+
+		_climberMotor.setVoltage(voltage);
 	}
 
 	public boolean isAtEncoderExtensionLimit() {
@@ -147,18 +124,31 @@ public class ClimberSubsystem extends SubsystemBase {
 	}
 
 	public void stop() {
-		_climberMotor.set(ControlMode.PercentOutput, 0);
+		// _climberMotor.set(ControlMode.PercentOutput, 0);
+		setVoltage(0);
 	}
 
 	public void holdPosition() {
-		// The brake line should likely be uncommented but it's left commented for now
-		// in case there's an error elsewhere in the code that would
-		// result in a double-setting of the brake during operation.
-		// brakeClimber();
-		_climberMotor.set(ControlMode.PercentOutput, Constants.CLIMBER_HOLD_POSITION_POWER_MAGNITUDE);
+		brakeClimber();
+		// _climberMotor.set(ControlMode.PercentOutput, Constants.CLIMBER_HOLD_POSITION_POWER_MAGNITUDE);
+		setVoltage(Constants.CLIMBER_HOLD_POSITION_POWER_MAGNITUDE);
 	}
 
 	public void defaultCommand() {
 		this.holdPosition();
+	}
+
+	public boolean climberIsExtended() {
+		boolean climberIsExtended = false;
+
+		if (_climberMotor.getSelectedSensorPosition() >= Constants.CLIMBER_IS_EXTENDED_ENCODER_THRESHOLD) {
+			climberIsExtended = true;
+		}
+		
+		return climberIsExtended;
+	}
+
+	public double getEncoderPosition() {
+		return _climberMotor.getSelectedSensorPosition();
 	}
 }

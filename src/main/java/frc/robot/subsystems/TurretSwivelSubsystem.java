@@ -4,12 +4,13 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -19,18 +20,19 @@ import frc.util.TurretCalibration;
 
 public class TurretSwivelSubsystem extends SubsystemBase {
 
-    private TalonSRX _turretMotor;
+    private WPI_TalonSRX _turretMotor;
     private TurretCalibration _shot;
 
     public TurretSwivelSubsystem() {
-        _turretMotor = new TalonSRX(RobotMap.TURRET_MOTOR);
+        _turretMotor = new WPI_TalonSRX(RobotMap.TURRET_MOTOR);
 
-        _turretMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+//        _turretMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+
+        ErrorCode sensorError = _turretMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
 
         _turretMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
         _turretMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
-
-        setShot(Constants.TURRET_DEFAULT_PID);
+        setPidProfile(Constants.TURRET_DEFAULT_PID);
 
         setEncoder(0);
     }
@@ -41,6 +43,9 @@ public class TurretSwivelSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Turret RAW Encoder", _turretMotor.getSelectedSensorPosition());
         SmartDashboard.putNumber("Turret Target", _shot.target);
         SmartDashboard.putBoolean("Turret Target Sighted", Robot.LIMELIGHT_SUBSYSTEM.hasTargetSighted());
+
+
+        SmartDashboard.putNumber("RAW TURRET SENSOR", _turretMotor.getSelectedSensorPosition());
     }
 
     @Override
@@ -49,7 +54,7 @@ public class TurretSwivelSubsystem extends SubsystemBase {
     }
 
     public void defaultCommand() {
-        
+                
     }
 
     public double getAngle() {
@@ -70,7 +75,9 @@ public class TurretSwivelSubsystem extends SubsystemBase {
         }
         angle = Math.max(angle, -1 * Constants.TURRET_RANGE); //Limit to turret range pos/neg
         angle = Math.min(angle, Constants.TURRET_RANGE);
-        _turretMotor.set(ControlMode.Position, angle * Constants.ENCODER_TO_TURRET_RATIO); //Mult by ratio
+        if (Constants.TURRET_ENABLED) {
+            _turretMotor.set(ControlMode.Position, angle * Constants.ENCODER_TO_TURRET_RATIO); //Mult by ratio
+        }
         _shot.target = angle;
     }
 
@@ -78,7 +85,7 @@ public class TurretSwivelSubsystem extends SubsystemBase {
      * Sets the subsystem's _shot value, along with all PID configs for the turret motor
      * @param shot - The TurretCalibration value to set _shot to
      */
-    public void setShot(TurretCalibration shot) {
+    public void setPidProfile(TurretCalibration shot) {
         _turretMotor.config_kF(Constants.TURRET_IDX, shot.kF, Constants.TURRET_TIMEOUT_MS);
         _turretMotor.config_kP(Constants.TURRET_IDX, shot.kP, Constants.TURRET_TIMEOUT_MS);
         _turretMotor.config_kI(Constants.TURRET_IDX, shot.kI, Constants.TURRET_TIMEOUT_MS);
@@ -87,7 +94,7 @@ public class TurretSwivelSubsystem extends SubsystemBase {
         _shot = shot;
     }
 
-    public TurretCalibration getShot() {
+    public TurretCalibration getPidProfile() {
         return _shot;
     }
 
