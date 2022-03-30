@@ -183,8 +183,6 @@ public class ShooterSubsystem extends SubsystemBase {
     public void stopMotor() {
         _backspinMotor.set(ControlMode.Current, 0);
         _topspinMotor.set(ControlMode.Current, 0);
-
-        //setShot(Constants.DISABLED_SHOT_CALIBRATION_PAIR); add this if you're ready to test it too!!
         _isShooting = false;
 
         //setShot(Constants.DISABLED_SHOT_CALIBRATION_PAIR); add this if you're ready to test it too!!
