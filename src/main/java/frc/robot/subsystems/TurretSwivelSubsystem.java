@@ -23,8 +23,8 @@ public class TurretSwivelSubsystem extends SubsystemBase {
     private WPI_TalonSRX _turretMotor;
     private TurretCalibration _shot;
     private BufferedDigitalInput zeroLimit;
-    private BufferedDigitalInput clockwiseLimit;
-    private BufferedDigitalInput counterClockwiseLimit;
+    private BufferedDigitalInput clockwiseLimit; // NEGATIVE ANGLE
+    private BufferedDigitalInput counterClockwiseLimit; // POSITIVE ANGLE
 
     public TurretSwivelSubsystem() {
         _turretMotor = new WPI_TalonSRX(RobotMap.TURRET_MOTOR);
@@ -90,15 +90,40 @@ public class TurretSwivelSubsystem extends SubsystemBase {
         if (Math.abs(angle) > 360 - Constants.TURRET_RANGE) { //If angle is overshooting bounds farther than the deadzone...
             angle += (Math.abs(angle) / angle) * -360; //Flips angle; adds 360 with an inverted sign to whatever angle is (if angle is +, add - and vice versa)
         }
+
         if (Math.abs(angle) - 180 > 0) {
             angle += (Math.abs(angle) / angle) * -360;
         }
+
+        if (checkLimits(angle)) {
+            return; // End if trying to continue past limit switch
+        }
+
         angle = Math.max(angle, -1 * Constants.TURRET_RANGE); //Limit to turret range pos/neg
         angle = Math.min(angle, Constants.TURRET_RANGE);
         if (Constants.TURRET_ENABLED) {
             _turretMotor.set(ControlMode.Position, angle * Constants.ENCODER_TO_TURRET_RATIO); //Mult by ratio
         }
         _shot.target = angle;
+    }
+
+    /**
+     * Returns true if the input breaches the limit switch
+     * @param targetAngle Target angle to check
+     * @return If target continues outside of limits
+     */
+    private boolean checkLimits(double targetAngle) {
+        if(clockwiseLimit.get()) {
+            if(targetAngle - getAngle() < 0) { // If change in angle is negative,
+                return true;
+            }
+        } else if(counterClockwiseLimit.get()) {
+            if(targetAngle - getAngle() > 0) { // If change in angle is positive,
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
