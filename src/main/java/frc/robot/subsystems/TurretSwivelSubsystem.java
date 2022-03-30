@@ -85,6 +85,7 @@ public class TurretSwivelSubsystem extends SubsystemBase {
      * Aims to the input angle. Will stop at edges of deadzone and flip if target is past deadzone.
      * @param angle - the angle in degrees.
      * @apiNote Can handle -870 to 870.
+     * @apiNote Must be called in a command's execute() method - the limit check must be called in repetition.
      */
     public void goToAngle(double angle) {
         if (Math.abs(angle) > 360 - Constants.TURRET_RANGE) { //If angle is overshooting bounds farther than the deadzone...
