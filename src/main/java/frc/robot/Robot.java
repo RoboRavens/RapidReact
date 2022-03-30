@@ -121,6 +121,7 @@ public class Robot extends TimedRobot {
 
   public static final RavenPiColorSensor COLOR_SENSOR = new RavenPiColorSensor();
   public static Alliance ALLIANCE_COLOR;
+  public static boolean autonomousTriggerOverride = true;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -223,6 +224,8 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    autonomousTriggerOverride = true;
+
     // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     m_autonomousCommand = this.getAuto().getAutoCommand();
     
@@ -238,6 +241,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    autonomousTriggerOverride = false;
+
     SHOOTER_SUBSYSTEM.resetShotCount();
     COLOR_SENSOR.setColorSensorFeatureEnabled(true);
 
@@ -316,6 +321,10 @@ public class Robot extends TimedRobot {
       .whenInactive(new InstantCommand(CLIMBER_SUBSYSTEM::turnOverrideOff));
 
     Trigger shootGarbarge = new Trigger(() -> {
+      if (Robot.autonomousTriggerOverride == true) {
+          return false;
+      }
+      
       return FEEDER_SUBSYSTEM.feederHasWrongColorCargo();
     });
 
