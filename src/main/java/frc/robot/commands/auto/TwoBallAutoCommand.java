@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Robot;
 import frc.robot.commands.conveyance.ConveyanceCollectCommand;
 import frc.robot.commands.conveyance.ConveyanceEjectCommand;
+import frc.robot.commands.feeder.FeederUnloadCommand;
 import frc.robot.commands.shooter.ShooterLowGoalCommand;
 import frc.robot.commands.shooter.ShooterStartInstantCommand;
 import frc.robot.commands.shooter.ShooterStopCommand;
@@ -81,7 +82,7 @@ public class TwoBallAutoCommand {
         return new ShooterTarmacCommand()
             .andThen(new ShooterStartInstantCommand())
             .andThen(runConveyanceAndDriveToFirstBall)
-            .andThen(shootBallsOneAndTwo)
+            .andThen(new FeederUnloadCommand().withTimeout(2))
             .andThen(new ShooterStopCommand());
     }
 }
