@@ -151,6 +151,7 @@ public class FeederSubsystem extends SubsystemBase {
     return feederHasProperColorCargo;
   }
 
+  // ALWAYS FALSE FOR LAKEVIEW
   public boolean feederHasWrongColorCargo() {
     boolean feederHasWrongColorCargo = false;
     
@@ -160,6 +161,7 @@ public class FeederSubsystem extends SubsystemBase {
       }
     }
 
-    return feederHasWrongColorCargo;
+    return false;
+    // return feederHasWrongColorCargo;
   }
 }
