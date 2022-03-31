@@ -56,7 +56,6 @@ public class TurretSwivelSubsystem extends SubsystemBase {
 
 
         SmartDashboard.putNumber("RAW TURRET SENSOR", _turretMotor.getSelectedSensorPosition());
-    
         SmartDashboard.putBoolean("Counterclock limit", _counterClockwiseLimit.get());
         SmartDashboard.putBoolean("Zero limit", _zeroLimit.get());
         SmartDashboard.putBoolean("Clockwise limit", _clockwiseLimit.get());

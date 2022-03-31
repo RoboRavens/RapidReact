@@ -299,6 +299,7 @@ public class ShooterSubsystem extends SubsystemBase {
         }
 
         // If the feeder has a ball of the wrong color, we use a low goal profile for ejection.
+        // Always return false for Lakeview
         if (Robot.FEEDER_SUBSYSTEM.feederHasWrongColorCargo()) {
             shotToSet = Constants.LOW_GOAL_SHOT_CALIBRATION_PAIR;
         }

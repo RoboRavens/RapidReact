@@ -117,6 +117,8 @@ public class ConveyanceSubsystem extends SubsystemBase {
       }
     }
 
-    return conveyanceHasWrongColorCargo;
+    // Always return false for Lakeview
+    return false;
+    // return conveyanceHasWrongColorCargo;
   }
 } 
