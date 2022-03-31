@@ -22,16 +22,15 @@ public class TurretSwivelSubsystem extends SubsystemBase {
 
     private WPI_TalonSRX _turretMotor;
     private TurretCalibration _shot;
-    private BufferedDigitalInput zeroLimit;
-    private BufferedDigitalInput clockwiseLimit;
-    private BufferedDigitalInput counterClockwiseLimit;
+    private BufferedDigitalInput _zeroLimit;
+    private BufferedDigitalInput _clockwiseLimit; // NEGATIVE ANGLE
+    private BufferedDigitalInput _counterClockwiseLimit; // POSITIVE ANGLE
 
     public TurretSwivelSubsystem() {
         _turretMotor = new WPI_TalonSRX(RobotMap.TURRET_MOTOR);
-
-        zeroLimit = new BufferedDigitalInput(RobotMap.TURRET_ZERO_LIMIT_DIO_CHANNEL);
-        clockwiseLimit = new BufferedDigitalInput(RobotMap.TURRET_CLOCKWISE_LIMIT_DIO_CHANNEL);
-        counterClockwiseLimit = new BufferedDigitalInput(RobotMap.TURRET_COUNTER_CLOCKWISE_LIMIT_DIO_CHANNEL);
+        _zeroLimit = new BufferedDigitalInput(RobotMap.TURRET_ZERO_LIMIT_DIO_CHANNEL);
+        _clockwiseLimit = new BufferedDigitalInput(RobotMap.TURRET_CLOCKWISE_LIMIT_DIO_CHANNEL);
+        _counterClockwiseLimit = new BufferedDigitalInput(RobotMap.TURRET_COUNTER_CLOCKWISE_LIMIT_DIO_CHANNEL);
         
 //        _turretMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
 
@@ -46,9 +45,9 @@ public class TurretSwivelSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        zeroLimit.maintainState();
-        counterClockwiseLimit.maintainState();
-        clockwiseLimit.maintainState();
+        _zeroLimit.maintainState();
+        _counterClockwiseLimit.maintainState();
+        _clockwiseLimit.maintainState();
 
         SmartDashboard.putNumber("Turret Angle", getAngle());
         SmartDashboard.putNumber("Turret RAW Encoder", _turretMotor.getSelectedSensorPosition());
@@ -58,12 +57,11 @@ public class TurretSwivelSubsystem extends SubsystemBase {
 
         SmartDashboard.putNumber("RAW TURRET SENSOR", _turretMotor.getSelectedSensorPosition());
     
-        SmartDashboard.putBoolean("Counterclock limit", counterClockwiseLimit.get());
-        SmartDashboard.putBoolean("Zero limit", zeroLimit.get());
-        SmartDashboard.putBoolean("Clockwise limit", clockwiseLimit.get());
+        SmartDashboard.putBoolean("Counterclock limit", _counterClockwiseLimit.get());
+        SmartDashboard.putBoolean("Zero limit", _zeroLimit.get());
+        SmartDashboard.putBoolean("Clockwise limit", _clockwiseLimit.get());
 
-
-        if (zeroLimit.get() == true) {
+        if (_zeroLimit.get() == true) {
             this.setEncoder(0);
         }
     }
@@ -85,20 +83,48 @@ public class TurretSwivelSubsystem extends SubsystemBase {
      * Aims to the input angle. Will stop at edges of deadzone and flip if target is past deadzone.
      * @param angle - the angle in degrees.
      * @apiNote Can handle -870 to 870.
+     * @apiNote Must be called in a command's execute() method - the limit check must be called in repetition.
      */
     public void goToAngle(double angle) {
         if (Math.abs(angle) > 360 - Constants.TURRET_RANGE) { //If angle is overshooting bounds farther than the deadzone...
             angle += (Math.abs(angle) / angle) * -360; //Flips angle; adds 360 with an inverted sign to whatever angle is (if angle is +, add - and vice versa)
         }
+
         if (Math.abs(angle) - 180 > 0) {
             angle += (Math.abs(angle) / angle) * -360;
         }
+
+        if (checkLimits(angle)) {
+            angle = getAngle(); // Set angle to current angle if turret is about to go past limit switch
+        }
+
         angle = Math.max(angle, -1 * Constants.TURRET_RANGE); //Limit to turret range pos/neg
         angle = Math.min(angle, Constants.TURRET_RANGE);
         if (Constants.TURRET_ENABLED) {
             _turretMotor.set(ControlMode.Position, angle * Constants.ENCODER_TO_TURRET_RATIO); //Mult by ratio
         }
         _shot.target = angle;
+    }
+
+    /**
+     * Returns true if the input breaches the limit switch
+     * @param targetAngle Target angle to check
+     * @return Returns true if a limit is pressed and the targetAngle direction from the current angle is towards/past the limit switch.
+     */
+    private boolean checkLimits(double targetAngle) {
+        if(_clockwiseLimit.get()) {
+            if(targetAngle - this.getAngle() < 0) { // If change in angle is clockwise:
+                return true;
+            }
+        }
+
+        if(_counterClockwiseLimit.get()) {
+            if(targetAngle - this.getAngle() > 0) { // If change in angle is counterclockwise:
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
