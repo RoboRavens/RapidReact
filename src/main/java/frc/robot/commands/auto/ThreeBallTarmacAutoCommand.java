@@ -5,6 +5,8 @@ import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Robot;
 import frc.robot.commands.conveyance.ConveyanceCollectCommand;
+import frc.robot.commands.conveyance.ConveyanceIndexCommand;
+import frc.robot.commands.feeder.FeederIndexCommand;
 import frc.robot.commands.feeder.FeederUnloadCommand;
 import frc.robot.commands.shooter.ShooterLaunchpadCommand;
 import frc.robot.commands.shooter.ShooterStartInstantCommand;
@@ -18,13 +20,13 @@ public class ThreeBallTarmacAutoCommand {
 
         var driveThenWait = Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommand(trajectory1).andThen(new WaitCommand(.5));
         var pickUpThirdBallWhileMovingToLaunchpadShot = new ParallelDeadlineGroup(driveThenWait, new ConveyanceCollectCommand());
-        var shootThirdBall = FeederShootBallsAutoCommand.get(1);
-
+        var unload = new FeederUnloadCommand().withTimeout(2);
+        
         var cmd = twoBallWall
             .andThen(new ShooterLaunchpadCommand())
             .andThen(new ShooterStartInstantCommand())
-            .andThen(pickUpThirdBallWhileMovingToLaunchpadShot)
-            .andThen(new FeederUnloadCommand().withTimeout(2))
+            .andThen(new ParallelDeadlineGroup(pickUpThirdBallWhileMovingToLaunchpadShot, new FeederIndexCommand()))
+            .andThen(new ParallelDeadlineGroup(unload, new ConveyanceIndexCommand()))
             .andThen(new ShooterStopCommand());
 
         return new AutoMode("Three Ball Tarmac", cmd);

@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Robot;
 import frc.robot.commands.conveyance.ConveyanceCollectCommand;
 import frc.robot.commands.conveyance.ConveyanceEjectCommand;
+import frc.robot.commands.conveyance.ConveyanceIndexCommand;
 import frc.robot.commands.feeder.FeederUnloadCommand;
 import frc.robot.commands.shooter.ShooterLowGoalCommand;
 import frc.robot.commands.shooter.ShooterStartInstantCommand;
@@ -76,13 +77,12 @@ public class TwoBallAutoCommand {
             .andThen(new WaitCommand(1));
 
         var runConveyanceAndDriveToFirstBall = new ParallelDeadlineGroup(driveCommand, new ConveyanceCollectCommand());
-
-        var shootBallsOneAndTwo = FeederShootBallsAutoCommand.get(2);
+        var unload = new FeederUnloadCommand().withTimeout(2);
 
         return new ShooterTarmacCommand()
             .andThen(new ShooterStartInstantCommand())
             .andThen(runConveyanceAndDriveToFirstBall)
-            .andThen(new FeederUnloadCommand().withTimeout(2))
+            .andThen(new ParallelDeadlineGroup(unload, new ConveyanceIndexCommand()))
             .andThen(new ShooterStopCommand());
     }
 }
