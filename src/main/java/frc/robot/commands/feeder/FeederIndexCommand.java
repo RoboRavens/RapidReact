@@ -26,6 +26,8 @@ public class FeederIndexCommand extends CommandBase {
             Robot.FEEDER_SUBSYSTEM.setConveyanceNormalSpeedForward();
             conveyanceOneHadBall = true;
         }
+        else {
+        }
     }
 
     // Called once the command ends or is interrupted.

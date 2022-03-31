@@ -285,7 +285,8 @@ public class ShooterSubsystem extends SubsystemBase {
         ShooterCalibrationPair shotToSet = Constants.TARMAC_SHOT_CALIBRATION_PAIR;
     
         if (Robot.LIMELIGHT_SUBSYSTEM.getRawYOffset() > Constants.MAX_LOW_GOAL_SHOT) { // Close to hub
-          shotToSet = Constants.LOW_GOAL_SHOT_CALIBRATION_PAIR;
+        //  shotToSet = Constants.LOW_GOAL_SHOT_CALIBRATION_PAIR;
+            shotToSet = Constants.TARMAC_SHOT_CALIBRATION_PAIR;
         }
         else if (Robot.LIMELIGHT_SUBSYSTEM.getRawYOffset() > Constants.MAX_TARMAC_SHOT) {
           shotToSet = Constants.TARMAC_SHOT_CALIBRATION_PAIR;

@@ -43,6 +43,6 @@ public class FeederUnloadCommand extends CommandBase {
     @Override
     public boolean isFinished() {
         // As soon as the feeder no longer has a ball, consider the shot as having been taken.
-        return _timer.get() > 0.25;
+        return _timer.get() > 1.0;
     }
 }

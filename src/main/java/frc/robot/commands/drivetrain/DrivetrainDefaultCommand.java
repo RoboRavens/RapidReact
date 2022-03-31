@@ -13,8 +13,8 @@ import frc.util.Deadband;
 public class DrivetrainDefaultCommand extends CommandBase {
     private boolean _followLimelight = false;
     private boolean _autoSteer = true;
-    private PIDController _followLimelightPID = new PIDController(.3, 0, 0);
-    private PIDController _autoSteerPID = new PIDController(.04, 0, 0);
+    private PIDController _followLimelightPID = new PIDController(.13, 0, 0);
+    private PIDController _autoSteerPID = new PIDController(.035, 0, 0);
 
     public DrivetrainDefaultCommand() {
         addRequirements(Robot.DRIVE_TRAIN_SUBSYSTEM);

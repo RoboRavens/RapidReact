@@ -5,6 +5,18 @@ import frc.controls.AxisCode;
 import frc.controls.ButtonCode;
 
 public class CommonTriggers {
+    public static Trigger AutosteerTrigger  = new Trigger(() -> {
+        if (Robot.autonomousTriggerOverride == true) {
+            return false;
+        }
+
+        if (Robot.GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER)) {
+            return true;
+        }
+
+        return Robot.CONVEYANCE_SUBSYSTEM.getConveyanceStagingBeamBreakHasBall() && Robot.FEEDER_SUBSYSTEM.getFeederHasBall();
+    });
+
     public static Trigger RobotHas2Balls = new Trigger(() -> {
         if (Robot.autonomousTriggerOverride == true) {
             return false;
@@ -53,7 +65,8 @@ public class CommonTriggers {
         boolean robotHasTwoAmmo = false;
         boolean userOverride = false;
 
-        if (Robot.getRobotProperColorInventory() >= 2) {
+        // if (Robot.getRobotProperColorInventory() >= 2) {
+        if (Robot.getRobotCargoInventory() >= 2) {
             robotHasTwoAmmo = true;
         }
 
@@ -87,12 +100,13 @@ public class CommonTriggers {
             inAutoshootingMode = true;
         }
 
-        if (Robot.getRobotProperColorInventory() >= 2 || Robot.GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER)) {
+        // if (Robot.getRobotProperColorInventory() >= 2 || Robot.GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER)) {
+        if (Robot.getRobotCargoInventory() >= 2 || Robot.GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER)) {
             hasAmmo = true;
         }
 
-        return limelightIsAligned && rpmIsCorrect && inAutoshootingMode && hasAmmo;
-        // return false;
+        // return limelightIsAligned && rpmIsCorrect && inAutoshootingMode && hasAmmo;
+        return false;
     });
 
     /*

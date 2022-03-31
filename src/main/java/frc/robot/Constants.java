@@ -69,7 +69,7 @@ public final class Constants {
 
 
 // NEW CONSTANTS WITH kF based on feeder running and AFF added
-
+/*
     // All shots need to be tuned.
     public static final int LOW_GOAL_BACKSPIN_RPM = 1000;
     public static final double LOW_GOAL_BACKSPIN_KF = 0.0452 * 1.1;  
@@ -136,10 +136,10 @@ public final class Constants {
     public static final double LAUNCHPAD_BACKSPIN_KD = 0.0;
 
     public static final double LAUNCHPAD_BACKSPIN_VOLTAGE_CONTROL_SETPOINT = LAUNCHPAD_BACKSPIN_KF * 12;
+*/
 
 
-
-/* OLD CONSTANTS - AS OF Tuesday, March 29, 4 PM
+// OLD CONSTANTS - AS OF Tuesday, March 29, 4 PM
 
     // All shots need to be tuned.
     public static final int LOW_GOAL_BACKSPIN_RPM = 1000;
@@ -207,7 +207,7 @@ public final class Constants {
     public static final double LAUNCHPAD_BACKSPIN_KD = 4.0;
 
     public static final double LAUNCHPAD_BACKSPIN_VOLTAGE_CONTROL_SETPOINT = LAUNCHPAD_BACKSPIN_KF * 12;
-*/
+
 
 
 
@@ -265,7 +265,7 @@ Y-offset constants in order:
     public static boolean TURRET_ENABLED = true; // when false the turret will not move and the drivetrain will align shooter with the goal
     public static final int TURRET_IDX = 0;
     public static final int TURRET_TIMEOUT_MS = 100;
-    public static final int TURRET_RANGE = 150; //Degrees of motion in either way (180 means full movement both ways)
+    public static final int TURRET_RANGE = 137; //Degrees of motion in either way (180 means full movement both ways)
     public static final double TURRET_GEARBOX_RATIO = 1.0 / 10.0; // Motor is one-tenth speed due to gearbox
     public static final double TURRET_LARGE_GEAR_RATIO = 10.0 / 128.0;
     public static final double ENCODER_TO_TURRET_RATIO = (TALONFX_TICKS_PER_REVOLUTION / 360.0) / TURRET_GEARBOX_RATIO * 3; // Multiply encoder by this to find angle of turret
