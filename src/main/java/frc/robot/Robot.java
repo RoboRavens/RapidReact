@@ -42,6 +42,7 @@ import frc.robot.commands.feeder.FeederIndexCommand;
 import frc.robot.commands.feeder.FeederSafetyReverseCommand;
 import frc.robot.commands.feeder.FeederShootCommand;
 import frc.robot.commands.feeder.FeederShootOneBallCommand;
+import frc.robot.commands.feeder.FeederUnloadCommand;
 import frc.robot.commands.feeder.FeederWheelReverseCommand;
 import frc.robot.commands.shooter.ShooterAutoRadiusCommand;
 import frc.robot.commands.shooter.ShooterLaunchpadCommand;
@@ -118,6 +119,7 @@ public class Robot extends TimedRobot {
   public static final AutoMode TWO_BALL_HANGAR_AUTO = TwoBallAutoCommand.getHangarAutoMode();
   public static final ConveyanceFeederEjectAllCommand CONVEYANCE_FEEDER_EJECT_ALL_COMMAND = new ConveyanceFeederEjectAllCommand();
   public static final TurretHomeCommand TURRET_HOME_COMMAND = new TurretHomeCommand();
+  public static final FeederUnloadCommand FEEDER_UNLOAD_COMMAND = new FeederUnloadCommand();
 
   public static final RavenPiColorSensor COLOR_SENSOR = new RavenPiColorSensor();
   public static Alliance ALLIANCE_COLOR;
@@ -135,8 +137,10 @@ public class Robot extends TimedRobot {
     //SHOOTER_SUBSYSTEM.setDefaultCommand(new RunCommand(() -> SHOOTER_SUBSYSTEM.defaultCommand(), SHOOTER_SUBSYSTEM));
 
     SHOOTER_SUBSYSTEM.setDefaultCommand(new RunCommand(() -> SHOOTER_SUBSYSTEM.defaultCommand(), SHOOTER_SUBSYSTEM));
-    TURRET_SWIVEL_SUBSYSTEM.setDefaultCommand(Constants.TURRET_ENABLED ? TURRET_AIM_AT_TARGET : new InstantCommand());
-    FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
+//    TURRET_SWIVEL_SUBSYSTEM.setDefaultCommand(Constants.TURRET_ENABLED ? TURRET_AIM_AT_TARGET : new InstantCommand());
+TURRET_SWIVEL_SUBSYSTEM.setDefaultCommand(TURRET_AIM_AT_TARGET);
+    
+FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     CLIMBER_SUBSYSTEM.setDefaultCommand(climberDefaultBrake);
     CONVEYANCE_SUBSYSTEM.setDefaultCommand(CONVEYANCE_INDEX_COMMAND);
     configureButtonBindings();
@@ -182,6 +186,8 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     SmartDashboard.putData("Autonomous", _autoChooser);
     SmartDashboard.putString("Chosen Auto", this.getAuto().getAutoName());
+
+    triggerDashboardPeriodic();
     
 
     // SmartDashboard.putBoolean("Target Sighted", Robot.LIMELIGHT_SUBSYSTEM.hasTargetSighted());
@@ -251,6 +257,26 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+  }
+
+  public void triggerDashboardPeriodic() {
+    SmartDashboard.putBoolean("RobotHas2Balls", CommonTriggers.RobotHas2Balls.getAsBoolean());
+    SmartDashboard.putBoolean("RunShooterTrigger", CommonTriggers.RunShooterTrigger.getAsBoolean());
+    SmartDashboard.putBoolean("RunAutoshootingTrigger", CommonTriggers.RunAutoshootingTrigger.getAsBoolean());
+    SmartDashboard.putBoolean("ReleaseBallTrigger", CommonTriggers.ReleaseBallTrigger.getAsBoolean());
+    SmartDashboard.putNumber("Cargo Inventory", getRobotCargoInventory());
+    SmartDashboard.putString("Auto shot select", Robot.SHOOTER_SUBSYSTEM.getShot()._name);
+
+  
+    boolean hasAmmo = (Robot.getRobotProperColorInventory() >= 2 || Robot.GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER)); 
+
+
+    SmartDashboard.putBoolean("LIMELIGHT ALIGNED", Robot.LIMELIGHT_SUBSYSTEM.isAligned());
+    SmartDashboard.putBoolean("RPM GOOD", Robot.SHOOTER_SUBSYSTEM.motorsAreRecovered());
+    SmartDashboard.putBoolean("AUTOSHOOT ACTIVE", Robot.SHOOTER_SUBSYSTEM.getAutoShotSelect());
+    SmartDashboard.putBoolean("HAS AMMO", hasAmmo);
+
+    
   }
 
   /** This function is called periodically during operator control. */
@@ -348,7 +374,8 @@ public class Robot extends TimedRobot {
       .whenInactive(SHOOTER_STOP_COMMAND);
 
     CommonTriggers.ReleaseBallTrigger
-      .whileActiveContinuous(FeederShoot);
+      .whenActive(FEEDER_UNLOAD_COMMAND);
+//      .whileActiveContinuous(FeederShoot);
 
       /*
       Old shooter activation code, pending deletion if new triggers work
@@ -393,7 +420,7 @@ public class Robot extends TimedRobot {
       .whileHeld(() -> Robot.SHOOTER_SUBSYSTEM.disableAutoShotSelect())
       .whenInactive(() -> Robot.SHOOTER_SUBSYSTEM.enableAutoShotSelect());
       
-    GAMEPAD.getButton(ButtonCode.LEFTBUMPER).or(CommonTriggers.RobotHas2Balls)
+    GAMEPAD.getButton(ButtonCode.LEFTBUMPER).or(CommonTriggers.AutosteerTrigger)
       .whileActiveContinuous(DRIVE_TRAIN_DEFAULT_COMMAND::disableAutoSteer)
       .whenInactive(DRIVE_TRAIN_DEFAULT_COMMAND::enableAutoSteer);
 
@@ -449,7 +476,7 @@ public class Robot extends TimedRobot {
       inventory++;
     }
     
-    if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceStagingBeamBreakHasBall() || Robot.CONVEYANCE_SUBSYSTEM.getIsIndexingFromStagingToFeeder()) {
+    if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceStagingBeamBreakHasBall() || (Robot.CONVEYANCE_SUBSYSTEM.getIsIndexingFromStagingToFeeder() && Robot.CONVEYANCE_SUBSYSTEM.getConveyanceEntryBeamBreakHasBall() == false)) {
       inventory++;
     }
 

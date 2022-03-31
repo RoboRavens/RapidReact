@@ -28,7 +28,6 @@ public class TurretSwivelSubsystem extends SubsystemBase {
 
     public TurretSwivelSubsystem() {
         _turretMotor = new WPI_TalonSRX(RobotMap.TURRET_MOTOR);
-
         _zeroLimit = new BufferedDigitalInput(RobotMap.TURRET_ZERO_LIMIT_DIO_CHANNEL);
         _clockwiseLimit = new BufferedDigitalInput(RobotMap.TURRET_CLOCKWISE_LIMIT_DIO_CHANNEL);
         _counterClockwiseLimit = new BufferedDigitalInput(RobotMap.TURRET_COUNTER_CLOCKWISE_LIMIT_DIO_CHANNEL);
@@ -61,7 +60,6 @@ public class TurretSwivelSubsystem extends SubsystemBase {
         SmartDashboard.putBoolean("Counterclock limit", _counterClockwiseLimit.get());
         SmartDashboard.putBoolean("Zero limit", _zeroLimit.get());
         SmartDashboard.putBoolean("Clockwise limit", _clockwiseLimit.get());
-
 
         if (_zeroLimit.get() == true) {
             this.setEncoder(0);

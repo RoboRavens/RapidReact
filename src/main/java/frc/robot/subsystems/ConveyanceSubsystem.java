@@ -47,7 +47,7 @@ public class ConveyanceSubsystem extends SubsystemBase {
   }
 
   public void setConveyanceIndexCargoForward() {
-    _isIndexingFromStagingToFeeder = true;
+    // _isIndexingFromStagingToFeeder = true;
     this.runConveyanceAtVoltage(Constants.CONVEYANCE_ONE_INDEX_SPEED);
     _conveyanceState = ConveyanceState.INDEXING;
   }
