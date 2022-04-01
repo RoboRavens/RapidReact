@@ -19,7 +19,7 @@ public class FiveBallHps {
         var trajectory1 = PathWeaver.getTrajectoryFromFile("output/5 ball HPS-1.wpilib.json");
         var trajectory2 = PathWeaver.getTrajectoryFromFile("output/5 ball HPS-2.wpilib.json");
 
-        var moveToPlayerStationThenWait = Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommandSwerveOptimized(trajectory1).andThen(new WaitCommand(1));
+        var moveToPlayerStationThenWait = Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommandSwerveOptimized(trajectory1).andThen(new WaitCommand(.5));
         var moveToTarmacShot = Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommandSwerveOptimized(trajectory2);
         var moveToPlayerStationAndBackToTarmacWhileCollecting = moveToPlayerStationThenWait.andThen(moveToTarmacShot);
         var pickUpBallsFromPlayerStation = new ParallelDeadlineGroup(moveToPlayerStationAndBackToTarmacWhileCollecting, new ConveyanceCollectCommand());
