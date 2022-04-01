@@ -22,7 +22,8 @@ public class TwoBallAutoCommand {
         return new AutoMode("Two Ball Hangar", TwoBallAutoCommand.get("hangar"));
     }
 
-    public static AutoMode getHangarPlusOtherBallsHangarAutoMode(Command twoBallHangar) {
+    public static AutoMode getHangarPlusOtherBallsHangarAutoMode() {
+        var twoBallHangar = TwoBallAutoCommand.getHangarAutoMode().getAutoCommand();
         var trajectory2 = PathWeaver.getTrajectoryFromFile("output/2 ball hangar-2.wpilib.json");
         var trajectory3 = PathWeaver.getTrajectoryFromFile("output/2 ball hangar-3.wpilib.json");
 
@@ -30,19 +31,21 @@ public class TwoBallAutoCommand {
         var driveToTopOpposingTeamBall = Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommandSwerveOptimized(trajectory3).andThen(new WaitCommand(1));
         var drive = new SequentialCommandGroup(driveToMiddleOpposingTeamBall, driveToTopOpposingTeamBall);
         var driveToOpposingTeamBallsWhilCollecting = new ParallelDeadlineGroup(drive, new ConveyanceCollectCommand());
+        var unload = new FeederUnloadCommand().withTimeout(3);
 
         var cmd = twoBallHangar
             .andThen(new ShooterLowGoalCommand())
             .andThen(new ShooterStartInstantCommand())
             .andThen(new InstantCommand(() -> Robot.COLOR_SENSOR.setColorSensorFeatureEnabled(false))) // re-enabled in teleopInit
             .andThen(driveToOpposingTeamBallsWhilCollecting)
-            .andThen(FeederShootBallsAutoCommand.get(2))
+            .andThen(new ParallelDeadlineGroup(unload, new ConveyanceIndexCommand()))
             .andThen(new ShooterStopCommand());
 
         return new AutoMode("Two Ball Hangar Plus Hangar", cmd);
     }
 
-    public static AutoMode getHangarPlusOtherBallsByGoalAutoMode(Command twoBallHangar) {
+    public static AutoMode getHangarPlusOtherBallsByGoalAutoMode() {
+        var twoBallHangar = TwoBallAutoCommand.getHangarAutoMode().getAutoCommand();
         var trajectory2 = PathWeaver.getTrajectoryFromFile("output/2 ball hangar-2.wpilib.json");
         var trajectory3 = PathWeaver.getTrajectoryFromFile("output/2 ball hangar-3.wpilib.json");
         var trajectory4 = PathWeaver.getTrajectoryFromFile("output/2 ball hangar-4.wpilib.json");

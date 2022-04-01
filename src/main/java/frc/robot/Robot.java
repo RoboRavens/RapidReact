@@ -148,10 +148,10 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     CameraServer.startAutomaticCapture();
 
     AutoMode twoBallWall = TwoBallAutoCommand.getWallAutoMode();
-    AutoMode threeBallTarmac = ThreeBallTarmacAutoCommand.getAutoMode(twoBallWall.getAutoCommand());
-    AutoMode fiveBallHps = FiveBallHps.getAutoMode(threeBallTarmac.getAutoCommand());
-    AutoMode twoBallHangarPlusHangar = TwoBallAutoCommand.getHangarPlusOtherBallsHangarAutoMode(TWO_BALL_HANGAR_AUTO.getAutoCommand());
-    AutoMode twoBallHangarPlusGoal = TwoBallAutoCommand.getHangarPlusOtherBallsByGoalAutoMode(TWO_BALL_HANGAR_AUTO.getAutoCommand());
+    AutoMode threeBallTarmac = ThreeBallTarmacAutoCommand.getAutoMode();
+    AutoMode fiveBallHps = FiveBallHps.getAutoMode();
+    AutoMode twoBallHangarPlusHangar = TwoBallAutoCommand.getHangarPlusOtherBallsHangarAutoMode();
+    AutoMode twoBallHangarPlusGoal = TwoBallAutoCommand.getHangarPlusOtherBallsByGoalAutoMode();
 
     TWO_BALL_HANGAR_AUTO.setDefaultOption(_autoChooser);
     twoBallWall.addOption(_autoChooser);
@@ -194,7 +194,7 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     // SmartDashboard.putNumber("Limelight Offset", Robot.LIMELIGHT_SUBSYSTEM.getRawTargetOffsetAngle());
     // SmartDashboard.putNumber("Limelight Area", Robot.LIMELIGHT_SUBSYSTEM.getArea());
     
-    if (Constants.TURRET_ENABLED || GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER)) {
+    if (Constants.TURRET_ENABLED || GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER) || CommonTriggers.RunAutoshootingTrigger.getAsBoolean()) {
       Robot.LIMELIGHT_SUBSYSTEM.turnLEDOn();
     } else {
       Robot.LIMELIGHT_SUBSYSTEM.turnLEDOff();
@@ -266,7 +266,7 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     SmartDashboard.putBoolean("ReleaseBallTrigger", CommonTriggers.ReleaseBallTrigger.getAsBoolean());
     SmartDashboard.putNumber("Cargo Inventory", getRobotCargoInventory());
     SmartDashboard.putString("Auto shot select", Robot.SHOOTER_SUBSYSTEM.getShot()._name);
-
+    SmartDashboard.putBoolean("autonomousTriggerOverride", autonomousTriggerOverride);
   
     boolean hasAmmo = (Robot.getRobotProperColorInventory() >= 2 || Robot.GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER)); 
 
@@ -420,7 +420,7 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
       .whileHeld(() -> Robot.SHOOTER_SUBSYSTEM.disableAutoShotSelect())
       .whenInactive(() -> Robot.SHOOTER_SUBSYSTEM.enableAutoShotSelect());
       
-    GAMEPAD.getButton(ButtonCode.LEFTBUMPER).or(CommonTriggers.AutosteerTrigger)
+    CommonTriggers.AutosteerDisabledTrigger
       .whileActiveContinuous(DRIVE_TRAIN_DEFAULT_COMMAND::disableAutoSteer)
       .whenInactive(DRIVE_TRAIN_DEFAULT_COMMAND::enableAutoSteer);
 

@@ -11,7 +11,7 @@ package frc.util;
 public class ShooterCalibration {
 
     public String name;
-    public int targetRPM;
+    public double targetRPM;
     public double kF;
     public double kP;
     public double kI;
@@ -30,7 +30,7 @@ public class ShooterCalibration {
      * @param kI I value for PID control
      * @param kD D value for PID control
      */
-    public ShooterCalibration(String name, int RPM, double kF, double kP, double kI, double kD, double voltage) {
+    public ShooterCalibration(String name, double RPM, double kF, double kP, double kI, double kD, double voltage) {
         this.name = name;
         this.targetRPM = RPM;
         this.kF = kF;
