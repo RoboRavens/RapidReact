@@ -19,9 +19,12 @@ public class FiveBallHps {
         var threeBallTarmac = ThreeBallTarmacAutoCommand.getAutoMode().getAutoCommand();
         var trajectory1 = PathWeaver.getTrajectoryFromFile("output/5 ball HPS-1.wpilib.json");
         var trajectory2 = PathWeaver.getTrajectoryFromFile("output/5 ball HPS-2.wpilib.json");
+        var trajectory3 = PathWeaver.getTrajectoryFromFile("output/5 ball HPS-3.wpilib.json");
 
-        var moveToPlayerStationThenWait = Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommandSwerveOptimized(trajectory1).andThen(new WaitCommand(.5));
-        var moveToTarmacShot = Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommandSwerveOptimized(trajectory2);
+        var moveToPlayerStationThenWait = Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommandSwerveOptimized(trajectory1)
+            .andThen(Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommandSwerveOptimized(trajectory2))
+            .andThen(new WaitCommand(.25));
+        var moveToTarmacShot = Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommandSwerveOptimized(trajectory3);
         var moveToPlayerStationAndBackToTarmacWhileCollecting = moveToPlayerStationThenWait.andThen(moveToTarmacShot);
         var pickUpBallsFromPlayerStation = new ParallelDeadlineGroup(moveToPlayerStationAndBackToTarmacWhileCollecting, new ConveyanceCollectCommand());
 

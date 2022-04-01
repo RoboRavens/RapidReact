@@ -391,8 +391,8 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     CommonTriggers.RobotHas2Balls.negate().and(GAMEPAD.getButton(ButtonCode.RIGHTBUMPER))
       .whileActiveOnce(CONVEYANCE_COLLECT_COMMAND);
 
-    // CommonTriggers.RobotHas2Balls
-    //   .whenActive(CONTROLLER_RUMBLE_COMMAND);
+    CommonTriggers.RobotHas2Balls
+      .whenActive(CONTROLLER_RUMBLE_COMMAND);
 
     OP_PAD2.getButton(ButtonCode.CLIMBER_EXTEND).whileHeld(CLIMBER_EXTEND_COMMAND);
     OP_PAD2.getButton(ButtonCode.CLIMBER_RETRACT).whileHeld(CLIMBER_RETRACT_COMMAND);
