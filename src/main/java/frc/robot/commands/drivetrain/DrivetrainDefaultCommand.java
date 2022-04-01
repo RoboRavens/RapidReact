@@ -3,6 +3,7 @@ package frc.robot.commands.drivetrain;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.controls.AxisCode;
 import frc.robot.Constants;
@@ -31,7 +32,7 @@ public class DrivetrainDefaultCommand extends CommandBase {
         x = Deadband.adjustValueToZero(x, Constants.JOYSTICK_DEADBAND);
         y = Deadband.adjustValueToZero(y, Constants.JOYSTICK_DEADBAND);
 
-        double rightJoystickInput = Robot.GAMEPAD.getAxis(AxisCode.RIGHTSTICKX) * -1 * Constants.DRIVE_MAX_TURN_RADIANS_PER_SECOND; // Robot.JOYSTICK.getRawAxis(2);
+        double rightJoystickInput = Robot.GAMEPAD.getAxis(AxisCode.RIGHTSTICKX) * -1; // Robot.JOYSTICK.getRawAxis(2);
         rightJoystickInput = Deadband.adjustValueToZero(rightJoystickInput, Constants.JOYSTICK_DEADBAND);
 
         // SmartDashboard.putNumber("Drive Time", Timer.getFPGATimestamp());
@@ -41,6 +42,7 @@ public class DrivetrainDefaultCommand extends CommandBase {
         x = x * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND;
         y = y * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND;
 
+        SmartDashboard.putBoolean("autosteer", _autoSteer);
         var limelightAngle = this.getLimelightTargetOffset();
         if (limelightAngle != null) {
             r = _followLimelightPID.calculate(limelightAngle.doubleValue());

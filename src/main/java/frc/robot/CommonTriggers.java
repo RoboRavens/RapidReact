@@ -1,13 +1,18 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.controls.AxisCode;
 import frc.controls.ButtonCode;
 
 public class CommonTriggers {
-    public static Trigger AutosteerTrigger  = new Trigger(() -> {
+    public static Trigger AutosteerDisabledTrigger  = new Trigger(() -> {
         if (Robot.autonomousTriggerOverride == true) {
             return false;
+        }
+
+        if (Robot.GAMEPAD.getButtonValue(ButtonCode.LEFTBUMPER)) {
+            return true;
         }
 
         if (Robot.GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER)) {
@@ -70,6 +75,7 @@ public class CommonTriggers {
             robotHasTwoAmmo = true;
         }
 
+        SmartDashboard.putBoolean("LEFTTRIGGERPRESSED", Robot.GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER));
         if (Robot.GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER)) {
             userOverride = true;
         }
