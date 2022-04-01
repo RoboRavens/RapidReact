@@ -154,6 +154,7 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     AutoMode fiveBallHps = FiveBallHps.getAutoMode();
     AutoMode twoBallHangarPlusHangar = TwoBallAutoCommand.getHangarPlusOtherBallsHangarAutoMode();
     AutoMode twoBallHangarPlusGoal = TwoBallAutoCommand.getHangarPlusOtherBallsByGoalAutoMode();
+    // AutoMode threeBallFast = ThreeBallTarmacAutoCommand.getFastAutoMode();
 
     TWO_BALL_HANGAR_AUTO.setDefaultOption(_autoChooser);
     twoBallWall.addOption(_autoChooser);
@@ -161,6 +162,7 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     fiveBallHps.addOption(_autoChooser);
     twoBallHangarPlusHangar.addOption(_autoChooser);
     twoBallHangarPlusGoal.addOption(_autoChooser);
+    // threeBallFast.addOption(_autoChooser);
   }
 
   private AutoMode getAuto() {

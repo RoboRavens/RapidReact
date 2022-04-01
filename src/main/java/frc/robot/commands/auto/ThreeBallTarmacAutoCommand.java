@@ -33,4 +33,28 @@ public class ThreeBallTarmacAutoCommand {
 
         return new AutoMode("Three Ball Tarmac", cmd);
     }
+
+    public static AutoMode getFastAutoMode() {
+        var trajectory1 = PathWeaver.getTrajectoryFromFile("output/2 ball tarmac fast-1.wpilib.json");
+        var trajectory2 = PathWeaver.getTrajectoryFromFile("output/3 ball tarmac fast-2.wpilib.json");
+
+        var driveCommand = Robot.DRIVE_TRAIN_SUBSYSTEM.CreateSetOdometryToTrajectoryInitialPositionCommand(trajectory1)
+            .andThen(Robot.DRIVE_TRAIN_SUBSYSTEM.getMarkPositionCommand())
+            .andThen(Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommandSwerveOptimized(trajectory1))
+            .andThen(new WaitCommand(.5))
+            .andThen(Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommandSwerveOptimized(trajectory2))
+            .andThen(new WaitCommand(.5));
+
+        var collectThreeBalls = new ParallelDeadlineGroup(driveCommand, new ConveyanceCollectCommand());
+        var unload = new FeederUnloadCommand().withTimeout(3);
+
+        var cmd = new ShooterAutoRadiusCommand()
+            .andThen(new ShooterStartInstantCommand())
+            .andThen(collectThreeBalls)
+            .andThen(new FeederUnloadCommand().withTimeout(1.5))
+            .andThen(new ParallelDeadlineGroup(unload, new ConveyanceIndexCommand()))
+            .andThen(new ShooterStopCommand());
+
+        return new AutoMode("Three Ball Fast", cmd);
+    }
 }
