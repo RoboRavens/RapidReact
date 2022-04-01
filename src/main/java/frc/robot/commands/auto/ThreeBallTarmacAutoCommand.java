@@ -8,6 +8,7 @@ import frc.robot.commands.conveyance.ConveyanceIndexCommand;
 import frc.robot.commands.feeder.FeederIndexCommand;
 import frc.robot.commands.feeder.FeederUnloadCommand;
 import frc.robot.commands.shooter.ShooterAutoRadiusCommand;
+import frc.robot.commands.shooter.ShooterLaunchpadCommand;
 import frc.robot.commands.shooter.ShooterStartInstantCommand;
 import frc.robot.commands.shooter.ShooterStopCommand;
 import frc.util.AutoMode;
@@ -25,7 +26,7 @@ public class ThreeBallTarmacAutoCommand {
         var unload = new FeederUnloadCommand().withTimeout(2);
         
         var cmd = twoBallWall
-            .andThen(new ShooterAutoRadiusCommand())
+            .andThen(new ShooterLaunchpadCommand())
             .andThen(new ShooterStartInstantCommand())
             .andThen(new ParallelDeadlineGroup(pickUpThirdBallWhileMovingToLaunchpadShot, new FeederIndexCommand()))
             .andThen(new ParallelDeadlineGroup(unload, new ConveyanceIndexCommand()))
