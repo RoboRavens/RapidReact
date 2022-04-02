@@ -77,7 +77,7 @@ public class TwoBallAutoCommand {
         var driveCommand = Robot.DRIVE_TRAIN_SUBSYSTEM.CreateSetOdometryToTrajectoryInitialPositionCommand(trajectory1)
             .andThen(Robot.DRIVE_TRAIN_SUBSYSTEM.getMarkPositionCommand())
             .andThen(Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommandSwerveOptimized(trajectory1))
-            .andThen(new WaitCommand(.5));
+            .andThen(new WaitCommand(.4));
 
         var runConveyanceAndDriveToFirstBall = new ParallelDeadlineGroup(driveCommand, new ConveyanceCollectCommand());
         var unload = new FeederUnloadCommand().withTimeout(2);
