@@ -8,6 +8,7 @@ import frc.robot.commands.conveyance.ConveyanceIndexCommand;
 import frc.robot.commands.feeder.FeederIndexCommand;
 import frc.robot.commands.feeder.FeederUnloadCommand;
 import frc.robot.commands.shooter.ShooterAutoRadiusCommand;
+import frc.robot.commands.shooter.ShooterLaunchpadCommand;
 import frc.robot.commands.shooter.ShooterStartInstantCommand;
 import frc.robot.commands.shooter.ShooterStopCommand;
 import frc.util.AutoMode;
@@ -18,14 +19,17 @@ public class FiveBallHps {
         var threeBallTarmac = ThreeBallTarmacAutoCommand.getAutoMode().getAutoCommand();
         var trajectory1 = PathWeaver.getTrajectoryFromFile("output/5 ball HPS-1.wpilib.json");
         var trajectory2 = PathWeaver.getTrajectoryFromFile("output/5 ball HPS-2.wpilib.json");
+        var trajectory3 = PathWeaver.getTrajectoryFromFile("output/5 ball HPS-3.wpilib.json");
 
-        var moveToPlayerStationThenWait = Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommandSwerveOptimized(trajectory1).andThen(new WaitCommand(1));
-        var moveToTarmacShot = Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommandSwerveOptimized(trajectory2);
+        var moveToPlayerStationThenWait = Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommandSwerveOptimized(trajectory1)
+            .andThen(Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommandSwerveOptimized(trajectory2))
+            .andThen(new WaitCommand(.25));
+        var moveToTarmacShot = Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommandSwerveOptimized(trajectory3);
         var moveToPlayerStationAndBackToTarmacWhileCollecting = moveToPlayerStationThenWait.andThen(moveToTarmacShot);
         var pickUpBallsFromPlayerStation = new ParallelDeadlineGroup(moveToPlayerStationAndBackToTarmacWhileCollecting, new ConveyanceCollectCommand());
 
         var cmd = threeBallTarmac
-            .andThen(new ShooterAutoRadiusCommand())
+            .andThen(new ShooterLaunchpadCommand())
             .andThen(new ShooterStartInstantCommand())
             .andThen(new ParallelDeadlineGroup(pickUpBallsFromPlayerStation, new FeederIndexCommand()))
             .andThen(new ParallelDeadlineGroup(new FeederUnloadCommand(), new ConveyanceIndexCommand()))

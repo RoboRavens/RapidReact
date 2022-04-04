@@ -32,6 +32,7 @@ import frc.robot.commands.climber.ClimberExtendCommand;
 import frc.robot.commands.climber.ClimberRetractCommand;
 import frc.robot.commands.commandgroups.ConveyanceFeederEjectAllCommand;
 import frc.robot.commands.commandgroups.JunkShotCommandGroup;
+import frc.robot.commands.controls.ControllerRumbleCommand;
 import frc.robot.commands.conveyance.ConveyanceCollectCommand;
 import frc.robot.commands.conveyance.ConveyanceEjectCommand;
 import frc.robot.commands.conveyance.ConveyanceIndexCommand;
@@ -120,6 +121,7 @@ public class Robot extends TimedRobot {
   public static final ConveyanceFeederEjectAllCommand CONVEYANCE_FEEDER_EJECT_ALL_COMMAND = new ConveyanceFeederEjectAllCommand();
   public static final TurretHomeCommand TURRET_HOME_COMMAND = new TurretHomeCommand();
   public static final FeederUnloadCommand FEEDER_UNLOAD_COMMAND = new FeederUnloadCommand();
+  public static final ControllerRumbleCommand CONTROLLER_RUMBLE_COMMAND = new ControllerRumbleCommand();
 
   public static final RavenPiColorSensor COLOR_SENSOR = new RavenPiColorSensor();
   public static Alliance ALLIANCE_COLOR;
@@ -152,6 +154,7 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     AutoMode fiveBallHps = FiveBallHps.getAutoMode();
     AutoMode twoBallHangarPlusHangar = TwoBallAutoCommand.getHangarPlusOtherBallsHangarAutoMode();
     AutoMode twoBallHangarPlusGoal = TwoBallAutoCommand.getHangarPlusOtherBallsByGoalAutoMode();
+    // AutoMode threeBallFast = ThreeBallTarmacAutoCommand.getFastAutoMode();
 
     TWO_BALL_HANGAR_AUTO.setDefaultOption(_autoChooser);
     twoBallWall.addOption(_autoChooser);
@@ -159,6 +162,7 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     fiveBallHps.addOption(_autoChooser);
     twoBallHangarPlusHangar.addOption(_autoChooser);
     twoBallHangarPlusGoal.addOption(_autoChooser);
+    // threeBallFast.addOption(_autoChooser);
   }
 
   private AutoMode getAuto() {
@@ -386,6 +390,9 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
 
     CommonTriggers.RobotHas2Balls.negate().and(GAMEPAD.getButton(ButtonCode.RIGHTBUMPER))
       .whileActiveOnce(CONVEYANCE_COLLECT_COMMAND);
+
+    CommonTriggers.RobotHas2Balls
+      .whenActive(CONTROLLER_RUMBLE_COMMAND);
 
     OP_PAD2.getButton(ButtonCode.CLIMBER_EXTEND).whileHeld(CLIMBER_EXTEND_COMMAND);
     OP_PAD2.getButton(ButtonCode.CLIMBER_RETRACT).whileHeld(CLIMBER_RETRACT_COMMAND);
