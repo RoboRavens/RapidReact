@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -65,7 +66,15 @@ public class ClimberSubsystem extends SubsystemBase {
 		if (isAtEncoderExtensionLimit() == false || _override == true) {
 			this.releaseClimberBrake();
 			// _climberMotor.set(ControlMode.PercentOutput, power);
-			setVoltage(power);
+			// setVoltage(power);
+			// Extends the climber at a slow speed if the climber is beginning to extend or reaching the extension limit
+			// And extends the climber at a fast speed if the climber is not close to the beginning or extension limit
+			if (getEncoderPosition() >= Constants.CLIMBER_QUICK_EXTEND_ENCODER_TARGET || getEncoderPosition() <= Constants.CLIMBER_BEGINNING_EXTENSION_ENCODER_TARGET) {
+				_climberMotor.set(ControlMode.PercentOutput, Constants.CLIMBER_EXTEND_SOWLY_POWER_MAGNITUDE);
+			}
+			else if (getEncoderPosition() > Constants.CLIMBER_BEGINNING_EXTENSION_ENCODER_TARGET && getEncoderPosition() < Constants.CLIMBER_QUICK_EXTEND_ENCODER_TARGET) {
+				_climberMotor.set(ControlMode.PercentOutput, Constants.CLIMBER_EXTEND_FAST_POWER_MAGNITUDE);
+			}
 		}
 	}
 
@@ -81,7 +90,14 @@ public class ClimberSubsystem extends SubsystemBase {
 		if (isAtEncoderRetractionLimit() == false || _override == true) {
 			this.releaseClimberBrake();
 			// _climberMotor.set(ControlMode.PercentOutput, power);
-			setVoltage(power);
+			// setVoltage(power);
+			// The climber retracts quickly until it nears the retraction limit, when it slows down
+			if (getEncoderPosition() >= Constants.CLIMBER_QUICK_RETRACT_ENCODER_TARGET) {
+				_climberMotor.set(ControlMode.PercentOutput, Constants.CLIMBER_RETRACT_POWER_MAGNITUDE);
+			}
+			else if (getEncoderPosition() < Constants.CLIMBER_QUICK_RETRACT_ENCODER_TARGET) {
+				_climberMotor.set(ControlMode.PercentOutput, Constants.CLIMBER_RETRACT_SOWLY_POWER_MAGNITUDE);
+			}
 		}
 	}
 
