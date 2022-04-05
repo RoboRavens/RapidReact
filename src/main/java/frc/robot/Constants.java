@@ -427,7 +427,7 @@ Y-offset constants in order:
     public static final double CLIMBER_IS_EXTENDED_ENCODER_THRESHOLD = CLIMBER_EXTEND_ENCODER_TARGET / 5;
     public static final double CLIMBER_BEGINNING_EXTENSION_ENCODER_TARGET = 86000; // Value may not be accurate. Needs to be tested
     public static final double CLIMBER_QUICK_EXTEND_ENCODER_TARGET = 172000; // Value may not be accurate. Needs to be tested
-    public static final double CLIMBER_QUICK_RETRACT_ENCODER_TARGET = 86000;
+    public static final double CLIMBER_QUICK_RETRACT_ENCODER_TARGET = 86000; // Value may not be accurate. Needs to be tested
 
     
     //LimeLight
