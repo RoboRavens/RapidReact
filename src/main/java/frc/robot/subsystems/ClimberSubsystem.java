@@ -55,7 +55,7 @@ public class ClimberSubsystem extends SubsystemBase {
 	}
 
 	public void extendSlowly() {
-		this.extend(Constants.CLIMBER_EXTEND_SOWLY_POWER_MAGNITUDE);
+		this.extend(Constants.CLIMBER_EXTEND_SLOWLY_POWER_MAGNITUDE);
 	}
 
 	public void extend() {
@@ -64,39 +64,54 @@ public class ClimberSubsystem extends SubsystemBase {
 
 	public void extend(double power) {
 		if (isAtEncoderExtensionLimit() == false || _override == true) {
-			this.releaseClimberBrake();
-			// _climberMotor.set(ControlMode.PercentOutput, power);
-			// setVoltage(power);
-			// Extends the climber at a slow speed if the climber is beginning to extend or reaching the extension limit
-			// And extends the climber at a fast speed if the climber is not close to the beginning or extension limit
-			if (getEncoderPosition() >= Constants.CLIMBER_QUICK_EXTEND_ENCODER_TARGET || getEncoderPosition() <= Constants.CLIMBER_BEGINNING_EXTENSION_ENCODER_TARGET) {
-				_climberMotor.set(ControlMode.PercentOutput, Constants.CLIMBER_EXTEND_SOWLY_POWER_MAGNITUDE);
+			// this.releaseClimberBrake();
+
+			// The climber extends quickly until it nears the extention limit, when it slows down
+			if (getEncoderPosition() >= Constants.CLIMBER_QUICK_EXTEND_ZONE_MAXIMUM) {
+				_climberMotor.set(ControlMode.PercentOutput, Constants.CLIMBER_EXTEND_SLOWLY_POWER_MAGNITUDE);
 			}
-			else if (getEncoderPosition() > Constants.CLIMBER_BEGINNING_EXTENSION_ENCODER_TARGET && getEncoderPosition() < Constants.CLIMBER_QUICK_EXTEND_ENCODER_TARGET) {
-				_climberMotor.set(ControlMode.PercentOutput, Constants.CLIMBER_EXTEND_FAST_POWER_MAGNITUDE);
+			else {
+				_climberMotor.set(ControlMode.PercentOutput, Constants.CLIMBER_EXTEND_QUICKLY_POWER_MAGNITUDE);
 			}
+
 		}
 	}
 
 	public void retractSlowly() {
-		this.retract(Constants.CLIMBER_RETRACT_SOWLY_POWER_MAGNITUDE);
+		this.retract(Constants.CLIMBER_RETRACT_SLOWLY_POWER_MAGNITUDE);
 	}
 
 	public void retract() {
-		this.retract(Constants.CLIMBER_RETRACT_POWER_MAGNITUDE);
+		this.retract(Constants.CLIMBER_RETRACT_QUICKLY_POWER_MAGNITUDE);
 	}
 
 	public void retract(double power) {
 		if (isAtEncoderRetractionLimit() == false || _override == true) {
-			this.releaseClimberBrake();
+			// this.releaseClimberBrake();
+
+			boolean retractClimberSlowly = false;
+
+			// Checks to see if the climber is in the position to retract slowly
+			if (getEncoderPosition() >= Constants.CLIMBER_QUICK_RETRACT_ZONE_MAXIMUM) {
+				retractClimberSlowly = true;
+			}
+			else if (getEncoderPosition() <= Constants.CLIMBER_QUICK_RETRACT_ZONE_MINIMUM) {
+				retractClimberSlowly = true;
+			}
+			else {
+				retractClimberSlowly = false;
+			}
+
 			// _climberMotor.set(ControlMode.PercentOutput, power);
 			// setVoltage(power);
-			// The climber retracts quickly until it nears the retraction limit, when it slows down
-			if (getEncoderPosition() >= Constants.CLIMBER_QUICK_RETRACT_ENCODER_TARGET) {
-				_climberMotor.set(ControlMode.PercentOutput, Constants.CLIMBER_RETRACT_POWER_MAGNITUDE);
+
+			// Retracts the climber at a slow speed if the climber is beginning to retract or reaching the extension limit
+			// And retracts the climber at a fast speed if the climber is not close to the beginning or retraction limit
+			if (retractClimberSlowly) {
+				_climberMotor.set(ControlMode.PercentOutput, Constants.CLIMBER_RETRACT_SLOWLY_POWER_MAGNITUDE);
 			}
-			else if (getEncoderPosition() < Constants.CLIMBER_QUICK_RETRACT_ENCODER_TARGET) {
-				_climberMotor.set(ControlMode.PercentOutput, Constants.CLIMBER_RETRACT_SOWLY_POWER_MAGNITUDE);
+			else {
+				_climberMotor.set(ControlMode.PercentOutput, Constants.CLIMBER_RETRACT_QUICKLY_POWER_MAGNITUDE);
 			}
 		}
 	}
