@@ -47,7 +47,7 @@ public class ConveyanceSubsystem extends SubsystemBase {
   }
 
   public void setConveyanceIndexCargoForward() {
-    _isIndexingFromStagingToFeeder = true;
+    // _isIndexingFromStagingToFeeder = true;
     this.runConveyanceAtVoltage(Constants.CONVEYANCE_ONE_INDEX_SPEED);
     _conveyanceState = ConveyanceState.INDEXING;
   }
@@ -112,11 +112,13 @@ public class ConveyanceSubsystem extends SubsystemBase {
     boolean conveyanceHasWrongColorCargo = false;
     
     if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceStagingBeamBreakHasBall()) {
-      if (Robot.COLOR_SENSOR.getSensorIsCorrectBallColorLenient(RavenPiPosition.CONVEYANCE)) {
+      if (Robot.COLOR_SENSOR.getSensorIsCorrectBallColorStrict(RavenPiPosition.CONVEYANCE)) {
         conveyanceHasWrongColorCargo = true;
       }
     }
 
-    return conveyanceHasWrongColorCargo;
+    // Always return false for Lakeview
+    return false;
+    // return conveyanceHasWrongColorCargo;
   }
 } 

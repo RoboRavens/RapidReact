@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -24,22 +23,27 @@ import frc.controls.Gamepad;
 import frc.ravenhardware.BlinkinCalibrations;
 import frc.ravenhardware.RavenBlinkin;
 import frc.ravenhardware.RavenPiColorSensor;
+import frc.ravenhardware.RavenPiPosition;
 import frc.robot.commands.auto.FiveBallHps;
 import frc.robot.commands.auto.ThreeBallTarmacAutoCommand;
 import frc.robot.commands.auto.TwoBallAutoCommand;
 import frc.robot.commands.climber.ClimberDefaultBrakeCommand;
+import frc.robot.commands.climber.ClimberExtendCommand;
+import frc.robot.commands.climber.ClimberRetractCommand;
+import frc.robot.commands.commandgroups.ConveyanceFeederEjectAllCommand;
 import frc.robot.commands.commandgroups.JunkShotCommandGroup;
+import frc.robot.commands.controls.ControllerRumbleCommand;
 import frc.robot.commands.conveyance.ConveyanceCollectCommand;
 import frc.robot.commands.conveyance.ConveyanceEjectCommand;
 import frc.robot.commands.conveyance.ConveyanceIndexCommand;
 import frc.robot.commands.conveyance.IntakeRetractCommand;
 import frc.robot.commands.drivetrain.DrivetrainDefaultCommand;
 import frc.robot.commands.feeder.FeederCollectCommand;
-import frc.robot.commands.feeder.FeederEjectAllCommand;
 import frc.robot.commands.feeder.FeederIndexCommand;
 import frc.robot.commands.feeder.FeederSafetyReverseCommand;
 import frc.robot.commands.feeder.FeederShootCommand;
 import frc.robot.commands.feeder.FeederShootOneBallCommand;
+import frc.robot.commands.feeder.FeederUnloadCommand;
 import frc.robot.commands.feeder.FeederWheelReverseCommand;
 import frc.robot.commands.shooter.ShooterAutoRadiusCommand;
 import frc.robot.commands.shooter.ShooterLaunchpadCommand;
@@ -49,6 +53,7 @@ import frc.robot.commands.shooter.ShooterStopCommand;
 import frc.robot.commands.shooter.ShooterTarmacCommand;
 import frc.robot.commands.turret.TurretAimAtTargetCommand;
 import frc.robot.commands.turret.TurretFlipCommand;
+import frc.robot.commands.turret.TurretHomeCommand;
 import frc.robot.commands.turret.TurretSeekCommand;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CompressorSubsystem;
@@ -101,6 +106,8 @@ public class Robot extends TimedRobot {
   public static final ShooterAutoRadiusCommand SHOOTER_AUTO_RADIUS_PID_COMMAND = new ShooterAutoRadiusCommand();
   public static final FeederCollectCommand FeederCollect = new FeederCollectCommand();
   public static final ClimberDefaultBrakeCommand climberDefaultBrake = new ClimberDefaultBrakeCommand();
+  public static final ClimberExtendCommand CLIMBER_EXTEND_COMMAND = new ClimberExtendCommand();
+  public static final ClimberRetractCommand CLIMBER_RETRACT_COMMAND = new ClimberRetractCommand();
   public static final CompressorSubsystem COMPRESSOR_SUBSYSTEM = new CompressorSubsystem();
   public static final LimelightSubsystem LIMELIGHT_SUBSYSTEM = new LimelightSubsystem();
   public static final TurretAimAtTargetCommand TURRET_AIM_AT_TARGET = new TurretAimAtTargetCommand();
@@ -110,10 +117,15 @@ public class Robot extends TimedRobot {
   public static final FeederShootOneBallCommand FEEDER_SHOOT_ONE_BALL = new FeederShootOneBallCommand();
   public static final RavenBlinkin RAVEN_BLINKIN_3 = new RavenBlinkin(3);
   public static final RavenBlinkin RAVEN_BLINKIN_4 = new RavenBlinkin(4);
-  public static final AutoMode TWO_BALL_HANGAR_AUTO = new AutoMode("Two Ball Hangar", TwoBallAutoCommand.getHangarCommand());
-  
+  public static final AutoMode TWO_BALL_HANGAR_AUTO = TwoBallAutoCommand.getHangarAutoMode();
+  public static final ConveyanceFeederEjectAllCommand CONVEYANCE_FEEDER_EJECT_ALL_COMMAND = new ConveyanceFeederEjectAllCommand();
+  public static final TurretHomeCommand TURRET_HOME_COMMAND = new TurretHomeCommand();
+  public static final FeederUnloadCommand FEEDER_UNLOAD_COMMAND = new FeederUnloadCommand();
+  public static final ControllerRumbleCommand CONTROLLER_RUMBLE_COMMAND = new ControllerRumbleCommand();
+
   public static final RavenPiColorSensor COLOR_SENSOR = new RavenPiColorSensor();
   public static Alliance ALLIANCE_COLOR;
+  public static boolean autonomousTriggerOverride = true;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -127,18 +139,30 @@ public class Robot extends TimedRobot {
     //SHOOTER_SUBSYSTEM.setDefaultCommand(new RunCommand(() -> SHOOTER_SUBSYSTEM.defaultCommand(), SHOOTER_SUBSYSTEM));
 
     SHOOTER_SUBSYSTEM.setDefaultCommand(new RunCommand(() -> SHOOTER_SUBSYSTEM.defaultCommand(), SHOOTER_SUBSYSTEM));
-    TURRET_SWIVEL_SUBSYSTEM.setDefaultCommand(TURRET_AIM_AT_TARGET);
-    FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
+//    TURRET_SWIVEL_SUBSYSTEM.setDefaultCommand(Constants.TURRET_ENABLED ? TURRET_AIM_AT_TARGET : new InstantCommand());
+TURRET_SWIVEL_SUBSYSTEM.setDefaultCommand(TURRET_AIM_AT_TARGET);
+    
+FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     CLIMBER_SUBSYSTEM.setDefaultCommand(climberDefaultBrake);
     CONVEYANCE_SUBSYSTEM.setDefaultCommand(CONVEYANCE_INDEX_COMMAND);
     configureButtonBindings();
     LIMELIGHT_SUBSYSTEM.turnLEDOff();
     CameraServer.startAutomaticCapture();
 
-    _autoChooser.setDefaultOption(TWO_BALL_HANGAR_AUTO.getAutoName(), TWO_BALL_HANGAR_AUTO);
-    _autoChooser.addOption("Two Ball Wall", new AutoMode("Two Ball Wall", TwoBallAutoCommand.getWallCommand()));
-    _autoChooser.addOption("Three Ball Tarmac", new AutoMode("Three Ball Tarmac", ThreeBallTarmacAutoCommand.get()));
-    _autoChooser.addOption("Five Ball HPS", new AutoMode("Five Ball HPS", FiveBallHps.get()));
+    AutoMode twoBallWall = TwoBallAutoCommand.getWallAutoMode();
+    AutoMode threeBallTarmac = ThreeBallTarmacAutoCommand.getAutoMode();
+    AutoMode fiveBallHps = FiveBallHps.getAutoMode();
+    AutoMode twoBallHangarPlusHangar = TwoBallAutoCommand.getHangarPlusOtherBallsHangarAutoMode();
+    AutoMode twoBallHangarPlusGoal = TwoBallAutoCommand.getHangarPlusOtherBallsByGoalAutoMode();
+    // AutoMode threeBallFast = ThreeBallTarmacAutoCommand.getFastAutoMode();
+
+    TWO_BALL_HANGAR_AUTO.setDefaultOption(_autoChooser);
+    twoBallWall.addOption(_autoChooser);
+    threeBallTarmac.addOption(_autoChooser);
+    fiveBallHps.addOption(_autoChooser);
+    twoBallHangarPlusHangar.addOption(_autoChooser);
+    twoBallHangarPlusGoal.addOption(_autoChooser);
+    // threeBallFast.addOption(_autoChooser);
   }
 
   private AutoMode getAuto() {
@@ -166,18 +190,40 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     SmartDashboard.putData("Autonomous", _autoChooser);
     SmartDashboard.putString("Chosen Auto", this.getAuto().getAutoName());
+
+    triggerDashboardPeriodic();
     
 
-    SmartDashboard.putBoolean("Target Sighted", Robot.LIMELIGHT_SUBSYSTEM.hasTargetSighted());
-    SmartDashboard.putNumber("Limelight Offset", Robot.LIMELIGHT_SUBSYSTEM.getRawTargetOffsetAngle());
-    SmartDashboard.putNumber("Limelight Area", Robot.LIMELIGHT_SUBSYSTEM.getArea());
-    if (GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER)) {
+    // SmartDashboard.putBoolean("Target Sighted", Robot.LIMELIGHT_SUBSYSTEM.hasTargetSighted());
+    // SmartDashboard.putNumber("Limelight Offset", Robot.LIMELIGHT_SUBSYSTEM.getRawTargetOffsetAngle());
+    // SmartDashboard.putNumber("Limelight Area", Robot.LIMELIGHT_SUBSYSTEM.getArea());
+    
+    if (Constants.TURRET_ENABLED || GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER) || CommonTriggers.RunAutoshootingTrigger.getAsBoolean()) {
       Robot.LIMELIGHT_SUBSYSTEM.turnLEDOn();
     } else {
       Robot.LIMELIGHT_SUBSYSTEM.turnLEDOff();
-    }  
+    }
 
+    SmartDashboard.putString("CONVEYANCE COLOR", Robot.COLOR_SENSOR.getSensorBallColor(RavenPiPosition.CONVEYANCE).toString());
+    SmartDashboard.putString("FEEDER COLOR", Robot.COLOR_SENSOR.getSensorBallColor(RavenPiPosition.FEEDER).toString());
+    // SmartDashboard.putBoolean("FEEDER HAS CORRECT BALL", Robot.COLOR_SENSOR.getSensorIsCorrectBallColorStrict(RavenPiPosition.FEEDER))
+  
+    int sensor0Green = Robot.COLOR_SENSOR.getRawColor0().green;
+    int sensor0Red = Robot.COLOR_SENSOR.getRawColor0().red;
+    int sensor0Blue = Robot.COLOR_SENSOR.getRawColor0().blue;
+
+    int sensor1Green = Robot.COLOR_SENSOR.getRawColor1().green;
+    int sensor1Red = Robot.COLOR_SENSOR.getRawColor1().red;
+    int sensor1Blue = Robot.COLOR_SENSOR.getRawColor1().blue;
+
+    SmartDashboard.putNumber("CSENSOR 0 red", sensor0Red);
+    SmartDashboard.putNumber("CSENSOR 0 Green", sensor0Green);
+    SmartDashboard.putNumber("CSENSOR 0 blue", sensor0Blue);
     
+    SmartDashboard.putNumber("CSENSOR 1 red", sensor1Red);
+    SmartDashboard.putNumber("CSENSOR 1 Green", sensor1Green);
+    SmartDashboard.putNumber("CSENSOR 1 blue", sensor1Blue);
+
   }
    /** This function is called once each time the robot enters Disabled mode. */
   @Override
@@ -189,6 +235,8 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    autonomousTriggerOverride = true;
+
     // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     m_autonomousCommand = this.getAuto().getAutoCommand();
     
@@ -204,12 +252,35 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    autonomousTriggerOverride = false;
+
     SHOOTER_SUBSYSTEM.resetShotCount();
+    COLOR_SENSOR.setColorSensorFeatureEnabled(true);
 
     // Stop any autonomous command that might still be running.
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+  }
+
+  public void triggerDashboardPeriodic() {
+    SmartDashboard.putBoolean("RobotHas2Balls", CommonTriggers.RobotHas2Balls.getAsBoolean());
+    SmartDashboard.putBoolean("RunShooterTrigger", CommonTriggers.RunShooterTrigger.getAsBoolean());
+    SmartDashboard.putBoolean("RunAutoshootingTrigger", CommonTriggers.RunAutoshootingTrigger.getAsBoolean());
+    SmartDashboard.putBoolean("ReleaseBallTrigger", CommonTriggers.ReleaseBallTrigger.getAsBoolean());
+    SmartDashboard.putNumber("Cargo Inventory", getRobotCargoInventory());
+    SmartDashboard.putString("Auto shot select", Robot.SHOOTER_SUBSYSTEM.getShot()._name);
+    SmartDashboard.putBoolean("autonomousTriggerOverride", autonomousTriggerOverride);
+  
+    boolean hasAmmo = (Robot.getRobotProperColorInventory() >= 2 || Robot.GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER)); 
+
+
+    SmartDashboard.putBoolean("LIMELIGHT ALIGNED", Robot.LIMELIGHT_SUBSYSTEM.isAligned());
+    SmartDashboard.putBoolean("RPM GOOD", Robot.SHOOTER_SUBSYSTEM.motorsAreRecovered());
+    SmartDashboard.putBoolean("AUTOSHOOT ACTIVE", Robot.SHOOTER_SUBSYSTEM.getAutoShotSelect());
+    SmartDashboard.putBoolean("HAS AMMO", hasAmmo);
+
+    
   }
 
   /** This function is called periodically during operator control. */
@@ -277,27 +348,38 @@ public class Robot extends TimedRobot {
     
 
     OP_PAD.getButton(ButtonCode.CLIMBER_OVERRIDE)
-      .whenActive(new InstantCommand(CLIMBER_SUBSYSTEM::turnOverrideOn))
+      .whileHeld(new InstantCommand(CLIMBER_SUBSYSTEM::turnOverrideOn))
       .whenInactive(new InstantCommand(CLIMBER_SUBSYSTEM::turnOverrideOff));
 
     Trigger shootGarbarge = new Trigger(() -> {
+      if (Robot.autonomousTriggerOverride == true) {
+          return false;
+      }
+      
       return FEEDER_SUBSYSTEM.feederHasWrongColorCargo();
     });
 
-    shootGarbarge.whenActive(new JunkShotCommandGroup(), false);
+    shootGarbarge.whileActiveContinuous(new JunkShotCommandGroup(), false);
 
     new Trigger(() -> GAMEPAD.getAxisIsPressed(AxisCode.RIGHTTRIGGER) || Robot.CLIMBER_SUBSYSTEM.climberIsExtended())
-      .whenActive(DRIVE_TRAIN_SUBSYSTEM::cutPower)
+      .whileActiveContinuous(DRIVE_TRAIN_SUBSYSTEM::cutPower)
       .whenInactive(DRIVE_TRAIN_SUBSYSTEM::stopCutPower);
 
     // new Trigger(() -> GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER)).or(CommonTriggers.RobotHas2Balls)
-    CommonTriggers.RunAutoshootingTrigger
-      .whenActive(() -> DRIVE_TRAIN_DEFAULT_COMMAND.followLimelight())
-      .whenInactive(() -> DRIVE_TRAIN_DEFAULT_COMMAND.stopFollowingLimelight());
+    if (Constants.TURRET_ENABLED == false) {
+      CommonTriggers.RunAutoshootingTrigger
+        .whileActiveContinuous(() -> DRIVE_TRAIN_DEFAULT_COMMAND.followLimelight())
+        .whenInactive(() -> DRIVE_TRAIN_DEFAULT_COMMAND.stopFollowingLimelight());
+    }
 
     CommonTriggers.RunShooterTrigger
-      .whenActive(SHOOTER_START_COMMAND)
+      .whileActiveContinuous(SHOOTER_START_COMMAND)
+      // .whenActive(SHOOTER_START_COMMAND)
       .whenInactive(SHOOTER_STOP_COMMAND);
+
+    CommonTriggers.ReleaseBallTrigger
+      .whenActive(FEEDER_UNLOAD_COMMAND);
+//      .whileActiveContinuous(FeederShoot);
 
       /*
       Old shooter activation code, pending deletion if new triggers work
@@ -309,16 +391,27 @@ public class Robot extends TimedRobot {
     CommonTriggers.RobotHas2Balls.negate().and(GAMEPAD.getButton(ButtonCode.RIGHTBUMPER))
       .whileActiveOnce(CONVEYANCE_COLLECT_COMMAND);
 
+    CommonTriggers.RobotHas2Balls
+      .whenActive(CONTROLLER_RUMBLE_COMMAND);
+
+    OP_PAD2.getButton(ButtonCode.CLIMBER_EXTEND).whileHeld(CLIMBER_EXTEND_COMMAND);
+    OP_PAD2.getButton(ButtonCode.CLIMBER_RETRACT).whileHeld(CLIMBER_RETRACT_COMMAND);
+/*
     OP_PAD2.getButton(ButtonCode.CLIMBER_RETRACT).whileHeld(new StartEndCommand(
       () -> Robot.CLIMBER_SUBSYSTEM.retract(),
       () -> Robot.CLIMBER_SUBSYSTEM.stop(),
       Robot.CLIMBER_SUBSYSTEM
     ));
+
+   
+
     OP_PAD2.getButton(ButtonCode.CLIMBER_EXTEND).whileHeld(new StartEndCommand(
       () -> Robot.CLIMBER_SUBSYSTEM.extend(),
       () -> Robot.CLIMBER_SUBSYSTEM.stop(),
       Robot.CLIMBER_SUBSYSTEM
     ));
+
+    */
     OP_PAD2.getButton(ButtonCode.CLIMBER_RETRACT_SLOWLY).whileHeld(new StartEndCommand(
       () -> Robot.CLIMBER_SUBSYSTEM.retractSlowly(),
       () -> Robot.CLIMBER_SUBSYSTEM.stop(),
@@ -334,18 +427,22 @@ public class Robot extends TimedRobot {
       .whileHeld(() -> Robot.SHOOTER_SUBSYSTEM.disableAutoShotSelect())
       .whenInactive(() -> Robot.SHOOTER_SUBSYSTEM.enableAutoShotSelect());
       
-    GAMEPAD.getButton(ButtonCode.LEFTBUMPER).or(CommonTriggers.RobotHas2Balls)
-      .whenActive(DRIVE_TRAIN_DEFAULT_COMMAND::disableAutoSteer)
+    CommonTriggers.AutosteerDisabledTrigger
+      .whileActiveContinuous(DRIVE_TRAIN_DEFAULT_COMMAND::disableAutoSteer)
       .whenInactive(DRIVE_TRAIN_DEFAULT_COMMAND::enableAutoSteer);
 
     GAMEPAD.getButton(ButtonCode.A).whileHeld(FeederShoot);
     OP_PAD2.getButton(ButtonCode.FEEDER_WHEEL_REVERSE).whileHeld(FeederWheelReverse);
-    GAMEPAD.getButton(ButtonCode.B).whileActiveOnce(new ParallelCommandGroup(new FeederEjectAllCommand(), CONVEYANCE_EJECT_COMMAND));
+    // GAMEPAD.getButton(ButtonCode.B).whileHeld(new ParallelCommandGroup(new FeederEjectAllCommand(), CONVEYANCE_EJECT_COMMAND));
+    //GAMEPAD.getButton(ButtonCode.B).whileHeld(new FeederEjectAllCommand());
+    
+    GAMEPAD.getButton(ButtonCode.B).whileHeld(CONVEYANCE_FEEDER_EJECT_ALL_COMMAND);
+    // GAMEPAD.getButton(ButtonCode.B).whileHeld(CONVEYANCE_EJECT_COMMAND);
     OP_PAD.getButton(ButtonCode.SHOOTER_LAUNCH_PAD_SHOT).whenPressed(SHOOTER_LAUNCH_PAD_PID_COMMAND);
     OP_PAD.getButton(ButtonCode.SHOOTER_TARMAC_SHOT).whenPressed(SHOOTER_TARMAC_PID_COMMAND);
     OP_PAD.getButton(ButtonCode.SHOOTER_LOW_GOAL_SHOT).whenPressed(SHOOTER_LOW_GOAL_PID_COMMAND);
     OP_PAD.getButton(ButtonCode.SHOOTER_AUTO_RADIUS_SHOT).whenPressed(SHOOTER_AUTO_RADIUS_PID_COMMAND);
-
+    OP_PAD2.getButton(ButtonCode.TURRET_HOME).whenPressed(TURRET_HOME_COMMAND.withTimeout(1));
     // Old assignments, pending deletion
     //GAMEPAD.getButton(ButtonCode.B).whileHeld(new SequentialCommandGroup(new WaitCommand(.15), SHOOTER_START_COMMAND));
     //GAMEPAD.getButton(ButtonCode.B).whenPressed(FeederSafetyReverse);
@@ -386,7 +483,7 @@ public class Robot extends TimedRobot {
       inventory++;
     }
     
-    if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceStagingBeamBreakHasBall() || Robot.CONVEYANCE_SUBSYSTEM.getIsIndexingFromStagingToFeeder()) {
+    if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceStagingBeamBreakHasBall() || (Robot.CONVEYANCE_SUBSYSTEM.getIsIndexingFromStagingToFeeder() && Robot.CONVEYANCE_SUBSYSTEM.getConveyanceEntryBeamBreakHasBall() == false)) {
       inventory++;
     }
 

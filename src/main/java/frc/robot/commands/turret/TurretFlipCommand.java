@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 /** An example command that uses an example subsystem. */
 public class TurretFlipCommand extends CommandBase {
 
+  private double _savedAngle;
+
   public TurretFlipCommand() {
     addRequirements(Robot.TURRET_SWIVEL_SUBSYSTEM);
   }
@@ -20,13 +22,13 @@ public class TurretFlipCommand extends CommandBase {
   @Override
   public void initialize() {
     Robot.TURRET_SWIVEL_SUBSYSTEM.setPidProfile(Constants.TURRET_FLIP_PID);
-    Robot.TURRET_SWIVEL_SUBSYSTEM.goToAngle(-1 * Robot.TURRET_SWIVEL_SUBSYSTEM.getAngle());
+    _savedAngle = Robot.TURRET_SWIVEL_SUBSYSTEM.getAngle();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      
+    Robot.TURRET_SWIVEL_SUBSYSTEM.goToAngle(-1 * _savedAngle);
   }
 
   // Called once the command ends or is interrupted.

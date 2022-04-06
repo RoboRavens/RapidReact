@@ -13,7 +13,9 @@ public class JunkShotCommandGroup extends SequentialCommandGroup {
   public JunkShotCommandGroup() {
     addCommands(
     //new ShooterLowGoalCommand(), // Set the fail shot profile
-    new TurretMissCommand().withTimeout(1), // Set the miss shot angle
+
+    // NEED TO RE-ADD THIS LINE BUT IT IS DANGEROUS FOR TURRET TESTING
+    // new TurretMissCommand().withTimeout(1), // Set the miss shot angle
     // new ShooterStartInstantCommand(), // Rev
     new FeederShootOneBallCommand()/*, // Shoot 1
     new ShooterStopCommand(), // End

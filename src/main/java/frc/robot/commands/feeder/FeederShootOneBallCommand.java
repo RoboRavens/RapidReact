@@ -22,7 +22,7 @@ public class FeederShootOneBallCommand extends CommandBase {
     @Override
     public void execute() {
         Robot.FEEDER_SUBSYSTEM.shoot();
-        SmartDashboard.putString("FSOBC Status", "Shooting one ball");
+        // SmartDashboard.putString("FSOBC Status", "Shooting one ball");
     }
 
     // Called once the command ends or is interrupted.
@@ -31,7 +31,7 @@ public class FeederShootOneBallCommand extends CommandBase {
         Robot.FEEDER_SUBSYSTEM.feederWheelStop();
         Robot.FEEDER_SUBSYSTEM.conveyanceStop();
         
-        SmartDashboard.putString("FSOBC Status", "DONE SHOOTING");
+        // SmartDashboard.putString("FSOBC Status", "DONE SHOOTING");
     }
 
     // Returns true when the command should end.

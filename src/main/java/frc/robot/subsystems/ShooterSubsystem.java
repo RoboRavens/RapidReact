@@ -56,6 +56,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void updateSmartDashboard() {
+        
         SmartDashboard.putNumber("Backspin Shooter Speed", getBackspinShooterRPM());
         SmartDashboard.putNumber("Topspin Shooter Speed", getTopspinShooterRPM());
         SmartDashboard.putString("Shooter PID", _shot._name);
@@ -66,8 +67,8 @@ public class ShooterSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Backspin Target RPM", _shot._backspinMotorCalibration.targetRPM);
         SmartDashboard.putNumber("Topspin Target RPM", _shot._topspinMotorCalibration.targetRPM);
         
-        SmartDashboard.putNumber("Backspin AMPS", _backspinMotor.getSupplyCurrent());
-        SmartDashboard.putNumber("Topspin AMPS", _topspinMotor.getStatorCurrent());
+        // SmartDashboard.putNumber("Backspin AMPS", _backspinMotor.getSupplyCurrent());
+        // SmartDashboard.putNumber("Topspin AMPS", _topspinMotor.getStatorCurrent());
     }
 
     @Override
@@ -158,6 +159,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     private void updateShooterTuningSmartDashboard(double backspinTargetMotorRPM, double topspinTargetMotorRPM, double backspinTargetVelocity, double topspinTargetVelocity) {
+       /*
         SmartDashboard.putNumber("Backspin Target MOTOR RPM", backspinTargetMotorRPM);
         SmartDashboard.putNumber("Topspin Target MOTOR RPM", topspinTargetMotorRPM);
 
@@ -175,6 +177,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
         SmartDashboard.putString("Conveyance State", Robot.CONVEYANCE_SUBSYSTEM.getConveyanceState().name());
         SmartDashboard.putNumber("AFF Value", _arbitraryFeedForward);
+        */
     }
 
     /**
@@ -184,6 +187,8 @@ public class ShooterSubsystem extends SubsystemBase {
         _backspinMotor.set(ControlMode.Current, 0);
         _topspinMotor.set(ControlMode.Current, 0);
         _isShooting = false;
+
+        //setShot(Constants.DISABLED_SHOT_CALIBRATION_PAIR); add this if you're ready to test it too!!
     }
 
     public void resetShotCount() {
@@ -281,7 +286,8 @@ public class ShooterSubsystem extends SubsystemBase {
         ShooterCalibrationPair shotToSet = Constants.TARMAC_SHOT_CALIBRATION_PAIR;
     
         if (Robot.LIMELIGHT_SUBSYSTEM.getRawYOffset() > Constants.MAX_LOW_GOAL_SHOT) { // Close to hub
-          shotToSet = Constants.LOW_GOAL_SHOT_CALIBRATION_PAIR;
+        //  shotToSet = Constants.LOW_GOAL_SHOT_CALIBRATION_PAIR;
+            shotToSet = Constants.TARMAC_SHOT_CALIBRATION_PAIR;
         }
         else if (Robot.LIMELIGHT_SUBSYSTEM.getRawYOffset() > Constants.MAX_TARMAC_SHOT) {
           shotToSet = Constants.TARMAC_SHOT_CALIBRATION_PAIR;
@@ -294,6 +300,7 @@ public class ShooterSubsystem extends SubsystemBase {
         }
 
         // If the feeder has a ball of the wrong color, we use a low goal profile for ejection.
+        // Always return false for Lakeview
         if (Robot.FEEDER_SUBSYSTEM.feederHasWrongColorCargo()) {
             shotToSet = Constants.LOW_GOAL_SHOT_CALIBRATION_PAIR;
         }
@@ -310,5 +317,9 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public void enableAutoShotSelect() {
         _autoShotSelect = true;
+    }
+
+    public boolean getAutoShotSelect() {
+        return _autoShotSelect;
     }
 }

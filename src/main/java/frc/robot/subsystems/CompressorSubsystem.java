@@ -14,6 +14,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Robot;
@@ -23,6 +24,7 @@ public class CompressorSubsystem extends SubsystemBase {
 
   public CompressorSubsystem() {
     this.setup();
+    this.start();
   }
 
   @Override
@@ -30,10 +32,12 @@ public class CompressorSubsystem extends SubsystemBase {
 
   public void start() {
     compressor.enableDigital();
+    SmartDashboard.putBoolean("CompressorEnabled", true);
   }
 
   public void stop() {
     compressor.disable();
+    SmartDashboard.putBoolean("CompressorEnabled", false);
   }
 
   // Returns electrical current measured in amps.

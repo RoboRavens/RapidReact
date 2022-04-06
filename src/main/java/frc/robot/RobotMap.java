@@ -28,9 +28,9 @@ public final class RobotMap {
 
     //TURRET
     public static final int TURRET_MOTOR = 11;
-    //public static final int TURRET_RESET_SENSOR = ;
-    //public static final int TURRET_CLOCKWISE_SENSOR = ;
-    //public static final int TURRET_COUNTERCLOCKWISE_SENSOR = ;
+    public static final int TURRET_ZERO_LIMIT_DIO_CHANNEL = 3;
+    public static final int TURRET_CLOCKWISE_LIMIT_DIO_CHANNEL = 5;
+    public static final int TURRET_COUNTER_CLOCKWISE_LIMIT_DIO_CHANNEL = 4;
 
     //INTAKE 
     public static final int INTAKE_EXTEND_SOLENOID = 0;
@@ -58,7 +58,7 @@ public final class RobotMap {
     public static final int BACK_LEFT_MODULE_STEER_MOTOR = 2;
     public static final int BACK_LEFT_MODULE_STEER_ENCODER = 21;
     // public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(191.338); // practice
-    public static final double BACK_LEFT_MODULE_STEER_OFFSET = Math.toRadians(57); // competition
+    public static final double BACK_LEFT_MODULE_STEER_OFFSET = Math.toRadians(237); // competition
 
     public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 7;
     public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 4;

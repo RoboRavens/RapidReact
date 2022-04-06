@@ -15,7 +15,9 @@ import frc.robot.Robot;
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    System.out.println("INITIALIZING EJECTION");
+  }
   
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -27,6 +29,8 @@ import frc.robot.Robot;
   @Override
   public void end(boolean interrupted) {
     Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne();
+    
+    System.out.println("ENDING EJECTION");
   }
   
   // Returns true when the command should end.

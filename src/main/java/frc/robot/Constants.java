@@ -34,8 +34,8 @@ public final class Constants {
     public static final double DRIVE_MAX_TURN_RADIANS_PER_SECOND = 2;
 
     // COLOR SENSE
-    public static final double BALL_COLOR_THRESHOLD_ENTRY = 50;
-    public static final double BALL_COLOR_THRESHOLD_EXIT = 50;
+    public static final double BALL_COLOR_THRESHOLD_ENTRY = 400;
+    public static final double BALL_COLOR_THRESHOLD_EXIT = 400;
   
     // SHOOTER RPM ALLOWANCE TESTED AT 50 for TELEOP BUT SHOULD NOT MATTER
     //SHOOTER
@@ -68,8 +68,162 @@ public final class Constants {
     */
 
 
+// NEW CONSTANTS WITH kF based on feeder running and AFF added
+/*
+    // All shots need to be tuned.
+    public static final int LOW_GOAL_BACKSPIN_RPM = 1000;
+    public static final double LOW_GOAL_BACKSPIN_KF = 0.0452 * 1.1;  
+ //   public static final double LOW_GOAL_BACKSPIN_KF = 0.0;
+    public static final double LOW_GOAL_BACKSPIN_KP = 0.0;//0.17;
+    public static final double LOW_GOAL_BACKSPIN_KI = 0;
+    public static final double LOW_GOAL_BACKSPIN_KD = 0.0;
+    
+    public static final double LOW_GOAL_BACKSPIN_VOLTAGE_CONTROL_SETPOINT = LOW_GOAL_BACKSPIN_KF * 12; 
+
+    public static final int LOW_GOAL_TOPSPIN_RPM = 1000;
+    public static final double LOW_GOAL_TOPSPIN_KF = 0.047 * 1.1;
+//    public static final double LOW_GOAL_TOPSPIN_KF = 0.0;
+    public static final double LOW_GOAL_TOPSPIN_KP = 0.0;//0.17;
+    public static final double LOW_GOAL_TOPSPIN_KI = 0;
+    public static final double LOW_GOAL_TOPSPIN_KD = 0.0;
+
+    public static final double LOW_GOAL_TOPSPIN_VOLTAGE_CONTROL_SETPOINT = LOW_GOAL_TOPSPIN_KF * 12;
+// was 2460
+    public static final int TARMAC_BACKSPIN_RPM = 2225;
+    public static final double TARMAC_BACKSPIN_KF = 0.0449 * 1.1;
+//    public static final double TARMAC_BACKSPIN_KF = 0.0;
+    public static final double TARMAC_BACKSPIN_KP = .0;//0.21;
+    public static final double TARMAC_BACKSPIN_KI = 0.0;
+    public static final double TARMAC_BACKSPIN_KD = 0.0;
+
+    public static final double TARMAC_BACKSPIN_VOLTAGE_CONTROL_SETPOINT = TARMAC_BACKSPIN_KF * 12;
+// was 2460
+    public static final int TARMAC_TOPSPIN_RPM = 2225;
+    public static final double TARMAC_TOPSPIN_KF = 0.046 * 1.1;
+//    public static final double TARMAC_TOPSPIN_KF = 0.0;
+    public static final double TARMAC_TOPSPIN_KP = 0.0;//0.21;
+    public static final double TARMAC_TOPSPIN_KI = 0.0;
+    public static final double TARMAC_TOPSPIN_KD = 0.0;
+
+    public static final double TARMAC_TOPSPIN_VOLTAGE_CONTROL_SETPOINT = TARMAC_TOPSPIN_KF * 12;
+
+    public static final int AUTO_RADIUS_BACKSPIN_RPM = 2425;
+//    public static final double AUTO_RADIUS_BACKSPIN_KF = 0.0;
+    public static final double AUTO_RADIUS_BACKSPIN_KF = 0.0449 * 1.1;
+    public static final double AUTO_RADIUS_BACKSPIN_KP = 0.0;//0.21;
+    public static final double AUTO_RADIUS_BACKSPIN_KI = 0.0;
+    public static final double AUTO_RADIUS_BACKSPIN_KD = 0.0;
+
+    
+    public static final double AUTO_RADIUS_BACKSPIN_VOLTAGE_CONTROL_SETPOINT = AUTO_RADIUS_BACKSPIN_KF * 12;
+
+    public static final int AUTO_RADIUS_TOPSPIN_RPM = 2425;
+    public static final double AUTO_RADIUS_TOPSPIN_KF = 0.046 * 1.1;
+    //public static final double AUTO_RADIUS_TOPSPIN_KF = 0.0;
+    public static final double AUTO_RADIUS_TOPSPIN_KP = 0.0;//0.21;
+    public static final double AUTO_RADIUS_TOPSPIN_KI = 0.0;
+    public static final double AUTO_RADIUS_TOPSPIN_KD = 0.0;
+
+    public static final double AUTO_RADIUS_TOPSPIN_VOLTAGE_CONTROL_SETPOINT = AUTO_RADIUS_TOPSPIN_KF * 12;
+
+    // LAUNCHPAD WAS 3000
+
+    public static final int LAUNCHPAD_BACKSPIN_RPM = 2675;
+   // public static final double LAUNCHPAD_BACKSPIN_KF = 0.0;
+    public static final double LAUNCHPAD_BACKSPIN_KF = 0.0449 * 1.1;
+    public static final double LAUNCHPAD_BACKSPIN_KP = 0.0;//0.22;
+    public static final double LAUNCHPAD_BACKSPIN_KI = 0.0;
+    public static final double LAUNCHPAD_BACKSPIN_KD = 0.0;
+
+    public static final double LAUNCHPAD_BACKSPIN_VOLTAGE_CONTROL_SETPOINT = LAUNCHPAD_BACKSPIN_KF * 12;
+*/
+
+public double wednesdayNightCoefficient = 1.08;
 
 
+
+    // All shots need to be tuned.
+    public static final int LOW_GOAL_BACKSPIN_RPM = 1000;
+    public static final double LOW_GOAL_BACKSPIN_KF = 0.0452;  
+ //   public static final double LOW_GOAL_BACKSPIN_KF = 0.0;
+    public static final double LOW_GOAL_BACKSPIN_KP = 0.15;//0.17;
+    public static final double LOW_GOAL_BACKSPIN_KI = 0;
+    public static final double LOW_GOAL_BACKSPIN_KD = 0.2;
+    
+    public static final double LOW_GOAL_BACKSPIN_VOLTAGE_CONTROL_SETPOINT = LOW_GOAL_BACKSPIN_KF * 12; 
+
+    public static final int LOW_GOAL_TOPSPIN_RPM = 1000;
+    public static final double LOW_GOAL_TOPSPIN_KF = 0.047;
+//    public static final double LOW_GOAL_TOPSPIN_KF = 0.0;
+    public static final double LOW_GOAL_TOPSPIN_KP = 0.15;//0.17;
+    public static final double LOW_GOAL_TOPSPIN_KI = 0;
+    public static final double LOW_GOAL_TOPSPIN_KD = 0.2;
+
+    public static final double LOW_GOAL_TOPSPIN_VOLTAGE_CONTROL_SETPOINT = LOW_GOAL_TOPSPIN_KF * 12;
+// was 2460
+    public static final double TARMAC_BACKSPIN_RPM = 2225;
+    public static final double TARMAC_BACKSPIN_KF = 0.0449 * 1.08;
+//    public static final double TARMAC_BACKSPIN_KF = 0.0;
+    public static final double TARMAC_BACKSPIN_KP = .350;//0.21;
+    public static final double TARMAC_BACKSPIN_KI = 0;
+    public static final double TARMAC_BACKSPIN_KD = 4.0;
+
+    public static final double TARMAC_BACKSPIN_VOLTAGE_CONTROL_SETPOINT = TARMAC_BACKSPIN_KF * 12;
+// was 2460
+    public static final double TARMAC_TOPSPIN_RPM = 2225;
+    public static final double TARMAC_TOPSPIN_KF = 0.046 * 1.08;
+//    public static final double TARMAC_TOPSPIN_KF = 0.0;
+    public static final double TARMAC_TOPSPIN_KP = .35;//0.21;
+    public static final double TARMAC_TOPSPIN_KI = 0;
+    public static final double TARMAC_TOPSPIN_KD = 4.0;
+
+    public static final double TARMAC_TOPSPIN_VOLTAGE_CONTROL_SETPOINT = TARMAC_TOPSPIN_KF * 12;
+
+    public static final double AUTO_RADIUS_BACKSPIN_RPM = 2425;
+//    public static final double AUTO_RADIUS_BACKSPIN_KF = 0.0;
+    public static final double AUTO_RADIUS_BACKSPIN_KF = 0.0449 * 1.08;
+    public static final double AUTO_RADIUS_BACKSPIN_KP = 0.35;//0.21;
+    public static final double AUTO_RADIUS_BACKSPIN_KI = 0;
+    public static final double AUTO_RADIUS_BACKSPIN_KD = 4.0;
+
+    
+    public static final double AUTO_RADIUS_BACKSPIN_VOLTAGE_CONTROL_SETPOINT = AUTO_RADIUS_BACKSPIN_KF * 12;
+
+    public static final double AUTO_RADIUS_TOPSPIN_RPM = 2425;
+    public static final double AUTO_RADIUS_TOPSPIN_KF = 0.046 * 1.08;
+    //public static final double AUTO_RADIUS_TOPSPIN_KF = 0.0;
+    public static final double AUTO_RADIUS_TOPSPIN_KP = .35;//0.21;
+    public static final double AUTO_RADIUS_TOPSPIN_KI = 0;
+    public static final double AUTO_RADIUS_TOPSPIN_KD = 4.0;
+
+    public static final double AUTO_RADIUS_TOPSPIN_VOLTAGE_CONTROL_SETPOINT = AUTO_RADIUS_TOPSPIN_KF * 12;
+
+    // LAUNCHPAD WAS 3000
+
+    public static final double LAUNCHPAD_BACKSPIN_RPM = 2950;
+   // public static final double LAUNCHPAD_BACKSPIN_KF = 0.0;
+    public static final double LAUNCHPAD_BACKSPIN_KF = 0.0449 * 1.08;
+    public static final double LAUNCHPAD_BACKSPIN_KP = 0.35;//0.22;
+    public static final double LAUNCHPAD_BACKSPIN_KI = 0;
+    public static final double LAUNCHPAD_BACKSPIN_KD = 4.0;
+
+    public static final double LAUNCHPAD_BACKSPIN_VOLTAGE_CONTROL_SETPOINT = LAUNCHPAD_BACKSPIN_KF * 12;
+
+    public static final double LAUNCHPAD_TOPSPIN_RPM = 2950;
+    public static final double LAUNCHPAD_TOPSPIN_KF = 0.046 * 1.08;
+    //public static final double LAUNCHPAD_TOPSPIN_KF = 0.0;
+    public static final double LAUNCHPAD_TOPSPIN_KP = .35;//0.22;
+    public static final double LAUNCHPAD_TOPSPIN_KI = 0;
+    public static final double LAUNCHPAD_TOPSPIN_KD = 4.0;
+
+    public static final double LAUNCHPAD_TOPSPIN_VOLTAGE_CONTROL_SETPOINT = LAUNCHPAD_TOPSPIN_KF * 12;
+
+
+
+
+
+// OLD CONSTANTS - AS OF Tuesday, March 29, 4 PM
+/*
     // All shots need to be tuned.
     public static final int LOW_GOAL_BACKSPIN_RPM = 1000;
     public static final double LOW_GOAL_BACKSPIN_KF = 0.0452;  
@@ -137,6 +291,10 @@ public final class Constants {
 
     public static final double LAUNCHPAD_BACKSPIN_VOLTAGE_CONTROL_SETPOINT = LAUNCHPAD_BACKSPIN_KF * 12;
 
+*/
+
+
+
 /*
 
 Y-offset constants in order:
@@ -149,7 +307,7 @@ Y-offset constants in order:
 	Maximum range launchpad shot: -11.6
 
 */
-
+/*
     public static final int LAUNCHPAD_TOPSPIN_RPM = 2675;
     public static final double LAUNCHPAD_TOPSPIN_KF = 0.046;
     //public static final double LAUNCHPAD_TOPSPIN_KF = 0.0;
@@ -158,7 +316,7 @@ Y-offset constants in order:
     public static final double LAUNCHPAD_TOPSPIN_KD = 4.0;
 
     public static final double LAUNCHPAD_TOPSPIN_VOLTAGE_CONTROL_SETPOINT = LAUNCHPAD_TOPSPIN_KF * 12;
-
+*/
 
 
     // 3k RPM was about a 17 foot shot (16.6666 to middle of hub, slightly less to outer ring.)
@@ -187,20 +345,26 @@ Y-offset constants in order:
     public static final ShooterCalibrationPair DISABLED_SHOT_CALIBRATION_PAIR = new ShooterCalibrationPair("Disabled shot", DISABLED_SHOT_BACKSPIN_CALIBRATION, DISABLED_SHOT_TOPSPIN_CALIBRATION);
 
     //TURRET SWIVEL
+    public static boolean TURRET_ENABLED = false; // when false the turret will not move and the drivetrain will align shooter with the goal
     public static final int TURRET_IDX = 0;
     public static final int TURRET_TIMEOUT_MS = 100;
-    public static final int TURRET_RANGE = 50; //Degrees of motion in both ways (180 means full movement both ways)
-    public static final double TURRET_ENCODER_RATIO = 500; //Divide encoder ticks by this, multiply angles by this (encoder ticks are much less than angles)
+    public static final int TURRET_RANGE = 137; //Degrees of motion in either way (180 means full movement both ways)
+    public static final double TURRET_GEARBOX_RATIO = 1.0 / 10.0; // Motor is one-tenth speed due to gearbox
+    public static final double TURRET_LARGE_GEAR_RATIO = 10.0 / 128.0;
+    public static final double ENCODER_TO_TURRET_RATIO = (TALONFX_TICKS_PER_REVOLUTION / 360.0) / TURRET_GEARBOX_RATIO * 3; // Multiply encoder by this to find angle of turret
     public static final double TURRET_AIM_ALLOWANCE = 2; //Degrees of allowance to say that the turret has "reached" its target
     public static final double TURRET_MISS_OFFSET = 35;
+    public static final double TURRET_GEAR_RATIO = 1.0 / 10.0; // Motor is one-tenth speed due to gearbox
 
     public static final double TURRET_DEFAULT_KF = 0;
-    public static final double TURRET_DEFAULT_KP = 0.0001; //0.075;
+    public static final double TURRET_DEFAULT_KP = 0.2;
+    //public static final double TURRET_DEFAULT_KP = 0.120; //0.075;
     public static final double TURRET_DEFAULT_KI = 0;
     public static final double TURRET_DEFAULT_KD = 0;
 
     public static final double TURRET_FLIP_KF = 0;
-    public static final double TURRET_FLIP_KP = 0.0001; //0.1;
+    public static final double TURRET_FLIP_KP = 0.00015;
+    //public static final double TURRET_FLIP_KP = 0.120; //0.1;
     public static final double TURRET_FLIP_KI = 0;
     public static final double TURRET_FLIP_KD = 0;
 
@@ -228,7 +392,7 @@ Y-offset constants in order:
     public static final double FEEDER_SAFETY_REVERSE_DURATION = .15;
 
     //CONVEYANCE ONE
-    public static final double CONVEYANCE_ONE_FULL_SPEED_REVERSE = .75;
+    public static final double CONVEYANCE_ONE_FULL_SPEED_REVERSE = 1.0;
     public static final double CONVEYANCE_ONE_FULL_SPEED = -1; // Was -75, meant to be .75, but not changing functionality without testing.
     public static final double CONVEYANCE_ONE_INDEX_SPEED = -.25;
     public static final double CONVEYANCE_ONE_NORMAL_REVERSE_SPEED = -.25;
@@ -248,19 +412,17 @@ Y-offset constants in order:
     public static final TrapezoidProfile.Constraints SWERVE_CONTROLLER_ANGULAR_CONSTRAINTS =
         new TrapezoidProfile.Constraints(
             TRAJECTORY_CONFIG_MAX_ANGULAR_SPEED_RADIANS_PER_SECOND, TRAJECTORY_CONFIG_MAX_ANGULAR_ACCELERATION_RADIANS_PER_SECOND);
-
-    public static final double DRIVE_ANGLE_DRIFT_CORRECTION_KP = 1;
-    public static final double DRIVE_ANGLE_DRIFT_CORRECTION_KI = .01;
-    public static final double DRIVE_ANGLE_DRIFT_CORRECTION_KD = 0;
     
     //CLIMBER
     public static final double CLIMBER_HOLD_POSITION_POWER_MAGNITUDE = 0; // .13
-	public static final double CLIMBER_EXTEND_POWER_MAGNITUDE = .5;
+	public static final double CLIMBER_EXTEND_SLOW_POWER_MAGNITUDE = .5;
+    public static final double CLIMBER_EXTEND_FAST_POWER_MAGNITUDE = 1;
     public static final double CLIMBER_EXTEND_SOWLY_POWER_MAGNITUDE = .2;
 	public static final double CLIMBER_RETRACT_POWER_MAGNITUDE = -.4;
     public static final double CLIMBER_RETRACT_SOWLY_POWER_MAGNITUDE = -.2;
 	public static final double CLIMBER_RETRACT_TO_LATCH_POWER_MAGNITUDE = .2;
-    public static final double CLIMBER_EXTEND_ENCODER_TARGET = 241251.000000 - 45320.000000;
+    // public static final double CLIMBER_EXTEND_ENCODER_TARGET = 241251.000000 - 45320.000000;
+    public static final double CLIMBER_EXTEND_ENCODER_TARGET = 260000.0;
     public static final double CLIMBER_ENCODER_ACCURACY_RANGE = 4000;
     public static final double CLIMBER_IS_EXTENDED_ENCODER_THRESHOLD = CLIMBER_EXTEND_ENCODER_TARGET / 5;
 

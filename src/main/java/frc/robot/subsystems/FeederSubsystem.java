@@ -57,7 +57,7 @@ public class FeederSubsystem extends SubsystemBase {
     this.runConveyanceAtVoltage(Constants.CONVEYANCE_TWO_NORMAL_SPEED);
   }
 
-  public void setConveyanceNormalSpeedReverse() {
+  public void setFeederConveyanceEject() {
     this.runConveyanceAtVoltage(Constants.CONVEYANCE_TWO_NORMAL_REVERSE_SPEED);
   }
 
@@ -118,7 +118,7 @@ public class FeederSubsystem extends SubsystemBase {
     }
   }
 
-  public void stopFeederAndConveyance() {
+  public void stopFeederAndConveyanceTwo() {
     this.feederWheelStop();
     this.conveyanceStop();
   }
@@ -151,15 +151,17 @@ public class FeederSubsystem extends SubsystemBase {
     return feederHasProperColorCargo;
   }
 
+  // ALWAYS FALSE FOR LAKEVIEW
   public boolean feederHasWrongColorCargo() {
     boolean feederHasWrongColorCargo = false;
     
     if (Robot.FEEDER_SUBSYSTEM.getFeederHasBall()) {
-      if (Robot.COLOR_SENSOR.getSensorIsCorrectBallColorLenient(RavenPiPosition.FEEDER)) {
+      if (Robot.COLOR_SENSOR.getSensorIsCorrectBallColorStrict(RavenPiPosition.FEEDER)) {
         feederHasWrongColorCargo = true;
       }
     }
 
-    return feederHasWrongColorCargo;
+    return false;
+    // return feederHasWrongColorCargo;
   }
 }
