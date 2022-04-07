@@ -8,8 +8,8 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -24,9 +24,6 @@ import frc.ravenhardware.BlinkinCalibrations;
 import frc.ravenhardware.RavenBlinkin;
 import frc.ravenhardware.RavenPiColorSensor;
 import frc.ravenhardware.RavenPiPosition;
-import frc.robot.commands.auto.FiveBallHps;
-import frc.robot.commands.auto.ThreeBallTarmacAutoCommand;
-import frc.robot.commands.auto.TwoBallAutoCommand;
 import frc.robot.commands.climber.ClimberDefaultBrakeCommand;
 import frc.robot.commands.climber.ClimberExtendCommand;
 import frc.robot.commands.climber.ClimberRetractCommand;
@@ -57,6 +54,8 @@ import frc.robot.commands.turret.TurretAimAtTargetCommand;
 import frc.robot.commands.turret.TurretFlipCommand;
 import frc.robot.commands.turret.TurretHomeCommand;
 import frc.robot.commands.turret.TurretSeekCommand;
+import frc.robot.shuffleboard.AutonomousShuffleboard;
+import frc.robot.shuffleboard.TeleopShuffleboard;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CompressorSubsystem;
 import frc.robot.subsystems.ConveyanceSubsystem;
@@ -67,7 +66,6 @@ import frc.robot.subsystems.IntakeExtenderSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TurretSwivelSubsystem;
-import frc.util.AutoMode;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -77,7 +75,6 @@ import frc.util.AutoMode;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-  private SendableChooser<AutoMode> _autoChooser = new SendableChooser<>();
   
   public static final Joystick JOYSTICK = new Joystick(0);
   public static final Gamepad GAMEPAD = new Gamepad(JOYSTICK);
@@ -119,7 +116,6 @@ public class Robot extends TimedRobot {
   public static final FeederShootOneBallCommand FEEDER_SHOOT_ONE_BALL = new FeederShootOneBallCommand();
   public static final RavenBlinkin RAVEN_BLINKIN_3 = new RavenBlinkin(3);
   public static final RavenBlinkin RAVEN_BLINKIN_4 = new RavenBlinkin(4);
-  public static final AutoMode TWO_BALL_HANGAR_AUTO = TwoBallAutoCommand.getHangarAutoMode();
   public static final ConveyanceFeederEjectAllCommand CONVEYANCE_FEEDER_EJECT_ALL_COMMAND = new ConveyanceFeederEjectAllCommand();
   public static final TurretHomeCommand TURRET_HOME_COMMAND = new TurretHomeCommand();
   public static final FeederUnloadCommand FEEDER_UNLOAD_COMMAND = new FeederUnloadCommand();
@@ -127,6 +123,9 @@ public class Robot extends TimedRobot {
   public static final ControllerRumbleTwiceCommandGroup CONTROLLER_RUMBLE_TWICE_COMMAND = new ControllerRumbleTwiceCommandGroup();
   public static final ControllerContinuousRumbleCommand CONTROLLER_CONTINUOUS_RUMBLE_COMMAND = new ControllerContinuousRumbleCommand();
   public static final ControllerRumbleCommand CONTROLLER_RUMBLE_COMMAND_FINISHED_SHOOTING = new ControllerRumbleCommand(.75);
+
+  public static final AutonomousShuffleboard AUTONOMOUS_SHUFFLEBOARD = new AutonomousShuffleboard();
+  public static final TeleopShuffleboard TELEOP_SHUFFLEBOARD = new TeleopShuffleboard();
 
   public static final RavenPiColorSensor COLOR_SENSOR = new RavenPiColorSensor();
   public static Alliance ALLIANCE_COLOR;
@@ -153,30 +152,8 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     configureButtonBindings();
     LIMELIGHT_SUBSYSTEM.turnLEDOff();
     CameraServer.startAutomaticCapture();
-
-    AutoMode twoBallWall = TwoBallAutoCommand.getWallAutoMode();
-    AutoMode threeBallTarmac = ThreeBallTarmacAutoCommand.getAutoMode();
-    AutoMode fiveBallHps = FiveBallHps.getAutoMode();
-    AutoMode twoBallHangarPlusHangar = TwoBallAutoCommand.getHangarPlusOtherBallsHangarAutoMode();
-    AutoMode twoBallHangarPlusGoal = TwoBallAutoCommand.getHangarPlusOtherBallsByGoalAutoMode();
-    // AutoMode threeBallFast = ThreeBallTarmacAutoCommand.getFastAutoMode();
-
-    TWO_BALL_HANGAR_AUTO.setDefaultOption(_autoChooser);
-    twoBallWall.addOption(_autoChooser);
-    threeBallTarmac.addOption(_autoChooser);
-    fiveBallHps.addOption(_autoChooser);
-    twoBallHangarPlusHangar.addOption(_autoChooser);
-    twoBallHangarPlusGoal.addOption(_autoChooser);
-    // threeBallFast.addOption(_autoChooser);
-  }
-
-  private AutoMode getAuto() {
-    var autoMode = _autoChooser.getSelected();
-    if (autoMode == null) {
-      return TWO_BALL_HANGAR_AUTO;
-    }
-
-    return autoMode;
+    AUTONOMOUS_SHUFFLEBOARD.robotInit();
+    AUTONOMOUS_SHUFFLEBOARD.switchToTab();
   }
   
   /**
@@ -193,8 +170,7 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    SmartDashboard.putData("Autonomous", _autoChooser);
-    SmartDashboard.putString("Chosen Auto", this.getAuto().getAutoName());
+    AUTONOMOUS_SHUFFLEBOARD.robotPeriodic();
 
     triggerDashboardPeriodic();
     
@@ -243,7 +219,7 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     autonomousTriggerOverride = true;
 
     // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    m_autonomousCommand = this.getAuto().getAutoCommand();
+    m_autonomousCommand = AUTONOMOUS_SHUFFLEBOARD.getAuto().getAutoCommand();
     
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
@@ -266,6 +242,8 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+
+    TELEOP_SHUFFLEBOARD.switchToTab();
   }
 
   public void triggerDashboardPeriodic() {
