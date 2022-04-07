@@ -195,7 +195,7 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     
 
     // SmartDashboard.putBoolean("Target Sighted", Robot.LIMELIGHT_SUBSYSTEM.hasTargetSighted());
-    // SmartDashboard.putNumber("Limelight Offset", Robot.LIMELIGHT_SUBSYSTEM.getRawTargetOffsetAngle());
+    // SmartDashboard.putNumber("Limelight Raw Angle", Robot.LIMELIGHT_SUBSYSTEM.getRawTargetOffsetAngle());
     // SmartDashboard.putNumber("Limelight Area", Robot.LIMELIGHT_SUBSYSTEM.getArea());
     
     if (Constants.TURRET_ENABLED || GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER) || CommonTriggers.RunAutoshootingTrigger.getAsBoolean()) {
@@ -442,7 +442,7 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     OP_PAD.getButton(ButtonCode.SHOOTER_TARMAC_SHOT).whenPressed(SHOOTER_TARMAC_PID_COMMAND);
     OP_PAD.getButton(ButtonCode.SHOOTER_LOW_GOAL_SHOT).whenPressed(SHOOTER_LOW_GOAL_PID_COMMAND);
     OP_PAD.getButton(ButtonCode.SHOOTER_AUTO_RADIUS_SHOT).whenPressed(SHOOTER_AUTO_RADIUS_PID_COMMAND);
-    OP_PAD2.getButton(ButtonCode.TURRET_HOME).whenPressed(TURRET_HOME_COMMAND.withTimeout(1));
+    OP_PAD2.getButton(ButtonCode.TURRET_HOME).whenPressed(TURRET_AIM_AT_TARGET::resetTarget);
     // Old assignments, pending deletion
     //GAMEPAD.getButton(ButtonCode.B).whileHeld(new SequentialCommandGroup(new WaitCommand(.15), SHOOTER_START_COMMAND));
     //GAMEPAD.getButton(ButtonCode.B).whenPressed(FeederSafetyReverse);

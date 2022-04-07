@@ -345,19 +345,21 @@ Y-offset constants in order:
     public static final ShooterCalibrationPair DISABLED_SHOT_CALIBRATION_PAIR = new ShooterCalibrationPair("Disabled shot", DISABLED_SHOT_BACKSPIN_CALIBRATION, DISABLED_SHOT_TOPSPIN_CALIBRATION);
 
     //TURRET SWIVEL
-    public static boolean TURRET_ENABLED = false; // when false the turret will not move and the drivetrain will align shooter with the goal
+    public static boolean TURRET_ENABLED = true; // when false the turret will not move and the drivetrain will align shooter with the goal
     public static final int TURRET_IDX = 0;
     public static final int TURRET_TIMEOUT_MS = 100;
-    public static final int TURRET_RANGE = 137; //Degrees of motion in either way (180 means full movement both ways)
+    public static final int TURRET_RANGE = 140; //Degrees of motion in either way (180 means full movement both ways)
     public static final double TURRET_GEARBOX_RATIO = 1.0 / 10.0; // Motor is one-tenth speed due to gearbox
     public static final double TURRET_LARGE_GEAR_RATIO = 10.0 / 128.0;
-    public static final double ENCODER_TO_TURRET_RATIO = (TALONFX_TICKS_PER_REVOLUTION / 360.0) / TURRET_GEARBOX_RATIO * 3; // Multiply encoder by this to find angle of turret
+    public static final double ENCODER_TO_TURRET_RATIO = (TALONFX_TICKS_PER_REVOLUTION / 360.0) / TURRET_GEARBOX_RATIO * 3 / (180.0/155.464); // Multiply encoder by this to find angle of turret
     public static final double TURRET_AIM_ALLOWANCE = 2; //Degrees of allowance to say that the turret has "reached" its target
     public static final double TURRET_MISS_OFFSET = 35;
     public static final double TURRET_GEAR_RATIO = 1.0 / 10.0; // Motor is one-tenth speed due to gearbox
+    public static final double TURRET_CLOCKWISE_HARDWARE_LIMIT = -153.707963;
+    public static final double TURRET_COUNTER_CLOCKWISE_HARDWARE_LIMIT = 156.414829;
 
     public static final double TURRET_DEFAULT_KF = 0;
-    public static final double TURRET_DEFAULT_KP = 0.2;
+    public static final double TURRET_DEFAULT_KP = 0.6;
     //public static final double TURRET_DEFAULT_KP = 0.120; //0.075;
     public static final double TURRET_DEFAULT_KI = 0;
     public static final double TURRET_DEFAULT_KD = 0;
@@ -434,8 +436,8 @@ Y-offset constants in order:
     public static final double LIMELIGHT_LENS_TO_ROBOT_CENTER_OFFSET_INCHES = 0;
     public static final double MINIMUM_DISTANCE_FROM_LIMELIGHT = 46.0;
 	public static final double MAXIMUM_DISTANCE_FROM_LIMELIGHT = 240.0;
-    public static final double LIMELIGHT_CENTERED_OFFSET = 5;
-    public static final double LIMELIGHT_IS_ALIGNED_DEGREES = 3;
+    public static final double LIMELIGHT_CENTERED_OFFSET = 1.2;
+    public static final double LIMELIGHT_IS_ALIGNED_DEGREES = 1.5;
    
     public static final double MAX_LOW_GOAL_SHOT = .29;
 	public static final double MAX_TARMAC_SHOT = -6;
