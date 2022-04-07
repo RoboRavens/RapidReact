@@ -4,8 +4,8 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Robot;
 
 public class ControllerRumbleCommand extends WaitCommand {
-    public ControllerRumbleCommand() {
-        super(0.25);
+    public ControllerRumbleCommand(double seconds) {
+        super(seconds);
     }
 
     @Override

@@ -6,6 +6,8 @@ import frc.controls.AxisCode;
 import frc.controls.ButtonCode;
 
 public class CommonTriggers {
+    private static boolean releaseBallTriggerWasTrue = false;
+
     public static Trigger AutosteerDisabledTrigger  = new Trigger(() -> {
         if (Robot.autonomousTriggerOverride == true) {
             return false;
@@ -126,5 +128,33 @@ public class CommonTriggers {
         trigger checks all these conditions
         when condition is met (trigger is true) run the feeder wheel's shoot sequence
 
+    */
+
+    public static Trigger RobotHasOneBall = new Trigger(() -> {
+        return Robot.getRobotCargoInventory() == 1;
+    });
+
+    public static Trigger RobotFinishedShooting = new Trigger(() -> {
+
+        if (ReleaseBallTrigger.get()) {
+            releaseBallTriggerWasTrue = true;
+        }
+        else if (Robot.getRobotCargoInventory() == 0 && releaseBallTriggerWasTrue) {
+            releaseBallTriggerWasTrue = false;
+            return true;
+        }
+
+        return false;
+    });
+
+    /*
+        If there is one ball in the robot
+            rumble once
+        If there are two balls in the robot
+            rumble twice
+        If the ReleaseBallTrigger is active
+            rumble continuously
+        If the balls have just been shot
+            rumble (?)
     */
 }
