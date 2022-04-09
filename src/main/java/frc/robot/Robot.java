@@ -131,7 +131,7 @@ public class Robot extends TimedRobot {
   public static final RavenPiColorSensor COLOR_SENSOR = new RavenPiColorSensor();
   public static Alliance ALLIANCE_COLOR;
   public static boolean autonomousTriggerOverride = true;
-  public static boolean isTeleopEnabled = DriverStation.isTeleopEnabled();
+  public static boolean isTeleopEnabled = false; 
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -199,6 +199,7 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
 
     triggerDashboardPeriodic();
     
+    isTeleopEnabled = DriverStation.isTeleopEnabled();
 
     // SmartDashboard.putBoolean("Target Sighted", Robot.LIMELIGHT_SUBSYSTEM.hasTargetSighted());
     // SmartDashboard.putNumber("Limelight Offset", Robot.LIMELIGHT_SUBSYSTEM.getRawTargetOffsetAngle());
