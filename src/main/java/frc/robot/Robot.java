@@ -52,6 +52,7 @@ import frc.robot.commands.shooter.ShooterStopCommand;
 import frc.robot.commands.shooter.ShooterTarmacCommand;
 import frc.robot.commands.turret.TurretAimAtTargetCommand;
 import frc.robot.commands.turret.TurretFlipCommand;
+import frc.robot.commands.turret.TurretGoToAngleCommand;
 import frc.robot.commands.turret.TurretHomeCommand;
 import frc.robot.commands.turret.TurretSeekCommand;
 import frc.robot.shuffleboard.AutonomousShuffleboard;
@@ -123,6 +124,7 @@ public class Robot extends TimedRobot {
   public static final ControllerRumbleTwiceCommandGroup CONTROLLER_RUMBLE_TWICE_COMMAND = new ControllerRumbleTwiceCommandGroup();
   public static final ControllerContinuousRumbleCommand CONTROLLER_CONTINUOUS_RUMBLE_COMMAND = new ControllerContinuousRumbleCommand();
   public static final ControllerRumbleCommand CONTROLLER_RUMBLE_COMMAND_FINISHED_SHOOTING = new ControllerRumbleCommand(.75);
+  public static final TurretGoToAngleCommand TURRET_AIM_LOWGOAL_COMMAND = new TurretGoToAngleCommand(90);
 
   public static final AutonomousShuffleboard AUTONOMOUS_SHUFFLEBOARD = new AutonomousShuffleboard();
   public static final TeleopShuffleboard TELEOP_SHUFFLEBOARD = new TeleopShuffleboard();
@@ -430,7 +432,12 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     OP_PAD.getButton(ButtonCode.SHOOTER_TARMAC_SHOT).whenPressed(SHOOTER_TARMAC_PID_COMMAND);
     OP_PAD.getButton(ButtonCode.SHOOTER_LOW_GOAL_SHOT).whenPressed(SHOOTER_LOW_GOAL_PID_COMMAND);
     OP_PAD.getButton(ButtonCode.SHOOTER_AUTO_RADIUS_SHOT).whenPressed(SHOOTER_AUTO_RADIUS_PID_COMMAND);
+
     OP_PAD2.getButton(ButtonCode.TURRET_HOME).whenPressed(TURRET_AIM_AT_TARGET::resetTarget);
+
+    CommonTriggers.TurretAimLowGoal
+      .whileActiveOnce(TURRET_AIM_LOWGOAL_COMMAND);
+
     // Old assignments, pending deletion
     //GAMEPAD.getButton(ButtonCode.B).whileHeld(new SequentialCommandGroup(new WaitCommand(.15), SHOOTER_START_COMMAND));
     //GAMEPAD.getButton(ButtonCode.B).whenPressed(FeederSafetyReverse);

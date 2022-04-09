@@ -8,6 +8,14 @@ import frc.controls.ButtonCode;
 public class CommonTriggers {
     private static boolean releaseBallTriggerWasTrue = false;
 
+    public static Trigger TurretAimLowGoal = new Trigger(() -> {
+        if (Robot.autonomousTriggerOverride) {
+            return false;
+        }
+
+        return Robot.SHOOTER_SUBSYSTEM.getShot()._name == Constants.LOW_GOAL_SHOT_CALIBRATION_PAIR._name;
+    });
+
     public static Trigger AutosteerDisabledTrigger  = new Trigger(() -> {
         if (Robot.autonomousTriggerOverride == true) {
             return false;
