@@ -210,8 +210,8 @@ public class DrivetrainSubsystem extends DrivetrainSubsystemBase {
     statesHardware[2] = SwerveModuleConverter.ToSwerveModuleState(m_backLeftModule, 0);
     statesHardware[3] = SwerveModuleConverter.ToSwerveModuleState(m_backRightModule, 0);
     
-    var odometryStates = DrivetrainSubsystem.adjustStatesForOdometry(statesHardware);
-    _odometryFromHardware.update(this.getGyroscopeRotation(), odometryStates);
+    // var odometryStates = DrivetrainSubsystem.adjustStatesForOdometry(statesHardware);
+    _odometryFromHardware.update(this.getGyroscopeRotation(), statesHardware);
     // _diagnostics.updateHardware(_odometryFromHardware, statesHardware);
 
     Deadband.adjustRotationWhenStopped(states, statesHardware);
