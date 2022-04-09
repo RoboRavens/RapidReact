@@ -131,6 +131,7 @@ public class Robot extends TimedRobot {
   public static final RavenPiColorSensor COLOR_SENSOR = new RavenPiColorSensor();
   public static Alliance ALLIANCE_COLOR;
   public static boolean autonomousTriggerOverride = true;
+  public static boolean isTeleopEnabled = DriverStation.isTeleopEnabled();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -396,17 +397,19 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     CommonTriggers.RobotHas2Balls.negate().and(GAMEPAD.getButton(ButtonCode.RIGHTBUMPER))
       .whileActiveOnce(CONVEYANCE_COLLECT_COMMAND);
 
-    CommonTriggers.RobotHas2Balls
-      .whenActive(CONTROLLER_RUMBLE_TWICE_COMMAND);
+    if (isTeleopEnabled) {
+      CommonTriggers.RobotHas2Balls
+        .whenActive(CONTROLLER_RUMBLE_TWICE_COMMAND);
 
-    CommonTriggers.RobotHasOneBall
-      .whenActive(CONTROLLER_RUMBLE_COMMAND_HAS_ONE_BALL);
+      CommonTriggers.RobotHasOneBall
+        .whenActive(CONTROLLER_RUMBLE_COMMAND_HAS_ONE_BALL);
 
-    CommonTriggers.ReleaseBallTrigger
-      .whenActive(CONTROLLER_CONTINUOUS_RUMBLE_COMMAND);
+      CommonTriggers.ReleaseBallTrigger
+        .whenActive(CONTROLLER_CONTINUOUS_RUMBLE_COMMAND);
 
-    CommonTriggers.RobotFinishedShooting
-      .whenActive(CONTROLLER_RUMBLE_COMMAND_FINISHED_SHOOTING);
+      CommonTriggers.RobotFinishedShooting
+        .whenActive(CONTROLLER_RUMBLE_COMMAND_FINISHED_SHOOTING);
+    }
 
     OP_PAD2.getButton(ButtonCode.CLIMBER_EXTEND).whileHeld(CLIMBER_EXTEND_COMMAND);
     OP_PAD2.getButton(ButtonCode.CLIMBER_RETRACT).whileHeld(CLIMBER_RETRACT_COMMAND);

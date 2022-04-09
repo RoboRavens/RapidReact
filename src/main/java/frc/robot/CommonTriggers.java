@@ -113,8 +113,8 @@ public class CommonTriggers {
             hasAmmo = true;
         }
 
-        // return limelightIsAligned && rpmIsCorrect && inAutoshootingMode && hasAmmo;
-        return false;
+        return limelightIsAligned && rpmIsCorrect && inAutoshootingMode && hasAmmo;
+        // return false;
     });
 
     /*
