@@ -1,13 +1,11 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Robot;
 import frc.robot.commands.conveyance.ConveyanceCollectCommand;
 import frc.robot.commands.conveyance.ConveyanceIndexCommand;
 import frc.robot.commands.feeder.FeederIndexCommand;
 import frc.robot.commands.feeder.FeederUnloadCommand;
-import frc.robot.commands.shooter.ShooterAutoRadiusCommand;
 import frc.robot.commands.shooter.ShooterLaunchpadCommand;
 import frc.robot.commands.shooter.ShooterStartInstantCommand;
 import frc.robot.commands.shooter.ShooterStopCommand;
