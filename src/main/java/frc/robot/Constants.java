@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
+
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import frc.util.ShooterCalibration;
 import frc.util.ShooterCalibrationPair;
@@ -409,6 +411,12 @@ Y-offset constants in order:
     public static final double SWERVE_CONTROLLER_X_KP = 2;
     public static final double SWERVE_CONTROLLER_Y_KP = 2;
     public static final double SWERVE_CONTROLLER_ANGLE_KP = 4;
+
+    private static final double SWERVE_WHEEL_DIAMETER = SdsModuleConfigurations.MK4_L1.getWheelDiameter();
+    private static final double SWERVE_WHEEL_DIAMETER_INCREMENT_5BALL = 0.0003186; // reducing the wheel diameter by this increment adds one inch to the 5 ball auto
+    private static final double SWERVE_5BALL_INCHES_OFFSET = 0; // positive number gets robot closer to human player station
+    public static final double SWERVE_ODOMETRY_MULTIPLIER =
+      (SWERVE_WHEEL_DIAMETER - (SWERVE_WHEEL_DIAMETER_INCREMENT_5BALL * SWERVE_5BALL_INCHES_OFFSET)) / SWERVE_WHEEL_DIAMETER;
 
     // Constraint for the motion profilied robot angle controller
     public static final TrapezoidProfile.Constraints SWERVE_CONTROLLER_ANGULAR_CONSTRAINTS =
