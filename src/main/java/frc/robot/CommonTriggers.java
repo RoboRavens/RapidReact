@@ -50,14 +50,12 @@ public class CommonTriggers {
         }
 
         // If in auto mode, additionally run the shooter if there are two balls OR the driver is in limelight mode
-        if (Robot.OP_PAD.getButtonValue(ButtonCode.SHOOTER_PROFILE_MANUAL_OVERRIDE) == false) {
-            if (Robot.getRobotCargoInventory() >= 2) {
-                runShooter = true;
-            }
+        if (Robot.getRobotCargoInventory() >= 2) {
+            runShooter = true;
+        }
 
-            if (Robot.GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER)) {
-                runShooter = true;
-            }
+        if (Robot.GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER)) {
+            runShooter = true;
         }
 
         return runShooter;

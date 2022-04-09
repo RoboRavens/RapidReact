@@ -17,8 +17,6 @@ public class TeleopShuffleboard {
             .withProperties(Map.of("Show crosshair", false, "Show controls", false))
             .withSize(5, 5)
             .withPosition(0, 0);
-        tab.addBoolean("Auto Shoot", () -> Robot.OP_PAD.getButtonValue(ButtonCode.SHOOTER_PROFILE_MANUAL_OVERRIDE))
-            .withPosition(7, 0);
         tab.addBoolean("Shooter Rev", () -> Robot.OP_PAD.getButtonValue(ButtonCode.SHOOTER_REV))
             .withPosition(8, 0);
         tab.addBoolean("Climber Override", () -> Robot.OP_PAD.getButtonValue(ButtonCode.CLIMBER_OVERRIDE))
