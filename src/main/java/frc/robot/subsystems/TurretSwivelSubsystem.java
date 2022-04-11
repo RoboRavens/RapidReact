@@ -26,21 +26,22 @@ public class TurretSwivelSubsystem extends SubsystemBase {
     private BufferedDigitalInput _clockwiseLimit; // NEGATIVE ANGLE
     private BufferedDigitalInput _counterClockwiseLimit; // POSITIVE ANGLE
 
+    private double motorOutputCap = Constants.TURRET_MOTOR_TRACKING_OUTPUT_CAP;
+
     public TurretSwivelSubsystem() {
         _turretMotor = new WPI_TalonSRX(RobotMap.TURRET_MOTOR);
-        _zeroLimit = new BufferedDigitalInput(RobotMap.TURRET_ZERO_LIMIT_DIO_CHANNEL);
-        _clockwiseLimit = new BufferedDigitalInput(RobotMap.TURRET_CLOCKWISE_LIMIT_DIO_CHANNEL);
-        _counterClockwiseLimit = new BufferedDigitalInput(RobotMap.TURRET_COUNTER_CLOCKWISE_LIMIT_DIO_CHANNEL);
+        _zeroLimit = new BufferedDigitalInput(RobotMap.TURRET_ZERO_LIMIT_DIO_CHANNEL, false, false);
+        _clockwiseLimit = new BufferedDigitalInput(RobotMap.TURRET_CLOCKWISE_LIMIT_DIO_CHANNEL, false, false);
+        _counterClockwiseLimit = new BufferedDigitalInput(RobotMap.TURRET_COUNTER_CLOCKWISE_LIMIT_DIO_CHANNEL, false, false);
         
 //        _turretMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
 
         ErrorCode sensorError = _turretMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
 
-        _turretMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
-        _turretMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
-        setPidProfile(Constants.TURRET_DEFAULT_PID);
-
-        setEncoder(0);
+        // _turretMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
+        // _turretMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
+        this.setPidProfile(Constants.TURRET_DEFAULT_PID);
+        this.setEncoder(0);
     }
 
     @Override
@@ -54,15 +55,11 @@ public class TurretSwivelSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Turret Target", _shot.target);
         SmartDashboard.putBoolean("Turret Target Sighted", Robot.LIMELIGHT_SUBSYSTEM.hasTargetSighted());
 
-
-        SmartDashboard.putNumber("RAW TURRET SENSOR", _turretMotor.getSelectedSensorPosition());
         SmartDashboard.putBoolean("Counterclock limit", _counterClockwiseLimit.get());
         SmartDashboard.putBoolean("Zero limit", _zeroLimit.get());
         SmartDashboard.putBoolean("Clockwise limit", _clockwiseLimit.get());
 
-        if (_zeroLimit.get() == true) {
-            this.setEncoder(0);
-        }
+        this.checkAndSetHardwareLimit();
     }
 
     @Override
@@ -72,6 +69,14 @@ public class TurretSwivelSubsystem extends SubsystemBase {
 
     public void defaultCommand() {
                 
+    }
+
+    public void setOutputCap(double cap) {
+        // Only update the output cap if it's different than the current output cap.
+        if (cap != motorOutputCap) {
+            motorOutputCap = cap;
+            _turretMotor.configClosedLoopPeakOutput(Constants.TURRET_IDX, cap);
+        }
     }
 
     public double getAngle() {
@@ -93,10 +98,6 @@ public class TurretSwivelSubsystem extends SubsystemBase {
             angle += (Math.abs(angle) / angle) * -360;
         }
 
-        if (checkLimits(angle)) {
-            angle = getAngle(); // Set angle to current angle if turret is about to go past limit switch
-        }
-
         angle = Math.max(angle, -1 * Constants.TURRET_RANGE); //Limit to turret range pos/neg
         angle = Math.min(angle, Constants.TURRET_RANGE);
         if (Constants.TURRET_ENABLED) {
@@ -105,25 +106,18 @@ public class TurretSwivelSubsystem extends SubsystemBase {
         _shot.target = angle;
     }
 
-    /**
-     * Returns true if the input breaches the limit switch
-     * @param targetAngle Target angle to check
-     * @return Returns true if a limit is pressed and the targetAngle direction from the current angle is towards/past the limit switch.
-     */
-    private boolean checkLimits(double targetAngle) {
+    private void checkAndSetHardwareLimit() {
         if(_clockwiseLimit.get()) {
-            if(targetAngle - this.getAngle() < 0) { // If change in angle is clockwise:
-                return true;
-            }
+            this.setEncoder(Constants.TURRET_CLOCKWISE_HARDWARE_LIMIT * Constants.ENCODER_TO_TURRET_RATIO);
         }
 
         if(_counterClockwiseLimit.get()) {
-            if(targetAngle - this.getAngle() > 0) { // If change in angle is counterclockwise:
-                return true;
-            }
+            this.setEncoder(Constants.TURRET_COUNTER_CLOCKWISE_HARDWARE_LIMIT * Constants.ENCODER_TO_TURRET_RATIO);
         }
 
-        return false;
+        // if (_zeroLimit.get()) {
+        //     this.setEncoder(0);
+        // }
     }
 
     /**

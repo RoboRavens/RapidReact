@@ -5,6 +5,9 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 
 public class TurretMissCommand extends CommandBase{
+
+    private double _target;
+    
     public TurretMissCommand() {
         addRequirements(Robot.TURRET_SWIVEL_SUBSYSTEM);
     }
@@ -12,14 +15,18 @@ public class TurretMissCommand extends CommandBase{
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-
+        double angleOffset = Constants.TURRET_MISS_OFFSET;
+        if(Robot.TURRET_SWIVEL_SUBSYSTEM.getAngle() >= 0) {
+            angleOffset = -angleOffset;
+        }
+        
+        _target = Robot.TURRET_SWIVEL_SUBSYSTEM.getAngle() + angleOffset;
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        double angleOffset = (Robot.TURRET_SWIVEL_SUBSYSTEM.getAngle() >= 0 ? -Constants.TURRET_MISS_OFFSET : Constants.TURRET_MISS_OFFSET);
-        Robot.TURRET_SWIVEL_SUBSYSTEM.goToAngle(Robot.TURRET_SWIVEL_SUBSYSTEM.getAngle() + angleOffset);
+        Robot.TURRET_SWIVEL_SUBSYSTEM.goToAngle(_target);
     }
 
     // Called once the command ends or is interrupted.
