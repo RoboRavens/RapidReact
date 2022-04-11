@@ -12,8 +12,8 @@ import frc.robot.commands.auto.TwoBallAutoCommand;
 import frc.util.AutoMode;
 
 public class AutonomousShuffleboard {
-    private SendableChooser<AutoMode> _autoChooser = new SendableChooser<>();
-    public static final AutoMode TWO_BALL_HANGAR_AUTO = TwoBallAutoCommand.getHangarAutoMode();
+    private SendableChooser<Integer> _autoChooser = new SendableChooser<>();
+    private final AutoMode[] _autos = new AutoMode[7];
 
     private final NetworkTableEntry _chosenAuto;
     
@@ -28,20 +28,18 @@ public class AutonomousShuffleboard {
     }
 
     public void robotInit() {
-        AutoMode twoBallWall = TwoBallAutoCommand.getWallAutoMode();
-        AutoMode threeBallTarmac = ThreeBallTarmacAutoCommand.getAutoMode();
-        AutoMode fiveBallHps = FiveBallHps.getAutoMode();
-        AutoMode twoBallHangarPlusHangar = TwoBallAutoCommand.getHangarPlusOtherBallsHangarAutoMode();
-        AutoMode twoBallHangarPlusGoal = TwoBallAutoCommand.getHangarPlusOtherBallsByGoalAutoMode();
-        AutoMode doNothing = new AutoMode("Do Nothing", new InstantCommand());
-    
-        TWO_BALL_HANGAR_AUTO.setDefaultOption(_autoChooser);
-        twoBallWall.addOption(_autoChooser);
-        threeBallTarmac.addOption(_autoChooser);
-        fiveBallHps.addOption(_autoChooser);
-        twoBallHangarPlusHangar.addOption(_autoChooser);
-        twoBallHangarPlusGoal.addOption(_autoChooser);
-        doNothing.addOption(_autoChooser);
+        _autos[0] = TwoBallAutoCommand.getHangarAutoMode();
+        _autos[1] = TwoBallAutoCommand.getWallAutoMode();
+        _autos[2] = ThreeBallTarmacAutoCommand.getAutoMode();
+        _autos[3] = FiveBallHps.getAutoMode();
+        _autos[4] = TwoBallAutoCommand.getHangarPlusOtherBallsHangarAutoMode();
+        _autos[5] = TwoBallAutoCommand.getHangarPlusOtherBallsByGoalAutoMode();
+        _autos[6] = new AutoMode("Do Nothing", new InstantCommand());
+
+        _autoChooser.setDefaultOption(_autos[0].getAutoName(), 0);
+        for(int i = 1; i < _autos.length; i++){
+            _autoChooser.addOption(_autos[i].getAutoName(), i);
+        }
     }
 
     public void switchToTab() {
@@ -49,11 +47,11 @@ public class AutonomousShuffleboard {
     }
 
     public AutoMode getAuto() {
-        var autoMode = _autoChooser.getSelected();
-        if (autoMode == null) {
-            return TWO_BALL_HANGAR_AUTO;
+        var autoModeInt = _autoChooser.getSelected();
+        if (autoModeInt == null) {
+            return _autos[0];
         }
 
-        return autoMode;
+        return _autos[autoModeInt];
     }
 }
