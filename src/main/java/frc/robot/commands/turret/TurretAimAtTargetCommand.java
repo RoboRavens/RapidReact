@@ -12,6 +12,7 @@ import frc.robot.Robot;
 public class TurretAimAtTargetCommand extends CommandBase {
 
   private double _target = 0;
+  private boolean _searchTargetIsClockwise = true;
 
   public TurretAimAtTargetCommand() {
     addRequirements(Robot.TURRET_SWIVEL_SUBSYSTEM);
@@ -32,9 +33,28 @@ public class TurretAimAtTargetCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-    if(Robot.LIMELIGHT_SUBSYSTEM.hasTargetSighted()) {
+    // If the robot sees the goal, immediately set the target and update the output cap.
+    if (Robot.LIMELIGHT_SUBSYSTEM.hasTargetSighted()) {
+      Robot.TURRET_SWIVEL_SUBSYSTEM.setOutputCap(Constants.TURRET_MOTOR_TRACKING_OUTPUT_CAP);
       _target = Robot.TURRET_SWIVEL_SUBSYSTEM.getAngle() - Robot.LIMELIGHT_SUBSYSTEM.getTargetOffsetAngle();
+    }
+    else {
+      // If we don't see a target, start seeking a target.
+      // While seeking, reduce the output cap so the turret oscillates slowly instead of quickly.
+      Robot.TURRET_SWIVEL_SUBSYSTEM.setOutputCap(Constants.TURRET_MOTOR_SEARCHING_OUTPUT_CAP);
+
+      // "Is at target" while seeking the goal means the turret is at the end of its range.
+      // In this case, switch the target to the far end of the range.
+      if (Robot.TURRET_SWIVEL_SUBSYSTEM.getIsAtTarget()) {
+        if (_searchTargetIsClockwise) {
+          _searchTargetIsClockwise = false;
+          _target = Math.min(Constants.TURRET_COUNTER_CLOCKWISE_HARDWARE_LIMIT, Constants.TURRET_RANGE);
+        }
+        else {
+          _searchTargetIsClockwise = true;
+          _target = Math.max(Constants.TURRET_CLOCKWISE_HARDWARE_LIMIT, Constants.TURRET_RANGE * -1);
+        }
+      }
     }
     
     Robot.TURRET_SWIVEL_SUBSYSTEM.goToAngle(_target);

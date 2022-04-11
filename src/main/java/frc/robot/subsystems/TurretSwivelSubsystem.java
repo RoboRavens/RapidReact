@@ -26,6 +26,8 @@ public class TurretSwivelSubsystem extends SubsystemBase {
     private BufferedDigitalInput _clockwiseLimit; // NEGATIVE ANGLE
     private BufferedDigitalInput _counterClockwiseLimit; // POSITIVE ANGLE
 
+    private double motorOutputCap = Constants.TURRET_MOTOR_TRACKING_OUTPUT_CAP;
+
     public TurretSwivelSubsystem() {
         _turretMotor = new WPI_TalonSRX(RobotMap.TURRET_MOTOR);
         _zeroLimit = new BufferedDigitalInput(RobotMap.TURRET_ZERO_LIMIT_DIO_CHANNEL, false, false);
@@ -67,6 +69,14 @@ public class TurretSwivelSubsystem extends SubsystemBase {
 
     public void defaultCommand() {
                 
+    }
+
+    public void setOutputCap(double cap) {
+        // Only update the output cap if it's different than the current output cap.
+        if (cap != motorOutputCap) {
+            motorOutputCap = cap;
+            _turretMotor.configClosedLoopPeakOutput(Constants.TURRET_IDX, cap);
+        }
     }
 
     public double getAngle() {
