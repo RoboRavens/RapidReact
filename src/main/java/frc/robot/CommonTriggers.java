@@ -136,11 +136,6 @@ public class CommonTriggers {
 
     public static Trigger RobotFinishedShooting = new Trigger(() -> {
 
-        // Continues to return true while the rumble command is running so the command can finish
-        if (Robot.CONTROLLER_RUMBLE_COMMAND_FINISHED_SHOOTING.isFinished() == false) {
-            return true;
-        }
-
         // If the robot is ready to shoot, set a variable to true that tracks that the robot was ready
         if (ReleaseBallTrigger.get()) {
             releaseBallTriggerWasTrue = true;

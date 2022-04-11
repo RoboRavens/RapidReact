@@ -32,6 +32,7 @@ import frc.robot.commands.climber.ClimberExtendCommand;
 import frc.robot.commands.climber.ClimberRetractCommand;
 import frc.robot.commands.commandgroups.ControllerRumbleTwiceCommandGroup;
 import frc.robot.commands.commandgroups.ConveyanceFeederEjectAllCommand;
+import frc.robot.commands.commandgroups.FeederUnloadRumbleCommandGroup;
 import frc.robot.commands.commandgroups.JunkShotCommandGroup;
 import frc.robot.commands.controls.ControllerContinuousRumbleCommand;
 import frc.robot.commands.controls.ControllerRumbleCommand;
@@ -127,6 +128,7 @@ public class Robot extends TimedRobot {
   public static final ControllerRumbleTwiceCommandGroup CONTROLLER_RUMBLE_TWICE_COMMAND = new ControllerRumbleTwiceCommandGroup();
   public static final ControllerContinuousRumbleCommand CONTROLLER_CONTINUOUS_RUMBLE_COMMAND = new ControllerContinuousRumbleCommand();
   public static final ControllerRumbleCommand CONTROLLER_RUMBLE_COMMAND_FINISHED_SHOOTING = new ControllerRumbleCommand(.75);
+  public static final FeederUnloadRumbleCommandGroup FEEDER_UNLOAD_RUMBLE_COMMAND_GROUP = new FeederUnloadRumbleCommandGroup();
 
   public static final RavenPiColorSensor COLOR_SENSOR = new RavenPiColorSensor();
   public static Alliance ALLIANCE_COLOR;
@@ -409,7 +411,7 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
         .whenActive(CONTROLLER_CONTINUOUS_RUMBLE_COMMAND);
 
       CommonTriggers.RobotFinishedShooting
-        .whenActive(CONTROLLER_RUMBLE_COMMAND_FINISHED_SHOOTING);
+        .whenActive(FEEDER_UNLOAD_RUMBLE_COMMAND_GROUP);
     }
 
     OP_PAD2.getButton(ButtonCode.CLIMBER_EXTEND).whileHeld(CLIMBER_EXTEND_COMMAND);
