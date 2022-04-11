@@ -119,8 +119,8 @@ public class CommonTriggers {
             hasAmmo = true;
         }
 
-        return limelightIsAligned && rpmIsCorrect && inAutoshootingMode && hasAmmo;
-        // return false;
+        // return limelightIsAligned && rpmIsCorrect && inAutoshootingMode && hasAmmo;
+        return false;
     });
 
     /*
@@ -137,10 +137,17 @@ public class CommonTriggers {
     */
 
     public static Trigger RobotHasOneBall = new Trigger(() -> {
+        if (Robot.autonomousTriggerOverride == true) {
+            return false;
+        }
+
         return Robot.getRobotCargoInventory() == 1;
     });
 
     public static Trigger RobotFinishedShooting = new Trigger(() -> {
+        if (Robot.autonomousTriggerOverride == true) {
+            return false;
+        }
 
         if (ReleaseBallTrigger.get()) {
             releaseBallTriggerWasTrue = true;
