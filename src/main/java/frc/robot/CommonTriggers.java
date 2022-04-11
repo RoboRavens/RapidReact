@@ -8,6 +8,14 @@ import frc.controls.ButtonCode;
 public class CommonTriggers {
     private static boolean releaseBallTriggerWasTrue = false;
 
+    public static Trigger TurretAimLowGoal = new Trigger(() -> {
+        if (Robot.autonomousTriggerOverride) {
+            return false;
+        }
+
+        return Robot.SHOOTER_SUBSYSTEM.getShot()._name == Constants.LOW_GOAL_SHOT_CALIBRATION_PAIR._name;
+    });
+
     public static Trigger AutosteerDisabledTrigger  = new Trigger(() -> {
         if (Robot.autonomousTriggerOverride == true) {
             return false;
@@ -50,14 +58,12 @@ public class CommonTriggers {
         }
 
         // If in auto mode, additionally run the shooter if there are two balls OR the driver is in limelight mode
-        if (Robot.OP_PAD.getButtonValue(ButtonCode.SHOOTER_PROFILE_MANUAL_OVERRIDE) == false) {
-            if (Robot.getRobotCargoInventory() >= 2) {
-                runShooter = true;
-            }
+        if (Robot.getRobotCargoInventory() >= 2) {
+            runShooter = true;
+        }
 
-            if (Robot.GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER)) {
-                runShooter = true;
-            }
+        if (Robot.GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER)) {
+            runShooter = true;
         }
 
         return runShooter;
@@ -136,13 +142,9 @@ public class CommonTriggers {
 
     public static Trigger RobotFinishedShooting = new Trigger(() -> {
 
-        // If the robot is ready to shoot, set a variable to true that tracks that the robot was ready
         if (ReleaseBallTrigger.get()) {
             releaseBallTriggerWasTrue = true;
         }
-        // If the robot was ready to shoot and now does not have any cargo inventory (finished shooting),
-        // Return true
-        // Maybe it's more accurate to check an RPM value to show that the shooting sequence is finsihed?
         else if (Robot.getRobotCargoInventory() == 0 && releaseBallTriggerWasTrue) {
             releaseBallTriggerWasTrue = false;
             return true;

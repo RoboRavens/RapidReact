@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
+
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import frc.util.ShooterCalibration;
 import frc.util.ShooterCalibrationPair;
@@ -143,7 +145,7 @@ public double wednesdayNightCoefficient = 1.08;
 
 
     // All shots need to be tuned.
-    public static final int LOW_GOAL_BACKSPIN_RPM = 1000;
+    public static final int LOW_GOAL_BACKSPIN_RPM = 850;
     public static final double LOW_GOAL_BACKSPIN_KF = 0.0452;  
  //   public static final double LOW_GOAL_BACKSPIN_KF = 0.0;
     public static final double LOW_GOAL_BACKSPIN_KP = 0.15;//0.17;
@@ -152,7 +154,7 @@ public double wednesdayNightCoefficient = 1.08;
     
     public static final double LOW_GOAL_BACKSPIN_VOLTAGE_CONTROL_SETPOINT = LOW_GOAL_BACKSPIN_KF * 12; 
 
-    public static final int LOW_GOAL_TOPSPIN_RPM = 1000;
+    public static final int LOW_GOAL_TOPSPIN_RPM = 1650;
     public static final double LOW_GOAL_TOPSPIN_KF = 0.047;
 //    public static final double LOW_GOAL_TOPSPIN_KF = 0.0;
     public static final double LOW_GOAL_TOPSPIN_KP = 0.15;//0.17;
@@ -345,19 +347,23 @@ Y-offset constants in order:
     public static final ShooterCalibrationPair DISABLED_SHOT_CALIBRATION_PAIR = new ShooterCalibrationPair("Disabled shot", DISABLED_SHOT_BACKSPIN_CALIBRATION, DISABLED_SHOT_TOPSPIN_CALIBRATION);
 
     //TURRET SWIVEL
-    public static boolean TURRET_ENABLED = false; // when false the turret will not move and the drivetrain will align shooter with the goal
+    public static boolean TURRET_ENABLED = true; // when false the turret will not move and the drivetrain will align shooter with the goal
     public static final int TURRET_IDX = 0;
     public static final int TURRET_TIMEOUT_MS = 100;
-    public static final int TURRET_RANGE = 137; //Degrees of motion in either way (180 means full movement both ways)
+    public static final int TURRET_RANGE = 140; //Degrees of motion in either way (180 means full movement both ways)
     public static final double TURRET_GEARBOX_RATIO = 1.0 / 10.0; // Motor is one-tenth speed due to gearbox
     public static final double TURRET_LARGE_GEAR_RATIO = 10.0 / 128.0;
-    public static final double ENCODER_TO_TURRET_RATIO = (TALONFX_TICKS_PER_REVOLUTION / 360.0) / TURRET_GEARBOX_RATIO * 3; // Multiply encoder by this to find angle of turret
+    public static final double ENCODER_TO_TURRET_RATIO = (TALONFX_TICKS_PER_REVOLUTION / 360.0) / TURRET_GEARBOX_RATIO * 3 / (180.0/155.464); // Multiply encoder by this to find angle of turret
     public static final double TURRET_AIM_ALLOWANCE = 2; //Degrees of allowance to say that the turret has "reached" its target
     public static final double TURRET_MISS_OFFSET = 35;
     public static final double TURRET_GEAR_RATIO = 1.0 / 10.0; // Motor is one-tenth speed due to gearbox
+    public static final double TURRET_CLOCKWISE_HARDWARE_LIMIT = -153.707963;
+    public static final double TURRET_COUNTER_CLOCKWISE_HARDWARE_LIMIT = 156.414829;
+    public static final double TURRET_MOTOR_TRACKING_OUTPUT_CAP = 1.0;
+    public static final double TURRET_MOTOR_SEARCHING_OUTPUT_CAP = 0.15;
 
     public static final double TURRET_DEFAULT_KF = 0;
-    public static final double TURRET_DEFAULT_KP = 0.2;
+    public static final double TURRET_DEFAULT_KP = 0.6;
     //public static final double TURRET_DEFAULT_KP = 0.120; //0.075;
     public static final double TURRET_DEFAULT_KI = 0;
     public static final double TURRET_DEFAULT_KD = 0;
@@ -408,6 +414,12 @@ Y-offset constants in order:
     public static final double SWERVE_CONTROLLER_Y_KP = 2;
     public static final double SWERVE_CONTROLLER_ANGLE_KP = 4;
 
+    private static final double SWERVE_WHEEL_DIAMETER = SdsModuleConfigurations.MK4_L1.getWheelDiameter();
+    private static final double SWERVE_WHEEL_DIAMETER_INCREMENT_5BALL = 0.0003186; // reducing the wheel diameter by this increment adds one inch to the 5 ball auto
+    private static final double SWERVE_5BALL_INCHES_OFFSET = 0; // positive number gets robot closer to human player station
+    public static final double SWERVE_ODOMETRY_MULTIPLIER =
+      (SWERVE_WHEEL_DIAMETER - (SWERVE_WHEEL_DIAMETER_INCREMENT_5BALL * SWERVE_5BALL_INCHES_OFFSET)) / SWERVE_WHEEL_DIAMETER;
+
     // Constraint for the motion profilied robot angle controller
     public static final TrapezoidProfile.Constraints SWERVE_CONTROLLER_ANGULAR_CONSTRAINTS =
         new TrapezoidProfile.Constraints(
@@ -434,11 +446,12 @@ Y-offset constants in order:
     public static final double LIMELIGHT_LENS_TO_ROBOT_CENTER_OFFSET_INCHES = 0;
     public static final double MINIMUM_DISTANCE_FROM_LIMELIGHT = 46.0;
 	public static final double MAXIMUM_DISTANCE_FROM_LIMELIGHT = 240.0;
-    public static final double LIMELIGHT_CENTERED_OFFSET = 5;
-    public static final double LIMELIGHT_IS_ALIGNED_DEGREES = 3;
+    public static final double LIMELIGHT_CENTERED_OFFSET = 1.2;
+    public static final double LIMELIGHT_IS_ALIGNED_DEGREES = 1.5;
    
     public static final double MAX_LOW_GOAL_SHOT = .29;
 	public static final double MAX_TARMAC_SHOT = -6;
 	public static final double MAX_AUTO_RADIUS_SHOT = -9.2;
 	public static final double MAX_LAUNCHPAD_SHOT = -11.6;
+  
 }
