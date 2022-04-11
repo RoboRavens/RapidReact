@@ -134,7 +134,6 @@ public class Robot extends TimedRobot {
   public static final RavenPiColorSensor COLOR_SENSOR = new RavenPiColorSensor();
   public static Alliance ALLIANCE_COLOR;
   public static boolean autonomousTriggerOverride = true;
-  public static boolean isTeleopEnabled = false; 
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -178,8 +177,6 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     AUTONOMOUS_SHUFFLEBOARD.robotPeriodic();
 
     triggerDashboardPeriodic();
-    
-    isTeleopEnabled = DriverStation.isTeleopEnabled();
 
     // SmartDashboard.putBoolean("Target Sighted", Robot.LIMELIGHT_SUBSYSTEM.hasTargetSighted());
     // SmartDashboard.putNumber("Limelight Raw Angle", Robot.LIMELIGHT_SUBSYSTEM.getRawTargetOffsetAngle());
@@ -380,19 +377,18 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     CommonTriggers.RobotHas2Balls.negate().and(GAMEPAD.getButton(ButtonCode.RIGHTBUMPER))
       .whileActiveOnce(CONVEYANCE_COLLECT_COMMAND);
 
-    if (isTeleopEnabled) {
-      CommonTriggers.RobotHas2Balls
-        .whenActive(CONTROLLER_RUMBLE_TWICE_COMMAND);
+    CommonTriggers.RobotHas2Balls
+      .whenActive(CONTROLLER_RUMBLE_TWICE_COMMAND);
 
-      CommonTriggers.RobotHasOneBall
-        .whenActive(CONTROLLER_RUMBLE_COMMAND_HAS_ONE_BALL);
+    CommonTriggers.RobotHasOneBall
+      .whenActive(CONTROLLER_RUMBLE_COMMAND_HAS_ONE_BALL);
 
-      CommonTriggers.ReleaseBallTrigger
-        .whenActive(CONTROLLER_CONTINUOUS_RUMBLE_COMMAND);
+    CommonTriggers.ReleaseBallTrigger
+      .whenActive(CONTROLLER_CONTINUOUS_RUMBLE_COMMAND);
 
-      CommonTriggers.RobotFinishedShooting
-        .whenActive(FEEDER_UNLOAD_RUMBLE_COMMAND_GROUP);
-    }
+    CommonTriggers.RobotFinishedShooting
+      .whenActive(FEEDER_UNLOAD_RUMBLE_COMMAND_GROUP);
+
 
     OP_PAD2.getButton(ButtonCode.CLIMBER_EXTEND).whileHeld(CLIMBER_EXTEND_COMMAND);
     OP_PAD2.getButton(ButtonCode.CLIMBER_RETRACT).whileHeld(CLIMBER_RETRACT_COMMAND);
