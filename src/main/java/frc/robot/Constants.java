@@ -359,6 +359,8 @@ Y-offset constants in order:
     public static final double TURRET_GEAR_RATIO = 1.0 / 10.0; // Motor is one-tenth speed due to gearbox
     public static final double TURRET_CLOCKWISE_HARDWARE_LIMIT = -153.707963;
     public static final double TURRET_COUNTER_CLOCKWISE_HARDWARE_LIMIT = 156.414829;
+    public static final double TURRET_MOTOR_TRACKING_OUTPUT_CAP = 1.0;
+    public static final double TURRET_MOTOR_SEARCHING_OUTPUT_CAP = 0.15;
 
     public static final double TURRET_DEFAULT_KF = 0;
     public static final double TURRET_DEFAULT_KP = 0.6;
@@ -451,4 +453,5 @@ Y-offset constants in order:
 	public static final double MAX_TARMAC_SHOT = -6;
 	public static final double MAX_AUTO_RADIUS_SHOT = -9.2;
 	public static final double MAX_LAUNCHPAD_SHOT = -11.6;
+  
 }
