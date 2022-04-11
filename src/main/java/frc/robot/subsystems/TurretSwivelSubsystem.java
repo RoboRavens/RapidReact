@@ -28,19 +28,18 @@ public class TurretSwivelSubsystem extends SubsystemBase {
 
     public TurretSwivelSubsystem() {
         _turretMotor = new WPI_TalonSRX(RobotMap.TURRET_MOTOR);
-        _zeroLimit = new BufferedDigitalInput(RobotMap.TURRET_ZERO_LIMIT_DIO_CHANNEL);
-        _clockwiseLimit = new BufferedDigitalInput(RobotMap.TURRET_CLOCKWISE_LIMIT_DIO_CHANNEL);
-        _counterClockwiseLimit = new BufferedDigitalInput(RobotMap.TURRET_COUNTER_CLOCKWISE_LIMIT_DIO_CHANNEL);
+        _zeroLimit = new BufferedDigitalInput(RobotMap.TURRET_ZERO_LIMIT_DIO_CHANNEL, false, false);
+        _clockwiseLimit = new BufferedDigitalInput(RobotMap.TURRET_CLOCKWISE_LIMIT_DIO_CHANNEL, false, false);
+        _counterClockwiseLimit = new BufferedDigitalInput(RobotMap.TURRET_COUNTER_CLOCKWISE_LIMIT_DIO_CHANNEL, false, false);
         
 //        _turretMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
 
         ErrorCode sensorError = _turretMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
 
-        _turretMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
-        _turretMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
-        setPidProfile(Constants.TURRET_DEFAULT_PID);
-
-        setEncoder(0);
+        // _turretMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
+        // _turretMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
+        this.setPidProfile(Constants.TURRET_DEFAULT_PID);
+        this.setEncoder(0);
     }
 
     @Override
