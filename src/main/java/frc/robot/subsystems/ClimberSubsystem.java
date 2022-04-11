@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -54,7 +55,7 @@ public class ClimberSubsystem extends SubsystemBase {
 	}
 
 	public void extendSlowly() {
-		this.extend(Constants.CLIMBER_EXTEND_SOWLY_POWER_MAGNITUDE);
+		this.extend(Constants.CLIMBER_EXTEND_SLOWLY_POWER_MAGNITUDE);
 	}
 
 	public void extend() {
@@ -63,25 +64,55 @@ public class ClimberSubsystem extends SubsystemBase {
 
 	public void extend(double power) {
 		if (isAtEncoderExtensionLimit() == false || _override == true) {
-			this.releaseClimberBrake();
-			// _climberMotor.set(ControlMode.PercentOutput, power);
-			setVoltage(power);
+			// this.releaseClimberBrake();
+
+			// The climber extends quickly until it nears the extention limit, when it slows down
+			if (getEncoderPosition() >= Constants.CLIMBER_QUICK_EXTEND_ZONE_MAXIMUM) {
+				_climberMotor.setVoltage(Constants.CLIMBER_EXTEND_SLOWLY_POWER_MAGNITUDE);
+			}
+			else {
+				_climberMotor.setVoltage(Constants.CLIMBER_EXTEND_QUICKLY_POWER_MAGNITUDE);
+			}
+
 		}
 	}
 
 	public void retractSlowly() {
-		this.retract(Constants.CLIMBER_RETRACT_SOWLY_POWER_MAGNITUDE);
+		this.retract(Constants.CLIMBER_RETRACT_SLOWLY_POWER_MAGNITUDE);
 	}
 
 	public void retract() {
-		this.retract(Constants.CLIMBER_RETRACT_POWER_MAGNITUDE);
+		this.retract(Constants.CLIMBER_RETRACT_QUICKLY_POWER_MAGNITUDE);
 	}
 
 	public void retract(double power) {
 		if (isAtEncoderRetractionLimit() == false || _override == true) {
-			this.releaseClimberBrake();
+			// this.releaseClimberBrake();
+
+			boolean retractClimberSlowly = false;
+
+			// Checks to see if the climber is in the position to retract slowly
+			if (getEncoderPosition() >= Constants.CLIMBER_QUICK_RETRACT_ZONE_MAXIMUM) {
+				retractClimberSlowly = true;
+			}
+			else if (getEncoderPosition() <= Constants.CLIMBER_QUICK_RETRACT_ZONE_MINIMUM) {
+				retractClimberSlowly = true;
+			}
+			else {
+				retractClimberSlowly = false;
+			}
+
 			// _climberMotor.set(ControlMode.PercentOutput, power);
-			setVoltage(power);
+			// setVoltage(power);
+
+			// Retracts the climber at a slow speed if the climber is beginning to retract or reaching the extension limit
+			// And retracts the climber at a fast speed if the climber is not close to the beginning or retraction limit
+			if (retractClimberSlowly) {
+				_climberMotor.setVoltage(Constants.CLIMBER_RETRACT_SLOWLY_POWER_MAGNITUDE);
+			}
+			else {
+				_climberMotor.setVoltage(Constants.CLIMBER_RETRACT_QUICKLY_POWER_MAGNITUDE);
+			}
 		}
 	}
 

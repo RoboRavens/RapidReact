@@ -408,16 +408,21 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     ));
 
     */
-    OP_PAD2.getButton(ButtonCode.CLIMBER_RETRACT_SLOWLY).whileHeld(new StartEndCommand(
-      () -> Robot.CLIMBER_SUBSYSTEM.retractSlowly(),
-      () -> Robot.CLIMBER_SUBSYSTEM.stop(),
-      Robot.CLIMBER_SUBSYSTEM
-    ));
-    OP_PAD2.getButton(ButtonCode.CLIMBER_EXTEND_SLOWLY).whileHeld(new StartEndCommand(
-      () -> Robot.CLIMBER_SUBSYSTEM.extendSlowly(),
-      () -> Robot.CLIMBER_SUBSYSTEM.stop(),
-      Robot.CLIMBER_SUBSYSTEM
-    ));
+    
+    // OP_PAD2.getButton(ButtonCode.CLIMBER_RETRACT_SLOWLY).whileHeld(new StartEndCommand(
+    //   () -> Robot.CLIMBER_SUBSYSTEM.retractSlowly(),
+    //   () -> Robot.CLIMBER_SUBSYSTEM.stop(),
+    //   Robot.CLIMBER_SUBSYSTEM
+    // ));
+    // OP_PAD2.getButton(ButtonCode.CLIMBER_EXTEND_SLOWLY).whileHeld(new StartEndCommand(
+    //   () -> Robot.CLIMBER_SUBSYSTEM.extendSlowly(),
+    //   () -> Robot.CLIMBER_SUBSYSTEM.stop(),
+    //   Robot.CLIMBER_SUBSYSTEM
+    // ));
+
+    OP_PAD.getButton(ButtonCode.SHOOTER_PROFILE_MANUAL_OVERRIDE)
+      .whileHeld(() -> Robot.SHOOTER_SUBSYSTEM.disableAutoShotSelect())
+      .whenInactive(() -> Robot.SHOOTER_SUBSYSTEM.enableAutoShotSelect());
       
     CommonTriggers.AutosteerDisabledTrigger
       .whileActiveContinuous(DRIVE_TRAIN_DEFAULT_COMMAND::disableAutoSteer)
