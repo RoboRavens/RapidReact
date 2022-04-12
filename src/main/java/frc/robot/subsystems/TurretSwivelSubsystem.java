@@ -10,6 +10,8 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.ravenhardware.BufferedDigitalInput;
@@ -27,12 +29,15 @@ public class TurretSwivelSubsystem extends SubsystemBase {
     private BufferedDigitalInput _counterClockwiseLimit; // POSITIVE ANGLE
     private boolean _enabled = true; // when false the turret will not move and the drivetrain will align shooter with the goal
     private double motorOutputCap = Constants.TURRET_MOTOR_TRACKING_OUTPUT_CAP;
+    private Timer _limelightBlink = new Timer();
+    private boolean _hasBeenCentered = false;
 
     public TurretSwivelSubsystem() {
         _turretMotor = new WPI_TalonSRX(RobotMap.TURRET_MOTOR);
         _zeroLimit = new BufferedDigitalInput(RobotMap.TURRET_ZERO_LIMIT_DIO_CHANNEL, 1, false, false);
         _clockwiseLimit = new BufferedDigitalInput(RobotMap.TURRET_CLOCKWISE_LIMIT_DIO_CHANNEL, 1, false, false);
         _counterClockwiseLimit = new BufferedDigitalInput(RobotMap.TURRET_COUNTER_CLOCKWISE_LIMIT_DIO_CHANNEL, 1, false, false);
+        _limelightBlink.start();
         
 //        _turretMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
 
@@ -60,6 +65,22 @@ public class TurretSwivelSubsystem extends SubsystemBase {
         SmartDashboard.putBoolean("Clockwise limit", _clockwiseLimit.get());
 
         this.checkAndSetHardwareLimit();
+    }
+
+    public boolean getShowTurretNotAlignedWarning() {
+        if (Robot.MODE_IS_DISABLED == false) {
+            return false;
+        }
+
+        if (_hasBeenCentered) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean getTurretNotAlignedLightOn() {
+        return _limelightBlink.get() % 1 < .5;
     }
 
     @Override
@@ -117,9 +138,10 @@ public class TurretSwivelSubsystem extends SubsystemBase {
             this.setEncoder(Constants.TURRET_COUNTER_CLOCKWISE_HARDWARE_LIMIT * Constants.ENCODER_TO_TURRET_RATIO);
         }
 
-        // if (_zeroLimit.get()) {
-        //     this.setEncoder(0);
-        // }
+        if (Robot.MODE_IS_DISABLED && _zeroLimit.get()) {
+            _hasBeenCentered = true;
+            this.setEncoder(0);
+        }
     }
 
     /**

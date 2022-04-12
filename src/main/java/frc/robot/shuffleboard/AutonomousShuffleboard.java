@@ -6,10 +6,12 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.Robot;
 import frc.robot.commands.auto.FiveBallHps;
 import frc.robot.commands.auto.ThreeBallTarmacAutoCommand;
 import frc.robot.commands.auto.TwoBallAutoCommand;
 import frc.util.AutoMode;
+import frc.controls.ButtonCode;
 
 public class AutonomousShuffleboard {
     private SendableChooser<Integer> _autoChooser = new SendableChooser<>();
@@ -21,6 +23,15 @@ public class AutonomousShuffleboard {
         ShuffleboardTab tab = Shuffleboard.getTab("Autonomous");
         tab.add("Atonomous Mode Select", _autoChooser).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2,1);
         _chosenAuto = tab.add("Verify Autonomous Mode", "not chosen").withPosition(0, 1).withSize(2, 1).getEntry();
+
+        tab.addBoolean("Lime Light Off", () -> Robot.OP_PAD.getButtonValue(ButtonCode.LIMELIGHT_LIGHT_OFF_OVERRIDE))
+            .withPosition(3, 0);
+        tab.addBoolean("Shooter Rev", () -> Robot.OP_PAD.getButtonValue(ButtonCode.SHOOTER_REV))
+            .withPosition(4, 0);
+        tab.addBoolean("Climber Override", () -> Robot.CLIMBER_SUBSYSTEM.getOverride())
+            .withPosition(5, 0);
+        tab.addBoolean("Turret Disabled", () -> Robot.TURRET_SWIVEL_SUBSYSTEM.getTurretEnabled() == false)
+            .withPosition(6, 0);
     }
 
     public void robotPeriodic() {

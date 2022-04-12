@@ -9,7 +9,7 @@ public class CommonTriggers {
     private static boolean releaseBallTriggerWasTrue = false;
 
     public static Trigger TurretAimLowGoal = new Trigger(() -> {
-        if (Robot.autonomousTriggerOverride) {
+        if (Robot.MODE_IS_AUTONOMOUS) {
             return false;
         }
 
@@ -17,7 +17,7 @@ public class CommonTriggers {
     });
 
     public static Trigger AutosteerDisabledTrigger  = new Trigger(() -> {
-        if (Robot.autonomousTriggerOverride == true) {
+        if (Robot.MODE_IS_AUTONOMOUS == true) {
             return false;
         }
 
@@ -33,7 +33,7 @@ public class CommonTriggers {
     });
 
     public static Trigger RobotHas2Balls = new Trigger(() -> {
-        if (Robot.autonomousTriggerOverride == true) {
+        if (Robot.MODE_IS_AUTONOMOUS == true) {
             return false;
         }
 
@@ -41,7 +41,7 @@ public class CommonTriggers {
     });
 
     public static Trigger RunShooterTrigger = new Trigger(() -> {
-        if (Robot.autonomousTriggerOverride == true) {
+        if (Robot.MODE_IS_AUTONOMOUS == true) {
             return false;
         }
 
@@ -71,7 +71,7 @@ public class CommonTriggers {
     });
 
     public static Trigger RunAutoshootingTrigger = new Trigger(() -> {
-        if (Robot.autonomousTriggerOverride == true) {
+        if (Robot.MODE_IS_AUTONOMOUS == true) {
             return false;
         }
 
@@ -93,7 +93,7 @@ public class CommonTriggers {
     });
 
     public static Trigger ReleaseBallTrigger = new Trigger(() -> {
-        if (Robot.autonomousTriggerOverride == true) {
+        if (Robot.MODE_IS_AUTONOMOUS == true) {
             return false;
         }
 
@@ -137,7 +137,7 @@ public class CommonTriggers {
     */
 
     public static Trigger RobotHasOneBall = new Trigger(() -> {
-        if (Robot.autonomousTriggerOverride == true) {
+        if (Robot.MODE_IS_AUTONOMOUS == true) {
             return false;
         }
 
@@ -145,7 +145,7 @@ public class CommonTriggers {
     });
 
     public static Trigger RobotFinishedShooting = new Trigger(() -> {
-        if (Robot.autonomousTriggerOverride == true) {
+        if (Robot.MODE_IS_AUTONOMOUS == true) {
             return false;
         }
 
