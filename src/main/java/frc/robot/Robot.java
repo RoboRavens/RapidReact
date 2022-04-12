@@ -309,7 +309,7 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     }
     */
     if (OP_PAD.getButtonValue(ButtonCode.LIMELIGHT_LIGHT_OFF_OVERRIDE)) {
-      RAVEN_BLINKIN_4.setSolid(BlinkinCalibrations.HEARTBEAT);
+      RAVEN_BLINKIN_4.setSolid(BlinkinCalibrations.FIRE);
     }
     else {
       if (Robot.LIMELIGHT_SUBSYSTEM.isAligned()) {
