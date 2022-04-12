@@ -6,6 +6,16 @@ import frc.controls.AxisCode;
 import frc.controls.ButtonCode;
 
 public class CommonTriggers {
+    private static boolean releaseBallTriggerWasTrue = false;
+
+    public static Trigger TurretAimLowGoal = new Trigger(() -> {
+        if (Robot.autonomousTriggerOverride) {
+            return false;
+        }
+
+        return Robot.SHOOTER_SUBSYSTEM.getShot()._name == Constants.LOW_GOAL_SHOT_CALIBRATION_PAIR._name;
+    });
+
     public static Trigger AutosteerDisabledTrigger  = new Trigger(() -> {
         if (Robot.autonomousTriggerOverride == true) {
             return false;
@@ -48,14 +58,12 @@ public class CommonTriggers {
         }
 
         // If in auto mode, additionally run the shooter if there are two balls OR the driver is in limelight mode
-        if (Robot.OP_PAD.getButtonValue(ButtonCode.SHOOTER_PROFILE_MANUAL_OVERRIDE) == false) {
-            if (Robot.getRobotCargoInventory() >= 2) {
-                runShooter = true;
-            }
+        if (Robot.getRobotCargoInventory() >= 2) {
+            runShooter = true;
+        }
 
-            if (Robot.GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER)) {
-                runShooter = true;
-            }
+        if (Robot.GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER)) {
+            runShooter = true;
         }
 
         return runShooter;
@@ -126,5 +134,40 @@ public class CommonTriggers {
         trigger checks all these conditions
         when condition is met (trigger is true) run the feeder wheel's shoot sequence
 
+    */
+
+    public static Trigger RobotHasOneBall = new Trigger(() -> {
+        if (Robot.autonomousTriggerOverride == true) {
+            return false;
+        }
+
+        return Robot.getRobotCargoInventory() == 1;
+    });
+
+    public static Trigger RobotFinishedShooting = new Trigger(() -> {
+        if (Robot.autonomousTriggerOverride == true) {
+            return false;
+        }
+
+        if (ReleaseBallTrigger.get()) {
+            releaseBallTriggerWasTrue = true;
+        }
+        else if (Robot.getRobotCargoInventory() == 0 && releaseBallTriggerWasTrue) {
+            releaseBallTriggerWasTrue = false;
+            return true;
+        }
+
+        return false;
+    });
+
+    /*
+        If there is one ball in the robot
+            rumble once
+        If there are two balls in the robot
+            rumble twice
+        If the ReleaseBallTrigger is active
+            rumble continuously
+        If the balls have just been shot
+            rumble (?)
     */
 }

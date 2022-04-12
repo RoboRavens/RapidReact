@@ -6,14 +6,16 @@ import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Robot;
+import frc.robot.commands.commandgroups.ConveyanceFeederEjectAllCommand;
 import frc.robot.commands.conveyance.ConveyanceCollectCommand;
-import frc.robot.commands.conveyance.ConveyanceEjectCommand;
 import frc.robot.commands.conveyance.ConveyanceIndexCommand;
+import frc.robot.commands.feeder.FeederIndexCommand;
 import frc.robot.commands.feeder.FeederUnloadCommand;
 import frc.robot.commands.shooter.ShooterLowGoalCommand;
 import frc.robot.commands.shooter.ShooterStartInstantCommand;
 import frc.robot.commands.shooter.ShooterStopCommand;
 import frc.robot.commands.shooter.ShooterTarmacCommand;
+import frc.robot.commands.turret.TurretHomeCommand;
 import frc.util.AutoMode;
 import frc.util.PathWeaver;
 
@@ -30,7 +32,7 @@ public class TwoBallAutoCommand {
         var driveToMiddleOpposingTeamBall = Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommandSwerveOptimized(trajectory2).andThen(new WaitCommand(1));
         var driveToTopOpposingTeamBall = Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommandSwerveOptimized(trajectory3).andThen(new WaitCommand(1));
         var drive = new SequentialCommandGroup(driveToMiddleOpposingTeamBall, driveToTopOpposingTeamBall);
-        var driveToOpposingTeamBallsWhilCollecting = new ParallelDeadlineGroup(drive, new ConveyanceCollectCommand());
+        var driveToOpposingTeamBallsWhilCollecting = new ParallelDeadlineGroup(drive, new ConveyanceCollectCommand(), new FeederIndexCommand());
         var unload = new FeederUnloadCommand().withTimeout(3);
 
         var cmd = twoBallHangar
@@ -40,8 +42,10 @@ public class TwoBallAutoCommand {
             .andThen(driveToOpposingTeamBallsWhilCollecting)
             .andThen(new ParallelDeadlineGroup(unload, new ConveyanceIndexCommand()))
             .andThen(new ShooterStopCommand());
+        
+        var cmdTurretDisabled = new ParallelDeadlineGroup(cmd, new TurretHomeCommand());
 
-        return new AutoMode("Two Ball Hangar Plus Hangar", cmd);
+        return new AutoMode("Two Ball Hangar Plus Hangar", cmdTurretDisabled);
     }
 
     public static AutoMode getHangarPlusOtherBallsByGoalAutoMode() {
@@ -53,7 +57,7 @@ public class TwoBallAutoCommand {
         var driveToMiddleOpposingTeamBall = Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommandSwerveOptimized(trajectory2).andThen(new WaitCommand(1));
         var driveToTopOpposingTeamBall = Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommandSwerveOptimized(trajectory3).andThen(new WaitCommand(1));
         var drive = new SequentialCommandGroup(driveToMiddleOpposingTeamBall, driveToTopOpposingTeamBall);
-        var driveToOpposingTeamBallsWhilCollecting = new ParallelDeadlineGroup(drive, new ConveyanceCollectCommand());
+        var driveToOpposingTeamBallsWhilCollecting = new ParallelDeadlineGroup(drive, new ConveyanceCollectCommand(), new FeederIndexCommand());
 
         var driveToEjectionPoint = Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommandSwerveOptimized(trajectory4);
 
@@ -61,7 +65,7 @@ public class TwoBallAutoCommand {
             .andThen(new InstantCommand(() -> Robot.COLOR_SENSOR.setColorSensorFeatureEnabled(false)))  // re-enabled in teleopInit
             .andThen(driveToOpposingTeamBallsWhilCollecting)
             .andThen(driveToEjectionPoint)
-            .andThen(new ConveyanceEjectCommand().withTimeout(3))
+            .andThen(new ConveyanceFeederEjectAllCommand().withTimeout(3))
             .andThen(new ShooterStopCommand());
         
         return new AutoMode("Two Ball Hangar Plus Goal", cmd);

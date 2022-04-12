@@ -209,6 +209,8 @@ public class DrivetrainSubsystem extends DrivetrainSubsystemBase {
     statesHardware[1] = SwerveModuleConverter.ToSwerveModuleState(m_frontRightModule, 0);
     statesHardware[2] = SwerveModuleConverter.ToSwerveModuleState(m_backLeftModule, 0);
     statesHardware[3] = SwerveModuleConverter.ToSwerveModuleState(m_backRightModule, 0);
+    
+    // var odometryStates = DrivetrainSubsystem.adjustStatesForOdometry(statesHardware);
     _odometryFromHardware.update(this.getGyroscopeRotation(), statesHardware);
     // _diagnostics.updateHardware(_odometryFromHardware, statesHardware);
 
@@ -219,6 +221,21 @@ public class DrivetrainSubsystem extends DrivetrainSubsystemBase {
     m_backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[3].angle.getRadians());
 
     // _driveCharacteristics.update(_odometryFromHardware.getPoseMeters(), 360 - m_navx.getAngle());
+  }
+
+  /**
+   * Adjusts the velocit of the states to account for reduction in wheel diameter due to wear.
+   * @param states the original hardware states
+   * @return hardware states adjusted for reduced wheel diameter
+   */
+  private static SwerveModuleState[] adjustStatesForOdometry(SwerveModuleState[] states) {
+    var adjustedStates = new SwerveModuleState[4];
+    double multiplier = Constants.SWERVE_ODOMETRY_MULTIPLIER;
+    adjustedStates[0] = new SwerveModuleState(states[0].speedMetersPerSecond * multiplier, states[0].angle);
+    adjustedStates[1] = new SwerveModuleState(states[1].speedMetersPerSecond * multiplier, states[1].angle);
+    adjustedStates[2] = new SwerveModuleState(states[2].speedMetersPerSecond * multiplier, states[2].angle);
+    adjustedStates[3] = new SwerveModuleState(states[3].speedMetersPerSecond * multiplier, states[3].angle);
+    return states;
   }
 
   private Pose2d getPose() {
