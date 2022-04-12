@@ -310,22 +310,24 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     */
     if (OP_PAD.getButtonValue(ButtonCode.LIMELIGHT_LIGHT_OFF_OVERRIDE)) {
       RAVEN_BLINKIN_4.setSolid(BlinkinCalibrations.HEARTBEAT);
-    }
-
-    if (Robot.LIMELIGHT_SUBSYSTEM.isAligned()) {
-      if (Robot.SHOOTER_SUBSYSTEM.getReadyToShootTarmac()) {
-        RAVEN_BLINKIN_4.setBlink(BlinkinCalibrations.BLUE);
+    } else {
+      if (Robot.LIMELIGHT_SUBSYSTEM.isAligned()) {
+        if (Robot.SHOOTER_SUBSYSTEM.getReadyToShootTarmac()) {
+          RAVEN_BLINKIN_4.setBlink(BlinkinCalibrations.BLUE);
+        }
+        else {
+          RAVEN_BLINKIN_4.setSolid(BlinkinCalibrations.BLUE);
+        }
+      }
+      else if (Robot.LIMELIGHT_SUBSYSTEM.hasTargetSighted()) {
+        RAVEN_BLINKIN_4.setSolid(BlinkinCalibrations.YELLOW);
       }
       else {
-        RAVEN_BLINKIN_4.setSolid(BlinkinCalibrations.BLUE);
+        RAVEN_BLINKIN_4.setSolid(BlinkinCalibrations.RED);
       }
     }
-    else if (Robot.LIMELIGHT_SUBSYSTEM.hasTargetSighted()) {
-      RAVEN_BLINKIN_4.setSolid(BlinkinCalibrations.YELLOW);
-    }
-    else {
-      RAVEN_BLINKIN_4.setSolid(BlinkinCalibrations.RED);
-    }
+
+    
 
 
     if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceStagingBeamBreakHasBall() == false && Robot.FEEDER_SUBSYSTEM.getFeederHasBall() == false) {
