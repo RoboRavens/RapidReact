@@ -187,10 +187,12 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
       Robot.LIMELIGHT_SUBSYSTEM.turnLEDOff();
     }
 
-    SmartDashboard.putString("CONVEYANCE COLOR", Robot.COLOR_SENSOR.getSensorBallColor(RavenPiPosition.CONVEYANCE).toString());
-    SmartDashboard.putString("FEEDER COLOR", Robot.COLOR_SENSOR.getSensorBallColor(RavenPiPosition.FEEDER).toString());
+    SmartDashboard.putString("CONVEYANCE COLOR", Robot.COLOR_SENSOR.getIntakeSensorAllianceColor().toString());
+    SmartDashboard.putString("FEEDER COLOR", Robot.COLOR_SENSOR.getFeederSensorAllianceColor().toString());
     // SmartDashboard.putBoolean("FEEDER HAS CORRECT BALL", Robot.COLOR_SENSOR.getSensorIsCorrectBallColorStrict(RavenPiPosition.FEEDER))
+    SmartDashboard.putString("DS ALLIANCE COLOR", ALLIANCE_COLOR.toString());
   
+
     int sensor0Green = Robot.COLOR_SENSOR.getRawColor0().green;
     int sensor0Red = Robot.COLOR_SENSOR.getRawColor0().red;
     int sensor0Blue = Robot.COLOR_SENSOR.getRawColor0().blue;

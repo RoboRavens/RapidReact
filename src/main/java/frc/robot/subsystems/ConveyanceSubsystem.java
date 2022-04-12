@@ -100,7 +100,8 @@ public class ConveyanceSubsystem extends SubsystemBase {
     boolean conveyanceHasProperColorCargo = false;
     
     if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceStagingBeamBreakHasBall()) {
-      if (Robot.COLOR_SENSOR.getSensorIsCorrectBallColorLenient(RavenPiPosition.CONVEYANCE)) {
+      if (Robot.COLOR_SENSOR.getConveyanceSensorIsCorrectBallColorLenient()) {
+      // if (Robot.COLOR_SENSOR.getSensorIsCorrectBallColorLenient(RavenPiPosition.CONVEYANCE)) {
         conveyanceHasProperColorCargo = true;
       }
     }
@@ -112,13 +113,13 @@ public class ConveyanceSubsystem extends SubsystemBase {
     boolean conveyanceHasWrongColorCargo = false;
     
     if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceStagingBeamBreakHasBall()) {
-      if (Robot.COLOR_SENSOR.getSensorIsCorrectBallColorStrict(RavenPiPosition.CONVEYANCE)) {
+      if (Robot.COLOR_SENSOR.getConveyanceSensorIsCorrectBallColorStrict()) {
         conveyanceHasWrongColorCargo = true;
       }
     }
 
     // Always return false for Lakeview
-    return false;
-    // return conveyanceHasWrongColorCargo;
+    // return false;
+    return conveyanceHasWrongColorCargo;
   }
 } 
