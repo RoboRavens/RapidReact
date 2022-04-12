@@ -30,9 +30,9 @@ public class TurretSwivelSubsystem extends SubsystemBase {
 
     public TurretSwivelSubsystem() {
         _turretMotor = new WPI_TalonSRX(RobotMap.TURRET_MOTOR);
-        _zeroLimit = new BufferedDigitalInput(RobotMap.TURRET_ZERO_LIMIT_DIO_CHANNEL, false, false);
-        _clockwiseLimit = new BufferedDigitalInput(RobotMap.TURRET_CLOCKWISE_LIMIT_DIO_CHANNEL, false, false);
-        _counterClockwiseLimit = new BufferedDigitalInput(RobotMap.TURRET_COUNTER_CLOCKWISE_LIMIT_DIO_CHANNEL, false, false);
+        _zeroLimit = new BufferedDigitalInput(RobotMap.TURRET_ZERO_LIMIT_DIO_CHANNEL, 1, false, false);
+        _clockwiseLimit = new BufferedDigitalInput(RobotMap.TURRET_CLOCKWISE_LIMIT_DIO_CHANNEL, 1, false, false);
+        _counterClockwiseLimit = new BufferedDigitalInput(RobotMap.TURRET_COUNTER_CLOCKWISE_LIMIT_DIO_CHANNEL, 1, false, false);
         
 //        _turretMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
 

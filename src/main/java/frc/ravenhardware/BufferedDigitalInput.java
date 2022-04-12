@@ -7,25 +7,25 @@ import edu.wpi.first.wpilibj.DigitalInput;
 public class BufferedDigitalInput {
 	private DigitalInput _digitalInput;
 	private boolean _valueWhenTrue;
-	protected int listSize = 5;
+	private int _listSize;
+	private LinkedList<Boolean> _sensorValues;
 
-	LinkedList<Boolean> sensorValues;
-
-	public BufferedDigitalInput(int channel, boolean valueWhenTrue, boolean defaultValue) {
+	public BufferedDigitalInput(int channel, int bufferSize, boolean valueWhenTrue, boolean defaultSensorValue) {
 		_digitalInput = new DigitalInput(channel);
-		sensorValues = new LinkedList<Boolean>();
+		_sensorValues = new LinkedList<Boolean>();
+		_listSize = bufferSize;
 		_valueWhenTrue = valueWhenTrue;
-		for (int i = 0; i < listSize; i++) {
-			sensorValues.add(defaultValue == valueWhenTrue);
+		for (int i = 0; i < _listSize; i++) {
+			_sensorValues.add(defaultSensorValue == _valueWhenTrue);
 		}
 	}
 
 	// Adds the current sensor value to the list, and
 	// removes the first item if the list is larger than the list size.
 	public void maintainState() {
-		sensorValues.add(_digitalInput.get());
-		if (sensorValues.size() > listSize) {
-			sensorValues.remove();
+		_sensorValues.add(_digitalInput.get());
+		if (_sensorValues.size() > _listSize) {
+			_sensorValues.remove();
 		}
 	}
 
@@ -33,13 +33,13 @@ public class BufferedDigitalInput {
 		int trues = 0;
 
 		// Count the instances of "true" in the list values.
-		for (Boolean value : sensorValues) {
+		for (Boolean value : _sensorValues) {
 			if (value) {
 				trues++;
 			}
 		}
 
 		// If trues is greater than half the list size, return true. Otherwise, false.
-		return (trues * 2 > listSize) == _valueWhenTrue;
+		return (trues * 2 > _listSize) == _valueWhenTrue;
 	}
 }
