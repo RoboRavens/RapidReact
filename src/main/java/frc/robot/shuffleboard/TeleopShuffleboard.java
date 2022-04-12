@@ -36,6 +36,9 @@ public class TeleopShuffleboard {
         tab.addBoolean("Low Goal",
             () -> Robot.SHOOTER_SUBSYSTEM.getShot()._name  == Constants.LOW_GOAL_SHOT_CALIBRATION_PAIR._name)
             .withPosition(5, 3);
+            tab.addBoolean("Junk Shot",
+            () -> Robot.SHOOTER_SUBSYSTEM.getShot()._name  == Constants.JUNK_SHOT_CALIBRATION_PAIR._name)
+            .withPosition(5, 4);
         tab.addBoolean("Feeder",
             () -> Robot.FEEDER_SUBSYSTEM.getFeederHasBall())
             .withPosition(6, 2);

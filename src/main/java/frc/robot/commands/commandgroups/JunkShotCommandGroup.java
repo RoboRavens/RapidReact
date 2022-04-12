@@ -7,6 +7,8 @@ package frc.robot.commands.commandgroups;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.feeder.FeederForceShootDurationCommand;
 import frc.robot.commands.feeder.FeederShootOneBallCommand;
+import frc.robot.commands.shooter.ShooterJunkShotCommand;
+import frc.robot.commands.shooter.ShooterRememberedShotCommand;
 import frc.robot.commands.shooter.ShooterStartInstantCommand;
 import frc.robot.commands.shooter.ShooterStopCommand;
 import frc.robot.commands.turret.TurretMissCommand;
@@ -15,14 +17,15 @@ public class JunkShotCommandGroup extends SequentialCommandGroup {
 
   public JunkShotCommandGroup() {
     addCommands(
-    //new ShooterLowGoalCommand(), // Set the fail shot profile
+    new ShooterJunkShotCommand(), // Set the fail shot profile
 
     // NEED TO RE-ADD THIS LINE BUT IT IS DANGEROUS FOR TURRET TESTING
     // new TurretMissCommand().withTimeout(1), // Set the miss shot angle
     new ShooterStartInstantCommand(), // Rev
     
-  new    FeederForceShootDurationCommand(2.5),
-  new ShooterStopCommand()
+    new    FeederForceShootDurationCommand(2.5),
+    new ShooterStopCommand(),
+    new ShooterRememberedShotCommand()
     /*new FeederShootOneBallCommand(), // Shoot 1
     new ShooterStopCommand(), // End
     new TurretAimAtTargetCommand() // End

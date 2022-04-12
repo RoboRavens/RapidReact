@@ -28,6 +28,7 @@ public class ShooterSubsystem extends SubsystemBase {
     private boolean _autoShotSelect = false;
     private double _lastShotTime = 0;
     private double _arbitraryFeedForward = 0;
+    private ShooterCalibrationPair _rememberedShot;
 
     public ShooterSubsystem() {
         _backspinMotor = new TalonFX(RobotMap.SHOOTER_BACKSPIN_MOTOR);
@@ -93,6 +94,16 @@ public class ShooterSubsystem extends SubsystemBase {
         setMotorShot(_topspinMotor, shot._topspinMotorCalibration);
 
         this._shot = shot;
+    }
+
+    public void rememberCurrentShot() {
+        this._rememberedShot = this.getShot();
+    }
+
+    public void setToRememberedShot() {
+        if(this._rememberedShot != null) {
+            setShot(this._rememberedShot);
+        }
     }
 
     /**
@@ -298,10 +309,10 @@ public class ShooterSubsystem extends SubsystemBase {
           shotToSet = Constants.LAUNCHPAD_SHOT_CALIBRATION_PAIR;
         }
 
-        // If the feeder has a ball of the wrong color, we use a low goal profile for ejection.
+        // If the feeder has a ball of the wrong color, we use a junk profile for ejection.
         // Always return false for Lakeview
         if (Robot.FEEDER_SUBSYSTEM.feederHasWrongColorCargo()) {
-            shotToSet = Constants.LOW_GOAL_SHOT_CALIBRATION_PAIR;
+            shotToSet = Constants.JUNK_SHOT_CALIBRATION_PAIR;
         }
 
         // ONLY set the profile if it's not already set, to avoid excess CAN traffic.
