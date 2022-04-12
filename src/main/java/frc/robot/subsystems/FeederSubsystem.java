@@ -156,7 +156,7 @@ public class FeederSubsystem extends SubsystemBase {
     boolean feederHasWrongColorCargo = false;
     
     if (Robot.FEEDER_SUBSYSTEM.getFeederHasBall()) {
-      if (Robot.COLOR_SENSOR.getFeederSensorIsCorrectBallColorStrict() == false) {
+      if (Robot.COLOR_SENSOR.getFeederSensorIsWrongBallColorStrict()) {
         feederHasWrongColorCargo = true;
       }
     }

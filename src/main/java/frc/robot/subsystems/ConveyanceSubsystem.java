@@ -113,7 +113,7 @@ public class ConveyanceSubsystem extends SubsystemBase {
     boolean conveyanceHasWrongColorCargo = false;
     
     if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceStagingBeamBreakHasBall()) {
-      if (Robot.COLOR_SENSOR.getConveyanceSensorIsCorrectBallColorStrict()) {
+      if (Robot.COLOR_SENSOR.getConveyanceSensorIsWrongBallColorStrict()) {
         conveyanceHasWrongColorCargo = true;
       }
     }

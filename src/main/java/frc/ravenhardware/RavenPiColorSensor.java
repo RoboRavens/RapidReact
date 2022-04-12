@@ -165,6 +165,38 @@ public class RavenPiColorSensor extends PicoColorSensor{
         return getIsCorrectBallType;
     }
 
+    public boolean getConveyanceSensorIsWrongBallColorStrict() {
+        boolean getIsWrongBallType = false;
+
+        Alliance ballColor = getIntakeSensorAllianceColor();
+
+        if (ballColor != Robot.ALLIANCE_COLOR && ballColor != Alliance.Invalid) {
+            getIsWrongBallType = true;
+        }
+
+        if (_colorSensorFeatureEnabled == false) {
+            getIsWrongBallType = false;
+        }
+
+        return getIsWrongBallType;
+    }
+
+    public boolean getFeederSensorIsWrongBallColorStrict() {
+        boolean getIsWrongBallType = false;
+
+        Alliance ballColor = getFeederSensorAllianceColor();
+
+        if (ballColor != Robot.ALLIANCE_COLOR && ballColor != Alliance.Invalid) {
+            getIsWrongBallType = true;
+        }
+
+        if (_colorSensorFeatureEnabled == false) {
+            getIsWrongBallType = false;
+        }
+
+        return getIsWrongBallType;
+    }
+
     
     public boolean getFeederSensorIsCorrectBallColorLenient() {
         boolean getIsCorrectBallType = false;
