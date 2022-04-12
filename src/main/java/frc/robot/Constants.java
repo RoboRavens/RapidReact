@@ -455,5 +455,9 @@ Y-offset constants in order:
 	public static final double MAX_TARMAC_SHOT = -6;
 	public static final double MAX_AUTO_RADIUS_SHOT = -9.2;
 	public static final double MAX_LAUNCHPAD_SHOT = -11.6;
-  
+    
+    // SHUFFLEBOARD
+    public static final int CAMERA_FPS = 15;
+    public static final int CAMERA_WIDTH = 100;
+    public static final int CAMERA_HEIGHT = 80;
 }

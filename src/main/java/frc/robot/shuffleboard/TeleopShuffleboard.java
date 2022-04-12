@@ -2,6 +2,7 @@ package frc.robot.shuffleboard;
 
 import java.util.Map;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.controls.ButtonCode;
@@ -45,6 +46,12 @@ public class TeleopShuffleboard {
         tab.addBoolean("Is Aligned", () -> Robot.LIMELIGHT_SUBSYSTEM.isAligned())
             .withSize(3, 3)
             .withPosition(7, 1);
+    }
+
+    public void robotInit() {
+        var camera = CameraServer.startAutomaticCapture();
+        camera.setFPS(Constants.CAMERA_FPS);
+        camera.setResolution(Constants.CAMERA_WIDTH, Constants.CAMERA_HEIGHT);
     }
 
     public void switchToTab() {
