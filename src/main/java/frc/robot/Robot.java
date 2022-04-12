@@ -310,7 +310,8 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     */
     if (OP_PAD.getButtonValue(ButtonCode.LIMELIGHT_LIGHT_OFF_OVERRIDE)) {
       RAVEN_BLINKIN_4.setSolid(BlinkinCalibrations.HEARTBEAT);
-    } else {
+    }
+    else {
       if (Robot.LIMELIGHT_SUBSYSTEM.isAligned()) {
         if (Robot.SHOOTER_SUBSYSTEM.getReadyToShootTarmac()) {
           RAVEN_BLINKIN_4.setBlink(BlinkinCalibrations.BLUE);
@@ -326,9 +327,6 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
         RAVEN_BLINKIN_4.setSolid(BlinkinCalibrations.RED);
       }
     }
-
-    
-
 
     if (Robot.CONVEYANCE_SUBSYSTEM.getConveyanceStagingBeamBreakHasBall() == false && Robot.FEEDER_SUBSYSTEM.getFeederHasBall() == false) {
       RAVEN_BLINKIN_3.setSolid(BlinkinCalibrations.RED);
