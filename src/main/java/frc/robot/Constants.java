@@ -347,7 +347,6 @@ Y-offset constants in order:
     public static final ShooterCalibrationPair DISABLED_SHOT_CALIBRATION_PAIR = new ShooterCalibrationPair("Disabled shot", DISABLED_SHOT_BACKSPIN_CALIBRATION, DISABLED_SHOT_TOPSPIN_CALIBRATION);
 
     //TURRET SWIVEL
-    public static boolean TURRET_ENABLED = true; // when false the turret will not move and the drivetrain will align shooter with the goal
     public static final int TURRET_IDX = 0;
     public static final int TURRET_TIMEOUT_MS = 100;
     public static final int TURRET_RANGE = 140; //Degrees of motion in either way (180 means full movement both ways)

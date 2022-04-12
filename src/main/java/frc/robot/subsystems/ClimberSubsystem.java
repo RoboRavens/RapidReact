@@ -30,12 +30,12 @@ public class ClimberSubsystem extends SubsystemBase {
     _climberBrake = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, RobotMap.CLIMBER_EXTENSION_SOLENOID, RobotMap.CLIMBER_RETRACTION_SOLENOID);
 	}
 
-	public void turnOverrideOn() {
-		this._override = true;
+	public void setOverride(boolean value) {
+		_override = value;
 	}
 
-	public void turnOverrideOff() {
-		this._override = false;
+	public boolean getOverride() {
+		return _override;
 	}
 
 	public void brakeClimber() {
