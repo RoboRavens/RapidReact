@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -182,7 +183,7 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     // SmartDashboard.putNumber("Limelight Raw Angle", Robot.LIMELIGHT_SUBSYSTEM.getRawTargetOffsetAngle());
     // SmartDashboard.putNumber("Limelight Area", Robot.LIMELIGHT_SUBSYSTEM.getArea());
     
-    if (Constants.TURRET_ENABLED || GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER) || CommonTriggers.RunAutoshootingTrigger.getAsBoolean()) {
+    if (Robot.TURRET_SWIVEL_SUBSYSTEM.getTurretEnabled() || GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER) || CommonTriggers.RunAutoshootingTrigger.getAsBoolean()) {
       Robot.LIMELIGHT_SUBSYSTEM.turnLEDOn();
     } else {
       Robot.LIMELIGHT_SUBSYSTEM.turnLEDOff();
@@ -337,6 +338,9 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
       .whileHeld(new InstantCommand(CLIMBER_SUBSYSTEM::turnOverrideOn))
       .whenInactive(new InstantCommand(CLIMBER_SUBSYSTEM::turnOverrideOff));
 
+    OP_PAD.getButton(ButtonCode.TURRET_DISABLED_OVERRIDE).whileActiveContinuous(Robot.TURRET_SWIVEL_SUBSYSTEM::disableTurret);
+    OP_PAD.getButton(ButtonCode.TURRET_DISABLED_OVERRIDE).negate().whileActiveContinuous(Robot.TURRET_SWIVEL_SUBSYSTEM::enableTurret);
+
     Trigger shootGarbarge = new Trigger(() -> {
       if (Robot.autonomousTriggerOverride == true) {
           return false;
@@ -352,11 +356,9 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
       .whenInactive(DRIVE_TRAIN_SUBSYSTEM::stopCutPower);
 
     // new Trigger(() -> GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER)).or(CommonTriggers.RobotHas2Balls)
-    if (Constants.TURRET_ENABLED == false) {
-      CommonTriggers.RunAutoshootingTrigger
-        .whileActiveContinuous(() -> DRIVE_TRAIN_DEFAULT_COMMAND.followLimelight())
-        .whenInactive(() -> DRIVE_TRAIN_DEFAULT_COMMAND.stopFollowingLimelight());
-    }
+    CommonTriggers.RunAutoshootingTrigger.and(new Trigger(() -> Robot.TURRET_SWIVEL_SUBSYSTEM.getTurretEnabled() == false))
+      .whileActiveContinuous(() -> DRIVE_TRAIN_DEFAULT_COMMAND.followLimelight())
+      .whenInactive(() -> DRIVE_TRAIN_DEFAULT_COMMAND.stopFollowingLimelight());
 
     CommonTriggers.RunShooterTrigger
       .whileActiveContinuous(SHOOTER_START_COMMAND)
