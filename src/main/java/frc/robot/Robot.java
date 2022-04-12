@@ -4,18 +4,14 @@
 
 package frc.robot;
 
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.controls.AxisCode;
 import frc.controls.ButtonCode;
@@ -23,7 +19,6 @@ import frc.controls.Gamepad;
 import frc.ravenhardware.BlinkinCalibrations;
 import frc.ravenhardware.RavenBlinkin;
 import frc.ravenhardware.RavenPiColorSensor;
-import frc.ravenhardware.RavenPiPosition;
 import frc.robot.commands.climber.ClimberDefaultBrakeCommand;
 import frc.robot.commands.climber.ClimberExtendCommand;
 import frc.robot.commands.climber.ClimberRetractCommand;
@@ -156,7 +151,7 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     CONVEYANCE_SUBSYSTEM.setDefaultCommand(CONVEYANCE_INDEX_COMMAND);
     configureButtonBindings();
     LIMELIGHT_SUBSYSTEM.turnLEDOff();
-    CameraServer.startAutomaticCapture();
+    TELEOP_SHUFFLEBOARD.robotInit();
     AUTONOMOUS_SHUFFLEBOARD.robotInit();
     AUTONOMOUS_SHUFFLEBOARD.switchToTab();
   }
