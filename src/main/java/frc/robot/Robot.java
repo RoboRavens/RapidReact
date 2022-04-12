@@ -422,10 +422,6 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     //   () -> Robot.CLIMBER_SUBSYSTEM.stop(),
     //   Robot.CLIMBER_SUBSYSTEM
     // ));
-
-    OP_PAD.getButton(ButtonCode.SHOOTER_PROFILE_MANUAL_OVERRIDE)
-      .whileHeld(() -> Robot.SHOOTER_SUBSYSTEM.disableAutoShotSelect())
-      .whenInactive(() -> Robot.SHOOTER_SUBSYSTEM.enableAutoShotSelect());
       
     CommonTriggers.AutosteerDisabledTrigger
       .whileActiveContinuous(DRIVE_TRAIN_DEFAULT_COMMAND::disableAutoSteer)
