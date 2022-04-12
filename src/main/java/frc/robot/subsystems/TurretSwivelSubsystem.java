@@ -147,12 +147,8 @@ public class TurretSwivelSubsystem extends SubsystemBase {
         return (getAngle() > _shot.target - Constants.TURRET_AIM_ALLOWANCE && getAngle() < _shot.target + Constants.TURRET_AIM_ALLOWANCE);
     }
 
-    public void enableTurret() {
-        _enabled = true;
-    }
-
-    public void disableTurret() {
-        _enabled = false;
+    public void setTurretEnabled(boolean value) {
+        _enabled = value;
     }
 
     public boolean getTurretEnabled() {

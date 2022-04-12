@@ -18,11 +18,11 @@ public class TeleopShuffleboard {
             .withSize(5, 5)
             .withPosition(0, 0);
         tab.addBoolean("Shooter Rev", () -> Robot.OP_PAD.getButtonValue(ButtonCode.SHOOTER_REV))
-            .withPosition(8, 0);
+            .withPosition(7, 0);
         tab.addBoolean("Climber Override", () -> Robot.CLIMBER_SUBSYSTEM.getOverride())
-            .withPosition(9, 0);
+            .withPosition(8, 0);
         tab.addBoolean("Turret Disabled", () -> Robot.TURRET_SWIVEL_SUBSYSTEM.getTurretEnabled() == false)
-            .withPosition(10, 0);
+            .withPosition(9, 0);
         tab.addBoolean("Launchpad",
             () -> Robot.SHOOTER_SUBSYSTEM.getShot()._name == Constants.LAUNCHPAD_SHOT_CALIBRATION_PAIR._name)
             .withPosition(5, 0);

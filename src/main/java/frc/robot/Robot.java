@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -189,6 +188,9 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
       Robot.LIMELIGHT_SUBSYSTEM.turnLEDOff();
     }
 
+    CLIMBER_SUBSYSTEM.setOverride(OP_PAD.getButtonValue(ButtonCode.CLIMBER_OVERRIDE));
+    TURRET_SWIVEL_SUBSYSTEM.setTurretEnabled(OP_PAD.getButtonValue(ButtonCode.TURRET_DISABLED_OVERRIDE) == false);
+
     SmartDashboard.putString("CONVEYANCE COLOR", Robot.COLOR_SENSOR.getSensorBallColor(RavenPiPosition.CONVEYANCE).toString());
     SmartDashboard.putString("FEEDER COLOR", Robot.COLOR_SENSOR.getSensorBallColor(RavenPiPosition.FEEDER).toString());
     // SmartDashboard.putBoolean("FEEDER HAS CORRECT BALL", Robot.COLOR_SENSOR.getSensorIsCorrectBallColorStrict(RavenPiPosition.FEEDER))
@@ -332,14 +334,6 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
       .and(GAMEPAD.getButton(ButtonCode.RIGHTBUMPER))
       .and(GAMEPAD.getButton(ButtonCode.Y))
       .whenActive(DRIVE_TRAIN_SUBSYSTEM::zeroGyroscope);
-    
-
-    OP_PAD.getButton(ButtonCode.CLIMBER_OVERRIDE)
-      .whileHeld(new InstantCommand(CLIMBER_SUBSYSTEM::turnOverrideOn))
-      .whenInactive(new InstantCommand(CLIMBER_SUBSYSTEM::turnOverrideOff));
-
-    OP_PAD.getButton(ButtonCode.TURRET_DISABLED_OVERRIDE).whileActiveContinuous(Robot.TURRET_SWIVEL_SUBSYSTEM::disableTurret);
-    OP_PAD.getButton(ButtonCode.TURRET_DISABLED_OVERRIDE).negate().whileActiveContinuous(Robot.TURRET_SWIVEL_SUBSYSTEM::enableTurret);
 
     Trigger shootGarbarge = new Trigger(() -> {
       if (Robot.autonomousTriggerOverride == true) {
