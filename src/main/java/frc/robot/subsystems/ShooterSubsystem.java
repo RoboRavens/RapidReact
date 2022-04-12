@@ -38,6 +38,7 @@ public class ShooterSubsystem extends SubsystemBase {
         _backspinMotor.setNeutralMode(NeutralMode.Coast);
         _topspinMotor.setNeutralMode(NeutralMode.Coast);
         this.setShot(Constants.TARMAC_SHOT_CALIBRATION_PAIR);
+        this._rememberedShot = this._shot;
         _backspinMotor.setSelectedSensorPosition(0);
         _topspinMotor.setSelectedSensorPosition(0);
     }
@@ -101,9 +102,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void setToRememberedShot() {
-        if(this._rememberedShot != null) {
-            setShot(this._rememberedShot);
-        }
+        setShot(this._rememberedShot);
     }
 
     /**
