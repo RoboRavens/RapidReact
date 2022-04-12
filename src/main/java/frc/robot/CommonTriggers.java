@@ -142,15 +142,15 @@ public class CommonTriggers {
 
     public static Trigger RobotFinishedShooting = new Trigger(() -> {
 
-        if (ReleaseBallTrigger.get()) {
-            releaseBallTriggerWasTrue = true;
-        }
-        else if (Robot.getRobotCargoInventory() == 0 && releaseBallTriggerWasTrue) {
-            releaseBallTriggerWasTrue = false;
-            return true;
-        }
+        // if (ReleaseBallTrigger.get()) {
+        //     releaseBallTriggerWasTrue = true;
+        // }
+        // else if (Robot.getRobotCargoInventory() == 0 && releaseBallTriggerWasTrue) {
+        //     releaseBallTriggerWasTrue = false;
+        //     return true;
+        // }
 
-        return false;
+        return Robot.INTEGRATIONS_SUBSYSTEM.isRobotFinishedShooting();
     });
 
     /*
