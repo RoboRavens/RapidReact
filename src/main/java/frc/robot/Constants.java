@@ -427,15 +427,18 @@ Y-offset constants in order:
     //CLIMBER
     public static final double CLIMBER_HOLD_POSITION_POWER_MAGNITUDE = 0; // .13
 	public static final double CLIMBER_EXTEND_SLOW_POWER_MAGNITUDE = .5;
-    public static final double CLIMBER_EXTEND_FAST_POWER_MAGNITUDE = 1;
-    public static final double CLIMBER_EXTEND_SOWLY_POWER_MAGNITUDE = .2;
-	public static final double CLIMBER_RETRACT_POWER_MAGNITUDE = -.4;
-    public static final double CLIMBER_RETRACT_SOWLY_POWER_MAGNITUDE = -.2;
+    public static final double CLIMBER_EXTEND_QUICKLY_POWER_MAGNITUDE = 1;
+    public static final double CLIMBER_EXTEND_SLOWLY_POWER_MAGNITUDE = .2;
+	public static final double CLIMBER_RETRACT_QUICKLY_POWER_MAGNITUDE = -.4;
+    public static final double CLIMBER_RETRACT_SLOWLY_POWER_MAGNITUDE = -.2;
 	public static final double CLIMBER_RETRACT_TO_LATCH_POWER_MAGNITUDE = .2;
     // public static final double CLIMBER_EXTEND_ENCODER_TARGET = 241251.000000 - 45320.000000;
     public static final double CLIMBER_EXTEND_ENCODER_TARGET = 260000.0;
     public static final double CLIMBER_ENCODER_ACCURACY_RANGE = 4000;
     public static final double CLIMBER_IS_EXTENDED_ENCODER_THRESHOLD = CLIMBER_EXTEND_ENCODER_TARGET / 5;
+    public static final double CLIMBER_QUICK_RETRACT_ZONE_MINIMUM = 86000; // Value may not be accurate. Needs to be tested
+    public static final double CLIMBER_QUICK_RETRACT_ZONE_MAXIMUM = 172000; // Value may not be accurate. Needs to be tested
+    public static final double CLIMBER_QUICK_EXTEND_ZONE_MAXIMUM = 172000; // Value may not be accurate. Needs to be tested
 
     
     //LimeLight
