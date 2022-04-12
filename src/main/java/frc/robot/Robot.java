@@ -65,6 +65,7 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystemBase;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeExtenderSubsystem;
+import frc.robot.subsystems.IntegrationsSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TurretSwivelSubsystem;
@@ -127,6 +128,7 @@ public class Robot extends TimedRobot {
   public static final ControllerRumbleCommand CONTROLLER_RUMBLE_COMMAND_FINISHED_SHOOTING = new ControllerRumbleCommand(.75);
   public static final FeederUnloadRumbleCommandGroup FEEDER_UNLOAD_RUMBLE_COMMAND_GROUP = new FeederUnloadRumbleCommandGroup();
   public static final TurretGoToAngleCommand TURRET_AIM_LOWGOAL_COMMAND = new TurretGoToAngleCommand(90);
+  public static final IntegrationsSubsystem INTEGRATIONS_SUBSYSTEM = new IntegrationsSubsystem();
 
   public static final AutonomousShuffleboard AUTONOMOUS_SHUFFLEBOARD = new AutonomousShuffleboard();
   public static final TeleopShuffleboard TELEOP_SHUFFLEBOARD = new TeleopShuffleboard();

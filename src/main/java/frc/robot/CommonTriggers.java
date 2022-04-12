@@ -149,15 +149,15 @@ public class CommonTriggers {
             return false;
         }
 
-        if (ReleaseBallTrigger.get()) {
-            releaseBallTriggerWasTrue = true;
-        }
-        else if (Robot.getRobotCargoInventory() == 0 && releaseBallTriggerWasTrue) {
-            releaseBallTriggerWasTrue = false;
-            return true;
-        }
+        // if (ReleaseBallTrigger.get()) {
+        //     releaseBallTriggerWasTrue = true;
+        // }
+        // else if (Robot.getRobotCargoInventory() == 0 && releaseBallTriggerWasTrue) {
+        //     releaseBallTriggerWasTrue = false;
+        //     return true;
+        // }
 
-        return false;
+        return Robot.INTEGRATIONS_SUBSYSTEM.isRobotFinishedShooting();
     });
 
     /*

@@ -26,11 +26,11 @@ public class FeederUnloadCommand extends CommandBase {
     @Override
     public void execute() {
         Robot.FEEDER_SUBSYSTEM.forceShoot();
-        if (Robot.getRobotCargoInventory() == 0) {
-            _timer.start();
-        } else {
-            _timer.reset();
-        }
+        // if (Robot.getRobotCargoInventory() == 0) {
+        //     _timer.start();
+        // } else {
+        //     _timer.reset();
+        // }
     }
 
     // Called once the command ends or is interrupted.
@@ -43,6 +43,10 @@ public class FeederUnloadCommand extends CommandBase {
     @Override
     public boolean isFinished() {
         // As soon as the feeder no longer has a ball, consider the shot as having been taken.
-        return _timer.get() > .3;
+        // return _timer.get() > .3;
+        if (Robot.INTEGRATIONS_SUBSYSTEM.isRobotFinishedShooting()) {
+            return true;
+        }
+        return false;
     }
 }
