@@ -19,7 +19,7 @@ public class TeleopShuffleboard {
             .withPosition(0, 0);
         tab.addBoolean("Shooter Rev", () -> Robot.OP_PAD.getButtonValue(ButtonCode.SHOOTER_REV))
             .withPosition(8, 0);
-        tab.addBoolean("Climber Override", () -> Robot.OP_PAD.getButtonValue(ButtonCode.CLIMBER_OVERRIDE))
+        tab.addBoolean("Climber Override", () -> Robot.CLIMBER_SUBSYSTEM.getOverride())
             .withPosition(9, 0);
         tab.addBoolean("Turret Disabled", () -> Robot.TURRET_SWIVEL_SUBSYSTEM.getTurretEnabled() == false)
             .withPosition(10, 0);

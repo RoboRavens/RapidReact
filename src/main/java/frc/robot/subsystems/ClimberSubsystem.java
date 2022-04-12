@@ -38,6 +38,10 @@ public class ClimberSubsystem extends SubsystemBase {
 		this._override = false;
 	}
 
+	public boolean getOverride() {
+		return _override;
+	}
+
 	public void brakeClimber() {
 		_climberBrake.set(Value.kForward);
 
