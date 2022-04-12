@@ -1,6 +1,5 @@
 package frc.util;
 
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class AutoMode {
@@ -18,13 +17,5 @@ public class AutoMode {
 
     public Command getAutoCommand() {
         return _command;
-    }
-
-    public void setDefaultOption(SendableChooser<AutoMode> chooser) {
-        chooser.setDefaultOption(_name, this);
-    }
-
-    public void addOption(SendableChooser<AutoMode> chooser) {
-        chooser.addOption(_name, this);
     }
 }

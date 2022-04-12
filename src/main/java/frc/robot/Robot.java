@@ -7,13 +7,13 @@ package frc.robot;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -29,6 +29,7 @@ import frc.robot.commands.climber.ClimberExtendCommand;
 import frc.robot.commands.climber.ClimberRetractCommand;
 import frc.robot.commands.commandgroups.ControllerRumbleTwiceCommandGroup;
 import frc.robot.commands.commandgroups.ConveyanceFeederEjectAllCommand;
+import frc.robot.commands.commandgroups.FeederUnloadRumbleCommandGroup;
 import frc.robot.commands.commandgroups.JunkShotCommandGroup;
 import frc.robot.commands.controls.ControllerContinuousRumbleCommand;
 import frc.robot.commands.controls.ControllerRumbleCommand;
@@ -124,6 +125,7 @@ public class Robot extends TimedRobot {
   public static final ControllerRumbleTwiceCommandGroup CONTROLLER_RUMBLE_TWICE_COMMAND = new ControllerRumbleTwiceCommandGroup();
   public static final ControllerContinuousRumbleCommand CONTROLLER_CONTINUOUS_RUMBLE_COMMAND = new ControllerContinuousRumbleCommand();
   public static final ControllerRumbleCommand CONTROLLER_RUMBLE_COMMAND_FINISHED_SHOOTING = new ControllerRumbleCommand(.75);
+  public static final FeederUnloadRumbleCommandGroup FEEDER_UNLOAD_RUMBLE_COMMAND_GROUP = new FeederUnloadRumbleCommandGroup();
   public static final TurretGoToAngleCommand TURRET_AIM_LOWGOAL_COMMAND = new TurretGoToAngleCommand(90);
 
   public static final AutonomousShuffleboard AUTONOMOUS_SHUFFLEBOARD = new AutonomousShuffleboard();
@@ -175,20 +177,22 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     AUTONOMOUS_SHUFFLEBOARD.robotPeriodic();
 
     triggerDashboardPeriodic();
-    
 
     // SmartDashboard.putBoolean("Target Sighted", Robot.LIMELIGHT_SUBSYSTEM.hasTargetSighted());
     // SmartDashboard.putNumber("Limelight Raw Angle", Robot.LIMELIGHT_SUBSYSTEM.getRawTargetOffsetAngle());
     // SmartDashboard.putNumber("Limelight Area", Robot.LIMELIGHT_SUBSYSTEM.getArea());
     
-    if (Constants.TURRET_ENABLED || GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER) || CommonTriggers.RunAutoshootingTrigger.getAsBoolean()) {
+    if (Robot.TURRET_SWIVEL_SUBSYSTEM.getTurretEnabled() || GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER) || CommonTriggers.RunAutoshootingTrigger.getAsBoolean()) {
       Robot.LIMELIGHT_SUBSYSTEM.turnLEDOn();
     } else {
       Robot.LIMELIGHT_SUBSYSTEM.turnLEDOff();
     }
 
+    CLIMBER_SUBSYSTEM.setOverride(OP_PAD.getButtonValue(ButtonCode.CLIMBER_OVERRIDE));
+    TURRET_SWIVEL_SUBSYSTEM.setTurretEnabled(OP_PAD.getButtonValue(ButtonCode.TURRET_DISABLED_OVERRIDE) == false);
     SmartDashboard.putString("CONVEYANCE COLOR", Robot.COLOR_SENSOR.getIntakeSensorAllianceColor().toString());
     SmartDashboard.putString("FEEDER COLOR", Robot.COLOR_SENSOR.getFeederSensorAllianceColor().toString());
+    
     // SmartDashboard.putBoolean("FEEDER HAS CORRECT BALL", Robot.COLOR_SENSOR.getSensorIsCorrectBallColorStrict(RavenPiPosition.FEEDER))
     SmartDashboard.putString("DS ALLIANCE COLOR", ALLIANCE_COLOR.toString());
   
@@ -332,11 +336,6 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
       .and(GAMEPAD.getButton(ButtonCode.RIGHTBUMPER))
       .and(GAMEPAD.getButton(ButtonCode.Y))
       .whenActive(DRIVE_TRAIN_SUBSYSTEM::zeroGyroscope);
-    
-
-    OP_PAD.getButton(ButtonCode.CLIMBER_OVERRIDE)
-      .whileHeld(new InstantCommand(CLIMBER_SUBSYSTEM::turnOverrideOn))
-      .whenInactive(new InstantCommand(CLIMBER_SUBSYSTEM::turnOverrideOff));
 
     Trigger shootGarbarge = new Trigger(() -> {
       if (Robot.autonomousTriggerOverride == true) {
@@ -353,11 +352,9 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
       .whenInactive(DRIVE_TRAIN_SUBSYSTEM::stopCutPower);
 
     // new Trigger(() -> GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER)).or(CommonTriggers.RobotHas2Balls)
-    if (Constants.TURRET_ENABLED == false) {
-      CommonTriggers.RunAutoshootingTrigger
-        .whileActiveContinuous(() -> DRIVE_TRAIN_DEFAULT_COMMAND.followLimelight())
-        .whenInactive(() -> DRIVE_TRAIN_DEFAULT_COMMAND.stopFollowingLimelight());
-    }
+    CommonTriggers.RunAutoshootingTrigger.and(new Trigger(() -> Robot.TURRET_SWIVEL_SUBSYSTEM.getTurretEnabled() == false))
+      .whileActiveContinuous(() -> DRIVE_TRAIN_DEFAULT_COMMAND.followLimelight())
+      .whenInactive(() -> DRIVE_TRAIN_DEFAULT_COMMAND.stopFollowingLimelight());
 
     CommonTriggers.RunShooterTrigger
       .whileActiveContinuous(SHOOTER_START_COMMAND)
@@ -388,7 +385,8 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
       .whenActive(CONTROLLER_CONTINUOUS_RUMBLE_COMMAND);
 
     CommonTriggers.RobotFinishedShooting
-      .whenActive(CONTROLLER_RUMBLE_COMMAND_FINISHED_SHOOTING);
+      .whenActive(FEEDER_UNLOAD_RUMBLE_COMMAND_GROUP);
+
 
     OP_PAD2.getButton(ButtonCode.CLIMBER_EXTEND).whileHeld(CLIMBER_EXTEND_COMMAND);
     OP_PAD2.getButton(ButtonCode.CLIMBER_RETRACT).whileHeld(CLIMBER_RETRACT_COMMAND);
@@ -408,16 +406,17 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     ));
 
     */
-    OP_PAD2.getButton(ButtonCode.CLIMBER_RETRACT_SLOWLY).whileHeld(new StartEndCommand(
-      () -> Robot.CLIMBER_SUBSYSTEM.retractSlowly(),
-      () -> Robot.CLIMBER_SUBSYSTEM.stop(),
-      Robot.CLIMBER_SUBSYSTEM
-    ));
-    OP_PAD2.getButton(ButtonCode.CLIMBER_EXTEND_SLOWLY).whileHeld(new StartEndCommand(
-      () -> Robot.CLIMBER_SUBSYSTEM.extendSlowly(),
-      () -> Robot.CLIMBER_SUBSYSTEM.stop(),
-      Robot.CLIMBER_SUBSYSTEM
-    ));
+    
+    // OP_PAD2.getButton(ButtonCode.CLIMBER_RETRACT_SLOWLY).whileHeld(new StartEndCommand(
+    //   () -> Robot.CLIMBER_SUBSYSTEM.retractSlowly(),
+    //   () -> Robot.CLIMBER_SUBSYSTEM.stop(),
+    //   Robot.CLIMBER_SUBSYSTEM
+    // ));
+    // OP_PAD2.getButton(ButtonCode.CLIMBER_EXTEND_SLOWLY).whileHeld(new StartEndCommand(
+    //   () -> Robot.CLIMBER_SUBSYSTEM.extendSlowly(),
+    //   () -> Robot.CLIMBER_SUBSYSTEM.stop(),
+    //   Robot.CLIMBER_SUBSYSTEM
+    // ));
       
     CommonTriggers.AutosteerDisabledTrigger
       .whileActiveContinuous(DRIVE_TRAIN_DEFAULT_COMMAND::disableAutoSteer)

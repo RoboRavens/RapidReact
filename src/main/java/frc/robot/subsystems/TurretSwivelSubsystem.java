@@ -25,7 +25,7 @@ public class TurretSwivelSubsystem extends SubsystemBase {
     private BufferedDigitalInput _zeroLimit;
     private BufferedDigitalInput _clockwiseLimit; // NEGATIVE ANGLE
     private BufferedDigitalInput _counterClockwiseLimit; // POSITIVE ANGLE
-
+    private boolean _enabled = true; // when false the turret will not move and the drivetrain will align shooter with the goal
     private double motorOutputCap = Constants.TURRET_MOTOR_TRACKING_OUTPUT_CAP;
 
     public TurretSwivelSubsystem() {
@@ -100,8 +100,10 @@ public class TurretSwivelSubsystem extends SubsystemBase {
 
         angle = Math.max(angle, -1 * Constants.TURRET_RANGE); //Limit to turret range pos/neg
         angle = Math.min(angle, Constants.TURRET_RANGE);
-        if (Constants.TURRET_ENABLED) {
+        if (_enabled) {
             _turretMotor.set(ControlMode.Position, angle * Constants.ENCODER_TO_TURRET_RATIO); //Mult by ratio
+        } else {
+            _turretMotor.set(ControlMode.PercentOutput, 0);
         }
         _shot.target = angle;
     }
@@ -143,5 +145,13 @@ public class TurretSwivelSubsystem extends SubsystemBase {
 
     public boolean getIsAtTarget() {
         return (getAngle() > _shot.target - Constants.TURRET_AIM_ALLOWANCE && getAngle() < _shot.target + Constants.TURRET_AIM_ALLOWANCE);
+    }
+
+    public void setTurretEnabled(boolean value) {
+        _enabled = value;
+    }
+
+    public boolean getTurretEnabled() {
+        return _enabled;
     }
 }
