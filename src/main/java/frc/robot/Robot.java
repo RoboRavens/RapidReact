@@ -133,7 +133,8 @@ public class Robot extends TimedRobot {
 
   public static final RavenPiColorSensor COLOR_SENSOR = new RavenPiColorSensor();
   public static Alliance ALLIANCE_COLOR;
-  public static boolean autonomousTriggerOverride = true;
+  public static boolean MODE_IS_AUTONOMOUS = false;
+  public static boolean MODE_IS_DISABLED = false;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -182,7 +183,12 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     // SmartDashboard.putNumber("Limelight Raw Angle", Robot.LIMELIGHT_SUBSYSTEM.getRawTargetOffsetAngle());
     // SmartDashboard.putNumber("Limelight Area", Robot.LIMELIGHT_SUBSYSTEM.getArea());
     
-    if (Robot.TURRET_SWIVEL_SUBSYSTEM.getTurretEnabled() || GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER) || CommonTriggers.RunAutoshootingTrigger.getAsBoolean()) {
+    boolean shouldTurnOnLimelight = Robot.TURRET_SWIVEL_SUBSYSTEM.getTurretEnabled() || GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER) || CommonTriggers.RunAutoshootingTrigger.getAsBoolean();
+    if (TURRET_SWIVEL_SUBSYSTEM.getShowTurretNotAlignedWarning()) {
+      shouldTurnOnLimelight = TURRET_SWIVEL_SUBSYSTEM.getTurretNotAlignedLightOn();
+    }
+
+    if (shouldTurnOnLimelight && OP_PAD.getButtonValue(ButtonCode.LIMELIGHT_LIGHT_OFF_OVERRIDE) == false) {
       Robot.LIMELIGHT_SUBSYSTEM.turnLEDOn();
     } else {
       Robot.LIMELIGHT_SUBSYSTEM.turnLEDOff();
@@ -216,15 +222,22 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
   }
    /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    MODE_IS_DISABLED = true;
+  }
 
   @Override
   public void disabledPeriodic() {}
 
+  @Override
+  public void disabledExit() {
+    MODE_IS_DISABLED = false;
+  }
+
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    autonomousTriggerOverride = true;
+    MODE_IS_AUTONOMOUS = true;
 
     // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     m_autonomousCommand = AUTONOMOUS_SHUFFLEBOARD.getAuto().getAutoCommand();
@@ -235,14 +248,17 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     }
   }
 
+  @Override
+  public void autonomousExit() {
+    MODE_IS_AUTONOMOUS = false;
+  }
+
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {}
 
   @Override
   public void teleopInit() {
-    autonomousTriggerOverride = false;
-
     SHOOTER_SUBSYSTEM.resetShotCount();
     COLOR_SENSOR.setColorSensorFeatureEnabled(true);
 
@@ -261,7 +277,7 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     SmartDashboard.putBoolean("ReleaseBallTrigger", CommonTriggers.ReleaseBallTrigger.getAsBoolean());
     SmartDashboard.putNumber("Cargo Inventory", getRobotCargoInventory());
     SmartDashboard.putString("Auto shot select", Robot.SHOOTER_SUBSYSTEM.getShot()._name);
-    SmartDashboard.putBoolean("autonomousTriggerOverride", autonomousTriggerOverride);
+    SmartDashboard.putBoolean("MODE_IS_AUTONOMOUS", MODE_IS_AUTONOMOUS);
   
     boolean hasAmmo = (Robot.getRobotProperColorInventory() >= 2 || Robot.GAMEPAD.getAxisIsPressed(AxisCode.LEFTTRIGGER)); 
 
@@ -338,7 +354,7 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
       .whenActive(DRIVE_TRAIN_SUBSYSTEM::zeroGyroscope);
 
     Trigger shootGarbarge = new Trigger(() -> {
-      if (Robot.autonomousTriggerOverride == true) {
+      if (Robot.MODE_IS_AUTONOMOUS == true) {
           return false;
       }
       

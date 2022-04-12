@@ -4,7 +4,6 @@ import java.util.Map;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.simulation.PDPSim;
 import frc.controls.ButtonCode;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -17,6 +16,8 @@ public class TeleopShuffleboard {
             .withProperties(Map.of("Show crosshair", false, "Show controls", false))
             .withSize(5, 5)
             .withPosition(0, 0);
+        tab.addBoolean("Lime Light Off", () -> Robot.OP_PAD.getButtonValue(ButtonCode.LIMELIGHT_LIGHT_OFF_OVERRIDE))
+            .withPosition(6, 0);
         tab.addBoolean("Shooter Rev", () -> Robot.OP_PAD.getButtonValue(ButtonCode.SHOOTER_REV))
             .withPosition(7, 0);
         tab.addBoolean("Climber Override", () -> Robot.CLIMBER_SUBSYSTEM.getOverride())

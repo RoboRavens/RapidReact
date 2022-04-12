@@ -98,7 +98,7 @@ public class Gamepad {
 		case RIGHTSTICK:
 			buttonNumber = 10;
 			break;
-		case SHOOTER_PROFILE_MANUAL_OVERRIDE:
+		case LIMELIGHT_LIGHT_OFF_OVERRIDE:
 			buttonNumber = 1;
 			break;
 		case SHOOTER_REV:
