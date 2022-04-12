@@ -359,7 +359,7 @@ Y-offset constants in order:
     public static final double TURRET_CLOCKWISE_HARDWARE_LIMIT = -153.707963;
     public static final double TURRET_COUNTER_CLOCKWISE_HARDWARE_LIMIT = 156.414829;
     public static final double TURRET_MOTOR_TRACKING_OUTPUT_CAP = 1.0;
-    public static final double TURRET_MOTOR_SEARCHING_OUTPUT_CAP = 0.15;
+    public static final double TURRET_MOTOR_SEARCHING_OUTPUT_CAP = 0.33;
 
     public static final double TURRET_DEFAULT_KF = 0;
     public static final double TURRET_DEFAULT_KP = 0.6;

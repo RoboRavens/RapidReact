@@ -143,7 +143,7 @@ public class FeederSubsystem extends SubsystemBase {
     boolean feederHasProperColorCargo = false;
     
     if (Robot.FEEDER_SUBSYSTEM.getFeederHasBall()) {
-      if (Robot.COLOR_SENSOR.getSensorIsCorrectBallColorLenient(RavenPiPosition.FEEDER)) {
+      if (Robot.COLOR_SENSOR.getFeederSensorIsCorrectBallColorLenient()) {
         feederHasProperColorCargo = true;
       }
     }
@@ -156,12 +156,12 @@ public class FeederSubsystem extends SubsystemBase {
     boolean feederHasWrongColorCargo = false;
     
     if (Robot.FEEDER_SUBSYSTEM.getFeederHasBall()) {
-      if (Robot.COLOR_SENSOR.getSensorIsCorrectBallColorStrict(RavenPiPosition.FEEDER)) {
+      if (Robot.COLOR_SENSOR.getFeederSensorIsWrongBallColorStrict()) {
         feederHasWrongColorCargo = true;
       }
     }
 
-    return false;
-    // return feederHasWrongColorCargo;
+    // return false;
+    return feederHasWrongColorCargo;
   }
 }
