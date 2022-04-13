@@ -19,7 +19,7 @@ public class ShooterJunkShotCommand extends CommandBase {
   @Override
   public void initialize() {
     Robot.SHOOTER_SUBSYSTEM.rememberCurrentShot();
-    Robot.SHOOTER_SUBSYSTEM.setShot(Constants.LOW_GOAL_SHOT_CALIBRATION_PAIR);
+    Robot.SHOOTER_SUBSYSTEM.setShot(Constants.JUNK_SHOT_CALIBRATION_PAIR);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
