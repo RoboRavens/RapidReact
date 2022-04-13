@@ -219,6 +219,22 @@ public double wednesdayNightCoefficient = 1.08;
     public static final double LAUNCHPAD_TOPSPIN_KD = 4.0;
 
     public static final double LAUNCHPAD_TOPSPIN_VOLTAGE_CONTROL_SETPOINT = LAUNCHPAD_TOPSPIN_KF * 12;
+    
+    public static final int JUNK_SHOT_BACKSPIN_RPM = 850;
+    public static final double JUNK_SHOT_BACKSPIN_KF = 0.0452;
+    public static final double JUNK_SHOT_BACKSPIN_KP = 0.15;
+    public static final double JUNK_SHOT_BACKSPIN_KI = 0;
+    public static final double JUNK_SHOT_BACKSPIN_KD = 0.2;
+    
+    public static final double JUNK_SHOT_BACKSPIN_VOLTAGE_CONTROL_SETPOINT = JUNK_SHOT_BACKSPIN_KF * 12; 
+
+    public static final int JUNK_SHOT_TOPSPIN_RPM = 1650;
+    public static final double JUNK_SHOT_TOPSPIN_KF = 0.047;
+    public static final double JUNK_SHOT_TOPSPIN_KP = 0.15;
+    public static final double JUNK_SHOT_TOPSPIN_KI = 0;
+    public static final double JUNK_SHOT_TOPSPIN_KD = 0.2;
+
+    public static final double JUNK_SHOT_TOPSPIN_VOLTAGE_CONTROL_SETPOINT = JUNK_SHOT_TOPSPIN_KF * 12;
 
 
 
@@ -337,6 +353,9 @@ Y-offset constants in order:
     public static final ShooterCalibration LAUNCHPAD_SHOT_BACKSPIN_CALIBRATION = new ShooterCalibration("Launchpad Shot", LAUNCHPAD_BACKSPIN_RPM, LAUNCHPAD_BACKSPIN_KF, LAUNCHPAD_BACKSPIN_KP, LAUNCHPAD_BACKSPIN_KI, LAUNCHPAD_BACKSPIN_KD, LAUNCHPAD_BACKSPIN_VOLTAGE_CONTROL_SETPOINT);
     public static final ShooterCalibration LAUNCHPAD_SHOT_TOPSPIN_CALIBRATION = new ShooterCalibration("Launchpad Alt Shot", LAUNCHPAD_TOPSPIN_RPM, LAUNCHPAD_TOPSPIN_KF, LAUNCHPAD_TOPSPIN_KP, LAUNCHPAD_TOPSPIN_KI, LAUNCHPAD_TOPSPIN_KD, LAUNCHPAD_TOPSPIN_VOLTAGE_CONTROL_SETPOINT);
 
+    public static final ShooterCalibration JUNK_SHOT_BACKSPIN_CALIBRATION = new ShooterCalibration("Junk Shot", JUNK_SHOT_BACKSPIN_RPM, JUNK_SHOT_BACKSPIN_KF, JUNK_SHOT_BACKSPIN_KP, JUNK_SHOT_BACKSPIN_KI, JUNK_SHOT_BACKSPIN_KD, JUNK_SHOT_BACKSPIN_VOLTAGE_CONTROL_SETPOINT);
+    public static final ShooterCalibration JUNK_SHOT_TOPSPIN_CALIBRATION = new ShooterCalibration("Junk Alt Shot", JUNK_SHOT_TOPSPIN_RPM, JUNK_SHOT_TOPSPIN_KF, JUNK_SHOT_TOPSPIN_KP, JUNK_SHOT_TOPSPIN_KI, JUNK_SHOT_TOPSPIN_KD, JUNK_SHOT_TOPSPIN_VOLTAGE_CONTROL_SETPOINT);
+
     public static final ShooterCalibration DISABLED_SHOT_BACKSPIN_CALIBRATION = new ShooterCalibration("Disabled Shot", 0, 0, 0, 0, 0, 0);
     public static final ShooterCalibration DISABLED_SHOT_TOPSPIN_CALIBRATION = new ShooterCalibration("Disabled Alt Shot", 0, 0, 0, 0, 0, 0);
 
@@ -344,6 +363,7 @@ Y-offset constants in order:
     public static final ShooterCalibrationPair TARMAC_SHOT_CALIBRATION_PAIR = new ShooterCalibrationPair("Tarmac Shot", TARMAC_SHOT_BACKSPIN_CALIBRATION, TARMAC_SHOT_TOPSPIN_CALIBRATION);
     public static final ShooterCalibrationPair AUTO_RADIUS_SHOT_CALIBRATION_PAIR = new ShooterCalibrationPair("Auto Radius Shot", AUTO_RADIUS_SHOT_BACKSPIN_CALIBRATION, AUTO_RADIUS_SHOT_TOPSPIN_CALIBRATION);
     public static final ShooterCalibrationPair LAUNCHPAD_SHOT_CALIBRATION_PAIR = new ShooterCalibrationPair("Launchpad Shot", LAUNCHPAD_SHOT_BACKSPIN_CALIBRATION, LAUNCHPAD_SHOT_TOPSPIN_CALIBRATION);
+    public static final ShooterCalibrationPair JUNK_SHOT_CALIBRATION_PAIR = new ShooterCalibrationPair("Junk Shot", JUNK_SHOT_BACKSPIN_CALIBRATION, JUNK_SHOT_TOPSPIN_CALIBRATION);
     public static final ShooterCalibrationPair DISABLED_SHOT_CALIBRATION_PAIR = new ShooterCalibrationPair("Disabled shot", DISABLED_SHOT_BACKSPIN_CALIBRATION, DISABLED_SHOT_TOPSPIN_CALIBRATION);
 
     //TURRET SWIVEL
