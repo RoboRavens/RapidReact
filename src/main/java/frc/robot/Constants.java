@@ -428,9 +428,9 @@ Y-offset constants in order:
     public static final double CLIMBER_HOLD_POSITION_POWER_MAGNITUDE = 0; // .13
 	public static final double CLIMBER_EXTEND_SLOW_POWER_MAGNITUDE = .5;
     public static final double CLIMBER_EXTEND_QUICKLY_POWER_MAGNITUDE = 1;
-    public static final double CLIMBER_EXTEND_SLOWLY_POWER_MAGNITUDE = .2;
-	public static final double CLIMBER_RETRACT_QUICKLY_POWER_MAGNITUDE = -.4;
-    public static final double CLIMBER_RETRACT_SLOWLY_POWER_MAGNITUDE = -.2;
+    public static final double CLIMBER_EXTEND_SLOWLY_POWER_MAGNITUDE = .4;
+	public static final double CLIMBER_RETRACT_QUICKLY_POWER_MAGNITUDE = -.8;
+    public static final double CLIMBER_RETRACT_SLOWLY_POWER_MAGNITUDE = -.5;
 	public static final double CLIMBER_RETRACT_TO_LATCH_POWER_MAGNITUDE = .2;
     // public static final double CLIMBER_EXTEND_ENCODER_TARGET = 241251.000000 - 45320.000000;
     public static final double CLIMBER_EXTEND_ENCODER_TARGET = 260000.0;

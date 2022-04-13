@@ -5,12 +5,9 @@
 package frc.robot.commands.climber;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.Robot;
 
 public class ClimberExtendCommand extends CommandBase {
-  private double _extendedTarget = Constants.CLIMBER_EXTEND_ENCODER_TARGET;
-  
   public ClimberExtendCommand() {
     addRequirements(Robot.CLIMBER_SUBSYSTEM);
   }
@@ -22,16 +19,7 @@ public class ClimberExtendCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double climberExtendError = _extendedTarget - Robot.CLIMBER_SUBSYSTEM.getEncoderPosition();
-		double climberSpeed = .5;
-
-		if (climberExtendError >= _extendedTarget * .3) {
-			climberSpeed = 1;
-		}
-		//SmartDashboard.putNumber("climberExtendError", climberExtendError);
-		//SmartDashboard.putNumber("climberSpeed", climberSpeed);
-		
-		Robot.CLIMBER_SUBSYSTEM.extend(climberSpeed);
+		Robot.CLIMBER_SUBSYSTEM.extend();
   }
 
   // Called once the command ends or is interrupted.
