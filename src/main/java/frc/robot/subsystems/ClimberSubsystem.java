@@ -68,12 +68,14 @@ public class ClimberSubsystem extends SubsystemBase {
 
 			// The climber extends quickly until it nears the extention limit, when it slows down
 			if (getEncoderPosition() >= Constants.CLIMBER_QUICK_EXTEND_ZONE_MAXIMUM) {
-				_climberMotor.setVoltage(Constants.CLIMBER_EXTEND_SLOWLY_POWER_MAGNITUDE);
+				this.setVoltage(Constants.CLIMBER_EXTEND_SLOWLY_POWER_MAGNITUDE);
 			}
 			else {
-				_climberMotor.setVoltage(Constants.CLIMBER_EXTEND_QUICKLY_POWER_MAGNITUDE);
+				this.setVoltage(Constants.CLIMBER_EXTEND_QUICKLY_POWER_MAGNITUDE);
 			}
-
+		}
+		else {
+			this.stop();
 		}
 	}
 
@@ -108,11 +110,14 @@ public class ClimberSubsystem extends SubsystemBase {
 			// Retracts the climber at a slow speed if the climber is beginning to retract or reaching the extension limit
 			// And retracts the climber at a fast speed if the climber is not close to the beginning or retraction limit
 			if (retractClimberSlowly) {
-				_climberMotor.setVoltage(Constants.CLIMBER_RETRACT_SLOWLY_POWER_MAGNITUDE);
+				this.setVoltage(Constants.CLIMBER_RETRACT_SLOWLY_POWER_MAGNITUDE);
 			}
 			else {
-				_climberMotor.setVoltage(Constants.CLIMBER_RETRACT_QUICKLY_POWER_MAGNITUDE);
+				this.setVoltage(Constants.CLIMBER_RETRACT_QUICKLY_POWER_MAGNITUDE);
 			}
+		}
+		else {
+			this.stop();
 		}
 	}
 
@@ -152,6 +157,7 @@ public class ClimberSubsystem extends SubsystemBase {
 	public void periodic() {
 		// SmartDashboard.putNumber("Climber Encoder", _climberMotor.getSelectedSensorPosition());
 		// SmartDashboard.putBoolean("Climber Override", _override);
+		// SmartDashboard.putBoolean("Climber Is At Extension", this.isAtEncoderExtensionLimit());
 	}
 
 	public void stop() {
