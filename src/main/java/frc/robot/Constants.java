@@ -33,7 +33,7 @@ public final class Constants {
 
     // CONTROLS
     public static final double JOYSTICK_DEADBAND = .05;
-    public static final double DRIVE_MAX_TURN_RADIANS_PER_SECOND = 2;
+    public static final double DRIVE_MAX_TURN_RADIANS_PER_SECOND = 3;
 
     // COLOR SENSE
     public static final double BALL_COLOR_THRESHOLD_ENTRY = 400;
