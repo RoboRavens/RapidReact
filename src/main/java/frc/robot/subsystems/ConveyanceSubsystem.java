@@ -118,8 +118,8 @@ public class ConveyanceSubsystem extends SubsystemBase {
       }
     }
 
-    // Always return false for Lakeview
-    // return false;
-    return conveyanceHasWrongColorCargo;
+    // Always return false for MSC
+    return false;
+    // return conveyanceHasWrongColorCargo;
   }
 } 

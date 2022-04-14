@@ -5,6 +5,7 @@
 package frc.robot.commands.commandgroups;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Robot;
 import frc.robot.commands.feeder.FeederForceShootDurationCommand;
 import frc.robot.commands.feeder.FeederShootOneBallCommand;
 import frc.robot.commands.shooter.ShooterJunkShotCommand;
@@ -23,9 +24,7 @@ public class JunkShotCommandGroup extends SequentialCommandGroup {
     // new TurretMissCommand().withTimeout(1), // Set the miss shot angle
     new ShooterStartInstantCommand(), // Rev
     
-    new    FeederForceShootDurationCommand(2.5),
-    new ShooterStopCommand(),
-    new ShooterRememberedShotCommand()
+    new    FeederForceShootDurationCommand(2.5)
     /*new FeederShootOneBallCommand(), // Shoot 1
     new ShooterStopCommand(), // End
     new TurretAimAtTargetCommand() // End
@@ -33,6 +32,12 @@ public class JunkShotCommandGroup extends SequentialCommandGroup {
     This should be checked/confirmed.
     */
     );
+  }
+
+  public void end(boolean interrupted) {
+    Robot.FEEDER_SUBSYSTEM.stopFeederAndConveyanceTwo();
+    Robot.SHOOTER_SUBSYSTEM.stopMotor();
+    Robot.SHOOTER_SUBSYSTEM.setToRememberedShot();
   }
 
   /**
