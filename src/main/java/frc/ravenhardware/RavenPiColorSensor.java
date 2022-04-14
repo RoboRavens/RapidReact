@@ -139,6 +139,10 @@ public class RavenPiColorSensor extends PicoColorSensor{
         _colorSensorFeatureEnabled = value;
     }
 
+    public boolean getColorSensorFeatureEnabled() {
+        return _colorSensorFeatureEnabled;
+    }
+
     public boolean getConveyanceSensorIsCorrectBallColorLenient() {
         boolean getIsCorrectBallType = false;
 

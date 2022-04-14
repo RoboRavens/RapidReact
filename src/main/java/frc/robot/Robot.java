@@ -128,7 +128,7 @@ public class Robot extends TimedRobot {
   public static final TeleopShuffleboard TELEOP_SHUFFLEBOARD = new TeleopShuffleboard();
 
   public static final RavenPiColorSensor COLOR_SENSOR = new RavenPiColorSensor();
-  public static Alliance ALLIANCE_COLOR;
+  public static Alliance ALLIANCE_COLOR = Alliance.Invalid;
   public static boolean MODE_IS_AUTONOMOUS = false;
   public static boolean MODE_IS_DISABLED = false;
 
@@ -223,7 +223,9 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
   }
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+    ALLIANCE_COLOR = DriverStation.getAlliance();
+  }
 
   @Override
   public void disabledExit() {
@@ -261,9 +263,8 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
 
   @Override
   public void teleopInit() {
-    ALLIANCE_COLOR = DriverStation.getAlliance();
     SHOOTER_SUBSYSTEM.resetShotCount();
-    COLOR_SENSOR.setColorSensorFeatureEnabled(false);
+    COLOR_SENSOR.setColorSensorFeatureEnabled(true);
 
     // Stop any autonomous command that might still be running.
     if (m_autonomousCommand != null) {
@@ -412,6 +413,11 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
 
     OP_PAD2.getButton(ButtonCode.CLIMBER_EXTEND).whileHeld(CLIMBER_EXTEND_COMMAND);
     OP_PAD2.getButton(ButtonCode.CLIMBER_RETRACT).whileHeld(CLIMBER_RETRACT_COMMAND);
+
+    OP_PAD2.getButton(ButtonCode.TOGGLE_COLOR_SENSING_FEATURES)
+      .whenPressed(() -> {
+        COLOR_SENSOR.setColorSensorFeatureEnabled(COLOR_SENSOR.getColorSensorFeatureEnabled() == false);
+      });
 /*
     OP_PAD2.getButton(ButtonCode.CLIMBER_RETRACT).whileHeld(new StartEndCommand(
       () -> Robot.CLIMBER_SUBSYSTEM.retract(),

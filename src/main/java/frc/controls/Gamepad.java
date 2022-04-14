@@ -134,11 +134,8 @@ public class Gamepad {
 		case CLIMBER_OVERRIDE:
 			buttonNumber = 3;
 			break;
-		case CLIMBER_EXTEND_SLOWLY:
+		case TOGGLE_COLOR_SENSING_FEATURES:
 			buttonNumber = 4;
-			break;
-		case CLIMBER_RETRACT_SLOWLY:
-			buttonNumber = 5;
 			break;
 		case TURRET_HOME:
 			buttonNumber = 3;

@@ -49,6 +49,12 @@ public class TeleopShuffleboard {
         tab.addBoolean("Is Aligned", () -> Robot.LIMELIGHT_SUBSYSTEM.isAligned())
             .withSize(3, 3)
             .withPosition(7, 1);
+        tab.addString("Alliance Color", () -> Robot.ALLIANCE_COLOR.toString())
+            .withSize(2, 1)
+            .withPosition(7, 4);
+        tab.addBoolean("Color Sensing", () -> Robot.COLOR_SENSOR.getColorSensorFeatureEnabled())
+            .withSize(1, 1)
+            .withPosition(9, 4);
     }
 
     public void robotInit() {
