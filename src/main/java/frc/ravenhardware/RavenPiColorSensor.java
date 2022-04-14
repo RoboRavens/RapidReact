@@ -7,9 +7,11 @@ import frc.robot.lib.PicoColorSensor;
 
 public class RavenPiColorSensor extends PicoColorSensor{
     private boolean _colorSensorFeatureEnabled = true;
+    private BufferedBoolean _feederSensorIsWrongBallColorStrict;
 
     public RavenPiColorSensor() {
         super();
+        _feederSensorIsWrongBallColorStrict = new BufferedBoolean(() -> this.getFeederSensorIsWrongBallColorStrictInternal(), 15, true, false);
     }
 
     /**
@@ -42,6 +44,10 @@ public class RavenPiColorSensor extends PicoColorSensor{
     }
     */
 
+    public void robotPeriodic() {
+        _feederSensorIsWrongBallColorStrict.maintainState();
+    }
+
     public Alliance getIntakeSensorAllianceColor() {
         Alliance ballColor = Alliance.Invalid;
 
@@ -65,7 +71,7 @@ public class RavenPiColorSensor extends PicoColorSensor{
         if (sensorColor.red < 230 && sensorColor.green > 90 && sensorColor.blue > 50) {
             ballColor = Alliance.Blue;
         }
-        else if (sensorColor.red > 50) {
+        else if (sensorColor.red > 50 && sensorColor.red > sensorColor.green * 2) {
             ballColor = Alliance.Red;
         }
 
@@ -181,7 +187,7 @@ public class RavenPiColorSensor extends PicoColorSensor{
         return getIsWrongBallType;
     }
 
-    public boolean getFeederSensorIsWrongBallColorStrict() {
+    private boolean getFeederSensorIsWrongBallColorStrictInternal() {
         boolean getIsWrongBallType = false;
 
         Alliance ballColor = getFeederSensorAllianceColor();
@@ -195,6 +201,10 @@ public class RavenPiColorSensor extends PicoColorSensor{
         }
 
         return getIsWrongBallType;
+    }
+
+    public boolean getFeederSensorIsWrongBallColorStrict() {
+        return _feederSensorIsWrongBallColorStrict.get();
     }
 
     

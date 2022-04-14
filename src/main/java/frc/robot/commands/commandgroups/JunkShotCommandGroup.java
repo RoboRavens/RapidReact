@@ -24,7 +24,7 @@ public class JunkShotCommandGroup extends SequentialCommandGroup {
     // new TurretMissCommand().withTimeout(1), // Set the miss shot angle
     new ShooterStartInstantCommand(), // Rev
     
-    new    FeederForceShootDurationCommand(2.5)
+    new    FeederForceShootDurationCommand(.5)
     /*new FeederShootOneBallCommand(), // Shoot 1
     new ShooterStopCommand(), // End
     new TurretAimAtTargetCommand() // End

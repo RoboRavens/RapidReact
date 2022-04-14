@@ -19,6 +19,7 @@ import frc.controls.Gamepad;
 import frc.ravenhardware.BlinkinCalibrations;
 import frc.ravenhardware.RavenBlinkin;
 import frc.ravenhardware.RavenPiColorSensor;
+import frc.robot.commands.auto.TwoBallAutoCommand;
 import frc.robot.commands.climber.ClimberDefaultBrakeCommand;
 import frc.robot.commands.climber.ClimberExtendCommand;
 import frc.robot.commands.climber.ClimberRetractCommand;
@@ -138,7 +139,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     ALLIANCE_COLOR = DriverStation.getAlliance();
-
     DRIVE_TRAIN_SUBSYSTEM.setDefaultCommand(DRIVE_TRAIN_DEFAULT_COMMAND);
     //SHOOTER_SUBSYSTEM.setDefaultCommand(new RunCommand(() -> SHOOTER_SUBSYSTEM.defaultCommand(), SHOOTER_SUBSYSTEM));
 
@@ -189,11 +189,12 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
       Robot.LIMELIGHT_SUBSYSTEM.turnLEDOff();
     }
 
+    COLOR_SENSOR.robotPeriodic();
     CLIMBER_SUBSYSTEM.setOverride(OP_PAD.getButtonValue(ButtonCode.CLIMBER_OVERRIDE));
     TURRET_SWIVEL_SUBSYSTEM.setTurretEnabled(OP_PAD.getButtonValue(ButtonCode.TURRET_DISABLED_OVERRIDE) == false);
     SmartDashboard.putString("CONVEYANCE COLOR", Robot.COLOR_SENSOR.getIntakeSensorAllianceColor().toString());
     SmartDashboard.putString("FEEDER COLOR", Robot.COLOR_SENSOR.getFeederSensorAllianceColor().toString());
-    
+
     // SmartDashboard.putBoolean("FEEDER HAS CORRECT BALL", Robot.COLOR_SENSOR.getSensorIsCorrectBallColorStrict(RavenPiPosition.FEEDER))
     SmartDashboard.putString("DS ALLIANCE COLOR", ALLIANCE_COLOR.toString());
   
@@ -236,9 +237,15 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
 
     // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     m_autonomousCommand = AUTONOMOUS_SHUFFLEBOARD.getAuto().getAutoCommand();
+
+    if (m_autonomousCommand == null) {
+      System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@Auto Command NULL, running two ball wall");
+      m_autonomousCommand = TwoBallAutoCommand.getWallAutoMode().getAutoCommand();
+    }
     
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
+      System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@Starting Auto Command");
       m_autonomousCommand.schedule();
     }
   }
@@ -254,8 +261,9 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
 
   @Override
   public void teleopInit() {
+    ALLIANCE_COLOR = DriverStation.getAlliance();
     SHOOTER_SUBSYSTEM.resetShotCount();
-    COLOR_SENSOR.setColorSensorFeatureEnabled(true);
+    COLOR_SENSOR.setColorSensorFeatureEnabled(false);
 
     // Stop any autonomous command that might still be running.
     if (m_autonomousCommand != null) {
@@ -359,7 +367,7 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
       return FEEDER_SUBSYSTEM.feederHasWrongColorCargo();
     });
 
-    shootGarbarge.whileActiveContinuous(new JunkShotCommandGroup(), false);
+    shootGarbarge.whenActive(new JunkShotCommandGroup(), false);
 
     new Trigger(() -> GAMEPAD.getAxisIsPressed(AxisCode.RIGHTTRIGGER) || Robot.CLIMBER_SUBSYSTEM.climberIsExtended())
       .whileActiveContinuous(DRIVE_TRAIN_SUBSYSTEM::cutPower)
