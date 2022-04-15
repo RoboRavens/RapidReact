@@ -241,13 +241,13 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     m_autonomousCommand = AUTONOMOUS_SHUFFLEBOARD.getAuto().getAutoCommand();
 
     if (m_autonomousCommand == null) {
-      System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@Auto Command NULL, running two ball wall");
+      // System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@Auto Command NULL, running two ball wall");
       m_autonomousCommand = TwoBallAutoCommand.getWallAutoMode().getAutoCommand();
     }
     
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
-      System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@Starting Auto Command");
+      // System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@Starting Auto Command");
       m_autonomousCommand.schedule();
     }
   }
