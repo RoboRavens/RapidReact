@@ -13,10 +13,10 @@ public class TeleopShuffleboard {
     public TeleopShuffleboard() {
         ShuffleboardTab tab = Shuffleboard.getTab("Teleop");
 
-        tab.addCamera("USB Camera 0", "USB Camera 0", "usb:/dev/video0")
-            .withProperties(Map.of("Show crosshair", false, "Show controls", false))
-            .withSize(5, 5)
-            .withPosition(0, 0);
+        //tab.addCamera("USB Camera 0", "USB Camera 0", "usb:/dev/video0")
+        //    .withProperties(Map.of("Show crosshair", false, "Show controls", false))
+        //    .withSize(5, 5)
+        //    .withPosition(0, 0);
         tab.addBoolean("Lime Light Off", () -> Robot.OP_PAD.getButtonValue(ButtonCode.LIMELIGHT_LIGHT_OFF_OVERRIDE))
             .withPosition(6, 0);
         tab.addBoolean("Shooter Rev", () -> Robot.OP_PAD.getButtonValue(ButtonCode.SHOOTER_REV))
@@ -58,9 +58,9 @@ public class TeleopShuffleboard {
     }
 
     public void robotInit() {
-        var camera = CameraServer.startAutomaticCapture();
-        camera.setFPS(Constants.CAMERA_FPS);
-        camera.setResolution(Constants.CAMERA_WIDTH, Constants.CAMERA_HEIGHT);
+        //var camera = CameraServer.startAutomaticCapture();
+        //camera.setFPS(Constants.CAMERA_FPS);
+        //camera.setResolution(Constants.CAMERA_WIDTH, Constants.CAMERA_HEIGHT);
     }
 
     public void switchToTab() {
