@@ -4,8 +4,12 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
+import com.swervedrivespecialties.swervelib.Mk4ModuleConfiguration;
+import com.swervedrivespecialties.swervelib.Mk4SwerveModuleBuilder;
 import com.swervedrivespecialties.swervelib.Mk4SwerveModuleHelper;
+import com.swervedrivespecialties.swervelib.MotorType;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 import com.swervedrivespecialties.swervelib.SwerveModule;
 
@@ -91,6 +95,11 @@ public class DrivetrainSubsystem extends DrivetrainSubsystemBase {
   private Pose2d _markedPosition = null;
 
   public DrivetrainSubsystem() {
+    Mk4ModuleConfiguration moduleConfig = new Mk4ModuleConfiguration();
+        moduleConfig.setSteerCurrentLimit(30.0);
+        moduleConfig.setDriveCurrentLimit(40.0);
+
+    /*
     m_frontLeftModule = Mk4SwerveModuleHelper.createFalcon500(
             Mk4SwerveModuleHelper.GearRatio.L1,
             FRONT_LEFT_MODULE_DRIVE_MOTOR,
@@ -123,6 +132,56 @@ public class DrivetrainSubsystem extends DrivetrainSubsystemBase {
             BACK_RIGHT_MODULE_STEER_ENCODER,
             BACK_RIGHT_MODULE_STEER_OFFSET
     );
+    */
+
+
+    m_frontLeftModule = new Mk4SwerveModuleBuilder(moduleConfig)
+    .withGearRatio(Mk4SwerveModuleBuilder.GearRatio.L1)
+    .withDriveMotor(MotorType.FALCON, FRONT_LEFT_MODULE_DRIVE_MOTOR)
+    .withSteerMotor(MotorType.FALCON, FRONT_LEFT_MODULE_STEER_MOTOR)
+    .withSteerEncoderPort(FRONT_LEFT_MODULE_STEER_ENCODER)
+    .withSteerOffset(FRONT_LEFT_MODULE_STEER_OFFSET)
+    .build();
+
+m_frontRightModule = new Mk4SwerveModuleBuilder(moduleConfig)
+    .withGearRatio(Mk4SwerveModuleBuilder.GearRatio.L1)
+    .withDriveMotor(MotorType.FALCON, FRONT_RIGHT_MODULE_DRIVE_MOTOR)
+    .withSteerMotor(MotorType.FALCON, FRONT_RIGHT_MODULE_STEER_MOTOR)
+    .withSteerEncoderPort(FRONT_RIGHT_MODULE_STEER_ENCODER)
+    .withSteerOffset(FRONT_RIGHT_MODULE_STEER_OFFSET)
+    .build();
+
+m_backLeftModule = new Mk4SwerveModuleBuilder(moduleConfig)
+    .withGearRatio(Mk4SwerveModuleBuilder.GearRatio.L1)
+    .withDriveMotor(MotorType.FALCON, BACK_LEFT_MODULE_DRIVE_MOTOR)
+    .withSteerMotor(MotorType.FALCON, BACK_LEFT_MODULE_STEER_MOTOR)
+    .withSteerEncoderPort(BACK_LEFT_MODULE_STEER_ENCODER)
+    .withSteerOffset(BACK_LEFT_MODULE_STEER_OFFSET)
+    .build();
+
+m_backRightModule = new Mk4SwerveModuleBuilder(moduleConfig)
+    .withGearRatio(Mk4SwerveModuleBuilder.GearRatio.L1)
+    .withDriveMotor(MotorType.FALCON, BACK_RIGHT_MODULE_DRIVE_MOTOR)
+    .withSteerMotor(MotorType.FALCON, BACK_RIGHT_MODULE_STEER_MOTOR)
+    .withSteerEncoderPort(BACK_RIGHT_MODULE_STEER_ENCODER)
+    .withSteerOffset(BACK_RIGHT_MODULE_STEER_OFFSET)
+    .build();
+
+    double swerveDriveDelay = 0;
+    double swerveRotateDelay = 0.25;
+
+
+    ((WPI_TalonFX) m_frontLeftModule.getSteerMotor()).configOpenloopRamp(swerveRotateDelay); 
+    ((WPI_TalonFX) m_frontRightModule.getSteerMotor()).configOpenloopRamp(swerveRotateDelay);
+    ((WPI_TalonFX) m_backLeftModule.getSteerMotor()).configOpenloopRamp(swerveRotateDelay);
+    ((WPI_TalonFX) m_backRightModule.getSteerMotor()).configOpenloopRamp(swerveRotateDelay);
+
+    ((WPI_TalonFX) m_frontLeftModule.getDriveMotor()).configOpenloopRamp(swerveDriveDelay); 
+    ((WPI_TalonFX) m_frontRightModule.getDriveMotor()).configOpenloopRamp(swerveDriveDelay);
+    ((WPI_TalonFX) m_backLeftModule.getDriveMotor()).configOpenloopRamp(swerveDriveDelay);
+    ((WPI_TalonFX) m_backRightModule.getDriveMotor()).configOpenloopRamp(swerveDriveDelay);
+
+
 
     // _odometryFromKinematics = new SwerveDriveOdometry(m_kinematics, this.getGyroscopeRotation(), new Pose2d(0, 0, new Rotation2d()));
     _odometryFromHardware = new SwerveDriveOdometry(m_kinematics, this.getGyroscopeRotation(), new Pose2d(0, 0, new Rotation2d()));
