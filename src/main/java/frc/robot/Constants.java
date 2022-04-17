@@ -33,7 +33,7 @@ public final class Constants {
 
     // CONTROLS
     public static final double JOYSTICK_DEADBAND = .05;
-    public static final double DRIVE_MAX_TURN_RADIANS_PER_SECOND = 2;
+    public static final double DRIVE_MAX_TURN_RADIANS_PER_SECOND = 3;
 
     // COLOR SENSE
     public static final double BALL_COLOR_THRESHOLD_ENTRY = 400;
@@ -220,7 +220,7 @@ public double wednesdayNightCoefficient = 1.08;
 
     public static final double LAUNCHPAD_TOPSPIN_VOLTAGE_CONTROL_SETPOINT = LAUNCHPAD_TOPSPIN_KF * 12;
     
-    public static final int JUNK_SHOT_BACKSPIN_RPM = 850;
+    public static final int JUNK_SHOT_BACKSPIN_RPM = 200;
     public static final double JUNK_SHOT_BACKSPIN_KF = 0.0452;
     public static final double JUNK_SHOT_BACKSPIN_KP = 0.15;
     public static final double JUNK_SHOT_BACKSPIN_KI = 0;
@@ -228,7 +228,7 @@ public double wednesdayNightCoefficient = 1.08;
     
     public static final double JUNK_SHOT_BACKSPIN_VOLTAGE_CONTROL_SETPOINT = JUNK_SHOT_BACKSPIN_KF * 12; 
 
-    public static final int JUNK_SHOT_TOPSPIN_RPM = 1650;
+    public static final int JUNK_SHOT_TOPSPIN_RPM = 1000;
     public static final double JUNK_SHOT_TOPSPIN_KF = 0.047;
     public static final double JUNK_SHOT_TOPSPIN_KP = 0.15;
     public static final double JUNK_SHOT_TOPSPIN_KI = 0;

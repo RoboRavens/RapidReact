@@ -33,7 +33,7 @@ public class CommonTriggers {
     });
 
     public static Trigger RobotHas2Balls = new Trigger(() -> {
-        if (Robot.MODE_IS_AUTONOMOUS == true) {
+        if (Robot.MODE_IS_AUTONOMOUS || Robot.MODE_IS_DISABLED) {
             return false;
         }
 
@@ -93,7 +93,7 @@ public class CommonTriggers {
     });
 
     public static Trigger ReleaseBallTrigger = new Trigger(() -> {
-        if (Robot.MODE_IS_AUTONOMOUS == true) {
+        if (Robot.MODE_IS_AUTONOMOUS || Robot.MODE_IS_DISABLED) {
             return false;
         }
 
@@ -137,7 +137,7 @@ public class CommonTriggers {
     */
 
     public static Trigger RobotHasOneBall = new Trigger(() -> {
-        if (Robot.MODE_IS_AUTONOMOUS == true) {
+        if (Robot.MODE_IS_AUTONOMOUS || Robot.MODE_IS_DISABLED) {
             return false;
         }
 
@@ -145,7 +145,7 @@ public class CommonTriggers {
     });
 
     public static Trigger RobotFinishedShooting = new Trigger(() -> {
-        if (Robot.MODE_IS_AUTONOMOUS == true) {
+        if (Robot.MODE_IS_AUTONOMOUS || Robot.MODE_IS_DISABLED) {
             return false;
         }
 

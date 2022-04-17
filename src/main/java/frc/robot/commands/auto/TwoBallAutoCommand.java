@@ -24,6 +24,27 @@ public class TwoBallAutoCommand {
         return new AutoMode("Two Ball Hangar", TwoBallAutoCommand.get("hangar"));
     }
 
+    public static AutoMode getHangarPlusSingleOtherBallHangarAutoMode() {
+        var twoBallHangar = TwoBallAutoCommand.getHangarAutoMode().getAutoCommand();
+        var trajectoryTwoBallToFieldWallBall = PathWeaver.getTrajectoryFromFile("output/2 ball hangar-3.2.wpilib.json");
+        
+        Command driveToTopOpposingTeamBall = Robot.DRIVE_TRAIN_SUBSYSTEM.CreateFollowTrajectoryCommandSwerveOptimized(trajectoryTwoBallToFieldWallBall).andThen(new WaitCommand(1));
+        var driveToOpposingTeamBallsWhileCollecting = new ParallelDeadlineGroup(driveToTopOpposingTeamBall, new ConveyanceCollectCommand(), new FeederIndexCommand());
+        var unload = new FeederUnloadCommand().withTimeout(3);
+
+        var cmd = twoBallHangar
+            .andThen(new ShooterLowGoalCommand())
+            .andThen(new ShooterStartInstantCommand())
+            .andThen(new InstantCommand(() -> Robot.COLOR_SENSOR.setColorSensorFeatureEnabled(false))) // re-enabled in teleopInit
+            .andThen(driveToOpposingTeamBallsWhileCollecting)
+            .andThen(new ParallelDeadlineGroup(unload, new ConveyanceIndexCommand()))
+            .andThen(new ShooterStopCommand());
+        
+        var cmdTurretDisabled = new ParallelDeadlineGroup(cmd, new TurretHomeCommand());
+
+        return new AutoMode("Two Ball Hangar Plus Single Ball", cmdTurretDisabled);
+    }
+
     public static AutoMode getHangarPlusOtherBallsHangarAutoMode() {
         var twoBallHangar = TwoBallAutoCommand.getHangarAutoMode().getAutoCommand();
         var trajectory2 = PathWeaver.getTrajectoryFromFile("output/2 ball hangar-2.wpilib.json");

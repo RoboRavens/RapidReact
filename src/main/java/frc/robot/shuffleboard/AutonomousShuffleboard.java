@@ -15,7 +15,7 @@ import frc.controls.ButtonCode;
 
 public class AutonomousShuffleboard {
     private SendableChooser<Integer> _autoChooser = new SendableChooser<>();
-    private final AutoMode[] _autos = new AutoMode[7];
+    private final AutoMode[] _autos = new AutoMode[8];
 
     private final NetworkTableEntry _chosenAuto;
     
@@ -46,6 +46,7 @@ public class AutonomousShuffleboard {
         _autos[4] = TwoBallAutoCommand.getHangarPlusOtherBallsHangarAutoMode();
         _autos[5] = TwoBallAutoCommand.getHangarPlusOtherBallsByGoalAutoMode();
         _autos[6] = new AutoMode("Do Nothing", new InstantCommand());
+        _autos[7] = TwoBallAutoCommand.getHangarPlusSingleOtherBallHangarAutoMode();
 
         _autoChooser.setDefaultOption(_autos[0].getAutoName(), 0);
         for(int i = 1; i < _autos.length; i++){
