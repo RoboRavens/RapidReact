@@ -17,11 +17,11 @@ public class Gamepad {
 	}
 
 	public boolean getButtonValue(ButtonCode button) {
-		return _joystick.getRawButton(getButtonNumber(button));
+		return _joystick.getRawButton(button.value);
 	}
 
 	public JoystickButton getButton(ButtonCode button) {
-		return new JoystickButton(_joystick, getButtonNumber(button));
+		return new JoystickButton(_joystick, button.value);
 	}
 
 	public boolean getAxisIsPressed(AxisCode axis) {
@@ -37,10 +37,6 @@ public class Gamepad {
 
 	public double getAxis(AxisCode axis) {
 		return _joystick.getRawAxis(axis.value);
-	}
-
-	private int getButtonNumber(ButtonCode button) {
-		return button.value;
 	}
 
 	public void setRumbleOn() {
