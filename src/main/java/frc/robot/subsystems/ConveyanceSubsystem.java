@@ -17,6 +17,10 @@ public class ConveyanceSubsystem extends SubsystemBase {
   private boolean _isIndexingFromStagingToFeeder = false;
   private boolean _isIndexingFromEntranceToStaging = false;
   private ConveyanceState _conveyanceState = ConveyanceState.OFF;
+  private boolean ballIsEjecting = false;
+  private boolean conveyanceEjectingWrongColorCargo = false;
+  private boolean conveyanceEjectingThirdBall = false;
+  private boolean stagingEjectionPassThroughIsOccurring = false;
 
   public ConveyanceSubsystem() {
     _conveyanceMotorOne = new WPI_TalonSRX(RobotMap.CONVEYANCE_MOTOR);
@@ -121,5 +125,37 @@ public class ConveyanceSubsystem extends SubsystemBase {
     // Always return false for MSC
     return false;
     // return conveyanceHasWrongColorCargo;
+  }
+
+  public boolean getIsBallEjecting() {
+    return ballIsEjecting;
+  }
+
+  public boolean getIsConveyanceEjectingWrongColorCargo() {
+    return conveyanceEjectingWrongColorCargo;
+  }
+
+  public boolean getConveyanceEjectingThirdBall() {
+    return conveyanceEjectingThirdBall;
+  }
+
+  public boolean getStagingEjectionPassThroughIsOccurring() {
+    return stagingEjectionPassThroughIsOccurring;
+  }
+
+  public void setIsBallEjecting(boolean ballIsEjecting) {
+    this.ballIsEjecting = ballIsEjecting;
+  }
+
+  public void setIsConveyanceEjectingWrongColorCargo(boolean conveyanceEjectingWrongColorCargo) {
+    this.conveyanceEjectingWrongColorCargo = conveyanceEjectingWrongColorCargo;
+  }
+
+  public void setConveyanceEjectingThirdBall(boolean conveyanceEjectingThirdBall) {
+    this.conveyanceEjectingThirdBall = conveyanceEjectingThirdBall;
+  }
+
+  public void setStagingEjectionPassThroughIsOccurring(boolean stagingEjectionPassThroughIsOccurring) {
+    this.stagingEjectionPassThroughIsOccurring = stagingEjectionPassThroughIsOccurring;
   }
 } 

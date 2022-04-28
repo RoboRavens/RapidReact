@@ -23,6 +23,8 @@ import frc.robot.Robot;
   @Override
   public void execute() {
     Robot.CONVEYANCE_SUBSYSTEM.setConveyanceEjectCargo();
+    Robot.CONVEYANCE_SUBSYSTEM.setIsBallEjecting(true);
+    Robot.CONVEYANCE_SUBSYSTEM.setIsConveyanceEjectingWrongColorCargo(true);
   }
   
   // Called once the command ends or is interrupted.
