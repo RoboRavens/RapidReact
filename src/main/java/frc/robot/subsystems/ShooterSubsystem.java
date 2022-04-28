@@ -30,6 +30,9 @@ public class ShooterSubsystem extends SubsystemBase {
     private double _arbitraryFeedForward = 0;
     private ShooterCalibrationPair _rememberedShot;
 
+    private static double _powerDrawRev = 0;
+    private static double _powerDrawCoast = 0;
+
     public ShooterSubsystem() {
         _backspinMotor = new TalonFX(RobotMap.SHOOTER_BACKSPIN_MOTOR);
         _topspinMotor = new TalonFX(RobotMap.SHOOTER_TOPSPIN_MOTOR);
@@ -330,5 +333,19 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public boolean getAutoShotSelect() {
         return _autoShotSelect;
+    }
+
+    private void integratePower(boolean isRev) {
+        double topPower = _topspinMotor.getSupplyCurrent() * _topspinMotor.getMotorOutputVoltage();
+        double backPower = _backspinMotor.getSupplyCurrent() * _backspinMotor.getMotorOutputVoltage();
+        double power = topPower + backPower;
+
+        power /= Constants.CYCLES_PER_SEC; // Translate into watt-seconds
+
+        if (isRev) {
+            _powerDrawRev += power;
+        } else {
+            _powerDrawCoast += power;
+        }
     }
 }

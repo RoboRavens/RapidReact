@@ -24,6 +24,8 @@ public final class Constants {
     public static final double TWO_BALL_SHOOTER_DURATION = 1.5;
     public static final double THIRD_BALL_SHOOTER_DURATION = 1;
 
+    // WPILIB CONSTANTS
+    public static final double CYCLES_PER_SEC = 50;
 
     // TALONFX
     public static final double TALONFX_TICKS_PER_REVOLUTION = 2048;
