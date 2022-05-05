@@ -24,11 +24,9 @@ public class LimelightSubsystem extends SubsystemBase {
   // double s = ts.getDouble(0.0); // Skew or rotation (-90 degrees to 0 degrees)
   public int _ledState = 3;
   public int camMode = 0;
-
   @Override
   public void periodic() {
-    // SmartDashboard.putNumber("LIMELIGHT X OFFSET", _tx.getDouble(0.0));
-    // SmartDashboard.putNumber("LIMELIGHT Y OFFSET", _ty.getDouble(0.0));
+    SmartDashboard.putNumber("Distance", getDistance());
   }
 
   public boolean isAligned() {
