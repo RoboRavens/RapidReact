@@ -53,6 +53,26 @@ public class LimelightSubsystem extends SubsystemBase {
     return this.getRawTargetOffsetAngle() + Constants.LIMELIGHT_CENTERED_OFFSET;
   }
 
+  public double getDistance() {
+  double targetOffsetAngle_Vertical = _ty.getDouble(0.0);
+
+  // how many degrees back is your limelight rotated from perfectly vertical?
+  double limelightMountAngleDegrees = 56;
+
+  // distance from the center of the Limelight lens to the floor
+  double limelightLensHeightInches = 36;
+
+  // distance from the target to the floor
+  double goalHeightInches = 104;
+
+  double angleToGoalDegrees = limelightMountAngleDegrees + targetOffsetAngle_Vertical;
+  double angleToGoalRadians = angleToGoalDegrees * (3.14159 / 180.0);
+
+  //calculate distance
+  double distanceFromLimelightToGoalInches = (goalHeightInches - limelightLensHeightInches)/Math.tan(angleToGoalRadians);
+  return distanceFromLimelightToGoalInches;
+  }
+
   /**
    * Gets the raw limelight offset.
    * @return the raw limelight offset.
