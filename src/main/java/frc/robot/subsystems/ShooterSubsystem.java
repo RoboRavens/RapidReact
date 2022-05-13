@@ -32,6 +32,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     private static double _powerDrawRev = 0;
     private static double _powerDrawCoast = 0;
+    private static double _powerEqualityTime = 0;
 
     public ShooterSubsystem() {
         _backspinMotor = new TalonFX(RobotMap.SHOOTER_BACKSPIN_MOTOR);
@@ -58,6 +59,7 @@ public class ShooterSubsystem extends SubsystemBase {
         updateShotProfile();
         updateArbitraryFeedForward();
 
+        integratePower();
     }
 
     public void updateSmartDashboard() {
@@ -71,6 +73,10 @@ public class ShooterSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Backspin Target Speed", _backspinMotor.getSupplyCurrent());
         SmartDashboard.putNumber("Backspin Target RPM", _shot._backspinMotorCalibration.targetRPM);
         SmartDashboard.putNumber("Topspin Target RPM", _shot._topspinMotorCalibration.targetRPM);
+
+        SmartDashboard.putNumber("Power Draw REV", _powerDrawRev);
+        SmartDashboard.putNumber("Power Draw COAST", _powerDrawCoast);
+        SmartDashboard.putNumber("Time till COAST >= REV", _powerEqualityTime);
         
         // SmartDashboard.putNumber("Backspin AMPS", _backspinMotor.getSupplyCurrent());
         // SmartDashboard.putNumber("Topspin AMPS", _topspinMotor.getStatorCurrent());
@@ -335,17 +341,20 @@ public class ShooterSubsystem extends SubsystemBase {
         return _autoShotSelect;
     }
 
-    private void integratePower(boolean isRev) {
+    private void integratePower() {
         double topPower = _topspinMotor.getSupplyCurrent() * _topspinMotor.getMotorOutputVoltage();
         double backPower = _backspinMotor.getSupplyCurrent() * _backspinMotor.getMotorOutputVoltage();
         double power = topPower + backPower;
 
-        power /= Constants.CYCLES_PER_SEC; // Translate into watt-seconds
+        power /= Constants.CYCLES_PER_SEC; // Translate into watt-seconds (we refresh 50 times per second)
 
-        if (isRev) {
+        if (motorsAreRecovered()) {
             _powerDrawRev += power;
         } else {
             _powerDrawCoast += power;
+            if (_powerDrawCoast < _powerDrawRev) {
+                _powerEqualityTime += 1.0 / Constants.CYCLES_PER_SEC;
+            }
         }
     }
 }
