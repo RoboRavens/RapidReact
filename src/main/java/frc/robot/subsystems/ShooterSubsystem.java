@@ -348,7 +348,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
         power /= Constants.CYCLES_PER_SEC; // Translate into watt-seconds (we refresh 50 times per second)
 
-        if (motorsAreRecovered()) {
+        if (!motorsAreRecovered()) {
             _powerDrawRev += power;
         } else {
             _powerDrawCoast += power;
