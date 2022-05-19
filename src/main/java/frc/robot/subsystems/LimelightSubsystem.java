@@ -67,6 +67,7 @@ public class LimelightSubsystem extends SubsystemBase {
 
   /**
    * Gets the raw limelight offset.
+   * @param d
    * @return the raw limelight offset.
    */
   public double getRawTargetOffsetAngle() {
