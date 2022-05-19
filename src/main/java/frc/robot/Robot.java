@@ -464,6 +464,10 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
 
     OP_PAD2.getButton(ButtonCode.TURRET_HOME).whenPressed(TURRET_AIM_AT_TARGET::resetTarget);
 
+    // For testing only, never needs to be used in matches
+    GAMEPAD.getButton(ButtonCode.BACK).whenPressed(() -> SHOOTER_SUBSYSTEM.resetEfficiencyTesting(false));
+    GAMEPAD.getButton(ButtonCode.START).whenPressed(() -> SHOOTER_SUBSYSTEM.resetEfficiencyTesting(true));
+
     CommonTriggers.TurretAimLowGoal
       .whileActiveOnce(TURRET_AIM_LOWGOAL_COMMAND);
 

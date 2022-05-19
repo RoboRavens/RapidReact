@@ -29,10 +29,23 @@ public class ShooterSubsystem extends SubsystemBase {
     private double _lastShotTime = 0;
     private double _arbitraryFeedForward = 0;
     private ShooterCalibrationPair _rememberedShot;
+    private int _revCount = 0;
 
-    private static double _powerDrawRev = 0;
-    private static double _powerDrawCoast = 0;
-    private static double _powerEqualityTime = 0;
+    // Power efficiency logging variables
+    private double _backspinPowerDrawRev = 0;
+    private double _backspinPowerDrawCoast = 0;
+    private double _backspinPowerEqualityTime = 0;
+    private double _backspinRevTime = 0;
+    private double _backspinPowerEqualityTotal = 0;
+    private double _backspinCoastTime = 0;
+    private double _topspinPowerDrawRev = 0;
+    private double _topspinPowerDrawCoast = 0;
+    private double _topspinPowerEqualityTime = 0;
+    private double _topspinRevTime = 0;
+    private double _topspinPowerEqualityTotal = 0;
+    private double _topspinCoastTime = 0;
+    private double _powerTestCount = 0;
+    
 
     public ShooterSubsystem() {
         _backspinMotor = new TalonFX(RobotMap.SHOOTER_BACKSPIN_MOTOR);
@@ -59,7 +72,8 @@ public class ShooterSubsystem extends SubsystemBase {
         updateShotProfile();
         updateArbitraryFeedForward();
 
-        integratePower();
+        integrateBackspinPower();
+        integrateTopspinPower();
     }
 
     public void updateSmartDashboard() {
@@ -70,13 +84,23 @@ public class ShooterSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Shot Count", getShotCount());
         SmartDashboard.putNumber("Last Shot Time", getLastShotTime());
         SmartDashboard.putNumber("Back Shooter Rot", _backspinMotor.getSelectedSensorPosition() / Constants.TALONFX_TICKS_PER_REVOLUTION);
-        SmartDashboard.putNumber("Backspin Target Speed", _backspinMotor.getSupplyCurrent());
         SmartDashboard.putNumber("Backspin Target RPM", _shot._backspinMotorCalibration.targetRPM);
         SmartDashboard.putNumber("Topspin Target RPM", _shot._topspinMotorCalibration.targetRPM);
+        SmartDashboard.putNumber("Rev count", _revCount);
 
-        SmartDashboard.putNumber("Power Draw REV", _powerDrawRev);
-        SmartDashboard.putNumber("Power Draw COAST", _powerDrawCoast);
-        SmartDashboard.putNumber("Time till COAST >= REV", _powerEqualityTime);
+        SmartDashboard.putNumber("Backspin Power Draw REV", _backspinPowerDrawRev);
+        SmartDashboard.putNumber("Backspin Power Draw COAST", _backspinPowerDrawCoast);
+        SmartDashboard.putNumber("Backspin Time till COAST >= REV", _backspinPowerEqualityTime);
+        SmartDashboard.putNumber("Backspin Revving Time", _backspinRevTime);
+        SmartDashboard.putNumber("Backspin average time till COAST >= REV", _backspinPowerEqualityTotal / _powerTestCount);
+        SmartDashboard.putNumber("Topspin Power Draw REV", _topspinPowerDrawRev);
+        SmartDashboard.putNumber("Topspin Power Draw COAST", _topspinPowerDrawCoast);
+        SmartDashboard.putNumber("Topspin Time till COAST >= REV", _topspinPowerEqualityTime);
+        SmartDashboard.putNumber("Topspin Revving Time", _topspinRevTime);
+        SmartDashboard.putNumber("Topspin average time till COAST >= REV", _topspinPowerEqualityTotal / _powerTestCount);
+
+        SmartDashboard.putNumber("Backspin coast joules per second", _backspinPowerDrawCoast / _backspinCoastTime);
+        SmartDashboard.putNumber("Topspin coast joules per second", _topspinPowerDrawCoast / _topspinCoastTime);
         
         // SmartDashboard.putNumber("Backspin AMPS", _backspinMotor.getSupplyCurrent());
         // SmartDashboard.putNumber("Topspin AMPS", _topspinMotor.getStatorCurrent());
@@ -174,6 +198,9 @@ public class ShooterSubsystem extends SubsystemBase {
         _backspinMotor.set(ControlMode.Velocity, backspinTargetVelocity, DemandType.ArbitraryFeedForward, _arbitraryFeedForward);
         _topspinMotor.set(ControlMode.Velocity, topspinTargetVelocity, DemandType.ArbitraryFeedForward, _arbitraryFeedForward);
 
+        if (_isShooting) {
+            _revCount++;
+        }
         _isShooting = true;
     }
 
@@ -341,20 +368,66 @@ public class ShooterSubsystem extends SubsystemBase {
         return _autoShotSelect;
     }
 
-    private void integratePower() {
-        double topPower = _topspinMotor.getSupplyCurrent() * _topspinMotor.getMotorOutputVoltage();
-        double backPower = _backspinMotor.getSupplyCurrent() * _backspinMotor.getMotorOutputVoltage();
-        double power = topPower + backPower;
+    private void integrateBackspinPower() {
+        double power = _backspinMotor.getSupplyCurrent() * _backspinMotor.getMotorOutputVoltage();
 
         power /= Constants.CYCLES_PER_SEC; // Translate into watt-seconds (we refresh 50 times per second)
 
-        if (!motorsAreRecovered()) {
-            _powerDrawRev += power;
+        // Add power to totals, like you'd do in a Reimann sum
+        if (!backspinMotorIsRecovered() && _isShooting) {
+            _backspinPowerDrawRev += power;
+            _backspinRevTime += 1.0 / Constants.CYCLES_PER_SEC;
         } else {
-            _powerDrawCoast += power;
-            if (_powerDrawCoast < _powerDrawRev) {
-                _powerEqualityTime += 1.0 / Constants.CYCLES_PER_SEC;
+            _backspinPowerDrawCoast += power;
+            if (_backspinPowerDrawCoast < _backspinPowerDrawRev) {
+                _backspinPowerEqualityTime += 1.0 / Constants.CYCLES_PER_SEC;
             }
+            if(_isShooting) {
+                _backspinCoastTime += 1.0 / Constants.CYCLES_PER_SEC;
+            }
+        }
+    }
+
+    private void integrateTopspinPower() {
+        double power = _topspinMotor.getSupplyCurrent() * _topspinMotor.getMotorOutputVoltage();
+
+        power /= Constants.CYCLES_PER_SEC; // Translate into watt-seconds (we refresh 50 times per second)
+
+        if (!topspinMotorIsRecovered() && _isShooting) {
+            _topspinPowerDrawRev += power;
+            _topspinRevTime += 1.0 / Constants.CYCLES_PER_SEC;
+        } else {
+            _topspinPowerDrawCoast += power;
+            if (_topspinPowerDrawCoast < _topspinPowerDrawRev) {
+                _topspinPowerEqualityTime += 1.0 / Constants.CYCLES_PER_SEC;
+            }
+            if(_isShooting) {
+                _topspinCoastTime += 1.0 / Constants.CYCLES_PER_SEC;
+            }
+        }
+    }
+
+    public void resetEfficiencyTesting(boolean fullReset) {
+        _backspinPowerEqualityTotal += _backspinPowerEqualityTime;
+        _topspinPowerEqualityTotal += _topspinPowerEqualityTime;
+        _powerTestCount++;
+
+        _backspinPowerDrawRev = 0;
+        _backspinPowerDrawCoast = 0;
+        _backspinPowerEqualityTime = 0;
+        _backspinRevTime = 0;
+        _backspinCoastTime = 0;
+        
+        _topspinPowerDrawRev = 0;
+        _topspinPowerDrawCoast = 0;
+        _topspinPowerEqualityTime = 0;
+        _topspinRevTime = 0;
+        _topspinCoastTime = 0;
+
+        if (fullReset) {
+            _backspinPowerEqualityTotal = 0;
+            _topspinPowerEqualityTotal = 0;
+            _powerTestCount = 0;
         }
     }
 }
