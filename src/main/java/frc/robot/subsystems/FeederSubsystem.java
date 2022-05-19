@@ -105,6 +105,10 @@ public class FeederSubsystem extends SubsystemBase {
     return !_feederBeamBreak.get();
   }
 
+  public boolean getFeederHasBallInt() {
+    
+  }
+
   // This method runs the feeder wheel and the conveyance, but only
   // if the shooter is at an appropriate RPM.
   public void shoot() {

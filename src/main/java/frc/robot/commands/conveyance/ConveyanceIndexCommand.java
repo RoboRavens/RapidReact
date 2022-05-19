@@ -1,5 +1,6 @@
 package frc.robot.commands.conveyance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Robot;
 
 public class ConveyanceIndexCommand extends CommandBase {
@@ -23,6 +24,9 @@ public class ConveyanceIndexCommand extends CommandBase {
       boolean conveyanceEjectingWrongColorCargo = Robot.CONVEYANCE_SUBSYSTEM.getIsConveyanceEjectingWrongColorCargo();
       boolean conveyanceEjectingThirdBall = Robot.CONVEYANCE_SUBSYSTEM.getConveyanceEjectingThirdBall();
       boolean stagingEjectionPassThroughIsOccurring = Robot.CONVEYANCE_SUBSYSTEM.getStagingEjectionPassThroughIsOccurring();
+
+      new InstantCommand().until(() -> feederHasBall)
+        .andThen(new InstantCommand().until(stagingBeamBreakHasBall));
 
       if (feederHasBall) {
         if (stagingBeamBreakHasBall && ballIsEjecting == false) {
