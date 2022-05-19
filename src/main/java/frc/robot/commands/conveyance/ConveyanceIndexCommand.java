@@ -39,13 +39,11 @@ public class ConveyanceIndexCommand extends CommandBase {
               // Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne();
               ConveyanceStopCommand conveyanceStop = new ConveyanceStopCommand();
               conveyanceStop.schedule();
-              System.out.println("Ball in the feeder and staging. No ball in entrance. Conveyance stopped");
             }
             else if (entranceBeamBreakHasBall) { 
               // If there is a third ball in the entrance, begin the eject sequence
               ConveyanceEjectThirdBallCommand conveyanceEjectThirdBallCommand = new ConveyanceEjectThirdBallCommand();
               conveyanceEjectThirdBallCommand.schedule();
-              System.out.println("Three balls in the robot. Third ball ejecting.");
             }
           }
           else if (Robot.CONVEYANCE_SUBSYSTEM.conveyanceHasWrongColorCargo()) {
