@@ -25,8 +25,8 @@ public class ConveyanceIndexCommand extends CommandBase {
       boolean conveyanceEjectingThirdBall = Robot.CONVEYANCE_SUBSYSTEM.getConveyanceEjectingThirdBall();
       boolean stagingEjectionPassThroughIsOccurring = Robot.CONVEYANCE_SUBSYSTEM.getStagingEjectionPassThroughIsOccurring();
 
-      new InstantCommand().until(() -> feederHasBall)
-        .andThen(new InstantCommand().until(stagingBeamBreakHasBall));
+      // new InstantCommand().until(() -> feederHasBall)
+      //   .andThen(new InstantCommand().until(stagingBeamBreakHasBall));
 
       if (feederHasBall) {
         if (stagingBeamBreakHasBall && ballIsEjecting == false) {
