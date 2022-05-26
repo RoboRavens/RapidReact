@@ -9,7 +9,7 @@ import frc.robot.Robot;
 import frc.robot.commands.SwitchCommand;
 
 public class ConveyanceIndexingCommandGroup extends SequentialCommandGroup {
-
+    
     public class CommandConditionalPair {
         private Command _command;
         private BooleanSupplier _condition;
@@ -29,6 +29,8 @@ public class ConveyanceIndexingCommandGroup extends SequentialCommandGroup {
     }
 
     public ConveyanceIndexingCommandGroup() {
+        addRequirements(Robot.CONVEYANCE_SUBSYSTEM);
+        
         boolean entranceBeamBreakHasBall = Robot.CONVEYANCE_SUBSYSTEM.getConveyanceEntryBeamBreakHasBall();
         boolean stagingBeamBreakHasBall = Robot.CONVEYANCE_SUBSYSTEM.getConveyanceStagingBeamBreakHasBall();
         boolean feederHasBall = Robot.FEEDER_SUBSYSTEM.getFeederHasBall();
