@@ -58,9 +58,9 @@ public class TeleopShuffleboard {
     }
 
     public void robotInit() {
-        //var camera = CameraServer.startAutomaticCapture();
-        //camera.setFPS(Constants.CAMERA_FPS);
-        //camera.setResolution(Constants.CAMERA_WIDTH, Constants.CAMERA_HEIGHT);
+        var camera = CameraServer.startAutomaticCapture();
+        camera.setFPS(Constants.CAMERA_FPS);
+        camera.setResolution(Constants.CAMERA_WIDTH, Constants.CAMERA_HEIGHT);
     }
 
     public void switchToTab() {
