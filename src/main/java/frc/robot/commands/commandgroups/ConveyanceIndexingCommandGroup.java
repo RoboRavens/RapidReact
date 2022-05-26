@@ -61,6 +61,68 @@ public class ConveyanceIndexingCommandGroup extends SequentialCommandGroup {
           entranceBeamBreakHasBall;
         }));
 
+        indexingCommandConditionalPairs.add(new CommandConditionalPair(new ConveyanceEjectCommand(), () -> {
+            return feederHasBall &&
+            stagingBeamBreakHasBall &&
+            ballIsEjecting == false &&
+            Robot.CONVEYANCE_SUBSYSTEM.conveyanceHasWrongColorCargo();
+        }));
+
+        indexingCommandConditionalPairs.add(new CommandConditionalPair(new ConveyanceIndexCargoForward(true), () -> {
+            return feederHasBall &&
+            stagingBeamBreakHasBall == false &&
+            ballIsEjecting == false &&
+            (entranceBeamBreakHasBall || Robot.CONVEYANCE_SUBSYSTEM.getIsIndexingFromEntranceToStaging());
+        }));
+
+        indexingCommandConditionalPairs.add(new CommandConditionalPair(new ConveyanceStopCommand(), () -> {
+            return feederHasBall && 
+            stagingBeamBreakHasBall == false && 
+            ballIsEjecting == false &&
+            entranceBeamBreakHasBall == false &&
+            Robot.CONVEYANCE_SUBSYSTEM.getIsIndexingFromEntranceToStaging() == false;
+        }));
+
+        indexingCommandConditionalPairs.add(new CommandConditionalPair(new ConveyanceEjectCommand(), () -> {
+            return feederHasBall &&
+            ballIsEjecting &&
+            conveyanceEjectingWrongColorCargo;
+        }));
+
+        indexingCommandConditionalPairs.add(new CommandConditionalPair(new ConveyanceNotIndexingCommand(), () -> {
+            return feederHasBall &&
+            ballIsEjecting &&
+            conveyanceEjectingWrongColorCargo &&
+            entranceBeamBreakHasBall == false &&
+            stagingEjectionPassThroughIsOccurring;
+        }));
+
+        indexingCommandConditionalPairs.add(new CommandConditionalPair(new ConveyanceNotEjectingCommand(), () -> {
+            return feederHasBall &&
+            ballIsEjecting &&
+            conveyanceEjectingWrongColorCargo == false &&
+            conveyanceEjectingThirdBall &&
+            entranceBeamBreakHasBall == false;
+        }));
+
+        indexingCommandConditionalPairs.add(new CommandConditionalPair(new ConveyanceStopCommand(), () -> {
+            return feederHasBall == false &&
+            Robot.getRobotCargoInventory() == 0;
+        }));
+
+        indexingCommandConditionalPairs.add(new CommandConditionalPair(new ConveyanceIndexCargoForward(false), () -> {
+            return feederHasBall == false &&
+            Robot.getRobotCargoInventory() != 0 &&
+            stagingBeamBreakHasBall;
+        }));
+
+        indexingCommandConditionalPairs.add(new CommandConditionalPair(new ConveyanceIndexCargoForward(true), () -> {
+            return feederHasBall == false &&
+            Robot.getRobotCargoInventory() != 0 &&
+            stagingBeamBreakHasBall == false &&
+            (Robot.CONVEYANCE_SUBSYSTEM.getIsIndexingFromEntranceToStaging() || entranceBeamBreakHasBall);
+        }));
+
         addCommands(
             new SwitchCommand(indexingCommandConditionalPairs)
         );
@@ -140,5 +202,109 @@ public class ConveyanceIndexingCommandGroup extends SequentialCommandGroup {
         return true;
       }
     }
+
+    public class ConveyanceEjectCommand extends CommandBase {
+        public ConveyanceEjectCommand() {
+          addRequirements(Robot.CONVEYANCE_SUBSYSTEM);
+        }
+      
+        @Override
+        public void initialize() {}
+        
+        @Override
+        public void execute() {
+          Robot.CONVEYANCE_SUBSYSTEM.setConveyanceEjectCargo();
+          Robot.CONVEYANCE_SUBSYSTEM.setIsBallEjecting(true);
+          Robot.CONVEYANCE_SUBSYSTEM.setIsConveyanceEjectingWrongColorCargo(true);
+        }
+        
+        @Override
+        public void end(boolean interrupted) {
+          Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne();
+        }
+        
+        @Override
+        public boolean isFinished() {
+          return true;
+        }
+      }
+
+    public class ConveyanceIndexCargoForward extends CommandBase {
+        private boolean _indexingFromEntranceToStaging;
+
+        public ConveyanceIndexCargoForward(boolean indexingFromEntranceToStaging) {
+            _indexingFromEntranceToStaging = indexingFromEntranceToStaging;
+            addRequirements(Robot.CONVEYANCE_SUBSYSTEM);
+        }
+      
+        @Override
+        public void initialize() {}
+        
+        @Override
+        public void execute() {
+            Robot.CONVEYANCE_SUBSYSTEM.setConveyanceIndexCargoForward();
+            Robot.CONVEYANCE_SUBSYSTEM.setIsIndexingFromEntranceToStaging(_indexingFromEntranceToStaging);
+        }
+        
+        @Override
+        public void end(boolean interrupted) {}
+        
+        @Override
+        public boolean isFinished() {
+          return true;
+        }
+    } 
+
+    public class ConveyanceNotIndexingCommand extends CommandBase {
+
+        public ConveyanceNotIndexingCommand() {
+            addRequirements(Robot.CONVEYANCE_SUBSYSTEM);
+        }
+      
+        @Override
+        public void initialize() {}
+        
+        @Override
+        public void execute() {
+            Robot.CONVEYANCE_SUBSYSTEM.setStagingEjectionPassThroughIsOccurring(false);
+            Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne();
+            Robot.CONVEYANCE_SUBSYSTEM.setIsBallEjecting(false);
+            Robot.CONVEYANCE_SUBSYSTEM.setIsConveyanceEjectingWrongColorCargo(false);
+            Robot.CONVEYANCE_SUBSYSTEM.setIsIndexingFromEntranceToStaging(false);
+        }
+        
+        @Override
+        public void end(boolean interrupted) {}
+        
+        @Override
+        public boolean isFinished() {
+          return true;
+        }
+    } 
+
+    public class ConveyanceNotEjectingCommand extends CommandBase {
+
+        public ConveyanceNotEjectingCommand() {
+            addRequirements(Robot.CONVEYANCE_SUBSYSTEM);
+        }
+      
+        @Override
+        public void initialize() {}
+        
+        @Override
+        public void execute() {
+            Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne();
+            Robot.CONVEYANCE_SUBSYSTEM.setIsBallEjecting(false);
+            Robot.CONVEYANCE_SUBSYSTEM.setConveyanceEjectingThirdBall(false);
+        }
+        
+        @Override
+        public void end(boolean interrupted) {}
+        
+        @Override
+        public boolean isFinished() {
+          return true;
+        }
+    } 
     
 }
