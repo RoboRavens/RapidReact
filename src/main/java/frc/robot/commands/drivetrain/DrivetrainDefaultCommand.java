@@ -13,7 +13,7 @@ import frc.util.Deadband;
 
 public class DrivetrainDefaultCommand extends CommandBase {
     private boolean _followLimelight = false;
-    private boolean _autoSteer = true;
+    private boolean _autoSteer = false;
     private PIDController _followLimelightPID = new PIDController(.13, 0, 0);
     private PIDController _autoSteerPID = new PIDController(.035, 0, 0);
 
@@ -39,8 +39,8 @@ public class DrivetrainDefaultCommand extends CommandBase {
         // SmartDashboard.putNumber("Drive X", x);
         // SmartDashboard.putNumber("Drive Y", y);
 
-        x = x * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND;
-        y = y * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND;
+        x = x * 2; // DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND;
+        y = y * 2; // DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND;
 
         SmartDashboard.putBoolean("autosteer", _autoSteer);
         var limelightAngle = this.getLimelightTargetOffset();
@@ -49,7 +49,7 @@ public class DrivetrainDefaultCommand extends CommandBase {
             // SmartDashboard.putNumber("", r);
         } else if (Math.abs(rightJoystickInput) > 0.0){
             // _followLimelightPID.reset();
-            r = rightJoystickInput * Constants.DRIVE_MAX_TURN_RADIANS_PER_SECOND;
+            r = rightJoystickInput * 1.5; // Constants.DRIVE_MAX_TURN_RADIANS_PER_SECOND;
         } else if (_autoSteer && Robot.DRIVE_TRAIN_SUBSYSTEM.powerIsCut() == false && (x != 0 || y != 0)) {
             var angularDiff = this.getDegreesToMovementDirection(x, y, a.getDegrees());
             double autoSteerRotationalVelocity = _autoSteerPID.calculate(angularDiff);
@@ -89,7 +89,7 @@ public class DrivetrainDefaultCommand extends CommandBase {
     }
 
     public void enableAutoSteer() {
-        _autoSteer = true;
+        _autoSteer = false;
     }
 
     public void disableAutoSteer() {
