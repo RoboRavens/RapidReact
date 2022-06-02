@@ -18,8 +18,12 @@ public class SwitchCommand extends CommandBase {
     for (CommandConditionalPair commandConditionalPair : _commandConditionalPairs) {
       if (commandConditionalPair.getCommandCondition().getAsBoolean()) {
         _selectedCommand = commandConditionalPair.getCommand();
+        _selectedCommand.initialize();
         break;
       }
+    }
+    if (_selectedCommand == null) {
+      end(true);
     }
   }
 
@@ -30,7 +34,9 @@ public class SwitchCommand extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-    _selectedCommand.end(interrupted);
+    if (_selectedCommand != null) {
+      _selectedCommand.end(interrupted);
+    }
   }
 
   @Override

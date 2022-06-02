@@ -31,98 +31,98 @@ public class ConveyanceIndexingCommandGroup extends SequentialCommandGroup {
     public ConveyanceIndexingCommandGroup() {
         addRequirements(Robot.CONVEYANCE_SUBSYSTEM);
         
-        boolean entranceBeamBreakHasBall = Robot.CONVEYANCE_SUBSYSTEM.getConveyanceEntryBeamBreakHasBall();
-        boolean stagingBeamBreakHasBall = Robot.CONVEYANCE_SUBSYSTEM.getConveyanceStagingBeamBreakHasBall();
-        boolean feederHasBall = Robot.FEEDER_SUBSYSTEM.getFeederHasBall();
-        boolean ballIsEjecting = Robot.CONVEYANCE_SUBSYSTEM.getIsBallEjecting();
-        boolean conveyanceEjectingWrongColorCargo = Robot.CONVEYANCE_SUBSYSTEM.getIsConveyanceEjectingWrongColorCargo();
-        boolean conveyanceEjectingThirdBall = Robot.CONVEYANCE_SUBSYSTEM.getConveyanceEjectingThirdBall();
-        boolean stagingEjectionPassThroughIsOccurring = Robot.CONVEYANCE_SUBSYSTEM.getStagingEjectionPassThroughIsOccurring();
+        BooleanSupplier entranceBeamBreakHasBall = () -> Robot.CONVEYANCE_SUBSYSTEM.getConveyanceEntryBeamBreakHasBall();
+        BooleanSupplier stagingBeamBreakHasBall = () -> Robot.CONVEYANCE_SUBSYSTEM.getConveyanceStagingBeamBreakHasBall();
+        BooleanSupplier feederHasBall = () -> Robot.FEEDER_SUBSYSTEM.getFeederHasBall();
+        BooleanSupplier ballIsEjecting = () -> Robot.CONVEYANCE_SUBSYSTEM.getIsBallEjecting();
+        BooleanSupplier conveyanceEjectingWrongColorCargo = () -> Robot.CONVEYANCE_SUBSYSTEM.getIsConveyanceEjectingWrongColorCargo();
+        BooleanSupplier conveyanceEjectingThirdBall = () -> Robot.CONVEYANCE_SUBSYSTEM.getConveyanceEjectingThirdBall();
+        BooleanSupplier stagingEjectionPassThroughIsOccurring = () -> Robot.CONVEYANCE_SUBSYSTEM.getStagingEjectionPassThroughIsOccurring();
 
         ArrayList<CommandConditionalPair> indexingCommandConditionalPairs = new ArrayList<CommandConditionalPair>();
 
         indexingCommandConditionalPairs.add(new CommandConditionalPair(new SetIsIndexingFromEntranceToStagingCommand(false), () -> {
-            return feederHasBall &&
-            stagingBeamBreakHasBall &&
-            ballIsEjecting == false;
+            return feederHasBall.getAsBoolean() &&
+            stagingBeamBreakHasBall.getAsBoolean() &&
+            ballIsEjecting.getAsBoolean() == false;
         }));
 
         indexingCommandConditionalPairs.add(new CommandConditionalPair(new ConveyanceStopCommand(), () -> {
-            return feederHasBall &&
-            stagingBeamBreakHasBall &&
-            ballIsEjecting == false &&
+            return feederHasBall.getAsBoolean() &&
+            stagingBeamBreakHasBall.getAsBoolean() &&
+            ballIsEjecting.getAsBoolean() == false &&
             Robot.CONVEYANCE_SUBSYSTEM.conveyanceHasProperColorCargo() &&
-            entranceBeamBreakHasBall == false;
+            entranceBeamBreakHasBall.getAsBoolean() == false;
         }));
 
         indexingCommandConditionalPairs.add(new CommandConditionalPair(new ConveyanceEjectThirdBallCommand(), () -> {
-          return feederHasBall &&
-          stagingBeamBreakHasBall &&
-          ballIsEjecting == false &&
+          return feederHasBall.getAsBoolean() &&
+          stagingBeamBreakHasBall.getAsBoolean() &&
+          ballIsEjecting.getAsBoolean() == false &&
           Robot.CONVEYANCE_SUBSYSTEM.conveyanceHasProperColorCargo() &&
-          entranceBeamBreakHasBall;
+          entranceBeamBreakHasBall.getAsBoolean();
         }));
 
         indexingCommandConditionalPairs.add(new CommandConditionalPair(new ConveyanceEjectCommand(), () -> {
-            return feederHasBall &&
-            stagingBeamBreakHasBall &&
-            ballIsEjecting == false &&
+            return feederHasBall.getAsBoolean() &&
+            stagingBeamBreakHasBall.getAsBoolean() &&
+            ballIsEjecting.getAsBoolean() == false &&
             Robot.CONVEYANCE_SUBSYSTEM.conveyanceHasWrongColorCargo();
         }));
 
         indexingCommandConditionalPairs.add(new CommandConditionalPair(new ConveyanceIndexCargoForward(true), () -> {
-            return feederHasBall &&
-            stagingBeamBreakHasBall == false &&
-            ballIsEjecting == false &&
-            (entranceBeamBreakHasBall || Robot.CONVEYANCE_SUBSYSTEM.getIsIndexingFromEntranceToStaging());
+            return feederHasBall.getAsBoolean() &&
+            stagingBeamBreakHasBall.getAsBoolean() == false &&
+            ballIsEjecting.getAsBoolean() == false &&
+            (entranceBeamBreakHasBall.getAsBoolean() || Robot.CONVEYANCE_SUBSYSTEM.getIsIndexingFromEntranceToStaging());
         }));
 
         indexingCommandConditionalPairs.add(new CommandConditionalPair(new ConveyanceStopCommand(), () -> {
-            return feederHasBall && 
-            stagingBeamBreakHasBall == false && 
-            ballIsEjecting == false &&
-            entranceBeamBreakHasBall == false &&
+            return feederHasBall.getAsBoolean() && 
+            stagingBeamBreakHasBall.getAsBoolean() == false && 
+            ballIsEjecting.getAsBoolean() == false &&
+            entranceBeamBreakHasBall.getAsBoolean() == false &&
             Robot.CONVEYANCE_SUBSYSTEM.getIsIndexingFromEntranceToStaging() == false;
         }));
 
         indexingCommandConditionalPairs.add(new CommandConditionalPair(new ConveyanceEjectCommand(), () -> {
-            return feederHasBall &&
-            ballIsEjecting &&
-            conveyanceEjectingWrongColorCargo;
+            return feederHasBall.getAsBoolean() &&
+            ballIsEjecting.getAsBoolean() &&
+            conveyanceEjectingWrongColorCargo.getAsBoolean();
         }));
 
         indexingCommandConditionalPairs.add(new CommandConditionalPair(new ConveyanceNotIndexingCommand(), () -> {
-            return feederHasBall &&
-            ballIsEjecting &&
-            conveyanceEjectingWrongColorCargo &&
-            entranceBeamBreakHasBall == false &&
-            stagingEjectionPassThroughIsOccurring;
+            return feederHasBall.getAsBoolean() &&
+            ballIsEjecting.getAsBoolean() &&
+            conveyanceEjectingWrongColorCargo.getAsBoolean() &&
+            entranceBeamBreakHasBall.getAsBoolean() == false &&
+            stagingEjectionPassThroughIsOccurring.getAsBoolean();
         }));
 
         indexingCommandConditionalPairs.add(new CommandConditionalPair(new ConveyanceNotEjectingCommand(), () -> {
-            return feederHasBall &&
-            ballIsEjecting &&
-            conveyanceEjectingWrongColorCargo == false &&
-            conveyanceEjectingThirdBall &&
-            entranceBeamBreakHasBall == false;
+            return feederHasBall.getAsBoolean() &&
+            ballIsEjecting.getAsBoolean() &&
+            conveyanceEjectingWrongColorCargo.getAsBoolean() == false &&
+            conveyanceEjectingThirdBall.getAsBoolean() &&
+            entranceBeamBreakHasBall.getAsBoolean() == false;
         }));
 
         indexingCommandConditionalPairs.add(new CommandConditionalPair(new ConveyanceStopCommand(), () -> {
-            return feederHasBall == false &&
+            return feederHasBall.getAsBoolean() == false &&
             Robot.getRobotCargoInventory() == 0;
         }));
 
         indexingCommandConditionalPairs.add(new CommandConditionalPair(new ConveyanceIndexCargoForward(false), () -> {
-            return feederHasBall == false &&
+            return feederHasBall.getAsBoolean() == false &&
             Robot.getRobotCargoInventory() != 0 &&
-            stagingBeamBreakHasBall;
+            stagingBeamBreakHasBall.getAsBoolean();
         }));
 
         indexingCommandConditionalPairs.add(new CommandConditionalPair(new ConveyanceIndexCargoForward(true), () -> {
-            return feederHasBall == false &&
+            return feederHasBall.getAsBoolean() == false &&
             Robot.getRobotCargoInventory() != 0 &&
-            stagingBeamBreakHasBall == false &&
-            (Robot.CONVEYANCE_SUBSYSTEM.getIsIndexingFromEntranceToStaging() || entranceBeamBreakHasBall);
+            stagingBeamBreakHasBall.getAsBoolean() == false &&
+            (Robot.CONVEYANCE_SUBSYSTEM.getIsIndexingFromEntranceToStaging() || entranceBeamBreakHasBall.getAsBoolean());
         }));
 
         addCommands(
