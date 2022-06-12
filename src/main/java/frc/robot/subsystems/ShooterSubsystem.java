@@ -54,8 +54,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
         updateShotProfile();
         updateArbitraryFeedForward();
-           
-        enableAutoShotSelect();
+        
          
     }
 
@@ -324,7 +323,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void enableAutoShotSelect() {
-        _autoShotSelect = true;
+        //_autoShotSelect = true;
     }
 
     public boolean getAutoShotSelect() {
