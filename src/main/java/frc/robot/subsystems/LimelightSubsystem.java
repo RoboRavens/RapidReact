@@ -63,7 +63,7 @@ public class LimelightSubsystem extends SubsystemBase {
   //calculate distance
   double distanceFromLimelightToGoalInches = (goalHeightInches - limelightLensHeightInches)/Math.tan(angleToGoalRadians);
   return distanceFromLimelightToGoalInches;
-  }
+  } 
 
   /**
    * Gets the raw limelight offset.
