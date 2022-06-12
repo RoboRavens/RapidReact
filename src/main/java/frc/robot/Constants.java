@@ -471,10 +471,10 @@ Y-offset constants in order:
     public static final double LIMELIGHT_CENTERED_OFFSET = 1.2;
     public static final double LIMELIGHT_IS_ALIGNED_DEGREES = 1.5;
    
-    public static final double MAX_LOW_GOAL_SHOT = .29;
-	public static final double MAX_TARMAC_SHOT = -6;
-	public static final double MAX_AUTO_RADIUS_SHOT = -9.2;
-	public static final double MAX_LAUNCHPAD_SHOT = -11.6;
+    public static final double MIN_LOW_GOAL_SHOT = .29;
+	public static final double MIN_TARMAC_SHOT = 2.286;
+	public static final double MIN_AUTO_RADIUS_SHOT = -9.2;
+	public static final double MIN_LAUNCHPAD_SHOT = 3.65;
     
     // SHUFFLEBOARD
     public static final int CAMERA_FPS = 15;

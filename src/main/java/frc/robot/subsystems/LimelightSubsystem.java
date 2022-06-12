@@ -10,25 +10,17 @@ public class LimelightSubsystem extends SubsystemBase {
   private NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
   private NetworkTableEntry _tx = table.getEntry("tx");
   private NetworkTableEntry _ty = table.getEntry("ty");
-  private NetworkTableEntry _ta = table.getEntry("ta"); // area
-  // private NetworkTableEntry _tl = table.getEntry("Tl"); // The pipeline’s latency contribution (ms) Add at least 11ms for image capture
-  private NetworkTableEntry _tv = table.getEntry("tv"); // Whether the limelight has any valid targets (0 or 1)
-  // private NetworkTableEntry _ts = table.getEntry("ts"); // Skew or rotation (-90 degrees to 0 degrees)
+  private NetworkTableEntry _ta = table.getEntry("ta"); 
+  private NetworkTableEntry _tv = table.getEntry("tv"); 
+ 
 
   NetworkTableEntry ledMode = table.getEntry("ledMode");
-  // double x = tx.getDouble(0.0);
-  // double y = ty.getDouble(0.0);
-  // double area = ta.getDouble(0.5);
-  // double l = tl.getDouble(0.0); // The pipeline’s latency contribution (ms) Add at least 11ms for image capture
-  // double v = tv.getDouble(0.0); // Whether the limelight has any valid targets (0 or 1)
-  // double s = ts.getDouble(0.0); // Skew or rotation (-90 degrees to 0 degrees)
+
   public int _ledState = 3;
   public int camMode = 0;
-
   @Override
   public void periodic() {
-    // SmartDashboard.putNumber("LIMELIGHT X OFFSET", _tx.getDouble(0.0));
-    // SmartDashboard.putNumber("LIMELIGHT Y OFFSET", _ty.getDouble(0.0));
+    SmartDashboard.putNumber("Distance", getDistance());
   }
 
   public boolean isAligned() {
@@ -53,8 +45,29 @@ public class LimelightSubsystem extends SubsystemBase {
     return this.getRawTargetOffsetAngle() + Constants.LIMELIGHT_CENTERED_OFFSET;
   }
 
+  public double getDistance() {
+  double targetOffsetAngle_Vertical = _ty.getDouble(0.0);
+
+  // how many degrees back is your limelight rotated from perfectly vertical?
+  double limelightMountAngleDegrees = 56;
+
+  // distance from the center of the Limelight lens to the floor
+  double limelightLensHeightInches = 36;
+
+  // distance from the target to the floor
+  double goalHeightInches = 104;
+
+  double angleToGoalDegrees = limelightMountAngleDegrees + targetOffsetAngle_Vertical;
+  double angleToGoalRadians = angleToGoalDegrees * (3.14159 / 180.0);
+
+  //calculate distance
+  double distanceFromLimelightToGoalInches = (goalHeightInches - limelightLensHeightInches)/Math.tan(angleToGoalRadians);
+  return distanceFromLimelightToGoalInches;
+  } 
+
   /**
    * Gets the raw limelight offset.
+   * @param d
    * @return the raw limelight offset.
    */
   public double getRawTargetOffsetAngle() {

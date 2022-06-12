@@ -25,7 +25,7 @@ public class ShooterSubsystem extends SubsystemBase {
     private int _shotTally = 0;
     private boolean _isShooting;
     private boolean _recovered;
-    private boolean _autoShotSelect = false;
+    private boolean _autoShotSelect = true;
     private double _lastShotTime = 0;
     private double _arbitraryFeedForward = 0;
     private ShooterCalibrationPair _rememberedShot;
@@ -54,7 +54,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
         updateShotProfile();
         updateArbitraryFeedForward();
-
+        
+         
     }
 
     public void updateSmartDashboard() {
@@ -294,17 +295,14 @@ public class ShooterSubsystem extends SubsystemBase {
         // The tarmac is always a good default shot.
         ShooterCalibrationPair shotToSet = Constants.TARMAC_SHOT_CALIBRATION_PAIR;
     
-        if (Robot.LIMELIGHT_SUBSYSTEM.getRawYOffset() > Constants.MAX_LOW_GOAL_SHOT) { // Close to hub
-        //  shotToSet = Constants.LOW_GOAL_SHOT_CALIBRATION_PAIR;
-            shotToSet = Constants.TARMAC_SHOT_CALIBRATION_PAIR;
-        }
-        else if (Robot.LIMELIGHT_SUBSYSTEM.getRawYOffset() > Constants.MAX_TARMAC_SHOT) {
+         //If the current Minimum distance (in meters) for tarmac shot is currently greater than the current distance in meters
+        if ( Constants.MIN_TARMAC_SHOT > Robot.LIMELIGHT_SUBSYSTEM.getDistance()) { // Close to hub
+            shotToSet = Constants.LOW_GOAL_SHOT_CALIBRATION_PAIR;
+        }   //If the current distance is greater than or equal to the minimum distance in meters, set to that shot profile
+        else if (Robot.LIMELIGHT_SUBSYSTEM.getDistance() >= Constants.MIN_TARMAC_SHOT) {
           shotToSet = Constants.TARMAC_SHOT_CALIBRATION_PAIR;
-        }
-        else if (Robot.LIMELIGHT_SUBSYSTEM.getRawYOffset() > Constants.MAX_AUTO_RADIUS_SHOT) {
-          shotToSet = Constants.AUTO_RADIUS_SHOT_CALIBRATION_PAIR;
-        }
-        else if (Robot.LIMELIGHT_SUBSYSTEM.getRawYOffset() > Constants.MAX_LAUNCHPAD_SHOT) {
+        }  //If the current distance is greater than or equal to the minimum distance in meters, set to that shot profile
+        else if (Robot.LIMELIGHT_SUBSYSTEM.getDistance() >= Constants.MIN_LAUNCHPAD_SHOT) {
           shotToSet = Constants.LAUNCHPAD_SHOT_CALIBRATION_PAIR;
         }
 
@@ -325,7 +323,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void enableAutoShotSelect() {
-        // _autoShotSelect = true;
+        //_autoShotSelect = true;
     }
 
     public boolean getAutoShotSelect() {
