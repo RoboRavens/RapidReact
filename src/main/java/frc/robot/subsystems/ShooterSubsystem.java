@@ -25,7 +25,7 @@ public class ShooterSubsystem extends SubsystemBase {
     private int _shotTally = 0;
     private boolean _isShooting;
     private boolean _recovered;
-    private boolean _autoShotSelect = false;
+    private boolean _autoShotSelect = true;
     private double _lastShotTime = 0;
     private double _arbitraryFeedForward = 0;
     private ShooterCalibrationPair _rememberedShot;
@@ -54,7 +54,9 @@ public class ShooterSubsystem extends SubsystemBase {
 
         updateShotProfile();
         updateArbitraryFeedForward();
-
+           
+        enableAutoShotSelect();
+         
     }
 
     public void updateSmartDashboard() {
@@ -322,7 +324,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void enableAutoShotSelect() {
-        // _autoShotSelect = true;
+        _autoShotSelect = true;
     }
 
     public boolean getAutoShotSelect() {
