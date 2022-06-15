@@ -25,6 +25,7 @@ import frc.robot.commands.climber.ClimberExtendCommand;
 import frc.robot.commands.climber.ClimberRetractCommand;
 import frc.robot.commands.commandgroups.ControllerRumbleTwiceCommandGroup;
 import frc.robot.commands.commandgroups.ConveyanceFeederEjectAllCommand;
+import frc.robot.commands.commandgroups.ConveyanceIndexingCommandGroup;
 import frc.robot.commands.commandgroups.FeederUnloadRumbleCommandGroup;
 import frc.robot.commands.commandgroups.JunkShotCommandGroup;
 import frc.robot.commands.controls.ControllerContinuousRumbleCommand;
@@ -123,6 +124,7 @@ public class Robot extends TimedRobot {
   public static final ControllerRumbleCommand CONTROLLER_RUMBLE_COMMAND_FINISHED_SHOOTING = new ControllerRumbleCommand(.75);
   public static final FeederUnloadRumbleCommandGroup FEEDER_UNLOAD_RUMBLE_COMMAND_GROUP = new FeederUnloadRumbleCommandGroup();
   public static final TurretGoToAngleCommand TURRET_AIM_LOWGOAL_COMMAND = new TurretGoToAngleCommand(90);
+  public static final ConveyanceIndexingCommandGroup CONVEYANCE_INDEXING_COMMAND_GROUP = new ConveyanceIndexingCommandGroup();
 
   public static final AutonomousShuffleboard AUTONOMOUS_SHUFFLEBOARD = new AutonomousShuffleboard();
   public static final TeleopShuffleboard TELEOP_SHUFFLEBOARD = new TeleopShuffleboard();
@@ -148,7 +150,7 @@ TURRET_SWIVEL_SUBSYSTEM.setDefaultCommand(TURRET_AIM_AT_TARGET);
     
 FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     CLIMBER_SUBSYSTEM.setDefaultCommand(climberDefaultBrake);
-    CONVEYANCE_SUBSYSTEM.setDefaultCommand(CONVEYANCE_INDEX_COMMAND);
+    CONVEYANCE_SUBSYSTEM.setDefaultCommand(CONVEYANCE_INDEXING_COMMAND_GROUP);
     configureButtonBindings();
     LIMELIGHT_SUBSYSTEM.turnLEDOff();
     TELEOP_SHUFFLEBOARD.robotInit();

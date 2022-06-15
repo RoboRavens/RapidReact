@@ -1,5 +1,6 @@
 package frc.robot.commands.conveyance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Robot;
 
 public class ConveyanceIndexCommand extends CommandBase {
@@ -15,13 +16,17 @@ public class ConveyanceIndexCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+      System.out.println("conveyance index command running");
       boolean entranceBeamBreakHasBall = Robot.CONVEYANCE_SUBSYSTEM.getConveyanceEntryBeamBreakHasBall();
       boolean stagingBeamBreakHasBall = Robot.CONVEYANCE_SUBSYSTEM.getConveyanceStagingBeamBreakHasBall();
       boolean feederHasBall = Robot.FEEDER_SUBSYSTEM.getFeederHasBall();
-      boolean ballIsEjecting = false;
-      boolean conveyanceEjectingWrongColorCargo = false;
-      boolean conveyanceEjectingThirdBall = false;
-      boolean stagingEjectionPassThroughIsOccurring = false;
+      boolean ballIsEjecting = Robot.CONVEYANCE_SUBSYSTEM.getIsBallEjecting();
+      boolean conveyanceEjectingWrongColorCargo = Robot.CONVEYANCE_SUBSYSTEM.getIsConveyanceEjectingWrongColorCargo();
+      boolean conveyanceEjectingThirdBall = Robot.CONVEYANCE_SUBSYSTEM.getConveyanceEjectingThirdBall();
+      boolean stagingEjectionPassThroughIsOccurring = Robot.CONVEYANCE_SUBSYSTEM.getStagingEjectionPassThroughIsOccurring();
+
+      // new InstantCommand().until(() -> feederHasBall)
+      //   .andThen(new InstantCommand().until(stagingBeamBreakHasBall));
 
       if (feederHasBall) {
         if (stagingBeamBreakHasBall && ballIsEjecting == false) {
@@ -31,22 +36,24 @@ public class ConveyanceIndexCommand extends CommandBase {
             if (entranceBeamBreakHasBall == false) {
               // If the staging ball is the correct color and there's no third ball at the entrance,
               // nothing further needs to be done.
-              Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne();
+              // Robot.CONVEYANCE_SUBSYSTEM.stopConveyanceOne();
+              ConveyanceStopCommand conveyanceStop = new ConveyanceStopCommand();
+              conveyanceStop.schedule();
             }
             else if (entranceBeamBreakHasBall) { 
               // If there is a third ball in the entrance, begin the eject sequence
-              Robot.CONVEYANCE_SUBSYSTEM.setConveyanceEjectCargo();
-              ballIsEjecting = true;
-              conveyanceEjectingThirdBall = true;
-              stagingEjectionPassThroughIsOccurring = false;
+              ConveyanceEjectThirdBallCommand conveyanceEjectThirdBallCommand = new ConveyanceEjectThirdBallCommand();
+              conveyanceEjectThirdBallCommand.schedule();
             }
           }
           else if (Robot.CONVEYANCE_SUBSYSTEM.conveyanceHasWrongColorCargo()) {
             // If the staged ball is the wrong color, and the feeder has a ball,
             // then the staged ball needs to be ejected by the conveyance.
-            Robot.CONVEYANCE_SUBSYSTEM.setConveyanceEjectCargo();
-            ballIsEjecting = true;
-            conveyanceEjectingWrongColorCargo = true;
+            // Robot.CONVEYANCE_SUBSYSTEM.setConveyanceEjectCargo();
+            // ballIsEjecting = true;
+            // conveyanceEjectingWrongColorCargo = true;
+            ConveyanceEjectCommand conveyanceEject = new ConveyanceEjectCommand();
+            conveyanceEject.schedule();
           }
         }
         else if (stagingBeamBreakHasBall == false && ballIsEjecting == false) {
