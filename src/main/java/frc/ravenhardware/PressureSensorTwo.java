@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.AnalogInput;
 
 public class PressureSensorTwo {
     
-   //this only would work with doubles so I just implemented them as a double
+   //this only would work with doubles so I just implemented them as a double variable
    public double supplyVoltage = 5;
    public double x = 250;
    
@@ -18,9 +18,9 @@ public class PressureSensorTwo {
 
         public double getPressure() {
          
-         return analog.getVoltage() / supplyVoltage * x - 25;
+         return analog.getValue() / supplyVoltage * x - 25;
          //CALCULATING PRESSURE
-         
+         //https://www.revrobotics.com/content/docs/REV-11-1107-DS.pdf
        }
        
 }
