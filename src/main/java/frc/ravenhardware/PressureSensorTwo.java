@@ -18,7 +18,7 @@ public class PressureSensorTwo {
 
         public double getPressure() {
          
-         return analog.getValue() / supplyVoltage * x - 25;
+         return analog.getVoltage() / supplyVoltage * x - 25;
          //CALCULATING PRESSURE
          //https://www.revrobotics.com/content/docs/REV-11-1107-DS.pdf
        }
