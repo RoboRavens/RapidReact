@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Joystick;
@@ -125,8 +126,11 @@ public class Robot extends TimedRobot {
   public static final ControllerRumbleCommand CONTROLLER_RUMBLE_COMMAND_FINISHED_SHOOTING = new ControllerRumbleCommand(.75);
   public static final FeederUnloadRumbleCommandGroup FEEDER_UNLOAD_RUMBLE_COMMAND_GROUP = new FeederUnloadRumbleCommandGroup();
   public static final TurretGoToAngleCommand TURRET_AIM_LOWGOAL_COMMAND = new TurretGoToAngleCommand(90);
-  public static final PressureSensor PRESSURE_SENSOR = new PressureSensor(3);
-  public static final PressureSensorTwo PRESSURE_SENSOR_TWO = new PressureSensorTwo(3);
+  //public static final PressureSensor PRESSURE_SENSOR = new PressureSensor(0);
+  public static final PressureSensorTwo PRESSURE_SENSOR_THREE = new PressureSensorTwo(3);
+ // public static final AnalogInput PRESSURE_SENSOR_TWO = new AnalogInput(2);
+ // public static final AnalogInput PRESSURE_SENSOR_ONE = new AnalogInput(1);
+ // public static final AnalogInput PRESSURE_SENSOR_ZERO = new AnalogInput(0);
   public static final AutonomousShuffleboard AUTONOMOUS_SHUFFLEBOARD = new AutonomousShuffleboard();
   public static final TeleopShuffleboard TELEOP_SHUFFLEBOARD = new TeleopShuffleboard();
 
@@ -210,9 +214,20 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     int sensor1Red = Robot.COLOR_SENSOR.getRawColor1().red;
     int sensor1Blue = Robot.COLOR_SENSOR.getRawColor1().blue;
     
-    double pressureSensor1 = Robot.PRESSURE_SENSOR.getPressure();
-    double pressureSensor2 = Robot.PRESSURE_SENSOR_TWO.getPressure();
+    // double pressureSensor1 = Robot.PRESSURE_SENSOR.getPressure();
+      double pressureSensor2 = Robot.PRESSURE_SENSOR_THREE.getPressure();
+     //double pressureSensor2 = Robot.PRESSURE_SENSOR_TWO.getVoltage();
+     //double pressureSensor1 = Robot.PRESSURE_SENSOR_ONE.getVoltage();
+     //double pressureSensor0 = Robot.PRESSURE_SENSOR_ZERO.getVoltage();
+      
+     
+      
+     // SmartDashboard.putNumber("analog 0", pressureSensor0);
+     // SmartDashboard.putNumber("analog 1", pressureSensor1);
+     // SmartDashboard.putNumber("analog 2", pressureSensor2);
+      SmartDashboard.putNumber("analog 3", pressureSensor2);
 
+    
     SmartDashboard.putNumber("CSENSOR 0 red", sensor0Red);
     SmartDashboard.putNumber("CSENSOR 0 Green", sensor0Green);
     SmartDashboard.putNumber("CSENSOR 0 blue", sensor0Blue);
@@ -220,8 +235,8 @@ FEEDER_SUBSYSTEM.setDefaultCommand(FeederIndex);
     SmartDashboard.putNumber("CSENSOR 1 red", sensor1Red);
     SmartDashboard.putNumber("CSENSOR 1 Green", sensor1Green);
     SmartDashboard.putNumber("CSENSOR 1 blue", sensor1Blue);
-    SmartDashboard.putNumber("PRESSURE SENSOR", pressureSensor1);
-    SmartDashboard.putNumber("PRESSURE SENSOR TWO", pressureSensor2);
+    //SmartDashboard.putNumber("PRESSURE SENSOR", pressureSensor1);
+    //SmartDashboard.putNumber("PRESSURE SENSOR TWO", pressureSensor2);
       
   }
    /** This function is called once each time the robot enters Disabled mode. */
